@@ -226,6 +226,66 @@ button {
       display: flex;
     }
 
+.attachment-tray {
+      min-height: 0;
+      margin: 0 0 8px;
+      display: none;
+      gap: 10px;
+      align-items: center;
+    }
+
+.attachment-tray.has-attachments {
+      display: flex;
+    }
+
+.attachment-thumb,
+    .attachment-add {
+      width: 82px;
+      height: 82px;
+      border-radius: 14px;
+      background: #f5f6f8;
+      position: relative;
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+
+.attachment-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+.attachment-remove {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #303846;
+      color: #fff;
+    }
+
+.attachment-remove .ui-icon {
+      width: 14px;
+      height: 14px;
+    }
+
+.attachment-add {
+      display: grid;
+      place-items: center;
+      border: 1px solid #eef1f5;
+      color: #5b6472;
+    }
+
+.attachment-add .ui-icon {
+      width: 28px;
+      height: 28px;
+    }
+
 .composer-actions {
       display: flex;
       align-items: center;
@@ -284,7 +344,7 @@ button {
       justify-content: center;
       gap: 5px;
       font-size: var(--text-button);
-      font-weight: 400;
+      font-weight: 200;
     }
 
 .skill-select .ui-icon {
@@ -335,6 +395,133 @@ button {
 
 .send.is-ready:active {
       transform: scale(.96);
+    }
+
+.pending-flow-message {
+      width: fit-content;
+      max-width: 84%;
+      margin: 0 0 14px auto;
+      padding: 10px 14px;
+      border-radius: 17px 17px 4px 17px;
+      background: #fff;
+      color: #6876ff;
+      font-family: inherit;
+      font-size: var(--text-title);
+      line-height: 1.45;
+      font-weight: inherit;
+      cursor: default;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+.pending-flow-attachments {
+      display: grid;
+      justify-items: end;
+      gap: 8px;
+    }
+
+.pending-flow-image {
+      width: 76px;
+      height: 76px;
+      border-radius: 14px;
+      object-fit: cover;
+      background: #fff;
+      border: 1px solid #edf0f4;
+    }
+
+.pending-flow-wrap {
+      width: fit-content;
+      max-width: 84%;
+      margin: 0 0 14px auto;
+      display: grid;
+      justify-items: end;
+      gap: 4px;
+    }
+
+.pending-flow-wrap .pending-flow-message {
+      max-width: 100%;
+      margin: 0;
+    }
+
+.pending-flow-badge {
+      min-height: 24px;
+      padding: 4px 9px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.9);
+      color: #8b94a2;
+      font-size: 12px;
+      line-height: 1.25;
+      font-weight: 500;
+      box-shadow: 0 1px 4px rgba(16,24,40,.04);
+    }
+
+.pending-flow-badge strong {
+      color: #6876ff;
+      font-weight: 500;
+    }
+
+.pending-flow-menu {
+      position: absolute;
+      z-index: 18;
+      display: none;
+      grid-auto-flow: column;
+      gap: 4px;
+      padding: 5px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.96);
+      border: 1px solid rgba(230,234,240,.95);
+      box-shadow: 0 12px 34px rgba(16,24,40,.16);
+    }
+
+.pending-flow-menu.active {
+      display: grid;
+    }
+
+.pending-flow-menu button {
+      height: 32px;
+      min-width: 32px;
+      border-radius: 10px;
+      padding: 0 9px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: #303846;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+.pending-flow-menu button:active {
+      background: #f1f3f6;
+    }
+
+.pending-flow-menu .ui-icon {
+      width: 15px;
+      height: 15px;
+    }
+
+.toast {
+      position: absolute;
+      left: 50%;
+      bottom: 292px;
+      z-index: 30;
+      max-width: calc(100% - 48px);
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(17,24,39,.9);
+      color: #fff;
+      font-size: 13px;
+      line-height: 1.35;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 10px);
+      transition: opacity .18s ease, transform .18s ease;
+      white-space: nowrap;
+    }
+
+.toast.active {
+      opacity: 1;
+      transform: translate(-50%, 0);
     }
 
 .no-more {
@@ -953,14 +1140,16 @@ button {
 
 .dialog-user-message {
       width: fit-content;
-      max-width: 78%;
+      max-width: 84%;
       margin: 0 0 18px auto;
       padding: 10px 14px;
       border-radius: 17px 17px 4px 17px;
-      background: #f5f6f8;
-      color: #202938;
-      font-size: var(--text-body);
-      line-height: 1.4;
+      background: #eef4ff;
+      color: #6876ff;
+      font-family: inherit;
+      font-size: var(--text-title);
+      line-height: 1.45;
+      font-weight: inherit;
     }
 
 .agent-row {
@@ -1249,11 +1438,7 @@ button {
     }
 
 .dialog.task-running .bottom-composer .send {
-      background: #d5d7de;
-      box-shadow: none;
-      transform: none;
-      pointer-events: none;
-      opacity: .82;
+      opacity: 1;
     }
 
 .file-doc {
@@ -1281,6 +1466,14 @@ button {
 
 .bottom-composer .composer-input {
       max-height: 56px;
+    }
+
+.dialog.composer-has-attachments .task-progress {
+      bottom: 236px;
+    }
+
+.dialog.composer-has-attachments .dialog-content {
+      bottom: 296px;
     }
 
 .task-progress {
@@ -1738,6 +1931,62 @@ button {
       font-weight: 600;
     }
 
+.add-resource-sheet {
+      min-height: 430px;
+      padding-top: 28px;
+    }
+
+.add-resource-sheet h2 {
+      margin-bottom: 26px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+.resource-primary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin: 4px 0 22px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #f0f2f5;
+    }
+
+.resource-primary {
+      height: 96px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      gap: 9px;
+      background: #fafbfe;
+      color: #303846;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+.resource-primary .ui-icon,
+    .resource-row .ui-icon {
+      width: 25px;
+      height: 25px;
+      color: #4b5565;
+    }
+
+.resource-row-list {
+      display: grid;
+      gap: 16px;
+    }
+
+.resource-row {
+      min-height: 44px;
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 10px;
+      align-items: center;
+      color: #3d4654;
+      font-size: 16px;
+      font-weight: 500;
+      text-align: left;
+    }
+
 .close {
       position: absolute;
       top: 23px;
@@ -2102,12 +2351,19 @@ button {
     <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2 3.4-.2-.1a1.8 1.8 0 0 0-2 .1 1.7 1.7 0 0 0-.9 1.6V22H9.3v-.2a1.7 1.7 0 0 0-.9-1.6 1.8 1.8 0 0 0-2-.1l-.2.1-2-3.4.1-.1a1.7 1.7 0 0 0 .3-1.9 1.8 1.8 0 0 0-1.5-1.2H3V10h.2a1.8 1.8 0 0 0 1.5-1.2A1.7 1.7 0 0 0 4.4 7l-.1-.1 2-3.4.2.1a1.8 1.8 0 0 0 2-.1A1.7 1.7 0 0 0 9.4 2h5.2v.2a1.7 1.7 0 0 0 .9 1.6 1.8 1.8 0 0 0 2 .1l.2-.1 2 3.4-.1.1a1.7 1.7 0 0 0-.3 1.9 1.8 1.8 0 0 0 1.5 1.2h.2V14h-.2a1.8 1.8 0 0 0-1.4 1z"/></symbol>
     <symbol id="i-credits" viewBox="0 0 20 20"><path d="M18.4727 10.002C18.4727 14.6824 14.6784 18.4766 9.99805 18.4766C5.31765 18.4766 1.52344 14.6824 1.52344 10.002C1.52344 5.32156 5.31765 1.52734 9.99805 1.52734C14.6784 1.52734 18.4727 5.32156 18.4727 10.002Z" fill="#FFE59E" stroke="none"/><path d="M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" fill="url(#creditsPaint0)" stroke="none"/><path opacity=".5" d="M3.46405 8.43966C2.74395 7.36404 3.03216 5.90831 4.10778 5.18821L6.90602 3.31486C7.98164 2.59476 9.43737 2.88297 10.1575 3.95859C10.8776 5.03422 10.5894 6.48994 9.51374 7.21004L6.7155 9.08339C5.63988 9.80349 4.18416 9.51529 3.46405 8.43966Z" fill="#FD692F" stroke="none"/><path d="M13.2327 12.2699C13.4567 12.4313 13.5095 12.7461 13.3235 12.9502C12.8197 13.5032 12.1801 13.9196 11.4644 14.1556C10.5897 14.444 9.64619 14.4482 8.76896 14.1676C7.89174 13.8871 7.12579 13.3361 6.58079 12.5937C6.03578 11.8513 5.73968 10.9555 5.73488 10.0345C5.73007 9.11349 6.01682 8.21461 6.55405 7.46654C7.09128 6.71847 7.85145 6.15958 8.7257 5.86989C9.59994 5.58021 10.5434 5.57459 11.4211 5.85384C12.1392 6.08235 12.7832 6.49203 13.2927 7.03972C13.4808 7.2419 13.4313 7.55724 13.209 7.72098L10.4298 9.76749C10.2659 9.88816 10.2672 10.1335 10.4323 10.2525L13.2327 12.2699Z" fill="url(#creditsPaint1)" stroke="none"/><defs><linearGradient id="creditsPaint0" x1="7.63761" y1="3" x2="11.4996" y2="17" gradientUnits="userSpaceOnUse"><stop stop-color="#FFB647"/><stop offset="1" stop-color="#FF9C2B"/></linearGradient><linearGradient id="creditsPaint1" x1="8.19023" y1="5.64844" x2="10.5956" y2="14.4513" gradientUnits="userSpaceOnUse"><stop stop-color="white"/><stop offset="1" stop-color="#FFFCCC"/></linearGradient></defs></symbol>
     <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1"/><path d="M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1.1"/></symbol>
-    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 19 5 21l2-7L17.5 3.5a2.1 2.1 0 0 1 3 3z"/><path d="m15 6 3 3"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M7 7 8.5 5h7L17 7h2a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="4"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.5"/><path d="m7 17 4-4 3 3 2-2 3 3"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 3 8 4v10l-8 4-8-4V7z"/><path d="M12 12 4 7M12 12l8-5M12 12v9"/></symbol>
+    <symbol id="i-audio" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5"/><path d="M8 10v4M12 7v10M16 10v4"/></symbol>
+    <symbol id="i-type" viewBox="0 0 24 24"><path d="M4 7V5h16v2"/><path d="M12 5v14"/><path d="M8 19h8"/></symbol>
+    <symbol id="i-canvas" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="14" rx="3"/><path d="m8 14 2.5-3 2 2 1.5-1.5L17 14"/><path d="m17 17 3 3"/><path d="m20 17-3 3"/></symbol>
+    <symbol id="i-edit-message" viewBox="0 0 20 20"><path fill-rule="evenodd" clip-rule="evenodd" d="M14.1169 2.23082C14.9253 2.15147 15.722 2.50744 16.5074 3.29288C17.2929 4.07832 17.6489 4.87507 17.5695 5.68344C17.4931 6.4617 17.0242 7.10349 16.5074 7.62025L10.8933 13.2344C10.7292 13.3931 10.516 13.5308 10.3115 13.6336C10.1082 13.7358 9.8672 13.8267 9.6358 13.8598L7.49092 14.1662C6.95221 14.2404 6.43372 14.0935 6.06902 13.7302C5.70349 13.3662 5.55539 12.8474 5.63464 12.3054C5.63469 12.305 5.63475 12.3046 5.6348 12.3043L5.94022 10.1664C5.94027 10.166 5.94032 10.1657 5.94036 10.1653C5.97323 9.93098 6.0637 9.68833 6.16665 9.48349C6.26984 9.2782 6.40939 9.06352 6.57255 8.90037L11.3593 4.11366C11.3695 4.10261 11.3802 4.09193 11.3913 4.08167L12.1801 3.29288C12.6968 2.77612 13.3386 2.30722 14.1169 2.23082ZM11.5565 5.54046L7.38457 9.71238C7.33424 9.76271 7.26031 9.86471 7.19271 9.9992C7.12503 10.1339 7.08752 10.2537 7.07757 10.3251L7.07731 10.3269L6.77131 12.4689L6.771 12.471C6.73676 12.7043 6.80575 12.8432 6.87939 12.9166C6.95396 12.9909 7.09688 13.0609 7.33303 13.0287C7.33347 13.0287 7.33392 13.0286 7.33436 13.0286L9.4734 12.723C9.54087 12.7133 9.65924 12.6762 9.79576 12.6076C9.92887 12.5407 10.0347 12.4662 10.0919 12.4117L14.2611 8.24258C13.0725 7.68177 12.1154 6.72603 11.5565 5.54046ZM15.1384 7.36529C13.8775 6.90723 12.8872 5.9165 12.4341 4.66283L12.9921 4.1049C13.4431 3.65387 13.8474 3.41116 14.2291 3.37369C14.5806 3.33919 15.0576 3.46711 15.6954 4.1049C16.3332 4.74268 16.4611 5.21971 16.4266 5.57126C16.3892 5.95293 16.1465 6.35721 15.6954 6.80823L15.1384 7.36529ZM3.34408 3.72392C4.30501 2.76299 5.73934 2.39938 7.57501 2.39938H8.99823C9.31535 2.39938 9.57242 2.65645 9.57242 2.97356C9.57242 3.29067 9.31535 3.54774 8.99823 3.54774H7.57501C5.85261 3.54774 4.7963 3.89574 4.1561 4.53593C3.5159 5.17613 3.1679 6.23244 3.1679 7.95483V12.2245C3.1679 13.9469 3.5159 15.0032 4.1561 15.6434C4.7963 16.2836 5.85261 16.6316 7.57501 16.6316H11.8447C13.5671 16.6316 14.6234 16.2836 15.2636 15.6434C15.9038 15.0032 16.2518 13.9469 16.2518 12.2245V10.8013C16.2518 10.4842 16.5089 10.2271 16.826 10.2271C17.1431 10.2271 17.4002 10.4842 17.4002 10.8013V12.2245C17.4002 14.0602 17.0365 15.4945 16.0756 16.4554C15.1147 17.4163 13.6804 17.7799 11.8447 17.7799H7.57501C5.73934 17.7799 4.30501 17.4163 3.34408 16.4554C2.38315 15.4945 2.01953 14.0602 2.01953 12.2245V7.95483C2.01953 6.11918 2.38315 4.68484 3.34408 3.72392Z" fill="currentColor" stroke="none"/></symbol>
     <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5"/><path d="M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></symbol>
     <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></symbol>
     <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 10-13h-7z"/></symbol>
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M6 6l1 15h10l1-15"/><path d="M10 11v6"/><path d="M14 11v6"/></symbol>
     <symbol id="i-sources" viewBox="0 0 20 20"><path d="M7.8584 11.5C7.51322 11.5 7.2334 11.7798 7.2334 12.125C7.2334 12.4702 7.51322 12.75 7.8584 12.75H12.0251C12.3702 12.75 12.6501 12.4702 12.6501 12.125C12.6501 11.7798 12.3702 11.5 12.0251 11.5H7.8584Z" fill="currentColor" stroke="none"/><path fill-rule="evenodd" clip-rule="evenodd" d="M5.83329 1.04175C4.17109 1.04175 2.88177 1.23438 2.05802 2.05814C1.23426 2.88189 1.04163 4.17121 1.04163 5.83342V14.1667C1.04163 15.8289 1.23426 17.1183 2.05802 17.942C2.88177 18.7658 4.17109 18.9584 5.83329 18.9584H14.1666C15.8288 18.9584 17.1181 18.7658 17.9419 17.942C18.7657 17.1183 18.9583 15.8289 18.9583 14.1667V9.16675C18.9583 7.50455 18.7657 6.21523 17.9419 5.39147C17.1181 4.56772 15.8288 4.37508 14.1666 4.37508H11.6666C11.3064 4.37508 11.1819 4.31977 11.1295 4.28811C11.0609 4.24664 11.0061 4.18577 10.8321 3.9568L10.8309 3.95524L9.55586 2.25512C9.33944 1.96604 9.08656 1.62825 8.69577 1.39349C8.27355 1.13985 7.7624 1.04175 7.08329 1.04175H5.83329ZM2.29163 5.83342C2.29163 4.16228 2.51566 3.36827 2.9419 2.94202C3.36815 2.51578 4.16216 2.29175 5.83329 2.29175H7.08329C7.65419 2.29175 7.90553 2.37698 8.05207 2.46501C8.2134 2.56192 8.33088 2.70519 8.58329 3.04175L9.83329 4.70841L9.83569 4.71159L9.86182 4.74608C10.0012 4.93041 10.1912 5.18156 10.4829 5.35789C10.8097 5.5554 11.1936 5.62508 11.6666 5.62508H14.1666C15.8378 5.62508 16.6318 5.84911 17.058 6.27536C17.4843 6.7016 17.7083 7.49561 17.7083 9.16675V14.1667C17.7083 15.8379 17.4843 16.6319 17.058 17.0581C16.6318 17.4844 15.8378 17.7084 14.1666 17.7084H5.83329C4.16216 17.7084 3.36815 17.4844 2.9419 17.0581C2.51566 16.6319 2.29163 15.8379 2.29163 14.1667V5.83342Z" fill="currentColor" stroke="none"/></symbol>
     <symbol id="i-outputs" viewBox="0 0 20 20"><path d="M11.5381 2.25293C11.5517 2.25538 11.5648 2.25937 11.5781 2.2627C11.6032 2.269 11.6282 2.27574 11.6523 2.28516C11.6664 2.29063 11.6798 2.29727 11.6934 2.30371C11.7109 2.31203 11.7274 2.32204 11.7441 2.33203C11.7578 2.34018 11.7713 2.34829 11.7842 2.35742C11.8128 2.3776 11.8409 2.39951 11.8662 2.4248L17.5693 8.12891C17.5771 8.13648 17.5835 8.14535 17.5908 8.15332C17.6094 8.17341 17.6271 8.19385 17.6426 8.21582C17.649 8.22491 17.6542 8.2347 17.6602 8.24414C17.6737 8.26566 17.6856 8.28774 17.6963 8.31055C17.702 8.32283 17.7079 8.33495 17.7129 8.34766C17.7393 8.41509 17.7532 8.48623 17.7549 8.55859C17.755 8.56299 17.7568 8.56785 17.7568 8.57227V12.1416C17.7567 13.9865 17.3919 15.4401 16.416 16.416C15.4401 17.3918 13.9866 17.7568 12.1416 17.7568H7.85938C6.01443 17.7568 4.56101 17.3916 3.58496 16.416C2.60908 15.4401 2.24329 13.9865 2.24316 12.1416V7.85938C2.24316 6.01418 2.60909 4.56101 3.58496 3.58496C4.56101 2.60891 6.01402 2.24316 7.85938 2.24316H11.459C11.4856 2.24454 11.512 2.24817 11.5381 2.25293ZM7.85938 3.4834C6.13633 3.4834 5.09067 3.83121 4.46094 4.46094C3.83136 5.09069 3.4834 6.13655 3.4834 7.85938V12.1416C3.48353 13.864 3.83138 14.9094 4.46094 15.5391C5.09069 16.1686 6.13655 16.5166 7.85938 16.5166H12.1416C13.8641 16.5165 14.9094 16.1686 15.5391 15.5391C16.1687 14.9095 16.5165 13.8641 16.5166 12.1416V9.19238H14.2822C13.1778 9.19236 12.2441 9.01617 11.6143 8.38672C10.9844 7.75685 10.8076 6.82252 10.8076 5.71777V3.4834H7.85938ZM9.28613 12.9482C9.62844 12.9484 9.90625 13.226 9.90625 13.5684C9.90625 13.9107 9.62844 14.1883 9.28613 14.1885H6.43164C6.08922 14.1885 5.81152 13.9108 5.81152 13.5684C5.81152 13.2259 6.08922 12.9482 6.43164 12.9482H9.28613ZM10.7139 10.0938C11.0561 10.094 11.334 10.3716 11.334 10.7139C11.334 11.0562 11.0561 11.3338 10.7139 11.334H6.43164C6.08922 11.334 5.81152 11.0563 5.81152 10.7139C5.81152 10.3715 6.08922 10.0938 6.43164 10.0938H10.7139ZM12.0479 5.71777C12.0479 6.75345 12.2282 7.24755 12.4902 7.50977C12.7525 7.77179 13.2466 7.9531 14.2822 7.95312H15.6416L12.0479 4.35938V5.71777Z" fill="currentColor" stroke="none"/></symbol>
     <symbol id="i-share-project" viewBox="0 0 20 20"><path d="M7.83927 2.49976C6.05974 2.49976 4.64997 2.85179 3.70102 3.80075C2.75206 4.74971 2.40002 6.15948 2.40002 7.939V12.0607C2.40002 13.8402 2.75206 15.25 3.70102 16.1989C4.64997 17.1479 6.05974 17.4999 7.83927 17.4999H11.9609C13.7405 17.4999 15.1502 17.1479 16.0992 16.1989C17.0482 15.25 17.4002 13.8402 17.4002 12.0607V10.6868C17.4002 10.3385 17.1178 10.0562 16.7696 10.0562C16.4213 10.0562 16.1389 10.3385 16.1389 10.6868V12.0607C16.1389 13.7158 15.8041 14.7104 15.2074 15.3071C14.6107 15.9038 13.6161 16.2387 11.9609 16.2387H7.83927C6.18415 16.2387 5.18956 15.9038 4.59285 15.3071C3.99614 14.7104 3.66127 13.7158 3.66127 12.0607V7.939C3.66127 6.28388 3.99614 5.28929 4.59285 4.69258C5.18956 4.09587 6.18415 3.761 7.83927 3.761H9.21316C9.56144 3.761 9.84378 3.47866 9.84378 3.13038C9.84378 2.78209 9.56144 2.49976 9.21316 2.49976H7.83927Z" fill="currentColor" stroke="none"/><path d="M13.4722 2.49976C13.1239 2.49976 12.8416 2.78209 12.8416 3.13038C12.8416 3.47866 13.1239 3.761 13.4722 3.761H15.2471L10.1411 8.86704C9.89483 9.11331 9.89483 9.5126 10.1411 9.75887C10.3874 10.0051 10.7867 10.0051 11.0329 9.75887L16.1389 4.6529V6.42772C16.1389 6.776 16.4213 7.05834 16.7695 7.05834C17.1178 7.05834 17.4002 6.776 17.4002 6.42772V3.13038C17.4002 2.78209 17.1178 2.49976 16.7695 2.49976H13.4722Z" fill="currentColor" stroke="none"/></symbol>
@@ -2119,7 +2375,7 @@ button {
   </svg>
   <main class="phone is-authenticated" aria-label="Expense reimbursement project prototype">
 
-    <section id="projects" class="screen project-top active">
+    <section id="projects" class="screen project-top">
       <div class="status"><span>11:46</span><span class="ios-status-right"><span class="ios-signal"><i></i><i></i><i></i><i></i></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9.5a11 11 0 0 1 14 0"/><path d="M8.5 13a6 6 0 0 1 7 0"/><path d="M12 17h.01"/></svg><span class="ios-battery">74</span></span></div>
       <div class="topbar"><span>Projects</span></div>
       <div class="project-card auth-only" data-tab="dialogExpense">
@@ -2133,7 +2389,7 @@ button {
       <div class="no-more" style="margin-top:42px">No more projects</div>
     </section>
 
-    <section id="dialogExpense" class="screen dialog task-running">
+    <section id="dialogExpense" class="screen dialog task-running active">
       <div class="status"><span>11:46</span><span class="ios-status-right"><span class="ios-signal"><i></i><i></i><i></i><i></i></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9.5a11 11 0 0 1 14 0"/><path d="M8.5 13a6 6 0 0 1 7 0"/><path d="M12 17h.01"/></svg><span class="ios-battery">74</span></span></div>
       <div class="topbar"><button class="icon-btn" data-tab="projects" aria-label="Back to projects"><svg class="ui-icon ui-icon-lg"><use href="#i-chevron-left"/></svg></button><div class="dialog-title"><span class="mode-trigger" data-open-mode>Auto Model <i class="chev-down"></i></span><strong data-project-title>出差报销单整理Excel</strong></div><div class="dialog-tools"><button class="dialog-tool credits-tool" data-open-credits aria-label="Credit Details"><svg class="ui-icon"><use href="#i-credits"/></svg></button><button class="dialog-tool" data-open-outputs aria-label="Project Files"><svg class="ui-icon"><use href="#i-outputs"/></svg></button><button class="dialog-tool" data-open-share aria-label="Share"><svg class="ui-icon"><use href="#i-share-project"/></svg></button><button class="dialog-tool" data-open-more-actions aria-label="More actions"><svg class="ui-icon"><use href="#i-more"/></svg></button></div></div>
       <div class="dialog-content">
@@ -2233,8 +2489,13 @@ button {
         <button class="credit-alert-upgrade" data-open-credits>Upgrade</button>
         <button class="credit-alert-close" data-dismiss-credit-alert aria-label="Dismiss credits alert"><svg class="ui-icon"><use href="#i-x"/></svg></button>
       </div>
+      <div class="pending-flow-menu" data-pending-flow-menu>
+        <button data-edit-active-pending><svg class="ui-icon"><use href="#i-edit-message"/></svg>Edit</button>
+        <button data-delete-active-pending><svg class="ui-icon"><use href="#i-trash"/></svg>Delete</button>
+      </div>
+      <div class="toast" data-toast role="status" aria-live="polite"></div>
       <div class="composer bottom-composer">
-        <div class="selected-skills" data-selected-skills></div>
+        <div class="attachment-tray" data-attachment-tray></div>
         <textarea class="composer-input" data-prompt-input rows="2" placeholder="Keep going, or use a skill" aria-label="Continue typing"></textarea>
         <div class="composer-actions">
           <div class="left-actions"><button class="round-plus" data-open-source data-require-login aria-label="Add resources"><svg><use href="#i-plus"/></svg></button><button class="skill-select" data-skill-select><svg class="ui-icon"><use href="#i-zap"/></svg>Skill</button></div>
@@ -2260,6 +2521,25 @@ button {
           <span><span class="resource-name">2a1a7fe44806d0b079e8bd8ceb...</span><span class="resource-size">209.9KB</span></span>
           <svg class="ui-icon"><use href="#i-more"/></svg>
         </button>
+      </div>
+    </div>
+
+    <div id="addResourceModal" class="modal" aria-hidden="true">
+      <div class="sheet project-sheet add-resource-sheet">
+        <button class="close" data-close-modal></button>
+        <h2>Add Resource</h2>
+        <div class="resource-primary-grid">
+          <button class="resource-primary" data-add-attachment="camera"><svg class="ui-icon"><use href="#i-camera"/></svg><span>Camera</span></button>
+          <button class="resource-primary" data-add-attachment="album"><svg class="ui-icon"><use href="#i-image"/></svg><span>Album</span></button>
+          <button class="resource-primary" data-add-attachment="local"><svg class="ui-icon"><use href="#i-link"/></svg><span>Local</span></button>
+        </div>
+        <div class="resource-row-list">
+          <button class="resource-row"><svg class="ui-icon"><use href="#i-audio"/></svg><span>VoiceNotes</span></button>
+          <button class="resource-row"><svg class="ui-icon"><use href="#i-box"/></svg><span>Knowledge Base</span></button>
+          <button class="resource-row"><svg class="ui-icon"><use href="#i-link"/></svg><span>Link</span></button>
+          <button class="resource-row"><svg class="ui-icon"><use href="#i-type"/></svg><span>Text</span></button>
+          <button class="resource-row"><svg class="ui-icon"><use href="#i-canvas"/></svg><span>Canvas</span></button>
+        </div>
       </div>
     </div>
 
@@ -2338,8 +2618,8 @@ button {
       <div class="project-more-menu">
         <div class="project-more-list">
           <button class="project-more-row" data-open-project-sources><svg class="ui-icon"><use href="#i-sources"/></svg><span>Source</span></button>
-          <button class="project-more-row" data-open-rename-project><svg class="ui-icon"><use href="#i-pen"/></svg><span>Rename</span></button>
-          <button class="project-more-row danger" data-open-delete-project><svg class="ui-icon"><use href="#i-x"/></svg><span>Delete</span></button>
+          <button class="project-more-row" data-open-rename-project><svg class="ui-icon"><use href="#i-edit-message"/></svg><span>Rename</span></button>
+          <button class="project-more-row danger" data-open-delete-project><svg class="ui-icon"><use href="#i-trash"/></svg><span>Delete</span></button>
         </div>
       </div>
     </div>
@@ -2428,9 +2708,22 @@ button {
     const dialogContent = dialogExpense?.querySelector('.dialog-content');
     const taskProgress = document.querySelector('[data-task-progress]');
     const renameInput = document.querySelector('[data-rename-input]');
+    const pendingFlowMenu = document.querySelector('[data-pending-flow-menu]');
+    const toast = document.querySelector('[data-toast]');
+    const attachmentTray = document.querySelector('[data-attachment-tray]');
     const taskNames = ['读取并分析报销单图片', '加载 Excel 技能', '生成 Excel 报销明细表', '发布产物并整理文件结构'];
     let expenseStreamTimers = [];
     let expenseStreamStarted = false;
+    let pendingMessageId = 0;
+    let activePendingMessage = null;
+    let pendingLongPressTimer = null;
+    let toastTimer = null;
+    let currentAttachments = [];
+    const sampleAttachment = {
+      id: 'sample-cat',
+      alt: 'Cat sketch attachment',
+      src: 'data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 120\"><rect width=\"120\" height=\"120\" fill=\"%23fffdf7\"/><path d=\"M39 71c-9-5-12-15-8-28l10 8c8-5 23-6 32 1l12-9c3 13-1 23-12 29\" fill=\"none\" stroke=\"%23777\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M43 63c4 4 8 5 14 5s11-2 15-6\" fill=\"none\" stroke=\"%23777\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M50 58h.1M68 58h.1\" stroke=\"%23222\" stroke-width=\"5\" stroke-linecap=\"round\"/><path d=\"M58 62l-3 3h6z\" fill=\"%23d9a28b\"/><path d=\"M36 72c-11 8-17 17-18 27M72 73c10 7 18 16 22 27M49 74l-9 25M64 75l8 25\" fill=\"none\" stroke=\"%23999\" stroke-width=\"3\" stroke-linecap=\"round\"/><path d=\"M29 56l-15-6M31 62l-18 1M76 58l17-5M77 64l18 2\" stroke=\"%23aaa\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>'
+    };
 
     function closeModals() {
       modals.forEach(modal => {
@@ -2460,13 +2753,178 @@ button {
 
     function updateSendStates() {
       const hasText = promptInputs.some(input => input.value.trim().length > 0);
+      const hasAttachment = currentAttachments.length > 0;
       const completed = Boolean(dialogExpense?.classList.contains('task-complete'));
-      const disabled = isTaskRunning() || (!hasText && !completed);
+      const disabled = !hasText && !hasAttachment && !completed;
       sendButtons.forEach(button => {
         button.classList.toggle('is-ready', !disabled);
         button.disabled = disabled;
         button.setAttribute('aria-disabled', disabled ? 'true' : 'false');
       });
+    }
+
+    function closePendingMenu() {
+      activePendingMessage = null;
+      pendingFlowMenu?.classList.remove('active');
+    }
+
+    function openPendingMenu(message) {
+      activePendingMessage = message;
+      if (!pendingFlowMenu || !message || !dialogExpense) return;
+      const menuWidth = 144;
+      const rect = message.getBoundingClientRect();
+      const phoneRect = dialogExpense.getBoundingClientRect();
+      const left = Math.min(rect.right - phoneRect.left - menuWidth, phoneRect.width - menuWidth - 14);
+      pendingFlowMenu.style.left = Math.max(14, left) + 'px';
+      pendingFlowMenu.style.top = Math.max(70, rect.top - phoneRect.top - 44) + 'px';
+      pendingFlowMenu.classList.add('active');
+    }
+
+    function cancelPendingLongPress() {
+      if (pendingLongPressTimer) clearTimeout(pendingLongPressTimer);
+      pendingLongPressTimer = null;
+    }
+
+    function showToast(message) {
+      if (!toast) return;
+      if (toastTimer) clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.add('active');
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('active');
+      }, 2200);
+    }
+
+    function pendingQueueCount() {
+      return dialogContent?.querySelectorAll('[data-pending-flow-item]').length || 0;
+    }
+
+    function createPendingFlowMessage(text) {
+      const wrap = document.createElement('div');
+      wrap.className = 'pending-flow-wrap stream-reveal';
+      wrap.dataset.pendingFlowItem = '';
+      wrap.dataset.pendingFlowId = String(++pendingMessageId);
+      wrap.dataset.attachments = JSON.stringify(currentAttachments);
+
+      if (currentAttachments.length) {
+        const attachmentGroup = document.createElement('div');
+        attachmentGroup.className = 'pending-flow-attachments';
+        currentAttachments.forEach(attachment => {
+          const image = document.createElement('img');
+          image.className = 'pending-flow-image';
+          image.src = attachment.src;
+          image.alt = attachment.alt;
+          attachmentGroup.append(image);
+        });
+        wrap.append(attachmentGroup);
+      }
+
+      if (text) {
+        const message = document.createElement('div');
+        message.className = 'pending-flow-message';
+        message.textContent = text;
+        wrap.append(message);
+      }
+
+      const badge = document.createElement('div');
+      badge.className = 'pending-flow-badge';
+
+      wrap.append(badge);
+      updatePendingQueueBadges();
+      return wrap;
+    }
+
+    function renderAttachments() {
+      if (!attachmentTray) return;
+      attachmentTray.classList.toggle('has-attachments', currentAttachments.length > 0);
+      dialogExpense?.classList.toggle('composer-has-attachments', currentAttachments.length > 0);
+      attachmentTray.replaceChildren();
+      currentAttachments.forEach(attachment => {
+        const thumb = document.createElement('div');
+        thumb.className = 'attachment-thumb';
+        thumb.innerHTML = `<img src="${attachment.src}" alt="${attachment.alt}"><button class="attachment-remove" data-remove-attachment="${attachment.id}" aria-label="Remove attachment"><svg class="ui-icon"><use href="#i-x"/></svg></button>`;
+        attachmentTray.append(thumb);
+      });
+      if (currentAttachments.length) {
+        const add = document.createElement('button');
+        add.className = 'attachment-add';
+        add.dataset.openSource = '';
+        add.setAttribute('aria-label', 'Add another resource');
+        add.innerHTML = '<svg class="ui-icon"><use href="#i-plus"/></svg>';
+        attachmentTray.append(add);
+      }
+      promptInputs.forEach(input => {
+        input.placeholder = currentAttachments.length ? 'Based on the above resources, answer' : 'Keep going, or use a skill';
+      });
+      updateSendStates();
+    }
+
+    function addSampleAttachment() {
+      if (!currentAttachments.some(attachment => attachment.id === sampleAttachment.id)) {
+        currentAttachments.push(sampleAttachment);
+      }
+      renderAttachments();
+      closeModals();
+    }
+
+    function updatePendingQueueBadges() {
+      const items = [...(dialogContent?.querySelectorAll('[data-pending-flow-item]') || [])];
+      items.forEach((item, index) => {
+        const badge = item.querySelector('.pending-flow-badge');
+        if (!badge) return;
+        const isLatest = index === items.length - 1;
+        badge.hidden = !isLatest;
+        if (isLatest) badge.innerHTML = `Message queued <strong>${items.length}</strong>`;
+      });
+    }
+
+    function clearComposerInput(input) {
+      input.value = '';
+      resizeInput(input);
+      updateSendStates();
+    }
+
+    function submitPendingMessage() {
+      const input = promptInputs.find(item => item.value.trim().length > 0);
+      if (!input || !dialogContent) return;
+      if (pendingQueueCount() >= 5) {
+        showToast('待发送消息较多，请稍后再试');
+        updateSendStates();
+        return;
+      }
+      const item = createPendingFlowMessage(input.value.trim());
+      dialogContent.append(item);
+      updatePendingQueueBadges();
+      currentAttachments = [];
+      renderAttachments();
+      clearComposerInput(input);
+      scrollDialogToBottom();
+    }
+
+    function editPendingMessage(message) {
+      if (!message) return;
+      const item = message.closest('[data-pending-flow-item]');
+      const messageText = item?.querySelector('.pending-flow-message')?.textContent.trim() || '';
+      currentAttachments = JSON.parse(item?.dataset.attachments || '[]');
+      const input = promptInputs[0];
+      if (input) {
+        input.value = messageText;
+        resizeInput(input);
+        input.focus();
+      }
+      renderAttachments();
+      item?.remove();
+      closePendingMenu();
+      updatePendingQueueBadges();
+      updateSendStates();
+    }
+
+    function deletePendingMessage(message) {
+      if (!message) return;
+      message.closest('[data-pending-flow-item]')?.remove();
+      closePendingMenu();
+      updatePendingQueueBadges();
+      updateSendStates();
     }
 
     function setTaskRunning(isRunning) {
@@ -2488,20 +2946,25 @@ button {
       });
     }
 
-    function resetExpenseExecution() {
+    function startFixedRunningState() {
       expenseStreamTimers.forEach(timer => clearTimeout(timer));
       expenseStreamTimers = [];
-      expenseStreamStarted = false;
+      expenseStreamStarted = true;
       dialogExpense?.classList.add('task-running');
       dialogExpense?.classList.remove('task-complete');
       taskProgress?.classList.remove('is-expanded', 'is-complete');
       streamItems().forEach(item => {
-        item.classList.add('stream-hidden');
-        item.classList.remove('stream-reveal', 'stream-cursor');
+        item.classList.remove('stream-hidden', 'stream-cursor');
+        item.classList.add('stream-reveal');
         if (item.tagName === 'P' && item.dataset.fullText) item.textContent = item.dataset.fullText;
       });
-      setTaskProgress(0);
+      setTaskProgress(2);
       updateSendStates();
+      scrollDialogToBottom();
+    }
+
+    function resetExpenseExecution() {
+      startFixedRunningState();
     }
 
     function stopExpenseExecution() {
@@ -2559,41 +3022,11 @@ button {
     }
 
     function finishExpenseExecution() {
-      setTaskProgress(4);
-      dialogExpense?.classList.remove('task-running');
-      dialogExpense?.classList.add('task-complete');
-      taskProgress?.classList.add('is-complete');
-      updateSendStates();
-      scrollDialogToBottom();
+      startFixedRunningState();
     }
 
     function startExpenseExecution() {
-      if (expenseStreamStarted || !dialogContent) return;
-      expenseStreamStarted = true;
-      dialogExpense?.classList.add('task-running');
-      dialogExpense?.classList.remove('task-complete');
-      taskProgress?.classList.remove('is-complete');
-      const items = streamItems();
-      items.forEach(item => item.classList.add('stream-hidden'));
-      setTaskProgress(0);
-      updateSendStates();
-      const timeline = [
-        [300, () => revealElement(items[0])],
-        [1450, () => { typeParagraph(items[1], 1000); setTaskProgress(1); }],
-        [2550, () => revealElement(items[2])],
-        [3650, () => { typeParagraph(items[3], 1000); setTaskProgress(2); }],
-        [4900, () => revealElement(items[4])],
-        [6250, () => typeParagraph(items[5], 900)],
-        [7350, () => revealElement(items[6])],
-        [8100, () => { setTaskProgress(3); revealElement(items[7]); }],
-        [8700, () => typeParagraph(items[8], 650)],
-        [9300, () => revealElement(items[9])],
-        [9650, () => revealElement(items[10])],
-        [10000, () => finishExpenseExecution()]
-      ];
-      timeline.forEach(([delay, action]) => {
-        expenseStreamTimers.push(setTimeout(action, delay));
-      });
+      startFixedRunningState();
     }
 
     promptInputs.forEach(input => {
@@ -2607,11 +3040,66 @@ button {
       const confirm = document.querySelector('[data-save-project-name]');
       if (confirm) confirm.disabled = renameInput.value.trim().length === 0;
     });
+    dialogContent?.addEventListener('pointerdown', event => {
+      const message = event.target.closest('[data-pending-flow-id]');
+      if (!message) return;
+      cancelPendingLongPress();
+      pendingLongPressTimer = setTimeout(() => {
+        openPendingMenu(message);
+      }, 520);
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(type => {
+      dialogContent?.addEventListener(type, cancelPendingLongPress);
+    });
+    dialogContent?.addEventListener('contextmenu', event => {
+      const message = event.target.closest('[data-pending-flow-id]');
+      if (!message) return;
+      event.preventDefault();
+      openPendingMenu(message);
+    });
     updateSendStates();
 
     document.addEventListener('click', event => {
-      if (event.target.closest('[data-send-message]') && isTaskRunning()) {
+      if (!event.target.closest('[data-pending-flow-menu]') && !event.target.closest('[data-pending-flow-id]')) {
+        closePendingMenu();
+      }
+
+      if (event.target.closest('[data-send-message]')) {
         event.preventDefault();
+        closePendingMenu();
+        submitPendingMessage();
+        return;
+      }
+
+      if (event.target.closest('[data-open-source]')) {
+        event.stopPropagation();
+        openModal('#addResourceModal');
+        return;
+      }
+
+      if (event.target.closest('[data-add-attachment]')) {
+        event.stopPropagation();
+        addSampleAttachment();
+        return;
+      }
+
+      const removeAttachment = event.target.closest('[data-remove-attachment]');
+      if (removeAttachment) {
+        event.stopPropagation();
+        currentAttachments = currentAttachments.filter(attachment => attachment.id !== removeAttachment.dataset.removeAttachment);
+        renderAttachments();
+        return;
+      }
+
+      if (event.target.closest('[data-edit-active-pending]')) {
+        event.stopPropagation();
+        editPendingMessage(activePendingMessage);
+        return;
+      }
+
+      if (event.target.closest('[data-delete-active-pending]')) {
+        event.stopPropagation();
+        deletePendingMessage(activePendingMessage);
         return;
       }
 
