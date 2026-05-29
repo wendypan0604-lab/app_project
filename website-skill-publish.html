@@ -1,0 +1,3312 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Website Skill 产物流原型</title>
+  <style>
+    :root {
+      --bg-page: #f4f5f7;
+      --bg-glass: rgba(255, 255, 255, 0.8);
+      --bg-card: rgba(255, 255, 255, 0.9);
+      --bg-chip: #edeff1;
+      --bg-soft: #f9fafc;
+      --text-primary: #333b46;
+      --text-strong: #000818;
+      --text-secondary: #485568;
+      --text-tertiary: #979fab;
+      --text-quaternary: #7f8896;
+      --border: #ffffff;
+      --border-subtle: #edeff1;
+      --hairline: rgba(0, 0, 0, 0.05);
+      --brand-blue: #4d5eff;
+      --website: #00a88f;
+      --accent: #d97757;
+      --shadow-input: 0 12px 20.8px -17px rgba(0, 8, 24, 0.12);
+      --shadow-card: 0 1px 6px rgba(0, 8, 24, 0.04);
+      font-family: Outfit, "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      background: #dfe3e8;
+      color: var(--text-primary);
+    }
+
+    button,
+    a {
+      font: inherit;
+    }
+
+    .phone {
+      position: relative;
+      width: 375px;
+      height: 812px;
+      overflow: hidden;
+      background: var(--bg-page);
+      border: 1px solid rgba(0, 8, 24, 0.12);
+      box-shadow: 0 24px 80px rgba(0, 8, 24, 0.18);
+    }
+
+    .ui-icon {
+      width: 22px;
+      height: 22px;
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex: 0 0 auto;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(16px);
+      transition: opacity 220ms ease, transform 220ms ease;
+    }
+
+    .screen.is-active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+
+    .status-bar {
+      position: absolute;
+      inset: 0 0 auto;
+      height: 48px;
+      z-index: 8;
+      color: var(--text-strong);
+    }
+
+    .project-screen .status-bar,
+    .preview-screen .status-bar {
+      height: 44px;
+    }
+
+    .time {
+      position: absolute;
+      left: 25px;
+      top: 14px;
+      width: 54px;
+      text-align: center;
+      font: 600 17px/22px "SF Pro Text", -apple-system, sans-serif;
+    }
+
+    .signals {
+      position: absolute;
+      right: 23px;
+      top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cellular {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 12px;
+    }
+
+    .cellular span {
+      width: 3px;
+      border-radius: 2px;
+      background: var(--text-strong);
+    }
+
+    .cellular span:nth-child(1) { height: 4px; }
+    .cellular span:nth-child(2) { height: 6px; }
+    .cellular span:nth-child(3) { height: 8px; }
+    .cellular span:nth-child(4) { height: 10px; }
+
+    .wifi {
+      position: relative;
+      width: 17px;
+      height: 12px;
+    }
+
+    .wifi::before,
+    .wifi::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      border: 2px solid var(--text-strong);
+      border-color: var(--text-strong) transparent transparent transparent;
+      border-radius: 50%;
+      transform: translateX(-50%);
+    }
+
+    .wifi::before {
+      top: 1px;
+      width: 15px;
+      height: 15px;
+    }
+
+    .wifi::after {
+      top: 5px;
+      width: 8px;
+      height: 8px;
+    }
+
+    .battery {
+      position: relative;
+      width: 25px;
+      height: 13px;
+      border: 1.1px solid rgba(0, 8, 24, 0.35);
+      border-radius: 4px;
+      padding: 1px;
+    }
+
+    .battery::before {
+      content: "";
+      display: block;
+      width: 19px;
+      height: 9px;
+      border-radius: 2px;
+      background: var(--text-strong);
+    }
+
+    .battery::after {
+      content: "";
+      position: absolute;
+      right: -3px;
+      top: 4px;
+      width: 2px;
+      height: 5px;
+      border-radius: 0 2px 2px 0;
+      background: rgba(0, 8, 24, 0.35);
+    }
+
+    .topbar {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      top: 48px;
+      height: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 3;
+    }
+
+    .pill {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--bg-glass);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 21px;
+      white-space: nowrap;
+    }
+
+    .model-pill {
+      width: 138px;
+    }
+
+    .model-dot {
+      width: 18px;
+      height: 18px;
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .chevron {
+      width: 10px;
+      height: 10px;
+      border-right: 1.6px solid currentColor;
+      border-bottom: 1.6px solid currentColor;
+      transform: rotate(45deg) translateY(-2px);
+      opacity: 0.68;
+      flex: 0 0 auto;
+    }
+
+    .credit-pill {
+      width: 132px;
+      justify-content: center;
+      gap: 8px;
+      font: 500 14px/21px "PingFang SC", sans-serif;
+      color: var(--text-strong);
+    }
+
+    .coin {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #dde2ff, #a666ff);
+      color: #fff;
+      font: 700 12px/20px "DIN Alternate", sans-serif;
+    }
+
+    .divider {
+      width: 1px;
+      height: 12px;
+      background: var(--bg-chip);
+    }
+
+    .vip {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      color: #8466ff;
+    }
+
+    .template-section {
+      position: absolute;
+      left: 12px;
+      top: 144px;
+      width: 351px;
+      height: 95px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 2;
+    }
+
+    .template-head {
+      height: 21px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-secondary);
+      font: 400 14px/21px Outfit, sans-serif;
+    }
+
+    .more {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      color: var(--text-quaternary);
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    .template-strip {
+      width: 397px;
+      height: 64px;
+      display: flex;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .template-card {
+      position: relative;
+      width: 114px;
+      height: 64px;
+      flex: 0 0 auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: var(--shadow-card);
+      cursor: pointer;
+    }
+
+    .template-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+    }
+
+    .template-card::after {
+      content: attr(data-title);
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      bottom: 7px;
+      color: #fff;
+      font: 500 11px/14px "PingFang SC", sans-serif;
+      text-shadow: 0 1px 4px rgba(0, 8, 24, 0.35);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .art-saas::before {
+      background:
+        linear-gradient(145deg, rgba(0, 8, 24, 0.58), rgba(0, 168, 143, 0.16)),
+        linear-gradient(90deg, #e6f1ff 0 26%, #fff 26% 29%, #ffd69b 29% 52%, #7eb7a8 52% 74%, #203447 74%);
+    }
+
+    .art-portfolio::before {
+      background:
+        linear-gradient(145deg, rgba(0, 8, 24, 0.48), rgba(77, 94, 255, 0.08)),
+        radial-gradient(circle at 30% 42%, #f5d6a1 0 18%, transparent 19%),
+        linear-gradient(135deg, #efe7dc, #cbd8f1);
+    }
+
+    .art-store::before {
+      background:
+        linear-gradient(145deg, rgba(0, 8, 24, 0.44), rgba(217, 119, 87, 0.12)),
+        repeating-linear-gradient(90deg, #fff 0 13px, #f0f3f7 13px 15px),
+        linear-gradient(135deg, #ffd8c2, #f6efe5);
+    }
+
+    .art-event::before {
+      background:
+        linear-gradient(145deg, rgba(0, 8, 24, 0.56), rgba(255, 87, 109, 0.14)),
+        radial-gradient(circle at 78% 30%, #ff576d 0 14%, transparent 15%),
+        radial-gradient(circle at 34% 70%, #00a88f 0 18%, transparent 19%),
+        #18212f;
+    }
+
+    .expand {
+      position: absolute;
+      right: 6px;
+      top: 6px;
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      z-index: 1;
+    }
+
+    .expand .ui-icon {
+      width: 14px;
+      height: 14px;
+      stroke-width: 2.2;
+    }
+
+    .input-card {
+      position: absolute;
+      left: 12px;
+      top: 255px;
+      width: 351px;
+      height: 222px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      background: var(--bg-glass);
+      box-shadow: var(--shadow-input);
+      z-index: 2;
+    }
+
+    .input-main {
+      width: 327px;
+      height: 150px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .tag-row {
+      height: 30px;
+      flex: 0 0 auto;
+      display: flex;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .skill-tag,
+    .mode-tag {
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 12px;
+      color: var(--text-primary);
+      white-space: nowrap;
+    }
+
+    .skill-tag {
+      width: 105px;
+      padding: 0 7px 0 6px;
+      border: 1px solid rgba(0, 168, 143, 0.18);
+      background: rgba(0, 168, 143, 0.08);
+      font: 400 14px/21px Outfit, sans-serif;
+    }
+
+    .skill-tag .ui-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--website);
+    }
+
+    .skill-tag .close {
+      width: 12px;
+      height: 12px;
+      color: var(--text-secondary);
+    }
+
+    .mode-tag {
+      padding: 0 7px;
+      background: var(--bg-page);
+      font: 400 14px/21px Outfit, sans-serif;
+    }
+
+    .mode-tag .ui-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .rule {
+      width: 327px;
+      height: 1px;
+      flex: 0 0 auto;
+      background: var(--bg-page);
+    }
+
+    .prompt {
+      width: 327px;
+      min-height: 0;
+      flex: 1 1 auto;
+      margin: 0;
+      padding-right: 4px;
+      color: var(--text-primary);
+      font: 400 14px/21px "PingFang SC", sans-serif;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .prompt::-webkit-scrollbar {
+      display: none;
+    }
+
+    .inline-skill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 24px;
+      padding: 0 8px 0 6px;
+      margin: 0 2px;
+      border-radius: 8px;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      font: 400 13px/20px Outfit, sans-serif;
+      vertical-align: -6px;
+    }
+
+    .inline-skill .ui-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--website);
+    }
+
+    .input-actions {
+      width: 327px;
+      height: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .left-actions,
+    .right-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .right-actions {
+      gap: 12px;
+    }
+
+    .icon-button,
+    .send-button,
+    .mcp-chip,
+    .cost-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+    }
+
+    .icon-button {
+      width: 24px;
+      height: 24px;
+      color: var(--text-primary);
+    }
+
+    .mcp-chip,
+    .cost-chip {
+      height: 28px;
+      border-radius: 12px;
+      background: var(--bg-page);
+      color: var(--text-primary);
+    }
+
+    .mcp-chip {
+      width: 50px;
+      gap: 4px;
+      padding: 2px 8px;
+    }
+
+    .gmail {
+      width: 18px;
+      height: 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      background: #fff;
+      color: var(--brand-blue);
+      font: 700 11px/18px Outfit, sans-serif;
+    }
+
+    .cost-chip {
+      min-width: 50px;
+      gap: 2px;
+      padding: 2px 8px;
+      font: 400 16px/24px Outfit, sans-serif;
+    }
+
+    .cost-chip .ui-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--text-secondary);
+    }
+
+    .send-button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--brand-blue);
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .send-button .ui-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .keyboard {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 375px;
+      height: 319px;
+      padding-top: 4px;
+      border-radius: 25px 25px 0 0;
+      background: #e6e9ed;
+      color: #595959;
+    }
+
+    .suggestions {
+      height: 23px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 20px;
+      font: 400 15px/21px "SF Pro Text", sans-serif;
+      color: #1a1a1a;
+    }
+
+    .keys {
+      padding: 11px 8px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .key-row {
+      display: flex;
+      justify-content: center;
+      gap: 5.6px;
+      height: 42px;
+    }
+
+    .key {
+      width: 30.8px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.86);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+      font: 457 23px/28px "SF Compact", -apple-system, sans-serif;
+    }
+
+    .key.utility {
+      width: 42px;
+      font-size: 20px;
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .key.wide {
+      width: 86px;
+      font-size: 15px;
+    }
+
+    .key.space {
+      width: 176px;
+    }
+
+    .key.return {
+      width: 86px;
+      color: #fff;
+      background: #0088ff;
+      font-size: 20px;
+    }
+
+    .keyboard-bottom {
+      height: 65px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 25px 36px 14px 34px;
+      color: rgba(34, 43, 89, 0.63);
+    }
+
+    .home-indicator {
+      position: absolute;
+      left: 50%;
+      bottom: 8px;
+      width: 134px;
+      height: 5px;
+      border-radius: 100px;
+      background: var(--text-strong);
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    .project-nav {
+      position: absolute;
+      left: 0;
+      top: 44px;
+      width: 375px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      z-index: 5;
+    }
+
+    .nav-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .back-button,
+    .nav-icon,
+    .artifact-icon-button,
+    .close-preview,
+    .sheet-close {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 10px;
+      background: var(--bg-chip);
+      color: var(--text-strong);
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .back-button {
+      width: 28px;
+      background: transparent;
+      color: var(--text-primary);
+    }
+
+    .title-copy {
+      min-width: 0;
+    }
+
+    .title-copy strong {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-strong);
+      font: 500 14px/20px "PingFang SC", sans-serif;
+      white-space: nowrap;
+    }
+
+    .title-copy small {
+      display: block;
+      color: var(--text-quaternary);
+      font: 400 11px/16px "PingFang SC", sans-serif;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 166px;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mini-credit {
+      height: 29px;
+      min-width: 86px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 4px 8px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.6);
+      color: var(--text-strong);
+      font: 500 14px/21px "PingFang SC", sans-serif;
+    }
+
+    .chat-scroll {
+      position: absolute;
+      inset: 96px 0 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 12px 16px 188px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .chat-scroll::-webkit-scrollbar {
+      display: none;
+    }
+
+    .user-message {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .bubble {
+      max-width: 309px;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 12px;
+      background: #ecf2ff;
+      color: var(--brand-blue);
+      font: 400 14px/21px "PingFang SC", sans-serif;
+    }
+
+    .bubble-skill {
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 6px 0 4px;
+      border: 1px solid #fff;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.8);
+      color: var(--text-primary);
+      font: 400 13px/20px Outfit, sans-serif;
+    }
+
+    .bubble-skill .ui-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--website);
+    }
+
+    .agent-block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .agent-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      height: 24px;
+    }
+
+    .avatar {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #ffb959;
+      color: #7a3d00;
+      font: 700 12px/20px Outfit, sans-serif;
+    }
+
+    .agent-name {
+      color: var(--text-strong);
+      font: 500 16px/24px Outfit, sans-serif;
+    }
+
+    .model-badge {
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px 0 8px;
+      border-radius: 6px;
+      background: var(--bg-card);
+      color: var(--text-quaternary);
+      font: 500 12px/18px "PingFang SC", sans-serif;
+    }
+
+    .model-badge span:first-child {
+      color: var(--accent);
+    }
+
+    .ai-text {
+      width: 343px;
+      margin: 0;
+      color: var(--text-primary);
+      font: 400 14px/21px "PingFang SC", sans-serif;
+      text-align: justify;
+    }
+
+    .tool-list {
+      width: 343px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .tool-item {
+      height: 33px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border: 1px solid #fff;
+      border-radius: 12px;
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font: 400 14px/21px "PingFang SC", sans-serif;
+    }
+
+    .tool-item strong {
+      font-weight: 500;
+    }
+
+    .tool-item .mini-divider {
+      width: 1px;
+      height: 10px;
+      border-radius: 20px;
+      background: var(--text-tertiary);
+    }
+
+    .tool-detail {
+      min-width: 0;
+      flex: 1;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .progress-card,
+    .website-card {
+      width: 343px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--bg-card);
+      box-shadow: var(--shadow-card);
+    }
+
+    .progress-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--text-secondary);
+      font: 500 14px/21px "PingFang SC", sans-serif;
+    }
+
+    .progress-head span:last-child {
+      color: var(--brand-blue);
+      font-weight: 400;
+    }
+
+    .progress-track {
+      height: 6px;
+      overflow: hidden;
+      border-radius: 99px;
+      background: var(--bg-chip);
+    }
+
+    .progress-fill {
+      width: 36%;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--brand-blue);
+      transition: width 500ms ease;
+    }
+
+    .is-ready .progress-fill {
+      width: 100%;
+    }
+
+    .build-steps {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .build-step {
+      min-height: 54px;
+      padding: 8px;
+      border-radius: 10px;
+      background: var(--bg-soft);
+      color: var(--text-secondary);
+      font: 400 12px/18px "PingFang SC", sans-serif;
+    }
+
+    .build-step strong {
+      display: block;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .website-card {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .is-ready .website-card {
+      display: flex;
+    }
+
+    .is-ready .progress-card {
+      display: none;
+    }
+
+    .artifact-title {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .file-icon {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--website);
+      color: #fff;
+      flex: 0 0 auto;
+    }
+
+    .file-icon .ui-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .artifact-copy {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .artifact-copy h2 {
+      margin: 0;
+      color: var(--text-primary);
+      font: 600 15px/22px Outfit, "PingFang SC", sans-serif;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .artifact-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-quaternary);
+      font: 400 10px/14px "PingFang SC", sans-serif;
+    }
+
+    .publish-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 22px;
+      width: fit-content;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: var(--bg-chip);
+      color: var(--text-quaternary);
+      font: 500 12px/18px "PingFang SC", sans-serif;
+    }
+
+    .publish-status::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .publish-status.is-published {
+      background: #ecf8f5;
+      color: var(--website);
+    }
+
+    .chat-status-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-copy {
+      width: 24px;
+      height: 24px;
+      display: none;
+      place-items: center;
+      border: 0;
+      border-radius: 8px;
+      background: var(--bg-chip);
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .status-copy.is-visible {
+      display: grid;
+    }
+
+    .status-copy .ui-icon {
+      width: 14px;
+      height: 14px;
+    }
+
+    .artifact-footer {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .artifact-footer-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .reference-action {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 14px;
+      background: var(--bg-chip);
+      color: var(--text-strong);
+      cursor: pointer;
+    }
+
+    .download-action {
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 16px;
+      border-radius: 14px;
+      background: var(--bg-chip);
+      color: var(--text-strong);
+      text-decoration: none;
+      font: 500 15px/22px Outfit, sans-serif;
+    }
+
+    .reference-action .ui-icon,
+    .download-action .ui-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .version {
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: var(--bg-chip);
+    }
+
+    .dot-divider {
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background: var(--text-tertiary);
+    }
+
+    .site-preview {
+      width: 319px;
+      height: 154px;
+      overflow: hidden;
+      border: 1px solid var(--hairline);
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .browser-bar {
+      height: 20px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 8px;
+      background: #f0f3f7;
+    }
+
+    .browser-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #c5cbd5;
+    }
+
+    .mini-site {
+      position: relative;
+      height: 134px;
+      padding: 14px 16px;
+      overflow: hidden;
+      background:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.16)),
+        radial-gradient(circle at 82% 38%, #7eb7a8 0 15%, transparent 16%),
+        linear-gradient(135deg, #f5d6a1, #efe7dc 48%, #cbd8f1);
+    }
+
+    .mini-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #16202b;
+      font: 600 8px/12px Outfit, sans-serif;
+    }
+
+    .mini-nav span:first-child {
+      margin-right: auto;
+      font-size: 10px;
+    }
+
+    .mini-site h3 {
+      width: 190px;
+      margin: 18px 0 8px;
+      color: #16202b;
+      font: 600 24px/24px Outfit, sans-serif;
+    }
+
+    .mini-site p {
+      width: 160px;
+      margin: 0;
+      color: #4f6070;
+      font: 400 8px/13px Outfit, sans-serif;
+    }
+
+    .mini-site .mini-cta {
+      display: inline-flex;
+      align-items: center;
+      height: 18px;
+      margin-top: 10px;
+      padding: 0 8px;
+      border-radius: 99px;
+      background: #16202b;
+      color: #fff;
+      font: 500 7px/12px Outfit, sans-serif;
+    }
+
+    .floating-card {
+      position: absolute;
+      right: 14px;
+      bottom: 18px;
+      width: 72px;
+      height: 50px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 8px 24px rgba(0, 8, 24, 0.16);
+    }
+
+    .artifact-actions {
+      height: 36px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .artifact-icon-button {
+      width: 36px;
+      height: 36px;
+    }
+
+    .artifact-action {
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--bg-chip);
+      color: var(--text-strong);
+      text-decoration: none;
+      font: 400 13px/20px Outfit, sans-serif;
+      cursor: pointer;
+    }
+
+    .artifact-action.primary {
+      background: var(--text-strong);
+      color: #fff;
+    }
+
+    .artifact-action.primary.is-published-state,
+    .artifact-action.primary:disabled {
+      background: var(--bg-chip);
+      color: var(--text-quaternary);
+      cursor: default;
+    }
+
+    .artifact-action .ui-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .composer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 156px;
+      padding: 8px 12px 0;
+      background: linear-gradient(180deg, rgba(244, 245, 247, 0), #f4f5f7 22%);
+    }
+
+    .composer-box {
+      height: 84px;
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      background: var(--bg-glass);
+      box-shadow: var(--shadow-input);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .composer-placeholder {
+      color: var(--text-tertiary);
+      font: 400 15px/23px Outfit, "PingFang SC", sans-serif;
+    }
+
+    .composer-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-primary);
+    }
+
+    .preview-chrome {
+      position: absolute;
+      left: 0;
+      top: 44px;
+      width: 375px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      background: var(--bg-page);
+      z-index: 3;
+    }
+
+    .preview-title {
+      min-width: 0;
+      max-width: 235px;
+      flex: 1;
+      margin: 0 10px;
+      color: var(--text-strong);
+      text-align: center;
+      font: 600 15px/22px Outfit, "PingFang SC", sans-serif;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .preview-notice {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100px;
+      min-height: 56px;
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--text-strong);
+      font: 400 13px/19px "PingFang SC", sans-serif;
+      z-index: 3;
+    }
+
+    .notice-link {
+      border: 0;
+      background: transparent;
+      color: var(--brand-blue);
+      font: 400 12px/18px "PingFang SC", sans-serif;
+      white-space: nowrap;
+    }
+
+    .notice-close {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      background: var(--bg-chip);
+      color: var(--text-quaternary);
+    }
+
+    .full-preview {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 156px;
+      bottom: 88px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 0 14px 18px;
+      background: #f8fafc;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .full-preview::-webkit-scrollbar {
+      display: none;
+    }
+
+    .full-site {
+      min-height: 410px;
+      padding: 18px;
+      border-radius: 14px;
+      margin-bottom: 12px;
+      background:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.18)),
+        radial-gradient(circle at 78% 33%, #7eb7a8 0 16%, transparent 17%),
+        linear-gradient(135deg, #f5d6a1, #efe7dc 49%, #cbd8f1);
+      color: #16202b;
+    }
+
+    .preview-panel {
+      min-height: 205px;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #5ab4ec, #7ac7f0);
+    }
+
+    .panel-title {
+      height: 22px;
+      display: grid;
+      place-items: center;
+      border-radius: 4px;
+      background: #27648d;
+      color: #fff;
+      font: 600 12px/18px "PingFang SC", sans-serif;
+    }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.86);
+    }
+
+    .panel-col {
+      min-height: 92px;
+      padding: 8px;
+      border-radius: 4px;
+      background: #e9f1ff;
+      color: #27648d;
+      font: 500 8px/13px "PingFang SC", sans-serif;
+    }
+
+    .panel-col strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #125784;
+      font-size: 10px;
+    }
+
+    .full-site nav {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font: 500 11px/16px Outfit, sans-serif;
+    }
+
+    .full-site nav strong {
+      margin-right: auto;
+      font-size: 14px;
+    }
+
+    .full-site .hero-copy {
+      margin-top: 74px;
+    }
+
+    .full-site .eyebrow {
+      color: #5f6d78;
+      text-transform: uppercase;
+      font: 600 10px/15px Outfit, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .full-site h1 {
+      max-width: 305px;
+      margin: 8px 0 12px;
+      color: #16202b;
+      font: 600 44px/44px Outfit, sans-serif;
+    }
+
+    .full-site p {
+      width: 260px;
+      color: #4f6070;
+      font: 400 14px/22px Outfit, sans-serif;
+    }
+
+    .full-site .site-cta {
+      display: inline-flex;
+      align-items: center;
+      height: 38px;
+      margin-top: 16px;
+      padding: 0 16px;
+      border-radius: 999px;
+      background: #16202b;
+      color: #fff;
+      font: 500 13px/19px Outfit, sans-serif;
+    }
+
+    .product-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 48px;
+    }
+
+    .product-tile {
+      width: 104px;
+      height: 90px;
+      padding: 10px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 8px 24px rgba(0, 8, 24, 0.08);
+      font: 500 11px/16px Outfit, sans-serif;
+    }
+
+    .product-shape {
+      width: 42px;
+      height: 32px;
+      margin-bottom: 12px;
+      border-radius: 50% 50% 38% 38%;
+      background: #d97757;
+    }
+
+    .product-tile:nth-child(2) .product-shape {
+      border-radius: 8px;
+      background: #7eb7a8;
+    }
+
+    .product-tile:nth-child(3) .product-shape {
+      border-radius: 50%;
+      background: #4d5eff;
+    }
+
+    .preview-footer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 88px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 14px 0;
+      background: rgba(255, 255, 255, 0.94);
+      border-radius: 20px 20px 0 0;
+      box-shadow: 0 -8px 28px rgba(0, 8, 24, 0.08);
+    }
+
+    .preview-footer .artifact-action.primary {
+      flex: 1;
+      justify-content: center;
+      font-size: 14px;
+      height: 42px;
+    }
+
+    .unpublish-button {
+      display: none;
+      flex: 1;
+      height: 42px;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 10px;
+      background: var(--bg-chip);
+      color: var(--text-quaternary);
+      font: 500 14px/21px "PingFang SC", sans-serif;
+      cursor: pointer;
+    }
+
+    .preview-footer.is-published .unpublish-button {
+      display: inline-flex;
+    }
+
+    .preview-footer .artifact-icon-button {
+      width: 42px;
+      height: 42px;
+      background: #fff;
+      border-radius: 12px;
+    }
+
+    .publish-sheet {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0 12px 22px;
+      background: rgba(0, 8, 24, 0.22);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 20;
+      transition: opacity 180ms ease;
+    }
+
+    .publish-sheet.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .sheet-panel {
+      width: 351px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 18px 42px rgba(0, 8, 24, 0.18);
+    }
+
+    .sheet-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .sheet-head h2 {
+      margin: 0;
+      color: var(--text-strong);
+      font: 600 16px/24px "PingFang SC", sans-serif;
+    }
+
+    .sheet-close {
+      width: 32px;
+      height: 32px;
+    }
+
+    .domain-card {
+      padding: 12px;
+      border-radius: 14px;
+      background: var(--bg-page);
+    }
+
+    .publish-form {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .publish-field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field-head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-strong);
+      font: 600 14px/21px "PingFang SC", sans-serif;
+    }
+
+    .info-dot {
+      width: 14px;
+      height: 14px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid #c6ccd5;
+      border-radius: 50%;
+      color: var(--text-quaternary);
+      font: 500 10px/14px Outfit, sans-serif;
+    }
+
+    .field-label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--text-quaternary);
+      font: 400 12px/18px "PingFang SC", sans-serif;
+    }
+
+    .domain-row {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 10px;
+      border-radius: 12px;
+      background: #fff;
+      color: var(--text-primary);
+      font: 400 14px/21px Outfit, sans-serif;
+    }
+
+    .publish-url-row {
+      justify-content: space-between;
+      background: var(--bg-page);
+      color: var(--text-secondary);
+    }
+
+    .publish-url-value {
+      min-width: 0;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .publish-url-display {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .url-suffix {
+      flex: 0 0 auto;
+      color: var(--text-tertiary);
+    }
+
+    .domain-row .ui-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--website);
+    }
+
+    .mini-action {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .mini-action .ui-icon {
+      width: 16px;
+      height: 16px;
+      color: currentColor;
+    }
+
+    .permission-row {
+      width: 100%;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--bg-page);
+      color: var(--text-secondary);
+      font: 400 14px/21px Outfit, "PingFang SC", sans-serif;
+      cursor: pointer;
+    }
+
+    .permission-control {
+      position: relative;
+    }
+
+    .permission-control.is-open .permission-row {
+      background: #fff;
+      box-shadow: inset 0 0 0 1px rgba(77, 94, 255, 0.16);
+    }
+
+    .permission-control.is-open .permission-row .chevron {
+      transform: rotate(225deg) translate(-2px, -1px);
+    }
+
+    .permission-row .ui-icon {
+      width: 18px;
+      height: 18px;
+      color: currentColor;
+    }
+
+    .permission-row .chevron {
+      margin-left: auto;
+      width: 9px;
+      height: 9px;
+    }
+
+    .permission-menu {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 46px;
+      display: none;
+      gap: 6px;
+      padding: 6px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 12px 28px rgba(0, 8, 24, 0.14);
+      z-index: 2;
+    }
+
+    .permission-control.is-open .permission-menu {
+      display: grid;
+    }
+
+    .permission-option {
+      width: 100%;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 10px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text-secondary);
+      font: 400 13px/20px Outfit, "PingFang SC", sans-serif;
+      cursor: pointer;
+    }
+
+    .permission-option.is-selected {
+      background: var(--bg-page);
+      color: var(--text-strong);
+    }
+
+    .permission-option .ui-icon {
+      width: 17px;
+      height: 17px;
+      color: currentColor;
+    }
+
+    .permission-option .check-icon {
+      margin-left: auto;
+      color: var(--brand-blue);
+      opacity: 0;
+    }
+
+    .permission-option.is-selected .check-icon {
+      opacity: 1;
+    }
+
+    .badge-control-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .limited-badge {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 8px;
+      background: #efeaff;
+      color: #6c47ff;
+      font: 500 12px/18px Outfit, sans-serif;
+    }
+
+    .switch {
+      position: relative;
+      width: 42px;
+      height: 24px;
+      margin-left: auto;
+      flex: 0 0 auto;
+    }
+
+    .switch input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .switch span {
+      position: absolute;
+      inset: 0;
+      border-radius: 999px;
+      background: var(--text-strong);
+    }
+
+    .switch span::after {
+      content: "";
+      position: absolute;
+      right: 4px;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+    }
+
+    .field-help {
+      margin: 0;
+      color: var(--text-quaternary);
+      font: 400 12px/18px "PingFang SC", sans-serif;
+    }
+
+    .publish-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .publish-option {
+      min-height: 62px;
+      padding: 10px;
+      border-radius: 12px;
+      background: var(--bg-soft);
+      color: var(--text-secondary);
+      font: 400 12px/18px "PingFang SC", sans-serif;
+    }
+
+    .publish-option strong {
+      display: block;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .publish-submit {
+      width: 100%;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--text-strong);
+      color: #fff;
+      font: 500 14px/21px "PingFang SC", sans-serif;
+      cursor: pointer;
+    }
+
+    .publish-submit .ui-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .publish-submit.is-loading,
+    .publish-submit:disabled {
+      background: var(--bg-chip);
+      color: var(--text-quaternary);
+      cursor: default;
+    }
+
+    .loading-spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(127, 136, 150, 0.28);
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin 840ms linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .published-card {
+      display: none;
+      gap: 10px;
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 14px;
+      background: #ecf8f5;
+      color: var(--text-primary);
+      font: 400 13px/20px "PingFang SC", sans-serif;
+    }
+
+    .published-card.is-visible {
+      display: grid;
+    }
+
+    .publish-success-sheet {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+      background: rgba(0, 8, 24, 0.28);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 26;
+      transition: opacity 180ms ease;
+    }
+
+    .publish-success-sheet.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .success-panel {
+      position: relative;
+      width: 327px;
+      padding: 26px 24px 24px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 20px 48px rgba(0, 8, 24, 0.2);
+    }
+
+    .success-close {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #d8dde5;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--text-quaternary);
+      font-size: 0;
+      cursor: pointer;
+    }
+
+    .success-close::before,
+    .success-close::after {
+      content: "";
+      position: absolute;
+      width: 11px;
+      height: 1.6px;
+      border-radius: 2px;
+      background: currentColor;
+    }
+
+    .success-close::before {
+      transform: rotate(45deg);
+    }
+
+    .success-close::after {
+      transform: rotate(-45deg);
+    }
+
+    .success-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      background: #1fd6ba;
+      color: #fff;
+    }
+
+    .success-mark .ui-icon {
+      width: 24px;
+      height: 24px;
+      stroke-width: 2.6;
+    }
+
+    .success-title {
+      margin: 0;
+      color: var(--text-strong);
+      text-align: center;
+      font: 600 18px/27px Outfit, "PingFang SC", sans-serif;
+    }
+
+    .success-subtitle {
+      margin: 4px 0 18px;
+      color: var(--text-secondary);
+      text-align: center;
+      font: 500 13px/20px Outfit, sans-serif;
+    }
+
+    .success-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-strong);
+      font: 500 13px/20px Outfit, sans-serif;
+    }
+
+    .success-link-row {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      background: #fff;
+      color: var(--text-secondary);
+      font: 400 13px/20px Outfit, sans-serif;
+      overflow: hidden;
+    }
+
+    .success-link-row span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .share-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .share-button {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--bg-soft);
+      color: var(--text-primary);
+      font: 500 12px/18px Outfit, sans-serif;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .share-brand {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      background: var(--brand-blue);
+      color: #fff;
+      font: 700 14px/20px Outfit, sans-serif;
+    }
+
+    .share-button .ui-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .unpublish-confirm-sheet {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+      background: rgba(0, 8, 24, 0.28);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 28;
+      transition: opacity 180ms ease;
+    }
+
+    .unpublish-confirm-sheet.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .unpublish-panel {
+      position: relative;
+      width: 351px;
+      padding: 22px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 20px 48px rgba(0, 8, 24, 0.2);
+    }
+
+    .unpublish-panel h2 {
+      margin: 0;
+      padding-right: 34px;
+      color: var(--text-strong);
+      font: 600 18px/27px Outfit, "PingFang SC", sans-serif;
+    }
+
+    .unpublish-panel p {
+      margin: 26px 0 24px;
+      color: var(--text-strong);
+      font: 400 14px/22px Outfit, "PingFang SC", sans-serif;
+    }
+
+    .unpublish-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .unpublish-confirm {
+      height: 42px;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: var(--text-strong);
+      font: 500 15px/22px Outfit, sans-serif;
+      cursor: pointer;
+    }
+
+    .unpublish-cancel {
+      min-width: 132px;
+      height: 42px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--text-strong);
+      color: #fff;
+      font: 500 15px/22px Outfit, sans-serif;
+      cursor: pointer;
+    }
+
+    .url-edit-sheet {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0 12px 22px;
+      background: rgba(0, 8, 24, 0.12);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 24;
+      transition: opacity 180ms ease;
+    }
+
+    .url-edit-sheet.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .url-edit-panel {
+      width: 351px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 18px 42px rgba(0, 8, 24, 0.18);
+    }
+
+    .url-edit-field {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 12px;
+      border-radius: 14px;
+      background: var(--bg-page);
+      box-shadow: inset 0 0 0 1px rgba(77, 94, 255, 0.16);
+    }
+
+    .edit-url-input {
+      min-width: 0;
+      flex: 1;
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: var(--text-primary);
+      font: 400 15px/22px Outfit, sans-serif;
+      outline: none;
+    }
+
+    .edit-url-suffix {
+      flex: 0 0 auto;
+      color: var(--text-tertiary);
+      font: 400 14px/21px Outfit, sans-serif;
+    }
+
+    .url-edit-help {
+      margin: 8px 0 14px;
+      color: var(--text-quaternary);
+      font: 400 12px/18px "PingFang SC", sans-serif;
+    }
+
+    .url-edit-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .url-edit-action {
+      height: 42px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--bg-chip);
+      color: var(--text-strong);
+      font: 500 14px/21px Outfit, "PingFang SC", sans-serif;
+      cursor: pointer;
+    }
+
+    .url-edit-action.primary {
+      background: var(--text-strong);
+      color: #fff;
+    }
+
+    .not-live-badge {
+      display: inline-flex;
+      align-items: center;
+      height: 18px;
+      padding: 0 7px;
+      border-radius: 999px;
+      background: #fff4ec;
+      color: #c2621a;
+      font: 500 11px/18px "PingFang SC", Outfit, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .live-badge {
+      width: fit-content;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #fff;
+      color: var(--website);
+      font: 500 12px/18px Outfit, sans-serif;
+    }
+
+    .toast {
+      position: absolute;
+      left: 50%;
+      bottom: 104px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      height: 36px;
+      padding: 0 12px;
+      border-radius: 18px;
+      background: rgba(0, 8, 24, 0.88);
+      color: #fff;
+      font: 400 12px/18px "PingFang SC", sans-serif;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 12px);
+      transition: opacity 180ms ease, transform 180ms ease;
+      z-index: 30;
+      white-space: nowrap;
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  </style>
+</head>
+<body>
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <symbol id="i-file-text" viewBox="0 0 24 24">
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
+      <path d="M14 3v5h5"/>
+      <path d="M9 13h6"/>
+      <path d="M9 17h4"/>
+    </symbol>
+    <symbol id="i-image" viewBox="0 0 24 24">
+      <rect x="4" y="4" width="16" height="16" rx="3"/>
+      <circle cx="9" cy="9" r="1.5"/>
+      <path d="m7 17 4-4 3 3 2-2 3 3"/>
+    </symbol>
+    <symbol id="i-send" viewBox="0 0 24 24">
+      <path d="m22 2-7 20-4-9-9-4z"/>
+      <path d="M22 2 11 13"/>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14"/>
+    </symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24">
+      <path d="M13 2 4 14h7l-1 8 10-13h-7z"/>
+    </symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24">
+      <path d="M13 3 11.4 8.4 6 10l5.4 1.6L13 17l1.6-5.4L20 10l-5.4-1.6L13 3Z"/>
+      <path d="m5.5 15-.8 2.7-2.7.8 2.7.8.8 2.7.8-2.7 2.7-.8-2.7-.8-.8-2.7Z"/>
+    </symbol>
+    <symbol id="i-x" viewBox="0 0 24 24">
+      <path d="M18 6 6 18M6 6l12 12"/>
+    </symbol>
+    <symbol id="i-maximize" viewBox="0 0 24 24">
+      <path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/>
+    </symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>
+    </symbol>
+    <symbol id="i-download" viewBox="0 0 24 24">
+      <path d="M12 3v12"/>
+      <path d="m7 10 5 5 5-5"/>
+      <path d="M5 21h14"/>
+    </symbol>
+    <symbol id="i-upload-cloud" viewBox="0 0 24 24">
+      <path d="M16 16l-4-4-4 4"/>
+      <path d="M12 12v9"/>
+      <path d="M20.4 18.7A5 5 0 0 0 18 9h-1.3A7 7 0 1 0 5 15.5"/>
+    </symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24">
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24">
+      <path d="M3 6a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/>
+    </symbol>
+    <symbol id="i-more" viewBox="0 0 24 24">
+      <path d="M12 12h.01M19 12h.01M5 12h.01"/>
+    </symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24">
+      <path d="m15 18-6-6 6-6"/>
+    </symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24">
+      <rect x="5" y="11" width="14" height="10" rx="2"/>
+      <path d="M8 11V8a4 4 0 1 1 8 0v3"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <path d="m20 6-11 11-5-5"/>
+    </symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24">
+      <rect x="8" y="8" width="11" height="11" rx="2"/>
+      <path d="M5 15H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"/>
+    </symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24">
+      <path d="M12 20h9"/>
+      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+    </symbol>
+    <symbol id="i-history" viewBox="0 0 24 24">
+      <path d="M3 12a9 9 0 1 0 3-6.7"/>
+      <path d="M3 4v5h5"/>
+      <path d="M12 7v5l3 2"/>
+    </symbol>
+    <symbol id="i-corner-up-left" viewBox="0 0 24 24">
+      <path d="m9 14-5-5 5-5"/>
+      <path d="M20 20v-7a4 4 0 0 0-4-4H4"/>
+    </symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24">
+      <path d="M12 14a3 3 0 0 0 3-3V7a3 3 0 0 0-6 0v4a3 3 0 0 0 3 3Z"/>
+      <path d="M17 11a5 5 0 0 1-10 0M12 16v4M9 20h6"/>
+    </symbol>
+    <symbol id="i-emoji" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>
+    </symbol>
+  </svg>
+
+  <main class="phone" aria-label="Website Skill 产物流原型">
+    <section class="screen home-screen is-active" data-screen="home" aria-label="Website Skill 上框" aria-hidden="false">
+      <div class="status-bar" aria-hidden="true">
+        <div class="time">9:41</div>
+        <div class="signals">
+          <div class="cellular"><span></span><span></span><span></span><span></span></div>
+          <div class="wifi"></div>
+          <div class="battery"></div>
+        </div>
+      </div>
+
+      <header class="topbar">
+        <div class="pill model-pill">
+          <span class="model-dot">✹</span>
+          <span>Claude 4.6</span>
+          <span class="chevron"></span>
+        </div>
+        <div class="pill credit-pill">
+          <span class="coin">C</span>
+          <span>120000</span>
+          <span class="divider"></span>
+          <span class="vip"><svg class="ui-icon"><use href="#i-zap"></use></svg></span>
+        </div>
+      </header>
+
+      <section class="template-section" aria-label="选择网站模板">
+        <div class="template-head">
+          <span>Templates</span>
+          <span class="more">More <span class="chevron"></span></span>
+        </div>
+        <div class="template-strip">
+          <article class="template-card art-saas" data-title="品牌落地页" role="button" tabindex="0">
+            <span class="expand"><svg class="ui-icon"><use href="#i-maximize"></use></svg></span>
+          </article>
+          <article class="template-card art-portfolio" data-title="作品集首页" role="button" tabindex="0">
+            <span class="expand"><svg class="ui-icon"><use href="#i-maximize"></use></svg></span>
+          </article>
+          <article class="template-card art-store" data-title="精品商店" role="button" tabindex="0">
+            <span class="expand"><svg class="ui-icon"><use href="#i-maximize"></use></svg></span>
+          </article>
+          <article class="template-card art-event" data-title="活动页面" role="button" tabindex="0">
+            <span class="expand"><svg class="ui-icon"><use href="#i-maximize"></use></svg></span>
+          </article>
+        </div>
+      </section>
+
+      <section class="input-card" aria-label="Website Skill 输入框">
+        <div class="input-main">
+          <div class="tag-row">
+            <div class="skill-tag">
+              <svg class="ui-icon"><use href="#i-globe"></use></svg>
+              <span>Website</span>
+              <svg class="ui-icon close"><use href="#i-x"></use></svg>
+            </div>
+          </div>
+          <div class="rule"></div>
+          <p class="prompt">
+            <span class="inline-skill"><svg class="ui-icon"><use href="#i-globe"></use></svg>Website</span>
+            为 Luma Atelier 生成一个精品工作室官网，包含首屏、产品区、预约入口，风格温暖、现代、适合移动端浏览。
+          </p>
+        </div>
+        <div class="input-actions">
+          <div class="left-actions">
+            <span class="icon-button"><svg class="ui-icon"><use href="#i-plus"></use></svg></span>
+            <span class="mcp-chip"><span class="gmail">M</span><span class="chevron"></span></span>
+            <span class="cost-chip"><svg class="ui-icon"><use href="#i-zap"></use></svg><span>8</span></span>
+          </div>
+          <div class="right-actions">
+            <span class="icon-button"><svg class="ui-icon"><use href="#i-mic"></use></svg></span>
+            <button class="send-button" type="button" data-action="generate" aria-label="生成网站">
+              <svg class="ui-icon"><use href="#i-send"></use></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="keyboard" aria-hidden="true">
+        <div class="suggestions">
+          <span>“Website”</span>
+          <span>site</span>
+          <span>publish</span>
+        </div>
+        <div class="keys">
+          <div class="key-row">
+            <span class="key">q</span><span class="key">w</span><span class="key">e</span><span class="key">r</span><span class="key">t</span><span class="key">y</span><span class="key">u</span><span class="key">i</span><span class="key">o</span><span class="key">p</span>
+          </div>
+          <div class="key-row">
+            <span class="key">a</span><span class="key">s</span><span class="key">d</span><span class="key">f</span><span class="key">g</span><span class="key">h</span><span class="key">j</span><span class="key">k</span><span class="key">l</span>
+          </div>
+          <div class="key-row">
+            <span class="key utility">⇧</span><span class="key">z</span><span class="key">x</span><span class="key">c</span><span class="key">v</span><span class="key">b</span><span class="key">n</span><span class="key">m</span><span class="key utility">⌫</span>
+          </div>
+          <div class="key-row">
+            <span class="key wide">ABC</span><span class="key space"></span><span class="key return">↩</span>
+          </div>
+        </div>
+        <div class="keyboard-bottom">
+          <svg class="ui-icon"><use href="#i-emoji"></use></svg>
+          <svg class="ui-icon"><use href="#i-mic"></use></svg>
+        </div>
+      </section>
+    </section>
+
+    <section class="screen project-screen" data-screen="project" aria-label="网站生成结果" aria-hidden="true">
+      <div class="status-bar" aria-hidden="true">
+        <div class="time">9:41</div>
+        <div class="signals">
+          <div class="cellular"><span></span><span></span><span></span><span></span></div>
+          <div class="wifi"></div>
+          <div class="battery"></div>
+        </div>
+      </div>
+
+      <header class="project-nav">
+        <div class="nav-title">
+          <button class="back-button" type="button" data-action="home" aria-label="返回">
+            <svg class="ui-icon"><use href="#i-arrow-left"></use></svg>
+          </button>
+          <div class="title-copy">
+            <strong>Claude Opus 4.6 <span class="chevron"></span></strong>
+            <small>Luma Atelier Website</small>
+          </div>
+        </div>
+        <div class="nav-actions">
+          <span class="mini-credit"><span class="coin">C</span>119992</span>
+          <span class="nav-icon"><svg class="ui-icon"><use href="#i-folder"></use></svg></span>
+          <span class="nav-icon"><svg class="ui-icon"><use href="#i-more"></use></svg></span>
+        </div>
+      </header>
+
+      <div class="chat-scroll" id="projectFlow">
+        <div class="user-message">
+          <div class="bubble">
+            <span class="bubble-skill"><svg class="ui-icon"><use href="#i-globe"></use></svg>Website</span>
+            Build studio website
+          </div>
+        </div>
+
+        <div class="agent-block">
+          <div class="agent-row">
+            <span class="avatar">N</span>
+            <span class="agent-name">Nova</span>
+            <span class="model-badge"><span>✹</span>Claude Opus 4.6</span>
+          </div>
+          <p class="ai-text">I'll generate a previewable, publishable, and downloadable website — starting with structure, visual design, and mobile layout.</p>
+          <div class="tool-list">
+            <div class="tool-item"><strong>Tool</strong><span class="mini-divider"></span><span>Requirement parsing</span><span class="tool-detail">Brand tone, page structure, CTA</span></div>
+            <div class="tool-item"><strong>Tool</strong><span class="mini-divider"></span><span>Web generation</span><span class="tool-detail">HTML / CSS / Responsive layout</span></div>
+            <div class="tool-item"><strong>Tool</strong><span class="mini-divider"></span><span>Package output</span><span class="tool-detail">index.html, styles.css, assets</span></div>
+          </div>
+
+          <section class="progress-card" aria-label="网站生成进度">
+            <div class="progress-head">
+              <span>Generating website</span>
+              <span id="progressText">36%</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill"></div></div>
+            <div class="build-steps">
+              <div class="build-step"><strong>Structure</strong>Hero &amp; booking CTA</div>
+              <div class="build-step"><strong>Visual</strong>Brand palette &amp; hero</div>
+              <div class="build-step"><strong>Export</strong>Preparing files</div>
+            </div>
+          </section>
+
+          <article class="website-card" aria-label="网站产物卡">
+            <div class="artifact-title">
+              <span class="file-icon"><svg class="ui-icon"><use href="#i-globe"></use></svg></span>
+              <div class="artifact-copy">
+                <h2>Luma Atelier Website.html</h2>
+                <div class="artifact-meta"><span class="version">V1</span></div>
+              </div>
+            </div>
+            <div class="site-preview" role="button" tabindex="0" data-action="preview" aria-label="查看网站预览">
+              <div class="browser-bar"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
+              <div class="mini-site">
+                <div class="mini-nav"><span>Luma Atelier</span><span>Workshops</span><span>Studio</span><span>Visit</span></div>
+                <h3>Slow objects, bright rooms.</h3>
+                <p>Seasonal ceramics, textiles, and weekend studio classes.</p>
+                <span class="mini-cta">Reserve a visit</span>
+                <span class="floating-card"></span>
+              </div>
+            </div>
+            <div class="artifact-footer">
+              <div class="chat-status-group">
+                <span class="publish-status" id="chatPublishStatus">Unpublished</span>
+                <button class="status-copy" id="chatStatusCopy" type="button" data-action="copyPublishedDomain" aria-label="Copy published domain">
+                  <svg class="ui-icon"><use href="#i-copy"></use></svg>
+                </button>
+              </div>
+              <div class="artifact-footer-actions">
+                <button class="reference-action" type="button" data-action="referenceArtifact" aria-label="引用">
+                  <svg class="ui-icon"><use href="#i-corner-up-left"></use></svg>
+                </button>
+                <a class="download-action" href="downloads/luma-atelier-site.zip" download="luma-atelier-site.zip" data-action="download">
+                  <svg class="ui-icon"><use href="#i-download"></use></svg>
+                  Download
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- V2 iteration block — hidden until user sends from composer -->
+        <div id="v2Block" style="display:none;flex-direction:column;gap:16px;">
+          <div class="user-message">
+            <div class="bubble">
+              <span class="bubble-skill"><svg class="ui-icon"><use href="#i-globe"></use></svg>Website</span>
+              Switch to a dark minimal theme
+            </div>
+          </div>
+          <div class="agent-block">
+            <div class="agent-row">
+              <span class="avatar">N</span>
+              <span class="agent-name">Nova</span>
+              <span class="model-badge"><span>✹</span>Claude Opus 4.6</span>
+            </div>
+            <p class="ai-text">Updating to a dark minimal theme — I'll revise the colour palette, typography weights, and hero contrast.</p>
+            <div class="tool-list">
+              <div class="tool-item"><strong>Tool</strong><span class="mini-divider"></span><span>Theme revision</span><span class="tool-detail">Dark palette, typography, contrast</span></div>
+              <div class="tool-item"><strong>Tool</strong><span class="mini-divider"></span><span>Web generation</span><span class="tool-detail">HTML / CSS / Responsive layout</span></div>
+            </div>
+
+            <section class="progress-card" id="v2ProgressCard" aria-label="Website update progress">
+              <div class="progress-head">
+                <span>Updating website</span>
+                <span id="v2ProgressText">36%</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" id="v2ProgressFill" style="width:36%"></div></div>
+              <div class="build-steps">
+                <div class="build-step"><strong>Theme</strong>Dark palette applied</div>
+                <div class="build-step"><strong>Visual</strong>Typography &amp; hero</div>
+                <div class="build-step"><strong>Export</strong>Preparing files</div>
+              </div>
+            </section>
+
+            <article class="website-card" id="v2WebsiteCard" style="display:none;flex-direction:column;gap:14px;" aria-label="Updated website artifact">
+              <div class="artifact-title">
+                <span class="file-icon"><svg class="ui-icon"><use href="#i-globe"></use></svg></span>
+                <div class="artifact-copy">
+                  <h2>Luma Atelier Website.html</h2>
+                  <div class="artifact-meta"><span class="version">V2</span><span class="not-live-badge" id="notLiveBadge">Not live yet</span></div>
+                </div>
+              </div>
+              <div class="site-preview" role="button" tabindex="0" data-action="preview" aria-label="View website preview">
+                <div class="browser-bar"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
+                <div class="mini-site" style="background: linear-gradient(120deg,rgba(22,32,43,0.96),rgba(22,32,43,0.88)), radial-gradient(circle at 82% 38%,#7eb7a8 0 15%,transparent 16%), linear-gradient(135deg,#1a2530,#0f1920);">
+                  <div class="mini-nav" style="color:#e8eaec;"><span>Luma Atelier</span><span>Workshops</span><span>Studio</span><span>Visit</span></div>
+                  <h3 style="color:#e8eaec;">Slow objects, bright rooms.</h3>
+                  <p style="color:#8a9baa;">Seasonal ceramics, textiles, and weekend studio classes.</p>
+                  <span class="mini-cta" style="background:#e8eaec;color:#16202b;">Reserve a visit</span>
+                  <span class="floating-card"></span>
+                </div>
+              </div>
+              <div class="artifact-footer">
+                <div class="chat-status-group">
+                  <span class="publish-status is-published" id="v2ChatPublishStatus">Published</span>
+                </div>
+                <div class="artifact-footer-actions">
+                  <button class="reference-action" type="button" data-action="referenceArtifact" aria-label="Reference">
+                    <svg class="ui-icon"><use href="#i-corner-up-left"></use></svg>
+                  </button>
+                  <a class="download-action" href="downloads/luma-atelier-site.zip" download="luma-atelier-site.zip" data-action="download">
+                    <svg class="ui-icon"><use href="#i-download"></use></svg>
+                    Download
+                  </a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <footer class="composer" aria-label="项目页输入框">
+        <div class="composer-box">
+          <div class="composer-placeholder">Continue editing this website...</div>
+          <div class="composer-actions">
+            <span class="left-actions">
+              <span class="icon-button"><svg class="ui-icon"><use href="#i-plus"></use></svg></span>
+              <span class="mcp-chip"><span class="gmail">M</span><span class="chevron"></span></span>
+            </span>
+            <span class="right-actions">
+              <span class="icon-button"><svg class="ui-icon"><use href="#i-mic"></use></svg></span>
+              <button class="send-button" type="button" data-action="iterate" aria-label="Send"><svg class="ui-icon"><use href="#i-send"></use></svg></button>
+            </span>
+          </div>
+        </div>
+      </footer>
+    </section>
+
+    <section class="screen preview-screen" data-screen="preview" aria-label="查看网站预览" aria-hidden="true">
+      <div class="status-bar" aria-hidden="true">
+        <div class="time">9:41</div>
+        <div class="signals">
+          <div class="cellular"><span></span><span></span><span></span><span></span></div>
+          <div class="wifi"></div>
+          <div class="battery"></div>
+        </div>
+      </div>
+
+      <header class="preview-chrome">
+        <button class="close-preview" type="button" data-action="project" aria-label="关闭预览">
+          <svg class="ui-icon"><use href="#i-x"></use></svg>
+        </button>
+        <h1 class="preview-title">Luma Atelier Website.html</h1>
+        <button class="nav-icon" type="button" aria-label="更多">
+          <svg class="ui-icon"><use href="#i-more"></use></svg>
+        </button>
+      </header>
+
+      <div class="preview-notice">
+        <span>Please visit the PC version at Skywork.ai to edit and explore more features.</span>
+        <button class="notice-link" type="button">复制地址</button>
+        <button class="notice-close" type="button" aria-label="关闭提示">
+          <svg class="ui-icon"><use href="#i-x"></use></svg>
+        </button>
+      </div>
+
+      <div class="full-preview">
+        <div class="full-site">
+          <nav>
+            <strong>Luma Atelier</strong>
+            <span>Workshops</span>
+            <span>Studio</span>
+            <span>Visit</span>
+          </nav>
+          <section class="hero-copy">
+            <span class="eyebrow">Design studio pop-up</span>
+            <h1>Slow objects, bright rooms, better weekends.</h1>
+            <p>Browse a small seasonal collection of ceramics, textiles, and classes made for tactile living.</p>
+            <span class="site-cta">Reserve a visit</span>
+          </section>
+          <div class="product-row">
+            <div class="product-tile"><div class="product-shape"></div>Handmade ceramics</div>
+            <div class="product-tile"><div class="product-shape"></div>Textile sets</div>
+            <div class="product-tile"><div class="product-shape"></div>Weekend classes</div>
+          </div>
+        </div>
+        <section class="preview-panel" aria-label="网站页面片段">
+          <div class="panel-title">马尔代夫概览</div>
+          <div class="panel-grid">
+            <div class="panel-col"><strong>地理位置</strong>位于印度洋，拥有温暖海风和清澈海岸线。</div>
+            <div class="panel-col"><strong>气候特点</strong>全年平均温度稳定，适合度假与户外活动。</div>
+            <div class="panel-col"><strong>旅游吸引力</strong>海岛体验、潜水项目与精品度假服务。</div>
+          </div>
+        </section>
+        <section class="preview-panel" aria-label="网站页面片段">
+          <div class="panel-title">马尔代夫概览</div>
+          <div class="panel-grid">
+            <div class="panel-col"><strong>地理位置</strong>群岛结构清晰，适合展示目的地介绍。</div>
+            <div class="panel-col"><strong>气候特点</strong>温暖明亮的视觉风格适配移动端页面。</div>
+            <div class="panel-col"><strong>旅游吸引力</strong>内容卡片可继续扩展服务与预约模块。</div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="preview-footer" id="previewFooter">
+        <button class="artifact-action primary" type="button" data-action="publish" id="detailPublishButton">
+          <svg class="ui-icon"><use href="#i-upload-cloud"></use></svg>
+          Publish
+        </button>
+        <button class="artifact-action primary" type="button" data-action="update" id="detailUpdateButton" style="display:none;flex:1;justify-content:center;font-size:14px;height:42px;">
+          <svg class="ui-icon"><use href="#i-upload-cloud"></use></svg>
+          Update
+        </button>
+        <button class="unpublish-button" type="button" data-action="openUnpublishConfirm" id="unpublishButton">Unpublish</button>
+        <a class="artifact-icon-button" href="downloads/luma-atelier-site.zip" download="luma-atelier-site.zip" data-action="download" aria-label="Download">
+          <svg class="ui-icon"><use href="#i-download"></use></svg>
+        </a>
+        <button class="artifact-icon-button" type="button" data-action="downloadHistory" aria-label="Download history">
+          <svg class="ui-icon"><use href="#i-history"></use></svg>
+        </button>
+      </footer>
+    </section>
+
+    <section class="publish-sheet" aria-hidden="true" aria-label="发布网站">
+      <div class="sheet-panel" role="dialog" aria-modal="true">
+        <div class="sheet-head">
+          <h2>Publish Your Website</h2>
+          <button class="sheet-close" type="button" data-action="closePublish" aria-label="关闭发布面板">
+            <svg class="ui-icon"><use href="#i-x"></use></svg>
+          </button>
+        </div>
+        <div class="publish-form">
+          <section class="publish-field" aria-label="Publish URL">
+            <div class="field-head">
+              <span>Publish URL</span>
+              <span class="info-dot">i</span>
+            </div>
+            <div class="domain-row publish-url-row">
+              <div class="publish-url-value">
+                <span class="publish-url-display" id="publishUrlDisplay">web-0529a2j.luma.skywork.website</span>
+              </div>
+              <button class="mini-action" type="button" data-action="copyPublishUrl" aria-label="Copy publish URL">
+                <svg class="ui-icon"><use href="#i-copy"></use></svg>
+              </button>
+              <button class="mini-action" type="button" data-action="editPublishUrl" aria-label="Edit publish URL">
+                <svg class="ui-icon"><use href="#i-pencil"></use></svg>
+              </button>
+            </div>
+          </section>
+          <section class="publish-field" aria-label="Visibility Permission">
+            <div class="field-head">
+              <span>Visibility Permission</span>
+            </div>
+            <div class="permission-control">
+              <button class="permission-row" type="button" data-action="togglePermissionMenu" aria-expanded="false">
+                <svg class="ui-icon"><use href="#i-lock"></use></svg>
+                <span id="permissionText">Anyone with the link can view</span>
+                <span class="chevron"></span>
+              </button>
+              <div class="permission-menu" role="menu">
+                <button class="permission-option is-selected" type="button" role="menuitem" data-action="selectPermission" data-permission="Anyone with the link can view">
+                  <svg class="ui-icon"><use href="#i-globe"></use></svg>
+                  <span>Anyone with the link can view</span>
+                  <svg class="ui-icon check-icon"><use href="#i-check"></use></svg>
+                </button>
+                <button class="permission-option" type="button" role="menuitem" data-action="selectPermission" data-permission="Only visible to me">
+                  <svg class="ui-icon"><use href="#i-lock"></use></svg>
+                  <span>Only visible to me</span>
+                  <svg class="ui-icon check-icon"><use href="#i-check"></use></svg>
+                </button>
+              </div>
+            </div>
+          </section>
+          <section class="publish-field" aria-label="Hide Skywork badge">
+            <div class="field-head badge-control-head">
+              <span>Hide Skywork badge</span>
+              <span class="limited-badge">Limited Free</span>
+              <label class="switch" aria-label="隐藏 Skywork badge">
+                <input type="checkbox" checked>
+                <span></span>
+              </label>
+            </div>
+            <p class="field-help">Remove the "Edit with Skywork" badge from your published website.</p>
+          </section>
+        </div>
+        <button class="publish-submit" type="button" data-action="confirmPublish">
+          <svg class="ui-icon"><use href="#i-upload-cloud"></use></svg>
+          Publish
+        </button>
+      </div>
+    </section>
+
+    <section class="publish-success-sheet" aria-hidden="true" aria-label="发布成功">
+      <div class="success-panel" role="dialog" aria-modal="true">
+        <button class="success-close" type="button" data-action="closePublishSuccess" aria-label="关闭发布成功弹窗">
+        </button>
+        <div class="success-mark">
+          <svg class="ui-icon"><use href="#i-check"></use></svg>
+        </div>
+        <h2 class="success-title">Published successfully</h2>
+        <p class="success-subtitle">Share it with the world!</p>
+        <label class="success-label">Link</label>
+        <div class="success-link-row">
+          <span id="successUrlText">https://web-0529a2j.luma.skywork.website</span>
+        </div>
+        <label class="success-label" style="margin-top:14px;">Share to</label>
+        <div class="share-row">
+          <button class="share-button" type="button">
+            <span class="share-brand">f</span>
+            Facebook
+          </button>
+          <button class="share-button" type="button">
+            <span>X</span>
+            X
+          </button>
+          <button class="share-button" type="button" data-action="copyPublishedDomain">
+            <svg class="ui-icon"><use href="#i-copy"></use></svg>
+            Copy Link
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="unpublish-confirm-sheet" aria-hidden="true" aria-label="Confirm unpublish">
+      <div class="unpublish-panel" role="dialog" aria-modal="true">
+        <button class="success-close" type="button" data-action="closeUnpublishConfirm" aria-label="Close unpublish confirm"></button>
+        <h2>Confirm unpublishing your site?</h2>
+        <p>Once unpublished, your site will no longer be accessible. Your project will be kept and can be republished at any time.</p>
+        <div class="unpublish-actions">
+          <button class="unpublish-confirm" type="button" data-action="confirmUnpublish">Unpublish</button>
+          <button class="unpublish-cancel" type="button" data-action="closeUnpublishConfirm">Cancel</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="url-edit-sheet" aria-hidden="true" aria-label="编辑发布地址">
+      <div class="url-edit-panel" role="dialog" aria-modal="true">
+        <div class="sheet-head">
+          <h2>Edit Publish URL</h2>
+          <button class="sheet-close" type="button" data-action="closeUrlEditor" aria-label="关闭编辑发布地址">
+            <svg class="ui-icon"><use href="#i-x"></use></svg>
+          </button>
+        </div>
+        <div class="url-edit-field">
+          <input class="edit-url-input" type="text" value="web-0529a2j.luma" aria-label="Publish URL prefix">
+          <span class="edit-url-suffix">.skywork.website</span>
+        </div>
+        <p class="url-edit-help">Only the prefix before .skywork.website can be changed.</p>
+        <div class="url-edit-actions">
+          <button class="url-edit-action" type="button" data-action="closeUrlEditor">Cancel</button>
+          <button class="url-edit-action primary" type="button" data-action="savePublishUrl">Save</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="toast" id="toast" aria-live="polite">
+      <svg class="ui-icon"><use href="#i-check"></use></svg>
+      <span>Download started</span>
+    </div>
+
+    <div class="home-indicator" aria-hidden="true"></div>
+  </main>
+
+  <script>
+    const screens = document.querySelectorAll(".screen");
+    const projectFlow = document.querySelector("#projectFlow");
+    const progressText = document.querySelector("#progressText");
+    const publishSheet = document.querySelector(".publish-sheet");
+    const publishSuccessSheet = document.querySelector(".publish-success-sheet");
+    const unpublishConfirmSheet = document.querySelector(".unpublish-confirm-sheet");
+    const publishSubmit = document.querySelector(".publish-submit");
+    const chatPublishStatus = document.querySelector("#chatPublishStatus");
+    const chatStatusCopy = document.querySelector("#chatStatusCopy");
+    const detailPublishButton = document.querySelector("#detailPublishButton");
+    const detailUpdateButton = document.querySelector("#detailUpdateButton");
+    const notLiveBadge = document.querySelector("#notLiveBadge");
+    const previewFooter = document.querySelector("#previewFooter");
+    const v2Block = document.querySelector("#v2Block");
+    const v2ProgressCard = document.querySelector("#v2ProgressCard");
+    const v2ProgressText = document.querySelector("#v2ProgressText");
+    const v2ProgressFill = document.querySelector("#v2ProgressFill");
+    const v2WebsiteCard = document.querySelector("#v2WebsiteCard");
+    const toast = document.querySelector("#toast");
+    const urlEditSheet = document.querySelector(".url-edit-sheet");
+    const publishUrlDisplay = document.querySelector("#publishUrlDisplay");
+    const editUrlInput = document.querySelector(".edit-url-input");
+    const publishUrlSuffix = ".skywork.website";
+    const successUrlText = document.querySelector("#successUrlText");
+    const permissionControl = document.querySelector(".permission-control");
+    const permissionRow = document.querySelector(".permission-row");
+    const permissionText = document.querySelector("#permissionText");
+    const permissionOptions = document.querySelectorAll(".permission-option");
+    const toastText = toast.querySelector("span");
+    const PUBLISH_STATES = {
+      UNPUBLISHED: "unpublished",
+      PUBLISHED: "published",
+      NEEDS_UPDATE: "needs_update"
+    };
+    const appState = {
+      publishState: PUBLISH_STATES.UNPUBLISHED,
+      publishUrlPrefix: "web-0529a2j.luma",
+      publishInProgress: false,
+      isUpdate: false   // true when confirming an update rather than first publish
+    };
+    let buildTimer = null;
+    let v2Timer = null;
+    let toastTimer = null;
+
+    function showScreen(name) {
+      screens.forEach((screen) => {
+        const isActive = screen.dataset.screen === name;
+        screen.classList.toggle("is-active", isActive);
+        screen.setAttribute("aria-hidden", isActive ? "false" : "true");
+      });
+    }
+
+    function startGeneration() {
+      clearTimeout(buildTimer);
+      projectFlow.classList.remove("is-ready");
+      progressText.textContent = "36%";
+      showScreen("project");
+      buildTimer = setTimeout(() => {
+        progressText.textContent = "100%";
+        projectFlow.classList.add("is-ready");
+        projectFlow.scrollTo({ top: projectFlow.scrollHeight, behavior: "smooth" });
+      }, 1200);
+    }
+
+    function startIteration() {
+      // Only run once; ignore if V2 block already visible or in progress
+      if (v2Block.style.display !== "none") return;
+      clearTimeout(v2Timer);
+
+      // Show the V2 block in progress state
+      v2Block.style.display = "flex";
+      v2ProgressCard.style.display = "flex";
+      v2WebsiteCard.style.display = "none";
+      v2ProgressText.textContent = "36%";
+      v2ProgressFill.style.width = "36%";
+      projectFlow.scrollTo({ top: projectFlow.scrollHeight, behavior: "smooth" });
+
+      v2Timer = setTimeout(() => {
+        v2ProgressText.textContent = "100%";
+        v2ProgressFill.style.width = "100%";
+        setTimeout(() => {
+          v2ProgressCard.style.display = "none";
+          v2WebsiteCard.style.display = "flex";
+          // If already published, move to NEEDS_UPDATE
+          if (appState.publishState === PUBLISH_STATES.PUBLISHED) {
+            setPublishState(PUBLISH_STATES.NEEDS_UPDATE);
+          }
+          projectFlow.scrollTo({ top: projectFlow.scrollHeight, behavior: "smooth" });
+        }, 300);
+      }, 1400);
+    }
+
+    function openPublish(isUpdate = false) {
+      // Block only when already published with no pending update
+      if (appState.publishState === PUBLISH_STATES.PUBLISHED && !isUpdate) return;
+      // Block update when no pending update exists
+      if (isUpdate && appState.publishState !== PUBLISH_STATES.NEEDS_UPDATE) return;
+      appState.isUpdate = isUpdate;
+      // Update sheet title and button label based on mode
+      publishSheet.querySelector(".sheet-head h2").textContent = isUpdate ? "Update Your Website" : "Publish Your Website";
+      publishSubmit.innerHTML = isUpdate
+        ? '<svg class="ui-icon"><use href="#i-upload-cloud"></use></svg> Update'
+        : '<svg class="ui-icon"><use href="#i-upload-cloud"></use></svg> Publish';
+      publishSheet.classList.add("is-open");
+      publishSheet.setAttribute("aria-hidden", "false");
+    }
+
+    function closePublish(force = false) {
+      if (appState.publishInProgress && !force) return;
+      publishSheet.classList.remove("is-open");
+      publishSheet.setAttribute("aria-hidden", "true");
+      closeUrlEditor();
+    }
+
+    function showToast(message = "Download started") {
+      clearTimeout(toastTimer);
+      toastText.textContent = message;
+      toast.classList.add("is-visible");
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("is-visible");
+      }, 1800);
+    }
+
+    function normalizePublishPrefix(value) {
+      return value
+        .replace(/\.skywork\.website$/i, "")
+        .replace(/^https?:\/\//i, "")
+        .replace(/[^a-zA-Z0-9.-]/g, "")
+        .replace(/\.{2,}/g, ".")
+        .replace(/^-+/, "")
+        .slice(0, 32);
+    }
+
+    function openUrlEditor() {
+      closePermissionMenu();
+      editUrlInput.value = appState.publishUrlPrefix;
+      urlEditSheet.classList.add("is-open");
+      urlEditSheet.setAttribute("aria-hidden", "false");
+      requestAnimationFrame(() => {
+        editUrlInput.focus();
+        editUrlInput.setSelectionRange(editUrlInput.value.length, editUrlInput.value.length);
+      });
+    }
+
+    function closeUrlEditor() {
+      urlEditSheet.classList.remove("is-open");
+      urlEditSheet.setAttribute("aria-hidden", "true");
+      editUrlInput.value = appState.publishUrlPrefix;
+    }
+
+    function savePublishUrl() {
+      appState.publishUrlPrefix = normalizePublishPrefix(editUrlInput.value) || "web-0529a2j.luma";
+      editUrlInput.value = appState.publishUrlPrefix;
+      publishUrlDisplay.textContent = getPublishUrl();
+      successUrlText.textContent = `https://${getPublishUrl()}`;
+      closeUrlEditor();
+    }
+
+    function getPublishUrl() {
+      return `${appState.publishUrlPrefix}${publishUrlSuffix}`;
+    }
+
+    function closePermissionMenu() {
+      permissionControl.classList.remove("is-open");
+      permissionRow.setAttribute("aria-expanded", "false");
+    }
+
+    function togglePermissionMenu() {
+      const isOpen = permissionControl.classList.toggle("is-open");
+      permissionRow.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    }
+
+    function selectPermission(value) {
+      permissionText.textContent = value;
+      permissionOptions.forEach((option) => {
+        option.classList.toggle("is-selected", option.dataset.permission === value);
+      });
+      closePermissionMenu();
+    }
+
+    function openPublishSuccess() {
+      successUrlText.textContent = `https://${getPublishUrl()}`;
+      // Update title/subtitle for update vs publish
+      publishSuccessSheet.querySelector(".success-title").textContent =
+        appState.isUpdate ? "Updated successfully" : "Published successfully";
+      publishSuccessSheet.querySelector(".success-subtitle").textContent =
+        appState.isUpdate ? "Your changes are now live." : "Share it with the world!";
+      publishSuccessSheet.classList.add("is-open");
+      publishSuccessSheet.setAttribute("aria-hidden", "false");
+    }
+
+    function closePublishSuccess() {
+      publishSuccessSheet.classList.remove("is-open");
+      publishSuccessSheet.setAttribute("aria-hidden", "true");
+    }
+
+    function openUnpublishConfirm() {
+      closePublishSuccess();
+      unpublishConfirmSheet.classList.add("is-open");
+      unpublishConfirmSheet.setAttribute("aria-hidden", "false");
+    }
+
+    function closeUnpublishConfirm() {
+      unpublishConfirmSheet.classList.remove("is-open");
+      unpublishConfirmSheet.setAttribute("aria-hidden", "true");
+    }
+
+    function setPublishLoading() {
+      appState.publishInProgress = true;
+      publishSubmit.disabled = true;
+      publishSubmit.classList.add("is-loading");
+      publishSubmit.innerHTML = appState.isUpdate
+        ? '<span class="loading-spinner"></span>Updating...'
+        : '<span class="loading-spinner"></span>Publishing...';
+    }
+
+    function renderPublishState() {
+      const state = appState.publishState;
+      const isPublished = state === PUBLISH_STATES.PUBLISHED;
+      const isNeedsUpdate = state === PUBLISH_STATES.NEEDS_UPDATE;
+
+      // Chat card publish status
+      chatPublishStatus.textContent = (isPublished || isNeedsUpdate) ? "Published" : "Unpublished";
+      chatPublishStatus.classList.toggle("is-published", isPublished || isNeedsUpdate);
+      chatStatusCopy.classList.toggle("is-visible", isPublished || isNeedsUpdate);
+
+      // Preview footer — Publish button
+      detailPublishButton.disabled = isPublished;
+      detailPublishButton.style.display = isNeedsUpdate ? "none" : "";
+      detailPublishButton.classList.toggle("is-published-state", isPublished);
+      detailPublishButton.innerHTML = isPublished
+        ? '<svg class="ui-icon"><use href="#i-check"></use></svg> Published'
+        : '<svg class="ui-icon"><use href="#i-upload-cloud"></use></svg> Publish';
+
+      // Preview footer — Update button (only in NEEDS_UPDATE)
+      detailUpdateButton.style.display = isNeedsUpdate ? "flex" : "none";
+
+      // V2 card "Not live yet" badge
+      if (notLiveBadge) notLiveBadge.style.display = isNeedsUpdate ? "inline-flex" : "none";
+
+      // Unpublish button (PUBLISHED or NEEDS_UPDATE)
+      previewFooter.classList.toggle("is-published", isPublished || isNeedsUpdate);
+    }
+
+    function resetPublishSubmit() {
+      appState.publishInProgress = false;
+      appState.isUpdate = false;
+      publishSubmit.disabled = false;
+      publishSubmit.classList.remove("is-loading");
+      publishSubmit.innerHTML = '<svg class="ui-icon"><use href="#i-upload-cloud"></use></svg> Publish';
+    }
+
+    function setPublishState(nextState) {
+      appState.publishState = nextState;
+      renderPublishState();
+    }
+
+    function markPublished() {
+      setPublishState(PUBLISH_STATES.PUBLISHED);
+    }
+
+    function markUnpublished() {
+      setPublishState(PUBLISH_STATES.UNPUBLISHED);
+      resetPublishSubmit();
+      closeUnpublishConfirm();
+    }
+
+    function completePublish() {
+      setPublishLoading();
+      setTimeout(() => {
+        appState.publishInProgress = false;
+        closePublish(true);
+        markPublished();
+        openPublishSuccess();
+      }, 900);
+    }
+
+    function completeUpdate() {
+      setPublishLoading();
+      setTimeout(() => {
+        appState.publishInProgress = false;
+        closePublish(true);
+        markPublished();
+        openPublishSuccess();
+      }, 900);
+    }
+
+    document.addEventListener("click", (event) => {
+      const actionNode = event.target.closest("[data-action]");
+      if (!actionNode) return;
+      const action = actionNode.dataset.action;
+
+      if (action === "generate") startGeneration();
+      if (action === "iterate") startIteration();
+      if (action === "home") showScreen("home");
+      if (action === "project") showScreen("project");
+      if (action === "preview") showScreen("preview");
+      if (action === "publish") openPublish(false);
+      if (action === "update") openPublish(true);
+      if (action === "closePublish") closePublish();
+      if (action === "editPublishUrl") openUrlEditor();
+      if (action === "closeUrlEditor") closeUrlEditor();
+      if (action === "savePublishUrl") savePublishUrl();
+      if (action === "copyPublishUrl") {
+        navigator.clipboard?.writeText(getPublishUrl());
+        showToast("Link copied");
+      }
+      if (action === "copyPublishedDomain") {
+        navigator.clipboard?.writeText(getPublishUrl());
+        showToast("Domain copied");
+      }
+      if (action === "togglePermissionMenu") togglePermissionMenu();
+      if (action === "selectPermission") selectPermission(actionNode.dataset.permission);
+      if (action === "confirmPublish") {
+        closeUrlEditor();
+        closePermissionMenu();
+        if (!appState.publishInProgress) {
+          appState.isUpdate ? completeUpdate() : completePublish();
+        }
+      }
+      if (action === "closePublishSuccess") closePublishSuccess();
+      if (action === "openUnpublishConfirm") openUnpublishConfirm();
+      if (action === "closeUnpublishConfirm") closeUnpublishConfirm();
+      if (action === "confirmUnpublish") markUnpublished();
+      if (action === "download") showToast("Download started");
+      if (action === "downloadHistory") showToast("Download history");
+      if (action === "referenceArtifact") showToast("Referenced");
+    });
+
+    editUrlInput.addEventListener("input", () => {
+      const cursor = editUrlInput.selectionStart;
+      editUrlInput.value = normalizePublishPrefix(editUrlInput.value);
+      const nextCursor = Math.min(cursor, editUrlInput.value.length);
+      editUrlInput.setSelectionRange(nextCursor, nextCursor);
+    });
+
+    editUrlInput.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") savePublishUrl();
+      if (event.key === "Escape") {
+        closeUrlEditor();
+      }
+    });
+
+    publishSheet.addEventListener("click", (event) => {
+      if (event.target === publishSheet) closePublish();
+      if (!event.target.closest(".permission-control")) closePermissionMenu();
+    });
+
+    urlEditSheet.addEventListener("click", (event) => {
+      if (event.target === urlEditSheet) closeUrlEditor();
+    });
+
+    publishSuccessSheet.addEventListener("click", (event) => {
+      if (event.target === publishSuccessSheet) closePublishSuccess();
+    });
+
+    unpublishConfirmSheet.addEventListener("click", (event) => {
+      if (event.target === unpublishConfirmSheet) closeUnpublishConfirm();
+    });
+
+    renderPublishState();
+  </script>
+</body>
+</html>
