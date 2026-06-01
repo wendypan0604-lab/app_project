@@ -2097,14 +2097,13 @@
     }
 
     .share-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-top: 8px;
+      display: flex;
+      margin-top: 14px;
     }
 
     .share-button {
       height: 44px;
+      width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -2116,17 +2115,6 @@
       font: 500 12px/18px Outfit, sans-serif;
       white-space: nowrap;
       cursor: pointer;
-    }
-
-    .share-brand {
-      width: 20px;
-      height: 20px;
-      display: grid;
-      place-items: center;
-      border-radius: 6px;
-      background: var(--brand-blue);
-      color: #fff;
-      font: 700 14px/20px Outfit, sans-serif;
     }
 
     .share-button .ui-icon {
@@ -2887,16 +2875,7 @@
         <div class="success-link-row">
           <span id="successUrlText">https://web-0529a2j.luma.skywork.website</span>
         </div>
-        <label class="success-label" style="margin-top:14px;">Share to</label>
         <div class="share-row">
-          <button class="share-button" type="button">
-            <span class="share-brand">f</span>
-            Facebook
-          </button>
-          <button class="share-button" type="button">
-            <span>X</span>
-            X
-          </button>
           <button class="share-button" type="button" data-action="copyPublishedDomain">
             <svg class="ui-icon"><use href="#i-copy"></use></svg>
             Copy Link
