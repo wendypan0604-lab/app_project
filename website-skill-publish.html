@@ -2274,18 +2274,6 @@
       color: #fff;
     }
 
-    .not-live-badge {
-      display: inline-flex;
-      align-items: center;
-      height: 18px;
-      padding: 0 7px;
-      border-radius: 999px;
-      background: #fff4ec;
-      color: #c2621a;
-      font: 500 11px/18px "PingFang SC", Outfit, sans-serif;
-      letter-spacing: 0;
-    }
-
     .live-badge {
       width: fit-content;
       display: inline-flex;
@@ -2591,7 +2579,7 @@
                 <div class="artifact-meta"><span class="version">V1</span></div>
               </div>
             </div>
-            <div class="site-preview" role="button" tabindex="0" data-action="preview" aria-label="查看网站预览">
+            <div class="site-preview" role="button" tabindex="0" data-action="preview" data-version="1" aria-label="查看网站预览">
               <div class="browser-bar"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
               <div class="mini-site">
                 <div class="mini-nav"><span>Luma Atelier</span><span>Workshops</span><span>Studio</span><span>Visit</span></div>
@@ -2659,10 +2647,10 @@
                 <span class="file-icon"><svg class="ui-icon"><use href="#i-globe"></use></svg></span>
                 <div class="artifact-copy">
                   <h2>Luma Atelier Website.html</h2>
-                  <div class="artifact-meta"><span class="version">V2</span><span class="not-live-badge" id="notLiveBadge">Not live yet</span></div>
+                  <div class="artifact-meta"><span class="version">V2</span></div>
                 </div>
               </div>
-              <div class="site-preview" role="button" tabindex="0" data-action="preview" aria-label="View website preview">
+              <div class="site-preview" role="button" tabindex="0" data-action="preview" data-version="2" aria-label="View website preview">
                 <div class="browser-bar"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
                 <div class="mini-site" style="background: linear-gradient(120deg,rgba(22,32,43,0.96),rgba(22,32,43,0.88)), radial-gradient(circle at 82% 38%,#7eb7a8 0 15%,transparent 16%), linear-gradient(135deg,#1a2530,#0f1920);">
                   <div class="mini-nav" style="color:#e8eaec;"><span>Luma Atelier</span><span>Workshops</span><span>Studio</span><span>Visit</span></div>
@@ -2674,7 +2662,10 @@
               </div>
               <div class="artifact-footer">
                 <div class="chat-status-group">
-                  <span class="publish-status is-published" id="v2ChatPublishStatus">Published</span>
+                  <span class="publish-status" id="v2ChatPublishStatus">Unpublished</span>
+                  <button class="status-copy" id="v2ChatStatusCopy" type="button" data-action="copyPublishedDomain" aria-label="Copy published domain">
+                    <svg class="ui-icon"><use href="#i-copy"></use></svg>
+                  </button>
                 </div>
                 <div class="artifact-footer-actions">
                   <button class="reference-action" type="button" data-action="referenceArtifact" aria-label="Reference">
@@ -2934,9 +2925,10 @@
     const publishSubmit = document.querySelector(".publish-submit");
     const chatPublishStatus = document.querySelector("#chatPublishStatus");
     const chatStatusCopy = document.querySelector("#chatStatusCopy");
+    const v2ChatPublishStatus = document.querySelector("#v2ChatPublishStatus");
+    const v2ChatStatusCopy = document.querySelector("#v2ChatStatusCopy");
     const detailPublishButton = document.querySelector("#detailPublishButton");
     const detailUpdateButton = document.querySelector("#detailUpdateButton");
-    const notLiveBadge = document.querySelector("#notLiveBadge");
     const previewFooter = document.querySelector("#previewFooter");
     const v2Block = document.querySelector("#v2Block");
     const v2ProgressCard = document.querySelector("#v2ProgressCard");
@@ -2956,11 +2948,13 @@
     const toastText = toast.querySelector("span");
     const PUBLISH_STATES = {
       UNPUBLISHED: "unpublished",
-      PUBLISHED: "published",
-      NEEDS_UPDATE: "needs_update"
+      PUBLISHED: "published"
     };
     const appState = {
       publishState: PUBLISH_STATES.UNPUBLISHED,
+      liveVersion: null,
+      latestVersion: 1,
+      previewVersion: 1,
       publishUrlPrefix: "web-0529a2j.luma",
       publishInProgress: false,
       isUpdate: false   // true when confirming an update rather than first publish
@@ -3008,20 +3002,18 @@
         setTimeout(() => {
           v2ProgressCard.style.display = "none";
           v2WebsiteCard.style.display = "flex";
-          // If already published, move to NEEDS_UPDATE
-          if (appState.publishState === PUBLISH_STATES.PUBLISHED) {
-            setPublishState(PUBLISH_STATES.NEEDS_UPDATE);
-          }
+          appState.latestVersion = 2;
+          renderPublishState();
           projectFlow.scrollTo({ top: projectFlow.scrollHeight, behavior: "smooth" });
         }, 300);
       }, 1400);
     }
 
     function openPublish(isUpdate = false) {
-      // Block only when already published with no pending update
-      if (appState.publishState === PUBLISH_STATES.PUBLISHED && !isUpdate) return;
-      // Block update when no pending update exists
-      if (isUpdate && appState.publishState !== PUBLISH_STATES.NEEDS_UPDATE) return;
+      const isPreviewPublished = appState.liveVersion === appState.previewVersion;
+      const canUpdatePreview = appState.liveVersion !== null && !isPreviewPublished;
+      if (!isUpdate && (isPreviewPublished || canUpdatePreview)) return;
+      if (isUpdate && !canUpdatePreview) return;
       appState.isUpdate = isUpdate;
       // Update sheet title and button label based on mode
       publishSheet.querySelector(".sheet-head h2").textContent = isUpdate ? "Update Your Website" : "Publish Your Website";
@@ -3105,6 +3097,12 @@
       closePermissionMenu();
     }
 
+    function setPreviewVersion(version) {
+      appState.previewVersion = version;
+      renderPublishState();
+      showScreen("preview");
+    }
+
     function openPublishSuccess() {
       successUrlText.textContent = `https://${getPublishUrl()}`;
       // Update title/subtitle for update vs publish
@@ -3142,31 +3140,31 @@
     }
 
     function renderPublishState() {
-      const state = appState.publishState;
-      const isPublished = state === PUBLISH_STATES.PUBLISHED;
-      const isNeedsUpdate = state === PUBLISH_STATES.NEEDS_UPDATE;
+      const hasLiveVersion = appState.liveVersion !== null;
+      const isPreviewPublished = appState.liveVersion === appState.previewVersion;
+      const canUpdatePreview = hasLiveVersion && !isPreviewPublished;
 
-      // Chat card publish status
-      chatPublishStatus.textContent = (isPublished || isNeedsUpdate) ? "Published" : "Unpublished";
-      chatPublishStatus.classList.toggle("is-published", isPublished || isNeedsUpdate);
-      chatStatusCopy.classList.toggle("is-visible", isPublished || isNeedsUpdate);
+      renderArtifactStatus(chatPublishStatus, chatStatusCopy, appState.liveVersion === 1);
+      renderArtifactStatus(v2ChatPublishStatus, v2ChatStatusCopy, appState.liveVersion === 2);
 
       // Preview footer — Publish button
-      detailPublishButton.disabled = isPublished;
-      detailPublishButton.style.display = isNeedsUpdate ? "none" : "";
-      detailPublishButton.classList.toggle("is-published-state", isPublished);
-      detailPublishButton.innerHTML = isPublished
+      detailPublishButton.disabled = isPreviewPublished;
+      detailPublishButton.style.display = canUpdatePreview ? "none" : "";
+      detailPublishButton.classList.toggle("is-published-state", isPreviewPublished);
+      detailPublishButton.innerHTML = isPreviewPublished
         ? '<svg class="ui-icon"><use href="#i-check"></use></svg> Published'
         : '<svg class="ui-icon"><use href="#i-upload-cloud"></use></svg> Publish';
 
-      // Preview footer — Update button (only in NEEDS_UPDATE)
-      detailUpdateButton.style.display = isNeedsUpdate ? "flex" : "none";
+      detailUpdateButton.style.display = canUpdatePreview ? "flex" : "none";
 
-      // V2 card "Not live yet" badge
-      if (notLiveBadge) notLiveBadge.style.display = isNeedsUpdate ? "inline-flex" : "none";
+      previewFooter.classList.toggle("is-published", hasLiveVersion);
+    }
 
-      // Unpublish button (PUBLISHED or NEEDS_UPDATE)
-      previewFooter.classList.toggle("is-published", isPublished || isNeedsUpdate);
+    function renderArtifactStatus(statusEl, copyEl, isPublished) {
+      if (!statusEl) return;
+      statusEl.textContent = isPublished ? "Published" : "Unpublished";
+      statusEl.classList.toggle("is-published", isPublished);
+      copyEl?.classList.toggle("is-visible", isPublished);
     }
 
     function resetPublishSubmit() {
@@ -3183,10 +3181,12 @@
     }
 
     function markPublished() {
+      appState.liveVersion = appState.previewVersion;
       setPublishState(PUBLISH_STATES.PUBLISHED);
     }
 
     function markUnpublished() {
+      appState.liveVersion = null;
       setPublishState(PUBLISH_STATES.UNPUBLISHED);
       resetPublishSubmit();
       closeUnpublishConfirm();
@@ -3221,7 +3221,7 @@
       if (action === "iterate") startIteration();
       if (action === "home") showScreen("home");
       if (action === "project") showScreen("project");
-      if (action === "preview") showScreen("preview");
+      if (action === "preview") setPreviewVersion(Number(actionNode.dataset.version || appState.latestVersion));
       if (action === "publish") openPublish(false);
       if (action === "update") openPublish(true);
       if (action === "closePublish") closePublish();
