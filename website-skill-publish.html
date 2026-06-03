@@ -1399,7 +1399,7 @@
       left: 0;
       right: 0;
       top: 156px;
-      bottom: 88px;
+      bottom: 96px;
       overflow-x: hidden;
       overflow-y: auto;
       padding: 0 14px 18px;
@@ -1555,46 +1555,135 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 88px;
+      height: 96px;
       display: flex;
       align-items: flex-start;
-      gap: 10px;
-      padding: 10px 14px 0;
-      background: rgba(255, 255, 255, 0.94);
-      border-radius: 20px 20px 0 0;
-      box-shadow: 0 -8px 28px rgba(0, 8, 24, 0.08);
+      gap: 12px;
+      padding: 12px 16px 0;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 -8px 28px rgba(0, 8, 24, 0.06);
+      z-index: 4;
     }
 
-    .preview-footer .artifact-action.primary {
-      flex: 1;
-      justify-content: center;
-      font-size: 14px;
+    .footer-publish-button,
+    .footer-update-button {
       height: 42px;
-    }
-
-    .unpublish-button {
       display: none;
-      flex: 1;
-      height: 42px;
       align-items: center;
       justify-content: center;
+      gap: 8px;
       border: 0;
-      border-radius: 10px;
-      background: var(--bg-chip);
-      color: var(--text-quaternary);
-      font: 500 14px/21px "PingFang SC", sans-serif;
+      border-radius: 21px;
+      background: var(--text-strong);
+      color: #fff;
+      font: 500 14px/21px Outfit, "PingFang SC", sans-serif;
       cursor: pointer;
     }
 
-    .preview-footer.is-published .unpublish-button {
-      display: inline-flex;
+    .footer-publish-button {
+      width: 100%;
     }
 
-    .preview-footer .artifact-icon-button {
+    .footer-update-button {
+      width: 214px;
+      margin-left: auto;
+    }
+
+    .footer-publish-button .ui-icon,
+    .footer-update-button .ui-icon {
+      width: 17px;
+      height: 17px;
+    }
+
+    .footer-live-card {
+      min-width: 0;
+      flex: 1;
+      height: 42px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0, 8, 24, 0.04);
+    }
+
+    .footer-url {
+      min-width: 0;
+      flex: 1;
+      color: #7f8896;
+      font: 400 14px/21px Outfit, sans-serif;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .footer-live-status,
+    .footer-update-hint {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+      font: 500 13px/20px Outfit, "PingFang SC", sans-serif;
+    }
+
+    .footer-live-status {
+      color: #00b894;
+    }
+
+    .footer-update-hint {
+      height: 42px;
+      color: #ff8a18;
+    }
+
+    .footer-live-status::before,
+    .footer-update-hint::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .footer-copy-button,
+    .footer-edit-button {
       width: 42px;
       height: 42px;
+      display: none;
+      place-items: center;
+      border: 0;
+      border-radius: 21px;
       background: #fff;
-      border-radius: 12px;
+      color: var(--text-primary);
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0, 8, 24, 0.04);
+    }
+
+    .footer-copy-button {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      border-radius: 9px;
+      box-shadow: none;
+    }
+
+    .footer-copy-button .ui-icon,
+    .footer-edit-button .ui-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .preview-footer.is-unpublished .footer-publish-button,
+    .preview-footer.is-live .footer-live-card,
+    .preview-footer.is-live .footer-live-status,
+    .preview-footer.is-live .footer-edit-button,
+    .preview-footer.is-update .footer-update-hint,
+    .preview-footer.is-update .footer-update-button {
+      display: flex;
+    }
+
+    .preview-footer.is-live .footer-edit-button {
+      display: grid;
     }
 
     .publish-sheet {
@@ -1603,7 +1692,7 @@
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      padding: 0 12px 22px;
+      padding: 0 20px 20px;
       background: rgba(0, 8, 24, 0.22);
       opacity: 0;
       pointer-events: none;
@@ -1618,30 +1707,38 @@
 
     .sheet-panel {
       width: 351px;
-      padding: 14px;
+      padding: 18px 16px 18px;
       border: 1px solid var(--border);
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.96);
+      border-radius: 20px 20px 0 0;
+      background: #f4f5f7;
       box-shadow: 0 18px 42px rgba(0, 8, 24, 0.18);
     }
 
     .sheet-head {
+      position: relative;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
+      justify-content: center;
+      min-height: 36px;
+      margin-bottom: 20px;
     }
 
     .sheet-head h2 {
       margin: 0;
       color: var(--text-strong);
-      font: 600 16px/24px "PingFang SC", sans-serif;
+      text-align: center;
+      font: 500 17px/25px Outfit, "PingFang SC", sans-serif;
     }
 
     .sheet-close {
-      width: 32px;
-      height: 32px;
+      position: absolute;
+      right: -2px;
+      top: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 18px;
+      background: #fff;
+      color: var(--text-primary);
     }
 
     .domain-card {
@@ -1652,8 +1749,8 @@
 
     .publish-form {
       display: grid;
-      gap: 14px;
-      margin-bottom: 16px;
+      gap: 18px;
+      margin-bottom: 20px;
     }
 
     .publish-field {
@@ -1665,8 +1762,8 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      color: var(--text-strong);
-      font: 600 14px/21px "PingFang SC", sans-serif;
+      color: var(--text-secondary);
+      font: 400 14px/21px Outfit, "PingFang SC", sans-serif;
     }
 
     .info-dot {
@@ -1688,12 +1785,12 @@
     }
 
     .domain-row {
-      height: 40px;
+      height: 42px;
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 0 10px;
-      border-radius: 12px;
+      padding: 0 12px;
+      border-radius: 14px;
       background: #fff;
       color: var(--text-primary);
       font: 400 14px/21px Outfit, sans-serif;
@@ -1701,7 +1798,7 @@
 
     .publish-url-row {
       justify-content: space-between;
-      background: var(--bg-page);
+      background: #fff;
       color: var(--text-secondary);
     }
 
@@ -1752,14 +1849,14 @@
 
     .permission-row {
       width: 100%;
-      height: 40px;
+      height: 42px;
       display: flex;
       align-items: center;
       gap: 8px;
       padding: 0 12px;
       border: 0;
-      border-radius: 12px;
-      background: var(--bg-page);
+      border-radius: 14px;
+      background: #fff;
       color: var(--text-secondary);
       font: 400 14px/21px Outfit, "PingFang SC", sans-serif;
       cursor: pointer;
@@ -1854,7 +1951,7 @@
     .limited-badge {
       display: inline-flex;
       align-items: center;
-      height: 22px;
+      height: 20px;
       padding: 0 8px;
       border-radius: 8px;
       background: #efeaff;
@@ -1864,8 +1961,8 @@
 
     .switch {
       position: relative;
-      width: 42px;
-      height: 24px;
+      width: 32px;
+      height: 20px;
       margin-left: auto;
       flex: 0 0 auto;
     }
@@ -1886,10 +1983,10 @@
     .switch span::after {
       content: "";
       position: absolute;
-      right: 4px;
-      top: 4px;
-      width: 16px;
-      height: 16px;
+      right: 3px;
+      top: 3px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
       background: #fff;
     }
@@ -1924,13 +2021,13 @@
 
     .publish-submit {
       width: 100%;
-      height: 44px;
+      height: 48px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       border: 0;
-      border-radius: 12px;
+      border-radius: 24px;
       background: var(--text-strong);
       color: #fff;
       font: 500 14px/21px "PingFang SC", sans-serif;
@@ -1947,6 +2044,80 @@
       background: var(--bg-chip);
       color: var(--text-quaternary);
       cursor: default;
+    }
+
+    .publish-action-row,
+    .publish-edit-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .publish-action-row {
+      width: 100%;
+    }
+
+    .publish-secondary {
+      height: 40px;
+      min-width: 139px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 20px;
+      background: #fff;
+      color: var(--text-strong);
+      font: 400 14px/21px Outfit, "PingFang SC", sans-serif;
+      cursor: pointer;
+    }
+
+    .publish-edit-status {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      color: #00b894;
+      white-space: nowrap;
+      font: 500 13px/20px Outfit, "PingFang SC", sans-serif;
+    }
+
+    .publish-edit-status::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .publish-sheet[data-mode="update"] .publish-submit {
+      width: 140px;
+      flex: 1;
+    }
+
+    .publish-sheet[data-mode="update"] .publish-secondary {
+      display: inline-flex;
+      flex: 1;
+    }
+
+    .publish-sheet[data-mode="edit"] .publish-action-row {
+      display: none;
+    }
+
+    .publish-sheet[data-mode="edit"] .publish-edit-row {
+      display: flex;
+    }
+
+    .publish-sheet[data-mode="edit"] .publish-edit-status {
+      display: inline-flex;
+    }
+
+    .publish-sheet[data-mode="edit"] .publish-secondary {
+      display: inline-flex;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .publish-sheet:not([data-mode="edit"]) .publish-edit-row {
+      display: none;
     }
 
     .loading-spinner {
@@ -2766,20 +2937,24 @@
       </div>
 
       <footer class="preview-footer" id="previewFooter">
-        <button class="artifact-action primary" type="button" data-action="publish" id="detailPublishButton">
-          <svg class="ui-icon"><use href="#i-upload-cloud"></use></svg>
+        <button class="footer-publish-button" type="button" data-action="publish" id="detailPublishButton">
+          <svg class="ui-icon"><use href="#i-send"></use></svg>
           Publish
         </button>
-        <button class="artifact-action primary" type="button" data-action="update" id="detailUpdateButton" style="display:none;flex:1;justify-content:center;font-size:14px;height:42px;">
-          <svg class="ui-icon"><use href="#i-upload-cloud"></use></svg>
-          Update
+        <div class="footer-live-card" id="footerLiveCard">
+          <span class="footer-url" id="footerPublishUrl">web-0529a2j.luma.skywork.website</span>
+          <span class="footer-live-status">Published</span>
+          <button class="footer-copy-button" type="button" data-action="copyPublishedDomain" aria-label="Copy published domain">
+            <svg class="ui-icon"><use href="#i-copy"></use></svg>
+          </button>
+        </div>
+        <button class="footer-edit-button" type="button" data-action="editPublicationInfo" aria-label="Edit publication info">
+          <svg class="ui-icon"><use href="#i-pencil"></use></svg>
         </button>
-        <button class="unpublish-button" type="button" data-action="openUnpublishConfirm" id="unpublishButton">Unpublish</button>
-        <a class="artifact-icon-button" href="downloads/luma-atelier-site.zip" download="luma-atelier-site.zip" data-action="download" aria-label="Download">
-          <svg class="ui-icon"><use href="#i-download"></use></svg>
-        </a>
-        <button class="artifact-icon-button" type="button" data-action="downloadHistory" aria-label="Download history">
-          <svg class="ui-icon"><use href="#i-history"></use></svg>
+        <span class="footer-update-hint">Not available yet</span>
+        <button class="footer-update-button" type="button" data-action="update" id="detailUpdateButton">
+          <svg class="ui-icon"><use href="#i-send"></use></svg>
+          Update
         </button>
       </footer>
     </section>
@@ -2816,7 +2991,7 @@
             </div>
             <div class="permission-control">
               <button class="permission-row" type="button" data-action="togglePermissionMenu" aria-expanded="false">
-                <svg class="ui-icon"><use href="#i-lock"></use></svg>
+                <svg class="ui-icon" id="permissionIcon"><use href="#i-globe"></use></svg>
                 <span id="permissionText">Anyone with the link can view</span>
                 <span class="chevron"></span>
               </button>
@@ -2836,7 +3011,7 @@
           </section>
           <section class="publish-field" aria-label="Hide Skywork badge">
             <div class="field-head badge-control-head">
-              <span>Hide Skywork badge</span>
+              <span>Skywork badge</span>
               <span class="limited-badge">Limited Free</span>
               <label class="switch" aria-label="隐藏 Skywork badge">
                 <input type="checkbox" checked>
@@ -2846,10 +3021,17 @@
             <p class="field-help">Remove the "Edit with Skywork" badge from your published website.</p>
           </section>
         </div>
-        <button class="publish-submit" type="button" data-action="confirmPublish">
-          <svg class="ui-icon"><use href="#i-upload-cloud"></use></svg>
-          Publish
-        </button>
+        <div class="publish-action-row">
+          <button class="publish-secondary" type="button" data-action="openUnpublishConfirm">Unpublish</button>
+          <button class="publish-submit" type="button" data-action="confirmPublish">
+            <svg class="ui-icon"><use href="#i-send"></use></svg>
+            Publish
+          </button>
+        </div>
+        <div class="publish-edit-row">
+          <span class="publish-edit-status">Published</span>
+          <button class="publish-secondary" type="button" data-action="openUnpublishConfirm">Unpublish</button>
+        </div>
       </div>
     </section>
 
@@ -2929,6 +3111,7 @@
     const v2ChatStatusCopy = document.querySelector("#v2ChatStatusCopy");
     const detailPublishButton = document.querySelector("#detailPublishButton");
     const detailUpdateButton = document.querySelector("#detailUpdateButton");
+    const footerPublishUrl = document.querySelector("#footerPublishUrl");
     const previewFooter = document.querySelector("#previewFooter");
     const v2Block = document.querySelector("#v2Block");
     const v2ProgressCard = document.querySelector("#v2ProgressCard");
@@ -2943,6 +3126,7 @@
     const successUrlText = document.querySelector("#successUrlText");
     const permissionControl = document.querySelector(".permission-control");
     const permissionRow = document.querySelector(".permission-row");
+    const permissionIcon = document.querySelector("#permissionIcon use");
     const permissionText = document.querySelector("#permissionText");
     const permissionOptions = document.querySelectorAll(".permission-option");
     const toastText = toast.querySelector("span");
@@ -2957,6 +3141,7 @@
       previewVersion: 1,
       publishUrlPrefix: "web-0529a2j.luma",
       publishInProgress: false,
+      sheetMode: "publish",
       isUpdate: false   // true when confirming an update rather than first publish
     };
     let buildTimer = null;
@@ -3014,12 +3199,20 @@
       const canUpdatePreview = appState.liveVersion !== null && !isPreviewPublished;
       if (!isUpdate && (isPreviewPublished || canUpdatePreview)) return;
       if (isUpdate && !canUpdatePreview) return;
-      appState.isUpdate = isUpdate;
-      // Update sheet title and button label based on mode
-      publishSheet.querySelector(".sheet-head h2").textContent = isUpdate ? "Update Your Website" : "Publish Your Website";
-      publishSubmit.innerHTML = isUpdate
-        ? '<svg class="ui-icon"><use href="#i-upload-cloud"></use></svg> Update'
-        : '<svg class="ui-icon"><use href="#i-upload-cloud"></use></svg> Publish';
+      openPublicationSheet(isUpdate ? "update" : "publish");
+    }
+
+    function openEditPublicationInfo() {
+      if (appState.liveVersion === null) return;
+      openPublicationSheet("edit");
+    }
+
+    function openPublicationSheet(mode) {
+      appState.sheetMode = mode;
+      appState.isUpdate = mode === "update";
+      publishSheet.dataset.mode = mode;
+      publishSheet.querySelector(".sheet-head h2").textContent = mode === "edit" ? "Edit Publication Info" : "Publish Your Website";
+      resetPublishSubmit();
       publishSheet.classList.add("is-open");
       publishSheet.setAttribute("aria-hidden", "false");
     }
@@ -3071,6 +3264,7 @@
       appState.publishUrlPrefix = normalizePublishPrefix(editUrlInput.value) || "web-0529a2j.luma";
       editUrlInput.value = appState.publishUrlPrefix;
       publishUrlDisplay.textContent = getPublishUrl();
+      footerPublishUrl.textContent = getPublishUrl();
       successUrlText.textContent = `https://${getPublishUrl()}`;
       closeUrlEditor();
     }
@@ -3091,6 +3285,7 @@
 
     function selectPermission(value) {
       permissionText.textContent = value;
+      permissionIcon.setAttribute("href", value === "Only visible to me" ? "#i-lock" : "#i-globe");
       permissionOptions.forEach((option) => {
         option.classList.toggle("is-selected", option.dataset.permission === value);
       });
@@ -3146,18 +3341,11 @@
 
       renderArtifactStatus(chatPublishStatus, chatStatusCopy, appState.liveVersion === 1);
       renderArtifactStatus(v2ChatPublishStatus, v2ChatStatusCopy, appState.liveVersion === 2);
+      footerPublishUrl.textContent = getPublishUrl();
 
-      // Preview footer — Publish button
-      detailPublishButton.disabled = isPreviewPublished;
-      detailPublishButton.style.display = canUpdatePreview ? "none" : "";
-      detailPublishButton.classList.toggle("is-published-state", isPreviewPublished);
-      detailPublishButton.innerHTML = isPreviewPublished
-        ? '<svg class="ui-icon"><use href="#i-check"></use></svg> Published'
-        : '<svg class="ui-icon"><use href="#i-upload-cloud"></use></svg> Publish';
-
-      detailUpdateButton.style.display = canUpdatePreview ? "flex" : "none";
-
-      previewFooter.classList.toggle("is-published", hasLiveVersion);
+      previewFooter.classList.toggle("is-unpublished", !hasLiveVersion);
+      previewFooter.classList.toggle("is-live", isPreviewPublished);
+      previewFooter.classList.toggle("is-update", canUpdatePreview);
     }
 
     function renderArtifactStatus(statusEl, copyEl, isPublished) {
@@ -3169,10 +3357,11 @@
 
     function resetPublishSubmit() {
       appState.publishInProgress = false;
-      appState.isUpdate = false;
       publishSubmit.disabled = false;
       publishSubmit.classList.remove("is-loading");
-      publishSubmit.innerHTML = '<svg class="ui-icon"><use href="#i-upload-cloud"></use></svg> Publish';
+      publishSubmit.innerHTML = appState.sheetMode === "update"
+        ? '<svg class="ui-icon"><use href="#i-send"></use></svg> Update'
+        : '<svg class="ui-icon"><use href="#i-send"></use></svg> Publish';
     }
 
     function setPublishState(nextState) {
@@ -3188,6 +3377,7 @@
     function markUnpublished() {
       appState.liveVersion = null;
       setPublishState(PUBLISH_STATES.UNPUBLISHED);
+      closePublish(true);
       resetPublishSubmit();
       closeUnpublishConfirm();
     }
@@ -3224,6 +3414,7 @@
       if (action === "preview") setPreviewVersion(Number(actionNode.dataset.version || appState.latestVersion));
       if (action === "publish") openPublish(false);
       if (action === "update") openPublish(true);
+      if (action === "editPublicationInfo") openEditPublicationInfo();
       if (action === "closePublish") closePublish();
       if (action === "editPublishUrl") openUrlEditor();
       if (action === "closeUrlEditor") closeUrlEditor();
