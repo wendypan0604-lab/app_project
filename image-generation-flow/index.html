@@ -1,0 +1,2157 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Skywork Image Generation Flow Prototype</title>
+  <style>
+    :root {
+      --bg-page: #f4f5f7;
+      --bg-glass: rgba(255, 255, 255, .8);
+      --bg-chip: #edeff1;
+      --bg-card: rgba(255, 255, 255, .9);
+      --bg-soft: rgba(255, 255, 255, .72);
+      --text-primary: #333b46;
+      --text-strong: #000818;
+      --text-secondary: #485568;
+      --text-tertiary: #979fab;
+      --text-quaternary: #7f8896;
+      --border: #fff;
+      --hairline: rgba(0, 0, 0, .05);
+      --image: #ffaa00;
+      --image-card: #faae15;
+      --blue: #4d5eff;
+      --orange: #d97757;
+      --shadow-card: 0 1px 6px rgba(0, 8, 24, .04);
+      --shadow-float: 0 3px 12px rgba(0, 8, 24, .12);
+      --shadow-input: 0 12px 20.8px -17px rgba(0, 8, 24, .12);
+      font-family: Outfit, "PingFang SC", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      background: #dfe3e8;
+      color: var(--text-primary);
+    }
+
+    button {
+      border: 0;
+      padding: 0;
+      background: none;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .phone {
+      position: relative;
+      width: 375px;
+      height: 812px;
+      overflow: hidden;
+      background: var(--bg-page);
+      border: 1px solid rgba(0, 8, 24, .12);
+      box-shadow: 0 24px 80px rgba(0, 8, 24, .18);
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: none;
+      overflow: hidden;
+      background: var(--bg-page);
+    }
+
+    .screen.active { display: block; }
+
+    .ui-icon {
+      width: 22px;
+      height: 22px;
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .status-bar {
+      position: absolute;
+      inset: 0 0 auto;
+      height: 48px;
+      color: var(--text-strong);
+      z-index: 3;
+    }
+
+    .project-status { height: 44px; }
+
+    .time {
+      position: absolute;
+      left: 25px;
+      top: 14px;
+      width: 54px;
+      text-align: center;
+      font: 600 17px/22px "SF Pro Text", -apple-system, sans-serif;
+    }
+
+    .signals {
+      position: absolute;
+      right: 23px;
+      top: 18px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cellular {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 12px;
+    }
+
+    .cellular span {
+      width: 3px;
+      border-radius: 2px;
+      background: var(--text-strong);
+    }
+
+    .cellular span:nth-child(1) { height: 4px; }
+    .cellular span:nth-child(2) { height: 6px; }
+    .cellular span:nth-child(3) { height: 8px; }
+    .cellular span:nth-child(4) { height: 10px; }
+
+    .wifi {
+      position: relative;
+      width: 17px;
+      height: 12px;
+    }
+
+    .wifi::before,
+    .wifi::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      border: 2px solid var(--text-strong);
+      border-color: var(--text-strong) transparent transparent;
+      border-radius: 50%;
+      transform: translateX(-50%);
+    }
+
+    .wifi::before {
+      top: 1px;
+      width: 15px;
+      height: 15px;
+    }
+
+    .wifi::after {
+      top: 5px;
+      width: 8px;
+      height: 8px;
+    }
+
+    .battery {
+      position: relative;
+      width: 25px;
+      height: 13px;
+      border: 1.1px solid rgba(0, 8, 24, .35);
+      border-radius: 4px;
+      padding: 1px;
+    }
+
+    .battery::before {
+      content: "";
+      display: block;
+      width: 19px;
+      height: 9px;
+      border-radius: 2px;
+      background: var(--text-strong);
+    }
+
+    .battery::after {
+      content: "";
+      position: absolute;
+      right: -3px;
+      top: 4px;
+      width: 2px;
+      height: 5px;
+      border-radius: 0 2px 2px 0;
+      background: rgba(0, 8, 24, .35);
+    }
+
+    .home-topbar {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      top: 48px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 2;
+    }
+
+    .pill {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--bg-glass);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 21px;
+      white-space: nowrap;
+    }
+
+    .model-pill { width: 148px; }
+
+    .model-pill.is-disabled {
+      width: 160px;
+      border-color: rgba(255, 255, 255, .72);
+      background: rgba(255, 255, 255, .48);
+      color: var(--text-tertiary);
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .model-dot {
+      width: 18px;
+      height: 18px;
+      display: grid;
+      place-items: center;
+      color: #65707e;
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .model-pill.is-disabled .model-dot {
+      color: var(--text-tertiary);
+    }
+
+    .chevron {
+      width: 10px;
+      height: 10px;
+      border-right: 1.6px solid currentColor;
+      border-bottom: 1.6px solid currentColor;
+      transform: rotate(45deg) translateY(-2px);
+      opacity: .68;
+      flex: 0 0 auto;
+    }
+
+    .credit-pill {
+      width: 132px;
+      justify-content: center;
+      gap: 8px;
+      font: 500 14px/21px "PingFang SC", sans-serif;
+      color: var(--text-strong);
+    }
+
+    .coin {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: linear-gradient(135deg, #ffce5b 0%, #ff9f00 100%);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .divider {
+      width: 1px;
+      height: 12px;
+      background: #edeff1;
+    }
+
+    .hero {
+      position: absolute;
+      left: 16px;
+      top: 126px;
+      width: 343px;
+      display: none;
+      gap: 8px;
+    }
+
+    .agent-line {
+      height: 28px;
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .avatar,
+    .avatar-sm {
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #ffb959;
+      color: #5d3a00;
+      font-weight: 700;
+    }
+
+    .avatar { width: 28px; height: 28px; font-size: 13px; }
+    .avatar-sm { width: 20px; height: 20px; font-size: 10px; }
+
+    .hero .hi {
+      font: 400 18px/27px Outfit, sans-serif;
+    }
+
+    .agent-name {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 27px;
+      border-radius: 12px;
+      padding: 0 4px;
+      color: var(--text-primary);
+      font: 500 18px/27px Outfit, sans-serif;
+    }
+
+    .agent-name .chevron { width: 8px; height: 8px; }
+
+    .hero h1 {
+      margin: 0;
+      color: var(--text-primary);
+      font: 500 24px/29px Outfit, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .home-stack {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 335px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .template-section {
+      width: 351px;
+      height: 95px;
+      display: grid;
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    .template-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 21px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 21px;
+    }
+
+    .more {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-quaternary);
+      font-size: 12px;
+      line-height: 18px;
+    }
+
+    .template-strip {
+      display: flex;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .template-card {
+      position: relative;
+      flex: 0 0 114px;
+      height: 64px;
+      overflow: hidden;
+      border: 1px solid #fff;
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .template-card.selected {
+      border-color: rgba(250, 174, 21, .75);
+      box-shadow: 0 0 0 2px rgba(250, 174, 21, .18) inset;
+    }
+
+    .expand {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, .5);
+      color: #fff;
+    }
+
+    .expand .ui-icon {
+      width: 13px;
+      height: 13px;
+      stroke-width: 2.2;
+    }
+
+    .art-portrait {
+      background:
+        radial-gradient(circle at 73% 48%, #ffe0b5 0 15%, transparent 16%),
+        radial-gradient(circle at 67% 33%, #3c241e 0 10%, transparent 11%),
+        linear-gradient(110deg, rgba(255,255,255,0) 46%, rgba(255,255,255,.88) 47% 62%, rgba(255,255,255,0) 63%),
+        linear-gradient(140deg, #263a73 0 32%, #f5a43d 33% 59%, #f26d59 60% 100%);
+    }
+
+    .art-product {
+      background:
+        radial-gradient(circle at 51% 50%, rgba(255,255,255,.92) 0 18%, transparent 19%),
+        radial-gradient(circle at 51% 49%, #333b46 0 12%, transparent 13%),
+        linear-gradient(160deg, #fff8e6 0 34%, #facb63 35% 67%, #fb8147 68% 100%);
+    }
+
+    .art-poster {
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.85) 0 36%, transparent 37%),
+        repeating-linear-gradient(0deg, rgba(255,255,255,.76) 0 4px, transparent 4px 9px),
+        linear-gradient(135deg, #10182c 0 35%, #00bcd4 36% 62%, #d8ff5b 63% 100%);
+    }
+
+    .input-card {
+      width: 351px;
+      min-height: 222px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      background: var(--bg-glass);
+      box-shadow: var(--shadow-input);
+    }
+
+    .input-main {
+      width: 327px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .tag-row {
+      min-height: 30px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .skill-tag,
+    .mode-tag {
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 12px;
+      white-space: nowrap;
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 21px;
+    }
+
+    .skill-tag {
+      padding: 0 8px 0 6px;
+      border: 1px solid #ffe9c1;
+      background: #fff7e6;
+    }
+
+    .skill-tag .ui-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--image);
+    }
+
+    .skill-tag .close {
+      width: 12px;
+      height: 12px;
+      color: var(--text-secondary);
+    }
+
+    .mode-tag {
+      background: var(--bg-page);
+      padding: 0 6px;
+      flex: 0 0 auto;
+    }
+
+    .mode-tag .ui-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--text-secondary);
+    }
+
+    .rule {
+      width: 327px;
+      height: 1px;
+      background: var(--bg-page);
+    }
+
+    .prompt {
+      height: 96px;
+      margin: 0;
+      overflow: hidden;
+      color: var(--text-primary);
+      font: 400 15px/24px Outfit, "PingFang SC", sans-serif;
+    }
+
+    .input-actions {
+      width: 327px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .left-actions,
+    .right-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .right-actions { gap: 12px; }
+
+    .icon-button {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      color: var(--text-primary);
+    }
+
+    .cost-chip {
+      height: 28px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      padding: 0 10px 0 7px;
+      border-radius: 12px;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      font: 400 16px/24px Outfit, sans-serif;
+    }
+
+    .cost-chip .ui-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .send-button {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .send-button .ui-icon {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2.2;
+    }
+
+    .keyboard {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 493px;
+      height: 319px;
+      overflow: hidden;
+      border-radius: 25px 25px 0 0;
+      background: #e6e9ed;
+      font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .suggestions {
+      height: 23px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: center;
+      padding: 0 20px;
+      color: #1a1a1a;
+      font-size: 15.858px;
+      line-height: 21px;
+      text-align: center;
+    }
+
+    .keys {
+      display: grid;
+      gap: 10px;
+      padding: 11px 8px 0;
+    }
+
+    .key-row {
+      height: 42px;
+      display: flex;
+      justify-content: center;
+      gap: 5.6px;
+    }
+
+    .key {
+      width: 30.8px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: #fff;
+      color: #595959;
+      box-shadow: 0 1px 0 rgba(0, 8, 24, .14);
+      font-size: 23px;
+      line-height: 28px;
+    }
+
+    .key.utility {
+      width: 42px;
+      background: #f8f9fb;
+      font-size: 18px;
+      color: var(--text-primary);
+    }
+
+    .key.wide {
+      width: 85.5px;
+      font-size: 15px;
+    }
+
+    .key.space { width: 176.6px; }
+
+    .key.return {
+      width: 85.8px;
+      color: #fff;
+      background: #0088ff;
+      font-size: 23px;
+    }
+
+    .keyboard-bottom {
+      height: 65px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 25px 36px 0 34px;
+      color: rgba(34, 43, 89, .63);
+    }
+
+    .keyboard-bottom .ui-icon {
+      width: 24px;
+      height: 24px;
+      stroke-width: 1.8;
+    }
+
+    .project-topbar,
+    .edit-topbar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 44px;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 12px;
+      z-index: 5;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .back-btn,
+    .round-tool {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      color: var(--text-primary);
+      border-radius: 20px;
+    }
+
+    .round-tool {
+      width: 36px;
+      height: 36px;
+      border: 1px solid #fff;
+      background: rgba(255,255,255,.6);
+    }
+
+    .title-stack {
+      display: grid;
+      gap: 1px;
+      min-width: 0;
+    }
+
+    .title-stack strong {
+      color: var(--text-strong);
+      font: 500 14px/21px "PingFang SC", sans-serif;
+      white-space: nowrap;
+    }
+
+    .title-stack span {
+      color: var(--text-quaternary);
+      font: 400 11px/14px "PingFang SC", sans-serif;
+      white-space: nowrap;
+    }
+
+    .project-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .project-content {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 96px;
+      bottom: 156px;
+      overflow-y: auto;
+      padding: 12px 16px 24px;
+      display: grid;
+      align-content: start;
+      gap: 18px;
+      scrollbar-width: none;
+    }
+
+    .project-content::-webkit-scrollbar { display: none; }
+
+    .user-message {
+      width: 343px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .user-bubble {
+      max-width: 309px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 12px;
+      background: #ecf2ff;
+      color: var(--blue);
+      font: 400 14px/21px "PingFang SC", sans-serif;
+    }
+
+    .inline-skill {
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 6px 0 4px;
+      border: 1px solid #fff;
+      border-radius: 8px;
+      background: rgba(255,255,255,.8);
+      color: var(--text-primary);
+      font: 400 13px/20px Outfit, sans-serif;
+      flex: 0 0 auto;
+    }
+
+    .inline-skill .ui-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--image);
+    }
+
+    .agent-block {
+      width: 343px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .agent-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .agent-row strong {
+      color: var(--text-strong);
+      font: 500 16px/24px Outfit, sans-serif;
+    }
+
+    .model-badge {
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px 0 8px;
+      border-radius: 6px;
+      background: rgba(255,255,255,.9);
+      color: var(--text-quaternary);
+      font: 500 12px/18px "PingFang SC", sans-serif;
+    }
+
+    .model-badge i {
+      color: var(--orange);
+      font-style: normal;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .ai-copy {
+      margin: 0;
+      color: var(--text-primary);
+      font: 400 14px/21px "PingFang SC", sans-serif;
+      text-align: justify;
+    }
+
+    .tool-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .tool-row {
+      width: 343px;
+      min-height: 33px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border: 1px solid #fff;
+      border-radius: 12px;
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      font: 400 14px/21px "PingFang SC", sans-serif;
+      box-shadow: var(--shadow-card);
+    }
+
+    .tool-name {
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .tool-row .mini-divider {
+      width: 1px;
+      height: 10px;
+      border-radius: 20px;
+      background: var(--text-tertiary);
+      opacity: .9;
+    }
+
+    .tool-row .ui-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--text-secondary);
+      stroke-width: 2.2;
+    }
+
+    .chat-screen.is-complete .generating-copy,
+    .chat-screen.is-generating .complete-copy {
+      display: none;
+    }
+
+    .chat-screen.is-generating .agent-block .tool-list {
+      display: none;
+    }
+
+    .chat-screen.is-complete .tool-list {
+      gap: 4px;
+      margin: -2px 0 2px;
+    }
+
+    .chat-screen.is-complete .tool-row {
+      min-height: 28px;
+      padding: 4px 10px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, .72);
+      color: var(--text-quaternary);
+      font: 400 12px/18px "PingFang SC", sans-serif;
+      box-shadow: none;
+    }
+
+    .chat-screen.is-complete .tool-name {
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .generation-stage,
+    .image-output-stack {
+      width: 343px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .chat-screen.is-generating .image-output-stack,
+    .chat-screen.is-complete .generation-stage {
+      display: none;
+    }
+
+    .chat-screen.is-generating .generation-stage,
+    .chat-screen.is-complete .image-output-stack {
+      display: grid;
+    }
+
+    .generation-item {
+      display: none;
+      opacity: 0;
+      transform: translateY(12px);
+      gap: 8px;
+    }
+
+    .generation-item.is-visible {
+      display: grid;
+      animation: streamIn 420ms ease forwards;
+    }
+
+    .generation-tool {
+      width: 343px;
+      box-shadow: var(--shadow-card);
+    }
+
+    @keyframes streamIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .generation-placeholder {
+      width: 280px;
+      aspect-ratio: 1 / 1;
+      margin: 0 auto;
+      display: grid;
+      place-items: center;
+      border: 1px solid #d9dde3;
+      border-radius: 16px;
+      background: #ededee;
+      color: #6b7280;
+      box-shadow: var(--shadow-card);
+    }
+
+    .placeholder-inner {
+      display: grid;
+      justify-items: center;
+      gap: 10px;
+      text-align: center;
+      font: 500 16px/24px "PingFang SC", Outfit, sans-serif;
+    }
+
+    .placeholder-inner .ui-icon {
+      width: 32px;
+      height: 32px;
+      color: #7f8896;
+      stroke-width: 1.8;
+    }
+
+    .image-output-card {
+      position: relative;
+      width: 343px;
+      overflow: hidden;
+      border: 1px solid #fff;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .image-cover-button {
+      position: relative;
+      display: block;
+      width: 100%;
+      padding: 0;
+      border: 0;
+      border-radius: inherit;
+      background: transparent;
+      overflow: hidden;
+    }
+
+    .image-output-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .edit-stage img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .image-output-card.variant-warm img {
+      filter: saturate(1.12) brightness(1.03);
+    }
+
+    .image-output-card.variant-clean img {
+      filter: hue-rotate(8deg) contrast(1.04);
+    }
+
+    .model-corner-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 2;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      max-width: 128px;
+      padding: 0 7px 0 5px;
+      border-radius: 11px;
+      background: rgba(255, 255, 255, .82);
+      color: var(--text-strong);
+      box-shadow: 0 1px 5px rgba(0,8,24,.1);
+      font: 400 11px/16px Outfit, "PingFang SC", sans-serif;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .model-corner-mark {
+      width: 12px;
+      height: 12px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(0, 8, 24, .18);
+      border-radius: 50%;
+      color: var(--text-strong);
+      font: 600 7px/1 Outfit, sans-serif;
+    }
+
+    .image-float-actions {
+      position: absolute;
+      bottom: 10px;
+      left: 16px;
+      right: 16px;
+      display: inline-flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .image-actions-right {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .image-float-action {
+      height: 34px;
+      min-width: 92px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 0 13px;
+      border: 0;
+      border-radius: 17px;
+      background: rgba(0, 8, 24, .72);
+      color: #fff;
+      font: 400 13px/20px Outfit, "PingFang SC", sans-serif;
+      backdrop-filter: blur(10px);
+      pointer-events: auto;
+    }
+
+    .image-float-action.text-only {
+      min-width: 76px;
+    }
+
+    .image-float-action.icon-only {
+      width: 34px;
+      min-width: 34px;
+      padding: 0;
+    }
+
+    .image-float-action .ui-icon {
+      width: 17px;
+      height: 17px;
+      stroke-width: 2.1;
+    }
+
+    .image-float-action .reference-icon {
+      fill: none;
+      stroke: none;
+    }
+
+    .post-image-copy {
+      width: 343px;
+      margin: 2px 0 0;
+      color: var(--text-primary);
+      font: 400 14px/21px "PingFang SC", sans-serif;
+      text-align: justify;
+    }
+
+    .composer-dock {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 156px;
+      padding: 8px 12px 0;
+      background: linear-gradient(180deg, rgba(244,245,247,0) 0%, #f4f5f7 26%);
+      z-index: 4;
+    }
+
+    .chat-input {
+      width: 351px;
+      height: 104px;
+      display: grid;
+      grid-template-rows: 1fr 36px;
+      gap: 12px;
+      padding: 12px;
+      border: 1.5px solid #fff;
+      border-radius: 20px;
+      background: rgba(255,255,255,.8);
+      box-shadow: var(--shadow-input);
+    }
+
+    .chat-input p {
+      margin: 0;
+      color: var(--text-tertiary);
+      font: 400 15px/23px Outfit, "PingFang SC", sans-serif;
+    }
+
+    .home-indicator {
+      position: absolute;
+      left: 120px;
+      bottom: 8px;
+      width: 134px;
+      height: 5px;
+      border-radius: 100px;
+      background: var(--text-strong);
+      z-index: 6;
+    }
+
+    .detail-screen {
+      background: #fff;
+    }
+
+    .detail-nav-bar {
+      position: absolute;
+      top: 48px;
+      left: 14px;
+      right: 14px;
+      z-index: 8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+
+    .detail-nav-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: auto;
+    }
+
+    .detail-icon-button {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #fff;
+      border-radius: 999px;
+      background: rgba(255,255,255,.8);
+      color: var(--text-primary);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-card);
+      pointer-events: auto;
+    }
+
+    .detail-icon-button .ui-icon {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2;
+    }
+
+    .detail-back-icon {
+      width: 10px;
+      height: 17px;
+      display: block;
+    }
+
+    .detail-preview-image {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      touch-action: pan-y;
+      user-select: none;
+    }
+
+    .detail-preview-image img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .detail-counter {
+      position: absolute;
+      left: 50%;
+      bottom: 94px;
+      z-index: 8;
+      transform: translateX(-50%);
+      min-width: 48px;
+      padding: 4px 10px;
+      border: 1px solid #fff;
+      border-radius: 999px;
+      background: rgba(255,255,255,.82);
+      color: var(--text-secondary);
+      box-shadow: var(--shadow-card);
+      text-align: center;
+      font: 500 12px/18px Outfit, "PingFang SC", sans-serif;
+    }
+
+    .detail-bottom-actions {
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 34px;
+      z-index: 8;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .detail-bottom-actions .ui-icon {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2;
+    }
+
+    .primary-action,
+    .secondary-action {
+      height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 24px;
+      font: 500 15px/22px Outfit, sans-serif;
+    }
+
+    .primary-action {
+      background: var(--text-strong);
+      color: #fff;
+    }
+
+    .secondary-action {
+      border: 1px solid #e1e3e7;
+      background: #fff;
+      color: var(--text-strong);
+    }
+
+    .edit-workspace {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 96px;
+      bottom: 156px;
+      overflow: auto;
+      padding: 12px 16px 24px;
+      display: grid;
+      align-content: start;
+      gap: 14px;
+      scrollbar-width: none;
+    }
+
+    .edit-workspace::-webkit-scrollbar { display: none; }
+
+    .edit-stage {
+      position: relative;
+      width: 343px;
+      height: 343px;
+      overflow: hidden;
+      border: 1px solid #fff;
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .selection-mask {
+      position: absolute;
+      left: 75px;
+      top: 86px;
+      width: 184px;
+      height: 126px;
+      border: 2px solid #fff;
+      border-radius: 20px;
+      background: rgba(77,94,255,.16);
+      box-shadow: 0 0 0 999px rgba(0,8,24,.18);
+    }
+
+    .selection-mask::after {
+      content: "";
+      position: absolute;
+      right: -7px;
+      bottom: -7px;
+      width: 14px;
+      height: 14px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .edit-tools {
+      width: 343px;
+      display: flex;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .edit-chip {
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      border-radius: 10px;
+      background: #edeff1;
+      color: var(--text-primary);
+      font: 400 12px/18px "PingFang SC", sans-serif;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+
+    .edit-chip.active {
+      background: #ecf2ff;
+      color: var(--blue);
+    }
+
+    .edit-chip .ui-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .variant-row {
+      width: 343px;
+      display: flex;
+      gap: 8px;
+      overflow: hidden;
+    }
+
+    .variant {
+      position: relative;
+      width: 82px;
+      height: 82px;
+      border: 1px solid #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+      flex: 0 0 auto;
+    }
+
+    .variant.active {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 2px rgba(77,94,255,.18) inset;
+    }
+
+    .variant img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .variant:nth-child(2) img { filter: saturate(1.25) brightness(1.04); }
+    .variant:nth-child(3) img { filter: hue-rotate(10deg) contrast(1.03); }
+    .variant:nth-child(4) img { filter: sepia(.12) saturate(1.12); }
+
+    .edit-composer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 156px;
+      padding: 8px 12px 0;
+      background: linear-gradient(180deg, rgba(244,245,247,0) 0%, #f4f5f7 26%);
+      z-index: 4;
+    }
+
+    .edit-input {
+      width: 351px;
+      min-height: 104px;
+      display: grid;
+      grid-template-rows: 44px 36px;
+      gap: 12px;
+      padding: 12px;
+      border: 1.5px solid #fff;
+      border-radius: 20px;
+      background: rgba(255,255,255,.8);
+      box-shadow: var(--shadow-input);
+    }
+
+    .edit-input p {
+      margin: 0;
+      color: var(--text-primary);
+      font: 400 15px/22px Outfit, "PingFang SC", sans-serif;
+    }
+
+    .sheet-backdrop {
+      position: absolute;
+      inset: 0;
+      z-index: 20;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      background: rgba(0, 8, 24, 0);
+      pointer-events: none;
+      transition: background 180ms ease;
+    }
+
+    .sheet-backdrop.is-open {
+      display: flex;
+      background: rgba(0, 8, 24, .18);
+      pointer-events: auto;
+    }
+
+    .sheet {
+      width: 375px;
+      transform: translateY(104%);
+      transition: transform 220ms ease;
+      border: 1px solid rgba(255,255,255,.86);
+      border-radius: 28px 28px 0 0;
+      background: rgba(255,255,255,.98);
+      box-shadow: 0 -18px 40px rgba(0, 8, 24, .18);
+    }
+
+    .sheet-backdrop.is-open .sheet { transform: translateY(0); }
+
+    .template-sheet {
+      padding-bottom: 24px;
+    }
+
+    .sheet-preview {
+      position: relative;
+      width: 100%;
+      height: 343px;
+      overflow: hidden;
+      border-radius: 28px 28px 0 0;
+      background: #0b1d62;
+    }
+
+    .sheet-preview img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .sheet-close {
+      position: absolute;
+      top: 24px;
+      right: 28px;
+      z-index: 2;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      background: rgba(255,255,255,.76);
+      color: var(--text-strong);
+      box-shadow: var(--shadow-card);
+    }
+
+    .sheet-copy {
+      padding: 18px 20px 0;
+    }
+
+    .sheet-copy h2 {
+      margin: 0;
+      color: var(--text-strong);
+      font: 500 20px/30px Outfit, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .sheet-copy p {
+      margin: 8px 0 0;
+      color: var(--text-secondary);
+      font: 400 14px/22px Outfit, "PingFang SC", sans-serif;
+    }
+
+    .sheet-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 18px 20px 0;
+    }
+
+    .model-sheet {
+      padding: 22px 20px 28px;
+    }
+
+    .model-sheet h2 {
+      margin: 0 0 14px;
+      color: var(--text-strong);
+      font: 500 20px/30px Outfit, sans-serif;
+      text-align: center;
+      width: 100%;
+    }
+
+    .model-option {
+      width: 335px;
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #f4f5f7;
+      color: var(--text-primary);
+      text-align: left;
+    }
+
+    .model-option + .model-option { margin-top: 8px; }
+
+    .model-option.selected {
+      background: #ecf2ff;
+      color: var(--blue);
+    }
+
+    .model-option strong {
+      display: block;
+      color: inherit;
+      font: 500 15px/22px Outfit, "PingFang SC", sans-serif;
+    }
+
+    .model-option span {
+      display: block;
+      margin-top: 2px;
+      color: var(--text-quaternary);
+      font: 400 12px/18px "PingFang SC", sans-serif;
+    }
+
+    .check {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      opacity: 0;
+      flex: 0 0 auto;
+    }
+
+    .selected .check { opacity: 1; }
+  </style>
+</head>
+<body>
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <symbol id="i-file-text" viewBox="0 0 24 24">
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
+      <path d="M14 3v5h5"/>
+      <path d="M9 13h6"/>
+      <path d="M9 17h4"/>
+    </symbol>
+    <symbol id="i-image" viewBox="0 0 24 24">
+      <rect x="4" y="4" width="16" height="16" rx="3"/>
+      <circle cx="9" cy="9" r="1.5"/>
+      <path d="m7 17 4-4 3 3 2-2 3 3"/>
+    </symbol>
+    <symbol id="i-send" viewBox="0 0 24 24">
+      <path d="m22 2-7 20-4-9-9-4z"/>
+      <path d="M22 2 11 13"/>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14"/>
+    </symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24">
+      <path d="M13 2 4 14h7l-1 8 10-13h-7z"/>
+    </symbol>
+    <symbol id="i-x" viewBox="0 0 24 24">
+      <path d="M18 6 6 18M6 6l12 12"/>
+    </symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24">
+      <path d="M13 3 11.4 8.4 6 10l5.4 1.6L13 17l1.6-5.4L20 10l-5.4-1.6L13 3Z"/>
+      <path d="m5.5 15-.8 2.7-2.7.8 2.7.8.8 2.7.8-2.7 2.7-.8-2.7-.8-.8-2.7Z"/>
+    </symbol>
+    <symbol id="i-maximize" viewBox="0 0 24 24">
+      <path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/>
+    </symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24">
+      <path d="M12 14a3 3 0 0 0 3-3V7a3 3 0 0 0-6 0v4a3 3 0 0 0 3 3Z"/>
+      <path d="M17 11a5 5 0 0 1-10 0M12 16v4M9 20h6"/>
+    </symbol>
+    <symbol id="i-emoji" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>
+    </symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24">
+      <path d="m15 18-6-6 6-6"/>
+    </symbol>
+    <symbol id="i-more" viewBox="0 0 24 24">
+      <path d="M12 12h.01M19 12h.01M5 12h.01"/>
+    </symbol>
+    <symbol id="i-share" viewBox="0 0 24 24">
+      <path d="M12 3v12"/>
+      <path d="m7 8 5-5 5 5"/>
+      <path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/>
+    </symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24">
+      <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+    </symbol>
+    <symbol id="i-download" viewBox="0 0 24 24">
+      <path d="M12 3v12"/>
+      <path d="m7 10 5 5 5-5"/>
+      <path d="M5 21h14"/>
+    </symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24">
+      <path d="M12 20h9"/>
+      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/>
+    </symbol>
+    <symbol id="i-brush" viewBox="0 0 24 24">
+      <path d="m9 11 4 4"/>
+      <path d="M20 4a3 3 0 0 0-4 0l-8 8a4 4 0 0 0-1 4l-3 3 1 1 3-3a4 4 0 0 0 4-1l8-8a3 3 0 0 0 0-4Z"/>
+    </symbol>
+    <symbol id="i-crop" viewBox="0 0 24 24">
+      <path d="M6 2v14a2 2 0 0 0 2 2h14"/>
+      <path d="M18 22V8a2 2 0 0 0-2-2H2"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <path d="m20 6-11 11-5-5"/>
+    </symbol>
+    <symbol id="i-reference" viewBox="0 0 18 18">
+      <path d="M15.3896 2.66211C15.7081 2.66232 15.9668 2.9207 15.9668 3.23926V7.09277C15.9667 9.31013 14.0407 12.1415 10.8252 12.1416H3.97363C3.65502 12.1416 3.39658 11.883 3.39648 11.5645C3.39659 11.2459 3.65503 10.9873 3.97363 10.9873H10.8252C13.2921 10.9872 14.8124 8.79009 14.8125 7.09277V3.23926C14.8125 2.92073 15.0712 2.66235 15.3896 2.66211Z" fill="currentColor" stroke="currentColor" stroke-width="0.02" stroke-linecap="round"/>
+      <path d="M5.38574 7.97168C5.61097 7.74631 5.97576 7.74655 6.20117 7.97168C6.42653 8.19689 6.42731 8.56168 6.20215 8.78711L3.4209 11.5684L6.20215 14.3496C6.42723 14.5748 6.42702 14.9397 6.20215 15.165C5.97682 15.3904 5.61107 15.3904 5.38574 15.165L2.19824 11.9775C1.97296 11.7523 1.97304 11.3875 2.19824 11.1621L5.38574 7.97168Z" fill="currentColor" stroke="currentColor" stroke-width="0.02" stroke-linecap="round"/>
+    </symbol>
+  </svg>
+
+  <main class="phone" aria-label="Skywork Image generation flow">
+    <section id="home" class="screen active" aria-label="Home Image Skill composer">
+      <div class="status-bar" aria-hidden="true">
+        <div class="time">9:41</div>
+        <div class="signals">
+          <div class="cellular"><span></span><span></span><span></span><span></span></div>
+          <div class="wifi"></div>
+          <div class="battery"></div>
+        </div>
+      </div>
+
+      <header class="home-topbar">
+        <button class="pill model-pill is-disabled" type="button" disabled aria-disabled="true">
+          <span class="model-dot">✹</span>
+          <span>Claude Opus 4.8</span>
+        </button>
+        <div class="pill credit-pill">
+          <span class="coin">C</span>
+          <span>120000</span>
+          <span class="divider"></span>
+          <span>VIP</span>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div class="agent-line">
+          <span class="avatar">N</span>
+          <span class="hi">Hi, I'm</span>
+          <span class="agent-name">Nova <span class="chevron"></span></span>
+        </div>
+        <h1>How can I help you today?</h1>
+      </section>
+
+      <section class="home-stack">
+        <section class="template-section" aria-label="选择图片模板">
+          <div class="template-head">
+            <span>选择模板</span>
+            <span class="more">More <span class="chevron"></span></span>
+          </div>
+          <div class="template-strip">
+            <button class="template-card art-portrait selected" type="button" data-open-template aria-label="Modern Coffee Culture Poster">
+              <span class="expand"><svg class="ui-icon"><use href="#i-maximize"></use></svg></span>
+            </button>
+            <button class="template-card art-product" type="button" data-open-template aria-label="Product hero template">
+              <span class="expand"><svg class="ui-icon"><use href="#i-maximize"></use></svg></span>
+            </button>
+            <button class="template-card art-poster" type="button" data-open-template aria-label="Poster template">
+              <span class="expand"><svg class="ui-icon"><use href="#i-maximize"></use></svg></span>
+            </button>
+          </div>
+        </section>
+
+        <section class="input-card" aria-label="Image Skill 输入框">
+          <div class="input-main">
+            <div class="tag-row">
+              <div class="skill-tag">
+                <svg class="ui-icon"><use href="#i-image"></use></svg>
+                <span>Image</span>
+                <svg class="ui-icon close"><use href="#i-x"></use></svg>
+              </div>
+              <button class="mode-tag" type="button" data-open-model>
+                <svg class="ui-icon"><use href="#i-sparkles"></use></svg>
+                <span data-mode-short>GPT Image 2</span>
+                <span class="chevron"></span>
+              </button>
+            </div>
+            <div class="rule"></div>
+            <p class="prompt">Generate a modern coffee culture poster with warm indoor lighting, hands holding blue ceramic cups with latte art, editorial layout, rich texture, premium lifestyle poster.</p>
+          </div>
+          <div class="input-actions">
+            <div class="left-actions">
+              <span class="icon-button"><svg class="ui-icon"><use href="#i-plus"></use></svg></span>
+              <span class="cost-chip"><svg class="ui-icon"><use href="#i-zap"></use></svg><span>8</span></span>
+            </div>
+            <div class="right-actions">
+              <span class="icon-button"><svg class="ui-icon"><use href="#i-mic"></use></svg></span>
+              <button class="send-button" type="button" data-send-query aria-label="Send">
+                <svg class="ui-icon"><use href="#i-send"></use></svg>
+              </button>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="keyboard" aria-hidden="true">
+        <div class="suggestions"><span></span><span>coffee</span><span>poster</span></div>
+        <div class="keys">
+          <div class="key-row"><span class="key">q</span><span class="key">w</span><span class="key">e</span><span class="key">r</span><span class="key">t</span><span class="key">y</span><span class="key">u</span><span class="key">i</span><span class="key">o</span><span class="key">p</span></div>
+          <div class="key-row"><span class="key">a</span><span class="key">s</span><span class="key">d</span><span class="key">f</span><span class="key">g</span><span class="key">h</span><span class="key">j</span><span class="key">k</span><span class="key">l</span></div>
+          <div class="key-row"><span class="key utility">⇧</span><span class="key">z</span><span class="key">x</span><span class="key">c</span><span class="key">v</span><span class="key">b</span><span class="key">n</span><span class="key">m</span><span class="key utility">⌫</span></div>
+          <div class="key-row"><span class="key wide">ABC</span><span class="key space"></span><span class="key return">↩</span></div>
+        </div>
+        <div class="keyboard-bottom">
+          <svg class="ui-icon"><use href="#i-emoji"></use></svg>
+          <svg class="ui-icon"><use href="#i-mic"></use></svg>
+        </div>
+      </section>
+    </section>
+
+    <section id="chat" class="screen chat-screen is-complete" aria-label="Project chat image output">
+      <div class="status-bar project-status" aria-hidden="true">
+        <div class="time">9:41</div>
+        <div class="signals">
+          <div class="cellular"><span></span><span></span><span></span><span></span></div>
+          <div class="wifi"></div>
+          <div class="battery"></div>
+        </div>
+      </div>
+      <header class="project-topbar">
+        <div class="nav-left">
+          <button class="back-btn" type="button" data-show="home" aria-label="Back">
+            <svg class="ui-icon"><use href="#i-chevron-left"></use></svg>
+          </button>
+          <div class="title-stack">
+            <strong data-chat-model>Claude Opus 4.8</strong>
+            <span>Coffee culture poster</span>
+          </div>
+        </div>
+        <div class="project-tools">
+          <button class="round-tool" type="button" aria-label="Project files"><svg class="ui-icon"><use href="#i-folder"></use></svg></button>
+          <button class="round-tool" type="button" aria-label="More"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
+        </div>
+      </header>
+
+      <section class="project-content">
+        <div class="user-message">
+          <div class="user-bubble">
+            <span class="inline-skill"><svg class="ui-icon"><use href="#i-image"></use></svg>Image</span>
+            <span>用这个模板生成咖啡文化海报</span>
+          </div>
+        </div>
+
+        <section class="agent-block">
+          <div class="agent-row">
+            <span class="avatar-sm">N</span>
+            <strong>Nova</strong>
+            <span class="model-badge"><i>✹</i><span data-chat-model-badge>GPT Image 2</span></span>
+          </div>
+          <p class="ai-copy generating-copy">我正在根据模板结构生成 3 张咖啡文化海报，会先完成构图、光影和文案版式，再把结果整理到对话流里。</p>
+          <p class="ai-copy complete-copy">已根据模板结构生成 3 张咖啡文化海报。保留了蓝色主视觉、咖啡杯焦点和海报式留白，适合作为社媒海报或活动视觉首图。</p>
+          <div class="tool-list">
+            <div class="tool-row"><span class="tool-name">工具</span><span class="mini-divider"></span><svg class="ui-icon"><use href="#i-sparkles"></use></svg><span>生成图片</span><span style="color:#979fab;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">template_id coffee_poster</span></div>
+            <div class="tool-row"><span class="tool-name">工具</span><span class="mini-divider"></span><svg class="ui-icon"><use href="#i-folder"></use></svg><span>整理结果</span><span style="color:#979fab">3 images</span></div>
+          </div>
+        </section>
+
+        <section class="generation-stage" aria-label="图片生成中">
+          <div class="generation-item">
+            <div class="tool-row generation-tool"><span class="tool-name">工具</span><span class="mini-divider"></span><svg class="ui-icon"><use href="#i-sparkles"></use></svg><span>图片生成</span><span style="color:#979fab">第 1 张</span></div>
+            <div class="generation-placeholder">
+              <div class="placeholder-inner">
+                <svg class="ui-icon"><use href="#i-image"></use></svg>
+                <span>使用 <span data-generation-model>GPT Image 2</span><br>生成中</span>
+              </div>
+            </div>
+          </div>
+          <div class="generation-item">
+            <div class="tool-row generation-tool"><span class="tool-name">工具</span><span class="mini-divider"></span><svg class="ui-icon"><use href="#i-sparkles"></use></svg><span>图片生成</span><span style="color:#979fab">第 2 张</span></div>
+            <div class="generation-placeholder">
+              <div class="placeholder-inner">
+                <svg class="ui-icon"><use href="#i-image"></use></svg>
+                <span>使用 <span data-generation-model>GPT Image 2</span><br>生成中</span>
+              </div>
+            </div>
+          </div>
+          <div class="generation-item">
+            <div class="tool-row generation-tool"><span class="tool-name">工具</span><span class="mini-divider"></span><svg class="ui-icon"><use href="#i-sparkles"></use></svg><span>图片生成</span><span style="color:#979fab">第 3 张</span></div>
+            <div class="generation-placeholder">
+              <div class="placeholder-inner">
+                <svg class="ui-icon"><use href="#i-image"></use></svg>
+                <span>使用 <span data-generation-model>GPT Image 2</span><br>生成中</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="image-output-stack" aria-label="Generated images">
+          <div class="image-output-card">
+            <button class="image-cover-button" type="button" data-show="detail" data-image-index="0" aria-label="打开图片详情">
+              <img src="assets/coffee-culture-poster-page.jpg" alt="Generated coffee culture poster version 1">
+            </button>
+            <span class="model-corner-badge"><span class="model-corner-mark">◎</span><span data-output-model>GPT Image 2</span></span>
+            <span class="image-float-actions">
+              <button class="image-float-action text-only" type="button" data-show="edit" data-image-index="0">编辑</button>
+              <span class="image-actions-right">
+                <button class="image-float-action icon-only" type="button" aria-label="引用"><svg class="ui-icon reference-icon"><use href="#i-reference"></use></svg></button>
+                <button class="image-float-action icon-only" type="button" aria-label="下载"><svg class="ui-icon"><use href="#i-download"></use></svg></button>
+              </span>
+            </span>
+          </div>
+          <div class="image-output-card">
+            <button class="image-cover-button" type="button" data-show="detail" data-image-index="1" aria-label="打开图片详情">
+              <img src="coffee_light_9x16_2.jpg" alt="Generated coffee culture poster version 2">
+            </button>
+            <span class="model-corner-badge"><span class="model-corner-mark">◎</span><span data-output-model>GPT Image 2</span></span>
+            <span class="image-float-actions">
+              <button class="image-float-action text-only" type="button" data-show="edit" data-image-index="1">编辑</button>
+              <span class="image-actions-right">
+                <button class="image-float-action icon-only" type="button" aria-label="引用"><svg class="ui-icon reference-icon"><use href="#i-reference"></use></svg></button>
+                <button class="image-float-action icon-only" type="button" aria-label="下载"><svg class="ui-icon"><use href="#i-download"></use></svg></button>
+              </span>
+            </span>
+          </div>
+          <div class="image-output-card">
+            <button class="image-cover-button" type="button" data-show="detail" data-image-index="2" aria-label="打开图片详情">
+              <img src="coffee_dark_1x1_2.jpg" alt="Generated coffee culture poster version 3">
+            </button>
+            <span class="model-corner-badge"><span class="model-corner-mark">◎</span><span data-output-model>GPT Image 2</span></span>
+            <span class="image-float-actions">
+              <button class="image-float-action text-only" type="button" data-show="edit" data-image-index="2">编辑</button>
+              <span class="image-actions-right">
+                <button class="image-float-action icon-only" type="button" aria-label="引用"><svg class="ui-icon reference-icon"><use href="#i-reference"></use></svg></button>
+                <button class="image-float-action icon-only" type="button" aria-label="下载"><svg class="ui-icon"><use href="#i-download"></use></svg></button>
+              </span>
+            </span>
+          </div>
+          <p class="post-image-copy">图片已经生成完成，如果需要调整配色、文案、构图细节，直接告诉我想改哪里，我可以继续帮你编辑。</p>
+        </section>
+      </section>
+
+      <footer class="composer-dock">
+        <div class="chat-input">
+          <p>Ask Nova to refine this image</p>
+          <div class="input-actions">
+            <div class="left-actions">
+              <span class="icon-button"><svg class="ui-icon"><use href="#i-plus"></use></svg></span>
+              <span class="cost-chip"><svg class="ui-icon"><use href="#i-zap"></use></svg><span>4</span></span>
+            </div>
+            <div class="right-actions">
+              <span class="icon-button"><svg class="ui-icon"><use href="#i-mic"></use></svg></span>
+              <span class="send-button"><svg class="ui-icon"><use href="#i-send"></use></svg></span>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </section>
+
+    <section id="detail" class="screen detail-screen" aria-label="图片查看态">
+      <div class="detail-nav-bar">
+        <button class="detail-icon-button" type="button" data-show="chat" aria-label="返回">
+          <svg class="detail-back-icon" width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.399621 8.96103L7.89962 16.461C7.9693 16.5307 8.05203 16.586 8.14307 16.6237C8.23412 16.6614 8.3317 16.6808 8.43025 16.6808C8.52879 16.6808 8.62637 16.6614 8.71742 16.6237C8.80846 16.586 8.89119 16.5307 8.96087 16.461C9.03056 16.3914 9.08583 16.3086 9.12354 16.2176C9.16125 16.1265 9.18066 16.029 9.18066 15.9304C9.18066 15.8319 9.16125 15.7343 9.12354 15.6432C9.08583 15.5522 9.03056 15.4695 8.96087 15.3998L1.99056 8.43041L8.96087 1.46103C9.1016 1.3203 9.18066 1.12943 9.18066 0.93041C9.18066 0.731387 9.1016 0.540515 8.96087 0.399785C8.82014 0.259054 8.62927 0.179993 8.43025 0.179993C8.23122 0.179993 8.04035 0.259054 7.89962 0.399785L0.399621 7.89978C0.329888 7.96944 0.27457 8.05216 0.236826 8.1432C0.199082 8.23425 0.179657 8.33185 0.179657 8.43041C0.179657 8.52897 0.199082 8.62657 0.236826 8.71762C0.27457 8.80866 0.329888 8.89138 0.399621 8.96103Z" fill="#333B46" stroke="#333B46" stroke-width="0.36"/>
+          </svg>
+        </button>
+        <div class="detail-nav-actions">
+          <button class="detail-icon-button" type="button" aria-label="分享"><svg class="ui-icon"><use href="#i-share"></use></svg></button>
+          <button class="detail-icon-button" type="button" aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
+        </div>
+      </div>
+      <div class="detail-preview-image">
+        <img src="assets/coffee-culture-poster-page.jpg" alt="Generated coffee culture poster detail" data-detail-image>
+      </div>
+      <div class="detail-counter"><span data-detail-index>1</span> / <span data-detail-total>3</span></div>
+      <div class="detail-bottom-actions">
+        <button class="primary-action" type="button" data-show="edit" data-detail-edit><svg class="ui-icon"><use href="#i-edit"></use></svg>编辑</button>
+        <button class="secondary-action" type="button"><svg class="ui-icon"><use href="#i-download"></use></svg>下载</button>
+      </div>
+    </section>
+
+    <section id="edit" class="screen" aria-label="Image editing">
+      <div class="status-bar project-status" aria-hidden="true">
+        <div class="time">9:41</div>
+        <div class="signals">
+          <div class="cellular"><span></span><span></span><span></span><span></span></div>
+          <div class="wifi"></div>
+          <div class="battery"></div>
+        </div>
+      </div>
+      <header class="edit-topbar">
+        <div class="nav-left">
+          <button class="back-btn" type="button" data-show="detail" aria-label="Back">
+            <svg class="ui-icon"><use href="#i-chevron-left"></use></svg>
+          </button>
+          <div class="title-stack">
+            <strong>Edit image</strong>
+            <span>coffee-culture-poster.png</span>
+          </div>
+        </div>
+        <button class="round-tool" type="button" data-show="chat" aria-label="Done">
+          <svg class="ui-icon"><use href="#i-check"></use></svg>
+        </button>
+      </header>
+
+      <section class="edit-workspace">
+        <div class="edit-stage">
+          <img src="assets/coffee-culture-poster-page.jpg" alt="Image editing canvas" data-edit-image>
+          <div class="selection-mask" aria-hidden="true"></div>
+        </div>
+        <div class="edit-tools">
+          <button class="edit-chip active" type="button"><svg class="ui-icon"><use href="#i-brush"></use></svg>局部重绘</button>
+          <button class="edit-chip" type="button"><svg class="ui-icon"><use href="#i-crop"></use></svg>扩图</button>
+          <button class="edit-chip" type="button"><svg class="ui-icon"><use href="#i-sparkles"></use></svg>换风格</button>
+          <button class="edit-chip" type="button"><svg class="ui-icon"><use href="#i-image"></use></svg>参考图</button>
+        </div>
+        <div class="variant-row">
+          <button class="variant active" type="button"><img src="assets/coffee-culture-poster-page.jpg" alt="Variant 1"></button>
+          <button class="variant" type="button"><img src="assets/coffee-culture-poster-page.jpg" alt="Variant 2"></button>
+          <button class="variant" type="button"><img src="assets/coffee-culture-poster-page.jpg" alt="Variant 3"></button>
+          <button class="variant" type="button"><img src="assets/coffee-culture-poster-page.jpg" alt="Variant 4"></button>
+        </div>
+      </section>
+
+      <footer class="edit-composer">
+        <div class="edit-input">
+          <p>Replace the table background with a warmer walnut surface and keep the cups unchanged.</p>
+          <div class="input-actions">
+            <div class="left-actions">
+              <span class="cost-chip"><svg class="ui-icon"><use href="#i-zap"></use></svg><span>6</span></span>
+            </div>
+            <div class="right-actions">
+              <span class="icon-button"><svg class="ui-icon"><use href="#i-mic"></use></svg></span>
+              <button class="send-button" type="button"><svg class="ui-icon"><use href="#i-send"></use></svg></button>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </section>
+
+    <div class="sheet-backdrop" id="templateSheet" aria-hidden="true">
+      <section class="sheet template-sheet" role="dialog" aria-modal="true" aria-label="模板详情">
+        <div class="sheet-preview">
+          <img src="assets/coffee-culture-poster.png" alt="Coffee poster template preview">
+          <button class="sheet-close" type="button" data-close-sheet aria-label="Close"><svg class="ui-icon"><use href="#i-x"></use></svg></button>
+        </div>
+        <div class="sheet-copy">
+          <h2>Modern Coffee Culture Poster</h2>
+          <p>Poster | 3:4 | 1080 x 1440</p>
+          <p>Generate a modern coffee culture poster with warm indoor lighting, hands holding blue ceramic cups with latte art, editorial layout, rich texture, premium lifestyle poster.</p>
+        </div>
+        <div class="sheet-actions">
+          <button class="secondary-action" type="button" data-close-sheet>As reference</button>
+          <button class="primary-action" type="button" data-use-template>Use prompt</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="sheet-backdrop" id="modelSheet" aria-hidden="true">
+      <section class="sheet model-sheet" role="dialog" aria-modal="true" aria-label="选择生图模型">
+        <h2>Image model</h2>
+        <button class="model-option selected" type="button" data-model="GPT Image 2">
+          <span><strong>GPT Image 2</strong><span>高质量文案与构图，适合海报、广告视觉</span></span>
+          <span class="check"><svg class="ui-icon" style="width:13px;height:13px"><use href="#i-check"></use></svg></span>
+        </button>
+        <button class="model-option" type="button" data-model="Flux Pro 1.1">
+          <span><strong>Flux Pro 1.1</strong><span>写实质感更强，适合产品图和场景图</span></span>
+          <span class="check"><svg class="ui-icon" style="width:13px;height:13px"><use href="#i-check"></use></svg></span>
+        </button>
+        <button class="model-option" type="button" data-model="Imagen 4">
+          <span><strong>Imagen 4</strong><span>光影稳定，适合人物、空间和自然画面</span></span>
+          <span class="check"><svg class="ui-icon" style="width:13px;height:13px"><use href="#i-check"></use></svg></span>
+        </button>
+      </section>
+    </div>
+
+    <div class="home-indicator" aria-hidden="true"></div>
+  </main>
+
+  <script>
+    const screens = [...document.querySelectorAll(".screen")];
+    const chatScreen = document.querySelector("#chat");
+    const projectContent = document.querySelector(".project-content");
+    const templateSheet = document.querySelector("#templateSheet");
+    const modelSheet = document.querySelector("#modelSheet");
+    const modeShort = document.querySelector("[data-mode-short]");
+    const generationModels = [...document.querySelectorAll("[data-generation-model]")];
+    const outputModels = [...document.querySelectorAll("[data-output-model]")];
+    const generationItems = [...document.querySelectorAll(".generation-item")];
+    const chatModelBadge = document.querySelector("[data-chat-model-badge]");
+    const detailPreview = document.querySelector(".detail-preview-image");
+    const detailImage = document.querySelector("[data-detail-image]");
+    const detailIndex = document.querySelector("[data-detail-index]");
+    const detailTotal = document.querySelector("[data-detail-total]");
+    const detailEdit = document.querySelector("[data-detail-edit]");
+    const editImage = document.querySelector("[data-edit-image]");
+    const generatedImages = [
+      { src: "assets/coffee-culture-poster-page.jpg", alt: "Generated coffee culture poster version 1" },
+      { src: "coffee_light_9x16_2.jpg", alt: "Generated coffee culture poster version 2" },
+      { src: "coffee_dark_1x1_2.jpg", alt: "Generated coffee culture poster version 3" }
+    ];
+    let currentImageIndex = 0;
+    let detailPointerStartX = 0;
+    let detailPointerStartY = 0;
+    let generationTimer;
+    let generationStepTimers = [];
+
+    function show(id) {
+      closeSheets();
+      screens.forEach((screen) => screen.classList.toggle("active", screen.id === id));
+    }
+
+    function openSheet(sheet) {
+      sheet.classList.add("is-open");
+      sheet.setAttribute("aria-hidden", "false");
+    }
+
+    function closeSheets() {
+      document.querySelectorAll(".sheet-backdrop").forEach((sheet) => {
+        sheet.classList.remove("is-open");
+        sheet.setAttribute("aria-hidden", "true");
+      });
+    }
+
+    function setCurrentImage(index) {
+      currentImageIndex = (index + generatedImages.length) % generatedImages.length;
+      const image = generatedImages[currentImageIndex];
+      detailImage.src = image.src;
+      detailImage.alt = image.alt;
+      detailIndex.textContent = currentImageIndex + 1;
+      detailTotal.textContent = generatedImages.length;
+      detailEdit.dataset.imageIndex = currentImageIndex;
+      editImage.src = image.src;
+      editImage.alt = `${image.alt} editing canvas`;
+    }
+
+    function beginDetailSwipe(x, y) {
+      detailPointerStartX = x;
+      detailPointerStartY = y;
+    }
+
+    function finishDetailSwipe(x, y) {
+      const deltaX = x - detailPointerStartX;
+      const deltaY = y - detailPointerStartY;
+      if (Math.abs(deltaX) > 48 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
+        setCurrentImage(currentImageIndex + (deltaX < 0 ? 1 : -1));
+      }
+    }
+
+    function completeGeneration() {
+      generationStepTimers.forEach((timer) => window.clearTimeout(timer));
+      generationStepTimers = [];
+      chatScreen.classList.remove("is-generating");
+      chatScreen.classList.add("is-complete");
+      const completedTools = chatScreen.querySelector(".tool-list");
+      projectContent.scrollTop = completedTools.offsetTop - projectContent.offsetTop - 8;
+    }
+
+    function startGeneration() {
+      window.clearTimeout(generationTimer);
+      generationStepTimers.forEach((timer) => window.clearTimeout(timer));
+      generationStepTimers = [];
+      generationItems.forEach((item) => item.classList.remove("is-visible"));
+      chatScreen.classList.remove("is-complete");
+      chatScreen.classList.add("is-generating");
+      show("chat");
+      projectContent.scrollTop = 0;
+      [300, 2800, 5300].forEach((delay, index) => {
+        generationStepTimers.push(window.setTimeout(() => {
+          generationItems[index].classList.add("is-visible");
+          projectContent.scrollTo({
+            top: generationItems[index].offsetTop - projectContent.offsetTop - 12,
+            behavior: "smooth"
+          });
+        }, delay));
+      });
+      generationTimer = window.setTimeout(completeGeneration, 10000);
+    }
+
+    setCurrentImage(0);
+
+    if (window.PointerEvent) {
+      detailPreview.addEventListener("pointerdown", (event) => beginDetailSwipe(event.clientX, event.clientY));
+      detailPreview.addEventListener("pointerup", (event) => finishDetailSwipe(event.clientX, event.clientY));
+    } else {
+      detailPreview.addEventListener("touchstart", (event) => {
+        const touch = event.touches[0];
+        beginDetailSwipe(touch.clientX, touch.clientY);
+      }, { passive: true });
+      detailPreview.addEventListener("touchend", (event) => {
+        const touch = event.changedTouches[0];
+        finishDetailSwipe(touch.clientX, touch.clientY);
+      }, { passive: true });
+      detailPreview.addEventListener("mousedown", (event) => beginDetailSwipe(event.clientX, event.clientY));
+      detailPreview.addEventListener("mouseup", (event) => finishDetailSwipe(event.clientX, event.clientY));
+    }
+
+    document.addEventListener("click", (event) => {
+      const imageTarget = event.target.closest("[data-image-index]");
+      if (imageTarget) setCurrentImage(Number(imageTarget.dataset.imageIndex));
+
+      const showTarget = event.target.closest("[data-show]");
+      if (showTarget) show(showTarget.dataset.show);
+
+      if (event.target.closest("[data-open-template]")) openSheet(templateSheet);
+      if (event.target.closest("[data-open-model]")) openSheet(modelSheet);
+
+      if (event.target.closest("[data-close-sheet]")) closeSheets();
+
+      if (event.target.closest("[data-use-template]")) {
+        document.querySelectorAll(".template-card").forEach((card, index) => {
+          card.classList.toggle("selected", index === 0);
+        });
+        closeSheets();
+      }
+
+      if (event.target.closest("[data-send-query]")) startGeneration();
+
+      const modelOption = event.target.closest(".model-option");
+      if (modelOption) {
+        document.querySelectorAll(".model-option").forEach((option) => option.classList.toggle("selected", option === modelOption));
+        const model = modelOption.dataset.model;
+        modeShort.textContent = model;
+        generationModels.forEach((item) => {
+          item.textContent = model;
+        });
+        outputModels.forEach((item) => {
+          item.textContent = model;
+        });
+        chatModelBadge.textContent = model;
+        closeSheets();
+      }
+
+      const backdrop = event.target.classList.contains("sheet-backdrop") ? event.target : null;
+      if (backdrop) closeSheets();
+    });
+  </script>
+</body>
+</html>
