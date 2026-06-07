@@ -747,6 +747,44 @@
       font: 400 14px/21px "PingFang SC", sans-serif;
     }
 
+    .user-bubble.with-image {
+      max-width: 309px;
+      display: grid;
+      justify-items: end;
+      gap: 10px;
+      padding: 0;
+      background: transparent;
+      color: var(--blue);
+    }
+
+    .user-attachment-thumb {
+      width: 64px;
+      height: 64px;
+      display: block;
+      overflow: hidden;
+      border: 1px solid #fff;
+      border-radius: 14px;
+      background: rgba(255,255,255,.9);
+      box-shadow: var(--shadow-card);
+    }
+
+    .user-attachment-thumb img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .user-attachment-copy {
+      max-width: 309px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: #ecf2ff;
+      color: var(--blue);
+      font: 400 14px/24px "PingFang SC", sans-serif;
+      text-align: left;
+    }
+
     .inline-skill {
       height: 24px;
       display: inline-flex;
@@ -998,6 +1036,41 @@
       filter: hue-rotate(8deg) contrast(1.04);
     }
 
+    .image-output-card.variant-hd img {
+      filter: contrast(1.06) saturate(1.08) sharpen(1);
+    }
+
+    .image-output-card.variant-background,
+    .image-output-card.variant-outpaint {
+      background:
+        linear-gradient(45deg, rgba(151,159,171,.18) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(151,159,171,.18) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(151,159,171,.18) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(151,159,171,.18) 75%);
+      background-color: #fff;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+      background-size: 16px 16px;
+    }
+
+    .image-output-card.variant-background img {
+      padding: 12px;
+      filter: drop-shadow(0 8px 16px rgba(0, 8, 24, .12));
+    }
+
+    .result-canvas {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      display: grid;
+      place-items: center;
+      padding: 0;
+    }
+
+    .result-canvas img {
+      width: var(--result-image-width, 75%);
+      height: var(--result-image-height, 100%);
+      object-fit: fill;
+    }
+
     .model-corner-badge {
       position: absolute;
       top: 10px;
@@ -1221,6 +1294,61 @@
       font: 500 12px/18px Outfit, "PingFang SC", sans-serif;
     }
 
+    .detail-side-actions {
+      position: absolute;
+      right: 12px;
+      top: 104px;
+      z-index: 9;
+      display: grid;
+      gap: 6px;
+      justify-items: center;
+      padding: 8px 6px;
+      border: 1px solid rgba(255,255,255,.92);
+      border-radius: 22px;
+      background: rgba(255,255,255,.72);
+      box-shadow: 0 8px 28px rgba(0,8,24,.14);
+      backdrop-filter: blur(16px);
+      pointer-events: auto;
+    }
+
+    .detail-side-action {
+      width: 44px;
+      min-height: 48px;
+      display: grid;
+      justify-items: center;
+      align-content: center;
+      gap: 3px;
+      border-radius: 15px;
+      color: var(--text-primary);
+      font: 500 10px/14px "PingFang SC", sans-serif;
+      text-align: center;
+    }
+
+    .detail-side-action:active {
+      background: rgba(237,239,241,.82);
+    }
+
+    .detail-side-icon {
+      width: 30px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(255,255,255,.74);
+      color: var(--text-primary);
+    }
+
+    .detail-side-icon .ui-icon {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2.2;
+    }
+
+    .detail-side-icon.text-icon {
+      color: var(--text-strong);
+      font: 700 12px/16px Outfit, sans-serif;
+    }
+
     .detail-bottom-actions {
       position: absolute;
       left: 16px;
@@ -1260,150 +1388,253 @@
       color: var(--text-strong);
     }
 
+    .expand-confirm {
+      display: none;
+      width: auto;
+      min-width: 58px;
+      padding: 0 14px;
+      border-radius: 18px;
+      background: var(--text-strong);
+      color: #fff;
+      font: 500 14px/21px "PingFang SC", sans-serif;
+    }
+
+    .expand-confirm:disabled {
+      opacity: .42;
+      color: rgba(255,255,255,.72);
+    }
+
     .edit-workspace {
       position: absolute;
       left: 0;
       right: 0;
-      top: 96px;
-      bottom: 156px;
-      overflow: auto;
-      padding: 12px 16px 24px;
+      top: 104px;
+      bottom: 154px;
+      overflow: hidden;
+      padding: 8px 0 0;
       display: grid;
-      align-content: start;
-      gap: 14px;
-      scrollbar-width: none;
+      place-items: center;
     }
-
-    .edit-workspace::-webkit-scrollbar { display: none; }
 
     .edit-stage {
       position: relative;
       width: 343px;
-      height: 343px;
+      height: min(492px, 100%);
       overflow: hidden;
-      border: 1px solid #fff;
-      border-radius: 16px;
-      background: #fff;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .edit-image-box {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .edit-image-box img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    #commandEdit.is-expand-mode .expand-confirm {
+      display: inline-grid;
+    }
+
+    #commandEdit.is-expand-mode .edit-workspace {
+      bottom: 104px;
+      padding: 8px 16px 0;
+    }
+
+    #commandEdit.is-expand-mode .edit-stage {
+      width: 343px;
+      height: min(492px, 100%);
+      max-height: 100%;
+      display: grid;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    #commandEdit.is-expand-mode.has-expand-preview .edit-stage {
+      width: 343px;
+      height: auto;
+      max-height: 100%;
+      aspect-ratio: var(--expand-ratio, 1 / 1);
+      border: 3px solid #4d8dff;
+      border-radius: 2px;
+      background-color: #fff;
+      background-clip: padding-box;
+      background-image:
+        linear-gradient(45deg, rgba(151,159,171,.2) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(151,159,171,.2) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(151,159,171,.2) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(151,159,171,.2) 75%);
+      background-position: 0 0, 0 5px, 5px -5px, -5px 0;
+      background-size: 10px 10px;
       box-shadow: var(--shadow-card);
     }
 
-    .selection-mask {
-      position: absolute;
-      left: 75px;
-      top: 86px;
-      width: 184px;
-      height: 126px;
-      border: 2px solid #fff;
-      border-radius: 20px;
-      background: rgba(77,94,255,.16);
-      box-shadow: 0 0 0 999px rgba(0,8,24,.18);
+    #commandEdit.is-expand-mode.has-expand-preview .edit-image-box {
+      width: var(--expand-image-width, 100%) !important;
+      height: var(--expand-image-height, 100%) !important;
+      max-width: var(--expand-image-width, 100%) !important;
+      max-height: var(--expand-image-height, 100%) !important;
+      overflow: visible;
     }
 
-    .selection-mask::after {
-      content: "";
-      position: absolute;
-      right: -7px;
-      bottom: -7px;
-      width: 14px;
-      height: 14px;
-      border: 2px solid #fff;
-      border-radius: 50%;
-      background: var(--blue);
+    #commandEdit.is-expand-mode.has-expand-preview .edit-image-box img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: fill !important;
+      object-position: center !important;
     }
 
     .edit-tools {
-      width: 343px;
+      width: 100%;
       display: flex;
       gap: 8px;
-      overflow: hidden;
+      overflow-x: auto;
+      padding: 0 12px 10px;
+      scrollbar-width: none;
     }
 
+    .edit-tools:empty {
+      display: none;
+    }
+
+    .edit-tools::-webkit-scrollbar { display: none; }
+
     .edit-chip {
-      height: 34px;
+      height: 40px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 0 10px;
-      border-radius: 10px;
-      background: #edeff1;
+      padding: 0 14px;
+      border: 1px solid #fff;
+      border-radius: 20px;
+      background: rgba(255,255,255,.86);
       color: var(--text-primary);
-      font: 400 12px/18px "PingFang SC", sans-serif;
+      box-shadow: var(--shadow-card);
+      font: 500 14px/21px "PingFang SC", sans-serif;
       white-space: nowrap;
       flex: 0 0 auto;
     }
 
     .edit-chip.active {
-      background: #ecf2ff;
-      color: var(--blue);
+      background: rgba(255,255,255,.86);
+      color: var(--text-primary);
     }
 
     .edit-chip .ui-icon {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
+      stroke-width: 2.2;
     }
 
-    .variant-row {
-      width: 343px;
-      display: flex;
-      gap: 8px;
-      overflow: hidden;
+    .edit-chip.ratio-chip {
+      min-width: 78px;
+      justify-content: center;
+      font-family: Outfit, "PingFang SC", sans-serif;
     }
 
-    .variant {
-      position: relative;
-      width: 82px;
-      height: 82px;
-      border: 1px solid #fff;
-      border-radius: 12px;
-      overflow: hidden;
-      background: #fff;
-      flex: 0 0 auto;
+    .edit-chip.ratio-chip.active {
+      border-color: rgba(77,94,255,.24);
+      background: #ecf2ff;
+      color: var(--blue);
     }
-
-    .variant.active {
-      border-color: var(--blue);
-      box-shadow: 0 0 0 2px rgba(77,94,255,.18) inset;
-    }
-
-    .variant img {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: cover;
-    }
-
-    .variant:nth-child(2) img { filter: saturate(1.25) brightness(1.04); }
-    .variant:nth-child(3) img { filter: hue-rotate(10deg) contrast(1.03); }
-    .variant:nth-child(4) img { filter: sepia(.12) saturate(1.12); }
 
     .edit-composer {
       position: absolute;
       left: 0;
       right: 0;
       bottom: 0;
-      height: 156px;
-      padding: 8px 12px 0;
-      background: linear-gradient(180deg, rgba(244,245,247,0) 0%, #f4f5f7 26%);
+      height: 154px;
+      padding: 0 0 30px;
+      display: grid;
+      align-content: end;
+      gap: 0;
+      background: linear-gradient(180deg, rgba(244,245,247,0) 0%, #f4f5f7 28%);
       z-index: 4;
+    }
+
+    #commandEdit.is-expand-mode .edit-composer {
+      height: 104px;
+      padding-bottom: 34px;
+      background: linear-gradient(180deg, rgba(244,245,247,0) 0%, #f4f5f7 24%);
+    }
+
+    #commandEdit.is-expand-mode .edit-input {
+      display: none;
     }
 
     .edit-input {
       width: 351px;
-      min-height: 104px;
-      display: grid;
-      grid-template-rows: 44px 36px;
-      gap: 12px;
-      padding: 12px;
+      height: 56px;
+      margin: 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 6px 0 18px;
       border: 1.5px solid #fff;
-      border-radius: 20px;
-      background: rgba(255,255,255,.8);
+      border-radius: 28px;
+      background: rgba(255,255,255,.86);
       box-shadow: var(--shadow-input);
     }
 
     .edit-input p {
       margin: 0;
+      min-width: 0;
+      flex: 1;
+      overflow: hidden;
+      color: var(--text-tertiary);
+      font: 400 15px/22px "PingFang SC", Outfit, sans-serif;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      outline: none;
+    }
+
+    .edit-input p:empty::before {
+      content: attr(data-placeholder);
+      color: var(--text-tertiary);
+      pointer-events: none;
+    }
+
+    .edit-input p:not(:empty) {
       color: var(--text-primary);
-      font: 400 15px/22px Outfit, "PingFang SC", sans-serif;
+    }
+
+    .edit-input .icon-button {
+      width: 28px;
+      height: 28px;
+      color: var(--text-secondary);
+      flex: 0 0 auto;
+    }
+
+    .edit-input .icon-button .ui-icon {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2.2;
+    }
+
+    .edit-input .send-button {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      flex: 0 0 auto;
+    }
+
+    .edit-input .send-button .ui-icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2.2;
     }
 
     .sheet-backdrop {
@@ -1816,7 +2047,7 @@
 
         <section class="image-output-stack" aria-label="Generated images">
           <div class="image-output-card">
-            <button class="image-cover-button" type="button" data-show="detail" data-image-index="0" aria-label="打开图片详情">
+            <button class="image-cover-button" type="button" data-show="edit" data-image-index="0" aria-label="打开图片编辑">
               <img src="assets/coffee-culture-poster-page.jpg" alt="Generated coffee culture poster version 1">
             </button>
             <span class="model-corner-badge"><span class="model-corner-mark">◎</span><span data-output-model>GPT Image 2</span></span>
@@ -1829,7 +2060,7 @@
             </span>
           </div>
           <div class="image-output-card">
-            <button class="image-cover-button" type="button" data-show="detail" data-image-index="1" aria-label="打开图片详情">
+            <button class="image-cover-button" type="button" data-show="edit" data-image-index="1" aria-label="打开图片编辑">
               <img src="coffee_light_9x16_2.jpg" alt="Generated coffee culture poster version 2">
             </button>
             <span class="model-corner-badge"><span class="model-corner-mark">◎</span><span data-output-model>GPT Image 2</span></span>
@@ -1842,7 +2073,7 @@
             </span>
           </div>
           <div class="image-output-card">
-            <button class="image-cover-button" type="button" data-show="detail" data-image-index="2" aria-label="打开图片详情">
+            <button class="image-cover-button" type="button" data-show="edit" data-image-index="2" aria-label="打开图片编辑">
               <img src="coffee_dark_1x1_2.jpg" alt="Generated coffee culture poster version 3">
             </button>
             <span class="model-corner-badge"><span class="model-corner-mark">◎</span><span data-output-model>GPT Image 2</span></span>
@@ -1875,29 +2106,47 @@
       </footer>
     </section>
 
-    <section id="detail" class="screen detail-screen" aria-label="图片查看态">
+    <section id="edit" class="screen detail-screen edit-action-screen" aria-label="图片编辑态">
       <div class="detail-nav-bar">
         <button class="detail-icon-button" type="button" data-show="chat" aria-label="返回">
           <svg class="detail-back-icon" width="10" height="17" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0.399621 8.96103L7.89962 16.461C7.9693 16.5307 8.05203 16.586 8.14307 16.6237C8.23412 16.6614 8.3317 16.6808 8.43025 16.6808C8.52879 16.6808 8.62637 16.6614 8.71742 16.6237C8.80846 16.586 8.89119 16.5307 8.96087 16.461C9.03056 16.3914 9.08583 16.3086 9.12354 16.2176C9.16125 16.1265 9.18066 16.029 9.18066 15.9304C9.18066 15.8319 9.16125 15.7343 9.12354 15.6432C9.08583 15.5522 9.03056 15.4695 8.96087 15.3998L1.99056 8.43041L8.96087 1.46103C9.1016 1.3203 9.18066 1.12943 9.18066 0.93041C9.18066 0.731387 9.1016 0.540515 8.96087 0.399785C8.82014 0.259054 8.62927 0.179993 8.43025 0.179993C8.23122 0.179993 8.04035 0.259054 7.89962 0.399785L0.399621 7.89978C0.329888 7.96944 0.27457 8.05216 0.236826 8.1432C0.199082 8.23425 0.179657 8.33185 0.179657 8.43041C0.179657 8.52897 0.199082 8.62657 0.236826 8.71762C0.27457 8.80866 0.329888 8.89138 0.399621 8.96103Z" fill="#333B46" stroke="#333B46" stroke-width="0.36"/>
           </svg>
         </button>
-        <div class="detail-nav-actions">
-          <button class="detail-icon-button" type="button" aria-label="分享"><svg class="ui-icon"><use href="#i-share"></use></svg></button>
-          <button class="detail-icon-button" type="button" aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
-        </div>
       </div>
       <div class="detail-preview-image">
-        <img src="assets/coffee-culture-poster-page.jpg" alt="Generated coffee culture poster detail" data-detail-image>
+        <img src="assets/coffee-culture-poster-page.jpg" alt="Generated coffee culture poster editing preview" data-edit-preview-image>
       </div>
-      <div class="detail-counter"><span data-detail-index>1</span> / <span data-detail-total>3</span></div>
+      <div class="detail-side-actions" aria-label="快捷编辑">
+        <button class="detail-side-action" type="button" aria-label="更多">
+          <span class="detail-side-icon"><svg class="ui-icon"><use href="#i-more"></use></svg></span>
+          <span>更多</span>
+        </button>
+        <button class="detail-side-action" type="button" aria-label="分享">
+          <span class="detail-side-icon"><svg class="ui-icon"><use href="#i-share"></use></svg></span>
+          <span>分享</span>
+        </button>
+        <button class="detail-side-action" type="button" data-edit-command="把图片变高清">
+          <span class="detail-side-icon text-icon">HD</span>
+          <span>高清</span>
+        </button>
+        <button class="detail-side-action" type="button" data-expand-mode>
+          <span class="detail-side-icon"><svg class="ui-icon"><use href="#i-crop"></use></svg></span>
+          <span>扩图</span>
+        </button>
+        <button class="detail-side-action" type="button" data-edit-command="移除图片的背景">
+          <span class="detail-side-icon"><svg class="ui-icon"><use href="#i-image"></use></svg></span>
+          <span>去背景</span>
+        </button>
+      </div>
+      <div class="detail-counter"><span data-edit-index>1</span> / <span data-edit-total>3</span></div>
       <div class="detail-bottom-actions">
-        <button class="primary-action" type="button" data-show="edit" data-detail-edit><svg class="ui-icon"><use href="#i-edit"></use></svg>编辑</button>
+        <button class="primary-action" type="button" data-show="commandEdit"><svg class="ui-icon"><use href="#i-edit"></use></svg>指令编辑</button>
         <button class="secondary-action" type="button"><svg class="ui-icon"><use href="#i-download"></use></svg>下载</button>
       </div>
     </section>
 
-    <section id="edit" class="screen" aria-label="Image editing">
+    <section id="commandEdit" class="screen" aria-label="指令编辑态">
       <div class="status-bar project-status" aria-hidden="true">
         <div class="time">9:41</div>
         <div class="signals">
@@ -1907,51 +2156,26 @@
         </div>
       </div>
       <header class="edit-topbar">
-        <div class="nav-left">
-          <button class="back-btn" type="button" data-show="detail" aria-label="Back">
-            <svg class="ui-icon"><use href="#i-chevron-left"></use></svg>
-          </button>
-          <div class="title-stack">
-            <strong>Edit image</strong>
-            <span>coffee-culture-poster.png</span>
-          </div>
-        </div>
-        <button class="round-tool" type="button" data-show="chat" aria-label="Done">
-          <svg class="ui-icon"><use href="#i-check"></use></svg>
+        <button class="round-tool" type="button" data-show="edit" aria-label="取消">
+          <svg class="ui-icon"><use href="#i-x"></use></svg>
         </button>
+        <button class="round-tool expand-confirm" type="button" data-confirm-expand>确认</button>
       </header>
 
       <section class="edit-workspace">
         <div class="edit-stage">
-          <img src="assets/coffee-culture-poster-page.jpg" alt="Image editing canvas" data-edit-image>
-          <div class="selection-mask" aria-hidden="true"></div>
-        </div>
-        <div class="edit-tools">
-          <button class="edit-chip active" type="button"><svg class="ui-icon"><use href="#i-brush"></use></svg>局部重绘</button>
-          <button class="edit-chip" type="button"><svg class="ui-icon"><use href="#i-crop"></use></svg>扩图</button>
-          <button class="edit-chip" type="button"><svg class="ui-icon"><use href="#i-sparkles"></use></svg>换风格</button>
-          <button class="edit-chip" type="button"><svg class="ui-icon"><use href="#i-image"></use></svg>参考图</button>
-        </div>
-        <div class="variant-row">
-          <button class="variant active" type="button"><img src="assets/coffee-culture-poster-page.jpg" alt="Variant 1"></button>
-          <button class="variant" type="button"><img src="assets/coffee-culture-poster-page.jpg" alt="Variant 2"></button>
-          <button class="variant" type="button"><img src="assets/coffee-culture-poster-page.jpg" alt="Variant 3"></button>
-          <button class="variant" type="button"><img src="assets/coffee-culture-poster-page.jpg" alt="Variant 4"></button>
+          <div class="edit-image-box">
+            <img src="assets/coffee-culture-poster-page.jpg" alt="Image editing canvas" data-command-image>
+          </div>
         </div>
       </section>
 
       <footer class="edit-composer">
+        <div class="edit-tools"></div>
         <div class="edit-input">
-          <p>Replace the table background with a warmer walnut surface and keep the cups unchanged.</p>
-          <div class="input-actions">
-            <div class="left-actions">
-              <span class="cost-chip"><svg class="ui-icon"><use href="#i-zap"></use></svg><span>6</span></span>
-            </div>
-            <div class="right-actions">
-              <span class="icon-button"><svg class="ui-icon"><use href="#i-mic"></use></svg></span>
-              <button class="send-button" type="button"><svg class="ui-icon"><use href="#i-send"></use></svg></button>
-            </div>
-          </div>
+          <p contenteditable="true" data-edit-draft data-placeholder="添加标记或直接发送指令编辑"></p>
+          <span class="icon-button"><svg class="ui-icon"><use href="#i-mic"></use></svg></span>
+          <button class="send-button" type="button" data-send-edit-draft aria-label="发送编辑指令"><svg class="ui-icon"><use href="#i-send"></use></svg></button>
         </div>
       </footer>
     </section>
@@ -2006,25 +2230,30 @@
     const outputModels = [...document.querySelectorAll("[data-output-model]")];
     const generationItems = [...document.querySelectorAll(".generation-item")];
     const chatModelBadge = document.querySelector("[data-chat-model-badge]");
-    const detailPreview = document.querySelector(".detail-preview-image");
-    const detailImage = document.querySelector("[data-detail-image]");
-    const detailIndex = document.querySelector("[data-detail-index]");
-    const detailTotal = document.querySelector("[data-detail-total]");
-    const detailEdit = document.querySelector("[data-detail-edit]");
-    const editImage = document.querySelector("[data-edit-image]");
+    const editScreen = document.querySelector("#edit");
+    const commandEditScreen = document.querySelector("#commandEdit");
+    const editPreviewImage = document.querySelector("[data-edit-preview-image]");
+    const editIndex = document.querySelector("[data-edit-index]");
+    const editTotal = document.querySelector("[data-edit-total]");
+    const commandImage = document.querySelector("[data-command-image]");
+    const expandConfirm = document.querySelector("[data-confirm-expand]");
+    const editTools = document.querySelector(".edit-tools");
+    const editDraft = document.querySelector("[data-edit-draft]");
     const generatedImages = [
-      { src: "assets/coffee-culture-poster-page.jpg", alt: "Generated coffee culture poster version 1" },
-      { src: "coffee_light_9x16_2.jpg", alt: "Generated coffee culture poster version 2" },
-      { src: "coffee_dark_1x1_2.jpg", alt: "Generated coffee culture poster version 3" }
+      { src: "assets/coffee-culture-poster-page.jpg", alt: "Generated coffee culture poster version 1", width: 768, height: 1024 },
+      { src: "coffee_light_9x16_2.jpg", alt: "Generated coffee culture poster version 2", width: 1152, height: 2048 },
+      { src: "coffee_dark_1x1_2.jpg", alt: "Generated coffee culture poster version 3", width: 2048, height: 2048 }
     ];
     let currentImageIndex = 0;
-    let detailPointerStartX = 0;
-    let detailPointerStartY = 0;
     let generationTimer;
     let generationStepTimers = [];
+    let selectedExpandRatio = "";
+    const defaultEditTools = editTools.innerHTML;
 
     function show(id) {
       closeSheets();
+      if (id !== "commandEdit") exitExpandMode();
+      if (id === "commandEdit" && !commandEditScreen.classList.contains("is-expand-mode")) showDefaultEditTools();
       screens.forEach((screen) => screen.classList.toggle("active", screen.id === id));
     }
 
@@ -2043,25 +2272,14 @@
     function setCurrentImage(index) {
       currentImageIndex = (index + generatedImages.length) % generatedImages.length;
       const image = generatedImages[currentImageIndex];
-      detailImage.src = image.src;
-      detailImage.alt = image.alt;
-      detailIndex.textContent = currentImageIndex + 1;
-      detailTotal.textContent = generatedImages.length;
-      detailEdit.dataset.imageIndex = currentImageIndex;
-      editImage.src = image.src;
-      editImage.alt = `${image.alt} editing canvas`;
-    }
-
-    function beginDetailSwipe(x, y) {
-      detailPointerStartX = x;
-      detailPointerStartY = y;
-    }
-
-    function finishDetailSwipe(x, y) {
-      const deltaX = x - detailPointerStartX;
-      const deltaY = y - detailPointerStartY;
-      if (Math.abs(deltaX) > 48 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
-        setCurrentImage(currentImageIndex + (deltaX < 0 ? 1 : -1));
+      editPreviewImage.src = image.src;
+      editPreviewImage.alt = `${image.alt} editing preview`;
+      editIndex.textContent = currentImageIndex + 1;
+      editTotal.textContent = generatedImages.length;
+      commandImage.src = image.src;
+      commandImage.alt = `${image.alt} editing canvas`;
+      if (commandEditScreen.classList.contains("has-expand-preview")) {
+        commandImage.complete ? setContainImageSize() : commandImage.addEventListener("load", setContainImageSize, { once: true });
       }
     }
 
@@ -2072,6 +2290,225 @@
       chatScreen.classList.add("is-complete");
       const completedTools = chatScreen.querySelector(".tool-list");
       projectContent.scrollTop = completedTools.offsetTop - projectContent.offsetTop - 8;
+    }
+
+    function showDefaultEditTools() {
+      editTools.innerHTML = defaultEditTools;
+    }
+
+    function exitExpandMode() {
+      commandEditScreen.classList.remove("is-expand-mode");
+      commandEditScreen.classList.remove("has-expand-preview");
+      commandEditScreen.style.removeProperty("--expand-ratio");
+      commandEditScreen.style.removeProperty("--expand-image-width");
+      commandEditScreen.style.removeProperty("--expand-image-height");
+      selectedExpandRatio = "";
+    }
+
+    function getDraftText() {
+      return editDraft.textContent.replace(/\u00a0/g, " ").trim();
+    }
+
+    function setDraftText(text) {
+      editDraft.textContent = text;
+    }
+
+    function appendEditQuery(text) {
+      const draft = getDraftText();
+      setDraftText(draft ? `${draft} ${text}` : text);
+      editDraft.focus();
+    }
+
+    function runOrAppendEditCommand(text) {
+      if (getDraftText()) {
+        exitExpandMode();
+        show("commandEdit");
+        appendEditQuery(text);
+        return;
+      }
+      sendEditMessage(text);
+    }
+
+    function escapeHTML(text) {
+      return text.replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[char]));
+    }
+
+    function getEditToolResult(text) {
+      const ratioMatch = text.match(/按\s*([0-9:]+)\s*扩图/);
+      if (ratioMatch) {
+        return {
+          tool: "image_outpaint",
+          params: `ratio ${ratioMatch[1]}`,
+          copy: "已按所选比例完成扩图处理，下面是处理结果。",
+          variant: "variant-outpaint",
+          resultLabel: `扩图 ${ratioMatch[1]}`,
+          ratio: ratioMatch[1]
+        };
+      }
+      if (/移除.*背景|去背景|背景.*移除/.test(text)) {
+        return {
+          tool: "image_remove_background",
+          params: "background transparent",
+          copy: "已移除图片背景，下面是处理结果。",
+          variant: "variant-background",
+          resultLabel: "已去背景"
+        };
+      }
+      if (/高清|变清晰|清晰度|HD/i.test(text)) {
+        return {
+          tool: "image_HD",
+          params: "scale 2x",
+          copy: "已完成高清增强处理，下面是处理结果。",
+          variant: "variant-hd",
+          resultLabel: "高清"
+        };
+      }
+      return {
+        tool: "image_edit",
+        params: "instruction edit",
+        copy: "已根据指令完成图片编辑，下面是处理结果。",
+        variant: "variant-clean",
+        resultLabel: "编辑结果"
+      };
+    }
+
+    function getResultCanvasMarkup(result, image) {
+      const escapedSrc = escapeHTML(image.src);
+      const escapedAlt = escapeHTML(`${image.alt} ${result.resultLabel}`);
+      if (result.ratio === "1:1") {
+        const sourceWidth = image.width || 1;
+        const sourceHeight = image.height || 1;
+        const width = sourceWidth <= sourceHeight ? `${(sourceWidth / sourceHeight) * 100}%` : "100%";
+        const height = sourceWidth <= sourceHeight ? "100%" : `${(sourceHeight / sourceWidth) * 100}%`;
+        return `
+          <span class="result-canvas" style="--result-image-width:${width};--result-image-height:${height}">
+            <img src="${escapedSrc}" alt="${escapedAlt}">
+          </span>
+        `;
+      }
+      return `<img src="${escapedSrc}" alt="${escapedAlt}">`;
+    }
+
+    function appendAgentEditResult(text, image) {
+      const result = getEditToolResult(text);
+      const resultIndex = generatedImages.push({
+        src: image.src,
+        alt: `${image.alt} ${result.resultLabel}`,
+        width: image.width,
+        height: image.height
+      }) - 1;
+      const block = document.createElement("section");
+      block.className = "agent-block";
+      block.innerHTML = `
+        <div class="agent-row">
+          <span class="avatar-sm">N</span>
+          <strong>Nova</strong>
+          <span class="model-badge"><i>✹</i><span>GPT Image 2</span></span>
+        </div>
+        <p class="ai-copy">${escapeHTML(result.copy)}</p>
+        <div class="tool-list">
+          <div class="tool-row">
+            <span class="tool-name">工具</span>
+            <span class="mini-divider"></span>
+            <svg class="ui-icon"><use href="#i-sparkles"></use></svg>
+            <span>${escapeHTML(result.tool)}</span>
+            <span style="color:#979fab;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHTML(result.params)}</span>
+          </div>
+        </div>
+        <section class="image-output-stack" aria-label="Edited image result">
+          <div class="image-output-card ${result.variant}">
+            <button class="image-cover-button" type="button" data-show="edit" data-image-index="${resultIndex}" aria-label="打开图片编辑">
+              ${getResultCanvasMarkup(result, image)}
+            </button>
+            <span class="model-corner-badge"><span class="model-corner-mark">◎</span><span>GPT Image 2</span></span>
+            <span class="image-float-actions">
+              <button class="image-float-action text-only" type="button" data-show="edit" data-image-index="${resultIndex}">编辑</button>
+              <span class="image-actions-right">
+                <button class="image-float-action icon-only" type="button" aria-label="引用"><svg class="ui-icon reference-icon"><use href="#i-reference"></use></svg></button>
+                <button class="image-float-action icon-only" type="button" aria-label="下载"><svg class="ui-icon"><use href="#i-download"></use></svg></button>
+              </span>
+            </span>
+          </div>
+        </section>
+      `;
+      projectContent.appendChild(block);
+    }
+
+    function showExpandRatios() {
+      commandEditScreen.classList.add("is-expand-mode");
+      commandEditScreen.classList.remove("has-expand-preview");
+      expandConfirm.disabled = true;
+      editTools.innerHTML = `
+        <button class="edit-chip ratio-chip" type="button" data-expand-ratio="1:1">1:1</button>
+        <button class="edit-chip ratio-chip" type="button" data-expand-ratio="9:16">9:16</button>
+        <button class="edit-chip ratio-chip" type="button" data-expand-ratio="3:4">3:4</button>
+        <button class="edit-chip ratio-chip" type="button" data-expand-ratio="16:9">16:9</button>
+        <button class="edit-chip ratio-chip" type="button" data-expand-ratio="4:3">4:3</button>
+      `;
+      setExpandRatio("");
+    }
+
+    function setExpandRatio(ratio) {
+      selectedExpandRatio = ratio;
+      if (ratio === "1:1") {
+        commandEditScreen.classList.add("has-expand-preview");
+        commandEditScreen.style.setProperty("--expand-ratio", "1 / 1");
+        setContainImageSize();
+      } else {
+        commandEditScreen.classList.remove("has-expand-preview");
+        commandEditScreen.style.removeProperty("--expand-ratio");
+        commandEditScreen.style.removeProperty("--expand-image-width");
+        commandEditScreen.style.removeProperty("--expand-image-height");
+      }
+      expandConfirm.disabled = !ratio;
+      editTools.querySelectorAll("[data-expand-ratio]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.expandRatio === ratio);
+      });
+    }
+
+    function setContainImageSize() {
+      if (!commandImage.naturalWidth || !commandImage.naturalHeight) return;
+      const width = commandImage.naturalWidth;
+      const height = commandImage.naturalHeight;
+      if (width <= height) {
+        commandEditScreen.style.setProperty("--expand-image-width", `${(width / height) * 100}%`);
+        commandEditScreen.style.setProperty("--expand-image-height", "100%");
+      } else {
+        commandEditScreen.style.setProperty("--expand-image-width", "100%");
+        commandEditScreen.style.setProperty("--expand-image-height", `${(height / width) * 100}%`);
+      }
+    }
+
+    function enterExpandMode() {
+      selectedExpandRatio = "";
+      show("commandEdit");
+      showExpandRatios();
+    }
+
+    function sendEditMessage(text) {
+      const cleanText = text.trim();
+      if (!cleanText) return;
+      const image = generatedImages[currentImageIndex];
+      const message = document.createElement("div");
+      message.className = "user-message";
+      message.innerHTML = `
+        <div class="user-bubble with-image">
+          <span class="user-attachment-thumb"><img src="${escapeHTML(image.src)}" alt="${escapeHTML(image.alt)}"></span>
+          <span class="user-attachment-copy">${escapeHTML(cleanText)}</span>
+        </div>
+      `;
+      projectContent.appendChild(message);
+      appendAgentEditResult(cleanText, image);
+      setDraftText("");
+      show("chat");
+      showDefaultEditTools();
+      projectContent.scrollTo({ top: projectContent.scrollHeight, behavior: "smooth" });
     }
 
     function startGeneration() {
@@ -2097,28 +2534,26 @@
 
     setCurrentImage(0);
 
-    if (window.PointerEvent) {
-      detailPreview.addEventListener("pointerdown", (event) => beginDetailSwipe(event.clientX, event.clientY));
-      detailPreview.addEventListener("pointerup", (event) => finishDetailSwipe(event.clientX, event.clientY));
-    } else {
-      detailPreview.addEventListener("touchstart", (event) => {
-        const touch = event.touches[0];
-        beginDetailSwipe(touch.clientX, touch.clientY);
-      }, { passive: true });
-      detailPreview.addEventListener("touchend", (event) => {
-        const touch = event.changedTouches[0];
-        finishDetailSwipe(touch.clientX, touch.clientY);
-      }, { passive: true });
-      detailPreview.addEventListener("mousedown", (event) => beginDetailSwipe(event.clientX, event.clientY));
-      detailPreview.addEventListener("mouseup", (event) => finishDetailSwipe(event.clientX, event.clientY));
-    }
-
     document.addEventListener("click", (event) => {
       const imageTarget = event.target.closest("[data-image-index]");
       if (imageTarget) setCurrentImage(Number(imageTarget.dataset.imageIndex));
 
       const showTarget = event.target.closest("[data-show]");
       if (showTarget) show(showTarget.dataset.show);
+
+      const editCommand = event.target.closest("[data-edit-command]");
+      if (editCommand) runOrAppendEditCommand(editCommand.dataset.editCommand);
+
+      if (event.target.closest("[data-expand-mode]")) enterExpandMode();
+
+      const expandRatio = event.target.closest("[data-expand-ratio]");
+      if (expandRatio) setExpandRatio(expandRatio.dataset.expandRatio);
+
+      if (event.target.closest("[data-confirm-expand]") && selectedExpandRatio) {
+        sendEditMessage(`按 ${selectedExpandRatio}扩图`);
+      }
+
+      if (event.target.closest("[data-send-edit-draft]")) sendEditMessage(getDraftText());
 
       if (event.target.closest("[data-open-template]")) openSheet(templateSheet);
       if (event.target.closest("[data-open-model]")) openSheet(modelSheet);
@@ -2151,6 +2586,13 @@
 
       const backdrop = event.target.classList.contains("sheet-backdrop") ? event.target : null;
       if (backdrop) closeSheets();
+    });
+
+    editDraft.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        sendEditMessage(getDraftText());
+      }
     });
   </script>
 </body>
