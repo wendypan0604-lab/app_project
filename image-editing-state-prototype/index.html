@@ -689,6 +689,22 @@
       background: rgba(255,255,255,.6);
     }
 
+    .expand-confirm {
+      display: none;
+      width: auto;
+      min-width: 58px;
+      padding: 0 14px;
+      border-radius: 18px;
+      background: var(--text-strong);
+      color: #fff;
+      font: 500 14px/21px "PingFang SC", sans-serif;
+    }
+
+    .expand-confirm:disabled {
+      opacity: .42;
+      color: rgba(255,255,255,.72);
+    }
+
     .title-stack {
       display: grid;
       gap: 1px;
@@ -943,7 +959,15 @@
       object-position: center;
     }
 
-    .edit-stage img {
+    .edit-image-box {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .edit-image-box img {
       width: 100%;
       height: 100%;
       display: block;
@@ -1111,13 +1135,6 @@
       pointer-events: none;
     }
 
-    .detail-nav-actions {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      pointer-events: auto;
-    }
-
     .detail-icon-button {
       width: 36px;
       height: 36px;
@@ -1182,6 +1199,53 @@
       font: 500 12px/18px Outfit, "PingFang SC", sans-serif;
     }
 
+    .detail-side-actions {
+      position: absolute;
+      right: 12px;
+      top: 72px;
+      z-index: 9;
+      display: grid;
+      gap: 12px;
+      justify-items: center;
+      pointer-events: auto;
+    }
+
+    .detail-side-action {
+      width: 48px;
+      min-height: 62px;
+      display: grid;
+      justify-items: center;
+      gap: 5px;
+      color: var(--text-secondary);
+      font: 500 11px/15px "PingFang SC", sans-serif;
+      text-align: center;
+      text-shadow: 0 1px 6px rgba(255,255,255,.9);
+    }
+
+    .detail-side-icon {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #fff;
+      border-radius: 12px;
+      background: rgba(255,255,255,.82);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-card);
+      backdrop-filter: blur(10px);
+    }
+
+    .detail-side-icon .ui-icon {
+      width: 19px;
+      height: 19px;
+      stroke-width: 2.2;
+    }
+
+    .detail-side-icon.text-icon {
+      color: var(--text-strong);
+      font: 700 13px/16px Outfit, sans-serif;
+    }
+
     .detail-bottom-actions {
       position: absolute;
       left: 16px;
@@ -1244,6 +1308,60 @@
       box-shadow: none;
     }
 
+    #edit.is-expand-mode .expand-confirm {
+      display: inline-grid;
+    }
+
+    #edit.is-expand-mode .edit-workspace {
+      bottom: 104px;
+      padding: 8px 16px 0;
+    }
+
+    #edit.is-expand-mode .edit-stage {
+      width: 343px;
+      height: min(492px, 100%);
+      max-height: 100%;
+      display: grid;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    #edit.is-expand-mode.has-expand-preview .edit-stage {
+      width: 343px;
+      height: auto;
+      max-height: 100%;
+      aspect-ratio: var(--expand-ratio, 1 / 1);
+      border: 3px solid #4d8dff;
+      border-radius: 2px;
+      background-color: #fff;
+      background-clip: padding-box;
+      background-image:
+        linear-gradient(45deg, rgba(151,159,171,.2) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(151,159,171,.2) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(151,159,171,.2) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(151,159,171,.2) 75%);
+      background-position: 0 0, 0 5px, 5px -5px, -5px 0;
+      background-size: 10px 10px;
+      box-shadow: var(--shadow-card);
+    }
+
+    #edit.is-expand-mode.has-expand-preview .edit-image-box {
+      width: var(--expand-image-width, 100%) !important;
+      height: var(--expand-image-height, 100%) !important;
+      max-width: var(--expand-image-width, 100%) !important;
+      max-height: var(--expand-image-height, 100%) !important;
+      overflow: visible;
+    }
+
+    #edit.is-expand-mode.has-expand-preview .edit-image-box img {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: fill !important;
+      object-position: center !important;
+    }
+
     .edit-tools {
       width: 100%;
       display: flex;
@@ -1251,6 +1369,10 @@
       overflow-x: auto;
       padding: 0 12px 10px;
       scrollbar-width: none;
+    }
+
+    .edit-tools:empty {
+      display: none;
     }
 
     .edit-tools::-webkit-scrollbar { display: none; }
@@ -1296,6 +1418,12 @@
       font-family: Outfit, "PingFang SC", sans-serif;
     }
 
+    .edit-chip.ratio-chip.active {
+      border-color: rgba(77,94,255,.24);
+      background: #ecf2ff;
+      color: var(--blue);
+    }
+
     .edit-composer {
       position: absolute;
       left: 0;
@@ -1308,6 +1436,16 @@
       gap: 0;
       background: linear-gradient(180deg, rgba(244,245,247,0) 0%, #f4f5f7 28%);
       z-index: 4;
+    }
+
+    #edit.is-expand-mode .edit-composer {
+      height: 104px;
+      padding-bottom: 34px;
+      background: linear-gradient(180deg, rgba(244,245,247,0) 0%, #f4f5f7 24%);
+    }
+
+    #edit.is-expand-mode .edit-input {
+      display: none;
     }
 
     .edit-input {
@@ -1511,7 +1649,7 @@
             </button>
             <span class="model-corner-badge"><span class="model-corner-mark">◎</span><span data-output-model>GPT Image 2</span></span>
             <span class="image-float-actions">
-              <button class="image-float-action text-only" type="button" data-show="edit" data-image-index="0">编辑</button>
+              <button class="image-float-action text-only" type="button" data-show="detail" data-image-index="0">编辑</button>
               <span class="image-actions-right">
                 <button class="image-float-action icon-only" type="button" aria-label="引用"><svg class="ui-icon reference-icon"><use href="#i-reference"></use></svg></button>
                 <button class="image-float-action icon-only" type="button" aria-label="下载"><svg class="ui-icon"><use href="#i-download"></use></svg></button>
@@ -1524,7 +1662,7 @@
             </button>
             <span class="model-corner-badge"><span class="model-corner-mark">◎</span><span data-output-model>GPT Image 2</span></span>
             <span class="image-float-actions">
-              <button class="image-float-action text-only" type="button" data-show="edit" data-image-index="1">编辑</button>
+              <button class="image-float-action text-only" type="button" data-show="detail" data-image-index="1">编辑</button>
               <span class="image-actions-right">
                 <button class="image-float-action icon-only" type="button" aria-label="引用"><svg class="ui-icon reference-icon"><use href="#i-reference"></use></svg></button>
                 <button class="image-float-action icon-only" type="button" aria-label="下载"><svg class="ui-icon"><use href="#i-download"></use></svg></button>
@@ -1537,7 +1675,7 @@
             </button>
             <span class="model-corner-badge"><span class="model-corner-mark">◎</span><span data-output-model>GPT Image 2</span></span>
             <span class="image-float-actions">
-              <button class="image-float-action text-only" type="button" data-show="edit" data-image-index="2">编辑</button>
+              <button class="image-float-action text-only" type="button" data-show="detail" data-image-index="2">编辑</button>
               <span class="image-actions-right">
                 <button class="image-float-action icon-only" type="button" aria-label="引用"><svg class="ui-icon reference-icon"><use href="#i-reference"></use></svg></button>
                 <button class="image-float-action icon-only" type="button" aria-label="下载"><svg class="ui-icon"><use href="#i-download"></use></svg></button>
@@ -1572,17 +1710,35 @@
             <path d="M0.399621 8.96103L7.89962 16.461C7.9693 16.5307 8.05203 16.586 8.14307 16.6237C8.23412 16.6614 8.3317 16.6808 8.43025 16.6808C8.52879 16.6808 8.62637 16.6614 8.71742 16.6237C8.80846 16.586 8.89119 16.5307 8.96087 16.461C9.03056 16.3914 9.08583 16.3086 9.12354 16.2176C9.16125 16.1265 9.18066 16.029 9.18066 15.9304C9.18066 15.8319 9.16125 15.7343 9.12354 15.6432C9.08583 15.5522 9.03056 15.4695 8.96087 15.3998L1.99056 8.43041L8.96087 1.46103C9.1016 1.3203 9.18066 1.12943 9.18066 0.93041C9.18066 0.731387 9.1016 0.540515 8.96087 0.399785C8.82014 0.259054 8.62927 0.179993 8.43025 0.179993C8.23122 0.179993 8.04035 0.259054 7.89962 0.399785L0.399621 7.89978C0.329888 7.96944 0.27457 8.05216 0.236826 8.1432C0.199082 8.23425 0.179657 8.33185 0.179657 8.43041C0.179657 8.52897 0.199082 8.62657 0.236826 8.71762C0.27457 8.80866 0.329888 8.89138 0.399621 8.96103Z" fill="#333B46" stroke="#333B46" stroke-width="0.36"/>
           </svg>
         </button>
-        <div class="detail-nav-actions">
-          <button class="detail-icon-button" type="button" aria-label="分享"><svg class="ui-icon"><use href="#i-share"></use></svg></button>
-          <button class="detail-icon-button" type="button" aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
-        </div>
       </div>
       <div class="detail-preview-image">
         <img src="assets/coffee-culture-poster-page.jpg" alt="Generated coffee culture poster detail" data-detail-image>
       </div>
+      <div class="detail-side-actions" aria-label="快捷编辑">
+        <button class="detail-side-action" type="button" aria-label="更多">
+          <span class="detail-side-icon"><svg class="ui-icon"><use href="#i-more"></use></svg></span>
+          <span>更多</span>
+        </button>
+        <button class="detail-side-action" type="button" aria-label="分享">
+          <span class="detail-side-icon"><svg class="ui-icon"><use href="#i-share"></use></svg></span>
+          <span>分享</span>
+        </button>
+        <button class="detail-side-action" type="button" data-edit-command="把图片变高清">
+          <span class="detail-side-icon text-icon">HD</span>
+          <span>高清</span>
+        </button>
+        <button class="detail-side-action" type="button" data-edit-command="移除图片的背景">
+          <span class="detail-side-icon"><svg class="ui-icon"><use href="#i-image"></use></svg></span>
+          <span>移除背景</span>
+        </button>
+        <button class="detail-side-action" type="button" data-expand-mode>
+          <span class="detail-side-icon"><svg class="ui-icon"><use href="#i-crop"></use></svg></span>
+          <span>扩图</span>
+        </button>
+      </div>
       <div class="detail-counter"><span data-detail-index>1</span> / <span data-detail-total>3</span></div>
       <div class="detail-bottom-actions">
-        <button class="primary-action" type="button" data-show="edit" data-detail-edit><svg class="ui-icon"><use href="#i-edit"></use></svg>编辑</button>
+        <button class="primary-action" type="button" data-show="edit" data-detail-edit><svg class="ui-icon"><use href="#i-edit"></use></svg>指令编辑</button>
         <button class="secondary-action" type="button"><svg class="ui-icon"><use href="#i-download"></use></svg>下载</button>
       </div>
     </section>
@@ -1600,20 +1756,19 @@
         <button class="round-tool" type="button" data-show="detail" aria-label="取消">
           <svg class="ui-icon"><use href="#i-x"></use></svg>
         </button>
+        <button class="round-tool expand-confirm" type="button" data-confirm-expand>确认</button>
       </header>
 
       <section class="edit-workspace">
         <div class="edit-stage">
-          <img src="assets/coffee-culture-poster-page.jpg" alt="Image editing canvas" data-edit-image>
+          <div class="edit-image-box">
+            <img src="assets/coffee-culture-poster-page.jpg" alt="Image editing canvas" data-edit-image>
+          </div>
         </div>
       </section>
 
       <footer class="edit-composer">
-        <div class="edit-tools">
-          <button class="edit-chip" type="button" data-edit-command="把图片变高清"><svg class="ui-icon"><use href="#i-sparkles"></use></svg>高清</button>
-          <button class="edit-chip" type="button" data-edit-command="移除图片的背景"><svg class="ui-icon"><use href="#i-image"></use></svg>移除背景</button>
-          <button class="edit-chip" type="button" data-expand-mode><svg class="ui-icon"><use href="#i-crop"></use></svg>扩图</button>
-        </div>
+        <div class="edit-tools"></div>
         <div class="edit-input">
           <p contenteditable="true" data-edit-draft data-placeholder="添加标记或直接发送指令编辑"></p>
           <span class="icon-button"><svg class="ui-icon"><use href="#i-mic"></use></svg></span>
@@ -1632,7 +1787,9 @@
     const detailIndex = document.querySelector("[data-detail-index]");
     const detailTotal = document.querySelector("[data-detail-total]");
     const detailEdit = document.querySelector("[data-detail-edit]");
+    const editScreen = document.querySelector("#edit");
     const editImage = document.querySelector("[data-edit-image]");
+    const expandConfirm = document.querySelector("[data-confirm-expand]");
     const projectContent = document.querySelector(".project-content");
     const editTools = document.querySelector(".edit-tools");
     const editDraft = document.querySelector("[data-edit-draft]");
@@ -1644,10 +1801,12 @@
     let currentImageIndex = 0;
     let detailPointerStartX = 0;
     let detailPointerStartY = 0;
+    let selectedExpandRatio = "";
     const defaultEditTools = editTools.innerHTML;
 
     function show(id) {
-      if (id === "edit") showDefaultEditTools();
+      if (id !== "edit") exitExpandMode();
+      if (id === "edit" && !editScreen.classList.contains("is-expand-mode")) showDefaultEditTools();
       screens.forEach((screen) => screen.classList.toggle("active", screen.id === id));
     }
 
@@ -1661,6 +1820,9 @@
       detailEdit.dataset.imageIndex = currentImageIndex;
       editImage.src = image.src;
       editImage.alt = `${image.alt} editing canvas`;
+      if (editScreen.classList.contains("has-expand-preview")) {
+        editImage.complete ? setContainImageSize() : editImage.addEventListener("load", setContainImageSize, { once: true });
+      }
     }
 
     function beginDetailSwipe(x, y) {
@@ -1680,6 +1842,15 @@
       editTools.innerHTML = defaultEditTools;
     }
 
+    function exitExpandMode() {
+      editScreen.classList.remove("is-expand-mode");
+      editScreen.classList.remove("has-expand-preview");
+      editScreen.style.removeProperty("--expand-ratio");
+      editScreen.style.removeProperty("--expand-image-width");
+      editScreen.style.removeProperty("--expand-image-height");
+      selectedExpandRatio = "";
+    }
+
     function getDraftText() {
       return editDraft.textContent.replace(/\u00a0/g, " ").trim();
     }
@@ -1696,6 +1867,8 @@
 
     function runOrAppendEditCommand(text) {
       if (getDraftText()) {
+        exitExpandMode();
+        show("edit");
         appendEditQuery(text);
         return;
       }
@@ -1713,16 +1886,54 @@
     }
 
     function showExpandRatios() {
+      editScreen.classList.add("is-expand-mode");
+      editScreen.classList.remove("has-expand-preview");
+      expandConfirm.disabled = true;
       editTools.innerHTML = `
-        <button class="edit-chip back-chip" type="button" data-edit-tools-back aria-label="返回快捷编辑">
-          <svg class="ui-icon"><use href="#i-chevron-left"></use></svg>
-        </button>
         <button class="edit-chip ratio-chip" type="button" data-expand-ratio="1:1">1:1</button>
         <button class="edit-chip ratio-chip" type="button" data-expand-ratio="9:16">9:16</button>
         <button class="edit-chip ratio-chip" type="button" data-expand-ratio="3:4">3:4</button>
         <button class="edit-chip ratio-chip" type="button" data-expand-ratio="16:9">16:9</button>
         <button class="edit-chip ratio-chip" type="button" data-expand-ratio="4:3">4:3</button>
       `;
+      setExpandRatio("");
+    }
+
+    function setExpandRatio(ratio) {
+      selectedExpandRatio = ratio;
+      if (ratio === "1:1") {
+        editScreen.classList.add("has-expand-preview");
+        editScreen.style.setProperty("--expand-ratio", "1 / 1");
+        setContainImageSize();
+      } else {
+        editScreen.classList.remove("has-expand-preview");
+        editScreen.style.removeProperty("--expand-ratio");
+        editScreen.style.removeProperty("--expand-image-width");
+        editScreen.style.removeProperty("--expand-image-height");
+      }
+      expandConfirm.disabled = !ratio;
+      editTools.querySelectorAll("[data-expand-ratio]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.expandRatio === ratio);
+      });
+    }
+
+    function setContainImageSize() {
+      if (!editImage.naturalWidth || !editImage.naturalHeight) return;
+      const width = editImage.naturalWidth;
+      const height = editImage.naturalHeight;
+      if (width <= height) {
+        editScreen.style.setProperty("--expand-image-width", `${(width / height) * 100}%`);
+        editScreen.style.setProperty("--expand-image-height", "100%");
+      } else {
+        editScreen.style.setProperty("--expand-image-width", "100%");
+        editScreen.style.setProperty("--expand-image-height", `${(height / width) * 100}%`);
+      }
+    }
+
+    function enterExpandMode() {
+      selectedExpandRatio = "";
+      show("edit");
+      showExpandRatios();
     }
 
     function sendEditMessage(text) {
@@ -1772,19 +1983,17 @@
       const editCommand = event.target.closest("[data-edit-command]");
       if (editCommand) runOrAppendEditCommand(editCommand.dataset.editCommand);
 
-      if (event.target.closest("[data-expand-mode]")) showExpandRatios();
+      if (event.target.closest("[data-expand-mode]")) {
+        enterExpandMode();
+      }
 
       if (event.target.closest("[data-edit-tools-back]")) showDefaultEditTools();
 
       const expandRatio = event.target.closest("[data-expand-ratio]");
-      if (expandRatio) {
-        const command = `按 ${expandRatio.dataset.expandRatio}扩图`;
-        if (getDraftText()) {
-          appendEditQuery(command);
-          showDefaultEditTools();
-        } else {
-          sendEditMessage(command);
-        }
+      if (expandRatio) setExpandRatio(expandRatio.dataset.expandRatio);
+
+      if (event.target.closest("[data-confirm-expand]") && selectedExpandRatio) {
+        sendEditMessage(`按 ${selectedExpandRatio}扩图`);
       }
 
       if (event.target.closest("[data-send-edit-draft]")) sendEditMessage(getDraftText());
