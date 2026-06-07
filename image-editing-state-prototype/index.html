@@ -983,6 +983,51 @@
       filter: hue-rotate(8deg) contrast(1.04);
     }
 
+    .image-output-card.variant-hd img {
+      filter: saturate(1.08) contrast(1.08) brightness(1.02);
+    }
+
+    .image-output-card.variant-background {
+      background:
+        linear-gradient(45deg, rgba(151,159,171,.18) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(151,159,171,.18) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(151,159,171,.18) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(151,159,171,.18) 75%);
+      background-color: #fff;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+      background-size: 16px 16px;
+    }
+
+    .image-output-card.variant-background img {
+      padding: 12px;
+      filter: drop-shadow(0 8px 16px rgba(0, 8, 24, .12));
+    }
+
+    .image-output-card.variant-outpaint {
+      background:
+        linear-gradient(45deg, rgba(151,159,171,.18) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(151,159,171,.18) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(151,159,171,.18) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(151,159,171,.18) 75%);
+      background-color: #fff;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+      background-size: 16px 16px;
+    }
+
+    .result-canvas {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      display: grid;
+      place-items: center;
+      padding: 0;
+    }
+
+    .result-canvas img {
+      width: var(--result-image-width, 75%);
+      height: var(--result-image-height, 100%);
+      object-fit: fill;
+    }
+
     .model-corner-badge {
       position: absolute;
       top: 10px;
@@ -1794,9 +1839,9 @@
     const editTools = document.querySelector(".edit-tools");
     const editDraft = document.querySelector("[data-edit-draft]");
     const generatedImages = [
-      { src: "assets/coffee-culture-poster-page.jpg", alt: "Generated coffee culture poster version 1" },
-      { src: "coffee_light_9x16_2.jpg", alt: "Generated coffee culture poster version 2" },
-      { src: "coffee_dark_1x1_2.jpg", alt: "Generated coffee culture poster version 3" }
+      { src: "assets/coffee-culture-poster-page.jpg", alt: "Generated coffee culture poster version 1", width: 900, height: 1200 },
+      { src: "coffee_light_9x16_2.jpg", alt: "Generated coffee culture poster version 2", width: 1600, height: 2848 },
+      { src: "coffee_dark_1x1_2.jpg", alt: "Generated coffee culture poster version 3", width: 2048, height: 2048 }
     ];
     let currentImageIndex = 0;
     let detailPointerStartX = 0;
@@ -1885,6 +1930,106 @@
       }[char]));
     }
 
+    function getEditToolResult(text) {
+      const ratioMatch = text.match(/按\s*([0-9:]+)\s*扩图/);
+      if (ratioMatch) {
+        return {
+          tool: "image_outpaint",
+          params: `ratio ${ratioMatch[1]}`,
+          copy: "已按所选比例完成扩图处理，下面是处理结果。",
+          variant: "variant-outpaint",
+          resultLabel: `扩图 ${ratioMatch[1]}`,
+          ratio: ratioMatch[1]
+        };
+      }
+      if (/移除.*背景|去背景|背景.*移除/.test(text)) {
+        return {
+          tool: "image_remove_background",
+          params: "background transparent",
+          copy: "已移除图片背景，下面是处理结果。",
+          variant: "variant-background",
+          resultLabel: "已去背景"
+        };
+      }
+      if (/高清|变清晰|清晰度|HD/i.test(text)) {
+        return {
+          tool: "image_HD",
+          params: "scale 2x",
+          copy: "已完成高清增强处理，下面是处理结果。",
+          variant: "variant-hd",
+          resultLabel: "高清"
+        };
+      }
+      return {
+        tool: "image_edit",
+        params: "instruction edit",
+        copy: "已根据指令完成图片编辑，下面是处理结果。",
+        variant: "variant-clean",
+        resultLabel: "编辑结果"
+      };
+    }
+
+    function getResultCanvasMarkup(result, image) {
+      const escapedSrc = escapeHTML(image.src);
+      const escapedAlt = escapeHTML(`${image.alt} ${result.resultLabel}`);
+      if (result.ratio === "1:1") {
+        const sourceWidth = image.width || 1;
+        const sourceHeight = image.height || 1;
+        const width = sourceWidth <= sourceHeight ? `${(sourceWidth / sourceHeight) * 100}%` : "100%";
+        const height = sourceWidth <= sourceHeight ? "100%" : `${(sourceHeight / sourceWidth) * 100}%`;
+        return `
+          <span class="result-canvas" style="--result-image-width:${width};--result-image-height:${height}">
+            <img src="${escapedSrc}" alt="${escapedAlt}">
+          </span>
+        `;
+      }
+      return `<img src="${escapedSrc}" alt="${escapedAlt}">`;
+    }
+
+    function appendAgentEditResult(text, image) {
+      const result = getEditToolResult(text);
+      const resultIndex = generatedImages.push({
+        src: image.src,
+        alt: `${image.alt} ${result.resultLabel}`,
+        width: image.width,
+        height: image.height
+      }) - 1;
+      const block = document.createElement("section");
+      block.className = "agent-block";
+      block.innerHTML = `
+        <div class="agent-row">
+          <span class="avatar-sm">N</span>
+          <strong>Nova</strong>
+          <span class="model-badge"><i>✹</i><span>GPT Image 2</span></span>
+        </div>
+        <p class="ai-copy">${escapeHTML(result.copy)}</p>
+        <div class="tool-list">
+          <div class="tool-row">
+            <span class="tool-name">工具</span>
+            <span class="mini-divider"></span>
+            <svg class="ui-icon"><use href="#i-sparkles"></use></svg>
+            <span>${escapeHTML(result.tool)}</span>
+            <span style="color:#979fab;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHTML(result.params)}</span>
+          </div>
+        </div>
+        <section class="image-output-stack" aria-label="Edited image result">
+          <div class="image-output-card ${result.variant}">
+            <button class="image-cover-button" type="button" data-show="detail" data-image-index="${resultIndex}" aria-label="打开图片详情">
+              ${getResultCanvasMarkup(result, image)}
+            </button>
+            <span class="image-float-actions">
+              <button class="image-float-action text-only" type="button" data-show="detail" data-image-index="${resultIndex}">编辑</button>
+              <span class="image-actions-right">
+                <button class="image-float-action icon-only" type="button" aria-label="引用"><svg class="ui-icon reference-icon"><use href="#i-reference"></use></svg></button>
+                <button class="image-float-action icon-only" type="button" aria-label="下载"><svg class="ui-icon"><use href="#i-download"></use></svg></button>
+              </span>
+            </span>
+          </div>
+        </section>
+      `;
+      projectContent.appendChild(block);
+    }
+
     function showExpandRatios() {
       editScreen.classList.add("is-expand-mode");
       editScreen.classList.remove("has-expand-preview");
@@ -1949,6 +2094,7 @@
         </div>
       `;
       projectContent.appendChild(message);
+      appendAgentEditResult(cleanText, image);
       setDraftText("");
       show("chat");
       showDefaultEditTools();
