@@ -689,6 +689,11 @@
       background: rgba(255,255,255,.6);
     }
 
+    .expand-back-icon { display: none; }
+
+    #edit.is-expand-mode .edit-cancel-icon { display: none; }
+    #edit.is-expand-mode .expand-back-icon { display: block; }
+
     .expand-confirm {
       display: none;
       width: auto;
@@ -1016,7 +1021,7 @@
 
     .result-canvas {
       width: 100%;
-      aspect-ratio: 1 / 1;
+      aspect-ratio: var(--result-canvas-ratio, 1 / 1);
       display: grid;
       place-items: center;
       padding: 0;
@@ -1798,8 +1803,9 @@
         </div>
       </div>
       <header class="edit-topbar">
-        <button class="round-tool" type="button" data-show="detail" aria-label="取消">
-          <svg class="ui-icon"><use href="#i-x"></use></svg>
+        <button class="round-tool" type="button" data-show="detail" aria-label="返回">
+          <svg class="ui-icon edit-cancel-icon"><use href="#i-x"></use></svg>
+          <svg class="ui-icon expand-back-icon"><use href="#i-chevron-left"></use></svg>
         </button>
         <button class="round-tool expand-confirm" type="button" data-confirm-expand>确认</button>
       </header>
@@ -1866,7 +1872,8 @@
       editImage.src = image.src;
       editImage.alt = `${image.alt} editing canvas`;
       if (editScreen.classList.contains("has-expand-preview")) {
-        editImage.complete ? setContainImageSize() : editImage.addEventListener("load", setContainImageSize, { once: true });
+        if (selectedExpandRatio === "original") setOriginalExpandCanvas();
+        if (selectedExpandRatio === "1:1") setContainImageSize();
       }
     }
 
@@ -1931,6 +1938,17 @@
     }
 
     function getEditToolResult(text) {
+      const originalRatioMatch = text.match(/按\s*原图(?:比例)?\s*扩图/);
+      if (originalRatioMatch) {
+        return {
+          tool: "image_outpaint",
+          params: "ratio original, scale 1.5x",
+          copy: "已按原图比例完成扩图处理，下面是处理结果。",
+          variant: "variant-outpaint",
+          resultLabel: "扩图 原图",
+          ratio: "original"
+        };
+      }
       const ratioMatch = text.match(/按\s*([0-9:]+)\s*扩图/);
       if (ratioMatch) {
         return {
@@ -1972,6 +1990,15 @@
     function getResultCanvasMarkup(result, image) {
       const escapedSrc = escapeHTML(image.src);
       const escapedAlt = escapeHTML(`${image.alt} ${result.resultLabel}`);
+      if (result.ratio === "original") {
+        const sourceWidth = image.width || 1;
+        const sourceHeight = image.height || 1;
+        return `
+          <span class="result-canvas" style="--result-canvas-ratio:${sourceWidth} / ${sourceHeight};--result-image-width:66.6667%;--result-image-height:66.6667%">
+            <img src="${escapedSrc}" alt="${escapedAlt}">
+          </span>
+        `;
+      }
       if (result.ratio === "1:1") {
         const sourceWidth = image.width || 1;
         const sourceHeight = image.height || 1;
@@ -2033,20 +2060,23 @@
     function showExpandRatios() {
       editScreen.classList.add("is-expand-mode");
       editScreen.classList.remove("has-expand-preview");
-      expandConfirm.disabled = true;
       editTools.innerHTML = `
+        <button class="edit-chip ratio-chip" type="button" data-expand-ratio="original">原图</button>
         <button class="edit-chip ratio-chip" type="button" data-expand-ratio="1:1">1:1</button>
         <button class="edit-chip ratio-chip" type="button" data-expand-ratio="9:16">9:16</button>
         <button class="edit-chip ratio-chip" type="button" data-expand-ratio="3:4">3:4</button>
         <button class="edit-chip ratio-chip" type="button" data-expand-ratio="16:9">16:9</button>
         <button class="edit-chip ratio-chip" type="button" data-expand-ratio="4:3">4:3</button>
       `;
-      setExpandRatio("");
+      setExpandRatio("original");
     }
 
     function setExpandRatio(ratio) {
       selectedExpandRatio = ratio;
-      if (ratio === "1:1") {
+      if (ratio === "original") {
+        editScreen.classList.add("has-expand-preview");
+        setOriginalExpandCanvas();
+      } else if (ratio === "1:1") {
         editScreen.classList.add("has-expand-preview");
         editScreen.style.setProperty("--expand-ratio", "1 / 1");
         setContainImageSize();
@@ -2062,10 +2092,19 @@
       });
     }
 
+    function setOriginalExpandCanvas() {
+      const image = generatedImages[currentImageIndex];
+      const width = image.width || editImage.naturalWidth || 1;
+      const height = image.height || editImage.naturalHeight || 1;
+      editScreen.style.setProperty("--expand-ratio", `${width} / ${height}`);
+      editScreen.style.setProperty("--expand-image-width", "66.6667%");
+      editScreen.style.setProperty("--expand-image-height", "66.6667%");
+    }
+
     function setContainImageSize() {
-      if (!editImage.naturalWidth || !editImage.naturalHeight) return;
-      const width = editImage.naturalWidth;
-      const height = editImage.naturalHeight;
+      const image = generatedImages[currentImageIndex];
+      const width = image.width || editImage.naturalWidth || 1;
+      const height = image.height || editImage.naturalHeight || 1;
       if (width <= height) {
         editScreen.style.setProperty("--expand-image-width", `${(width / height) * 100}%`);
         editScreen.style.setProperty("--expand-image-height", "100%");
@@ -2139,7 +2178,7 @@
       if (expandRatio) setExpandRatio(expandRatio.dataset.expandRatio);
 
       if (event.target.closest("[data-confirm-expand]") && selectedExpandRatio) {
-        sendEditMessage(`按 ${selectedExpandRatio}扩图`);
+        sendEditMessage(selectedExpandRatio === "original" ? "按原图比例扩图" : `按 ${selectedExpandRatio}扩图`);
       }
 
       if (event.target.closest("[data-send-edit-draft]")) sendEditMessage(getDraftText());
