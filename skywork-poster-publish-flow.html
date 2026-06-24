@@ -1,0 +1,4377 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skywork Web 素材库与视觉规范发起任务流程</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='10' fill='%23F4F5F7'/%3E%3Cpath d='M7 12h10' stroke='%234D5EFF' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M15 20h10' stroke='%2300FFCE' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bg-page: #f4f5f7;
+      --bg-rail: #eef1f5;
+      --bg-card: rgba(255, 255, 255, 0.9);
+      --bg-glass: rgba(255, 255, 255, 0.82);
+      --bg-chip: #edeff1;
+      --bg-soft: #f9fafc;
+      --text-primary: #333b46;
+      --text-strong: #000818;
+      --text-secondary: #485568;
+      --text-tertiary: #979fab;
+      --text-quaternary: #7f8896;
+      --brand-blue: #4d5eff;
+      --brand-cyan: #00ffce;
+      --accent-orange: #ffaa00;
+      --func-image: #faae15;
+      --func-video: #ff4ad5;
+      --func-doc: #4d5eff;
+      --success: #18bf83;
+      --danger: #ff576d;
+      --border-default: #ffffff;
+      --border-subtle: #edeff1;
+      --shadow-card: 0 1px 6px rgba(0, 8, 24, 0.04);
+      --shadow-float: 0 3px 12px rgba(0, 8, 24, 0.12);
+      --shadow-input: 0 12px 20.8px -17px rgba(0, 8, 24, 0.12);
+      font-family: Outfit, "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-width: 1160px;
+      min-height: 720px;
+      color: var(--text-primary);
+      background: var(--bg-page);
+      overflow-x: hidden;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    .ui-icon {
+      width: 20px;
+      height: 20px;
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex: 0 0 auto;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 48px 240px minmax(920px, 1fr);
+      grid-template-rows: 52px 1fr;
+    }
+
+    .app-shell.detail-mode {
+      grid-template-columns: 48px minmax(0, 1fr);
+    }
+
+    .app-shell.detail-mode .project-side {
+      display: none;
+    }
+
+    .app-shell.detail-mode .topbar,
+    .app-shell.detail-mode .workspace {
+      grid-column: 2;
+    }
+
+    .icon-rail {
+      grid-row: 1 / span 2;
+      background: #eef2f7;
+      border-right: 1px solid #dfe4ec;
+      padding: 10px 8px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sky-logo {
+      width: 28px;
+      height: 28px;
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .sky-logo::before,
+    .sky-logo::after {
+      content: "";
+      position: absolute;
+      width: 18px;
+      height: 10px;
+      border-radius: 999px;
+      transform: rotate(-35deg);
+    }
+
+    .sky-logo::before {
+      left: 2px;
+      top: 6px;
+      background: var(--brand-blue);
+    }
+
+    .sky-logo::after {
+      right: 2px;
+      bottom: 6px;
+      background: var(--brand-cyan);
+    }
+
+    .rail-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: #526071;
+      background: transparent;
+      position: relative;
+    }
+
+    .rail-btn.active {
+      background: #fff;
+      color: var(--text-strong);
+      box-shadow: var(--shadow-card);
+    }
+
+    .rail-badge {
+      position: absolute;
+      top: -4px;
+      right: -7px;
+      height: 14px;
+      padding: 0 4px;
+      border-radius: 6px;
+      color: #fff;
+      background: #ff3838;
+      font-size: 9px;
+      line-height: 14px;
+      font-weight: 700;
+    }
+
+    .project-side {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      border-right: 1px solid #dfe4ec;
+      background: rgba(255, 255, 255, 0.62);
+      padding: 10px 12px 20px;
+      overflow: hidden;
+    }
+
+    .project-side.knowledge-mode {
+      background: rgba(255, 255, 255, 0.82);
+      padding: 22px 12px;
+    }
+
+    .side-panel-view {
+      display: block;
+    }
+
+    .knowledge-nav {
+      display: none;
+    }
+
+    .project-side.knowledge-mode .project-nav {
+      display: none;
+    }
+
+    .project-side.knowledge-mode .knowledge-nav {
+      display: block;
+    }
+
+    .knowledge-side-title {
+      margin: 0 0 22px;
+      color: var(--text-strong);
+      font-size: 20px;
+      line-height: 1.4;
+      font-weight: 700;
+    }
+
+    .knowledge-create {
+      width: 100%;
+      height: 44px;
+      border-radius: 12px;
+      border: 1.5px dashed #6a7aff;
+      display: grid;
+      place-items: center;
+      color: var(--brand-blue);
+      background: transparent;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .knowledge-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .knowledge-item {
+      width: 100%;
+      min-height: 60px;
+      border-radius: 12px;
+      display: grid;
+      grid-template-columns: 38px 1fr auto;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      color: var(--text-secondary);
+      background: transparent;
+      text-align: left;
+    }
+
+    .knowledge-item.active {
+      color: var(--brand-blue);
+      background: #e9ecff;
+    }
+
+    .knowledge-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--brand-blue);
+      background: #eef1ff;
+    }
+
+    .knowledge-item.active .knowledge-icon {
+      background: #dfe5ff;
+    }
+
+    .knowledge-icon.asset {
+      color: #6c47ff;
+      background: #f2ecff;
+    }
+
+    .knowledge-icon.spec {
+      color: #12a66d;
+      background: #dcf8ec;
+    }
+
+    .knowledge-item strong {
+      display: block;
+      color: currentColor;
+      font-size: 14px;
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .knowledge-meta {
+      display: block;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.45;
+      margin-top: 1px;
+      font-weight: 400;
+    }
+
+    .knowledge-count {
+      min-width: 30px;
+      height: 22px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      padding: 0 8px;
+      color: var(--text-tertiary);
+      background: #eef0f4;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .knowledge-item.active .knowledge-count {
+      color: #fff;
+      background: #6380ff;
+    }
+
+    .brand-row {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 10px;
+    }
+
+    .brand-word {
+      color: var(--text-strong);
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .design-pill {
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      background: #fff;
+      font-size: 13px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .beta {
+      color: #ff8c00;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .new-project {
+      width: 100%;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 14px;
+      color: var(--text-strong);
+      background: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 12px;
+    }
+
+    .side-group {
+      display: grid;
+      gap: 4px;
+      margin: 10px 0 16px;
+    }
+
+    .side-link {
+      min-height: 34px;
+      border-radius: 8px;
+      padding: 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #596678;
+      background: transparent;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .side-link.active {
+      color: var(--brand-blue);
+      background: #eef1ff;
+    }
+
+    .side-link .ui-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .side-section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 8px 8px 6px;
+    }
+
+    .project-list {
+      display: grid;
+      gap: 2px;
+      max-height: calc(100vh - 276px);
+      overflow: hidden;
+    }
+
+    .project-item {
+      min-height: 31px;
+      border-radius: 8px;
+      padding: 0 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: #667286;
+      background: transparent;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    .project-item.active {
+      color: var(--brand-blue);
+    }
+
+    .sync-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: conic-gradient(from 90deg, var(--brand-blue), var(--brand-cyan), #ffae2b, var(--brand-blue));
+    }
+
+    .topbar {
+      grid-column: 3;
+      grid-row: 1;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px 0 20px;
+      border-bottom: 1px solid #dfe4ec;
+      background: linear-gradient(90deg, #eef2f7 0%, #f4f5f7 46%, #f0eef9 100%);
+    }
+
+    .top-left,
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hamburger,
+    .top-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--text-secondary);
+      background: transparent;
+    }
+
+    .top-chip {
+      height: 30px;
+      border-radius: 16px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.66);
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .credit-chip {
+      color: #8f5a00;
+      border-color: #f9d48a;
+      background: #fff8e8;
+    }
+
+    .plan-chip {
+      color: #7a35dc;
+      border-color: #dbc6ff;
+      background: #f2ecff;
+    }
+
+    .avatar-chip {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #8f5a00;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .workspace {
+      grid-column: 3;
+      grid-row: 2;
+      min-height: calc(100vh - 52px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .screen {
+      display: none;
+      height: calc(100vh - 52px);
+      min-height: 668px;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .start-screen {
+      position: relative;
+      padding: 132px 36px 48px;
+      overflow: auto;
+      background:
+        linear-gradient(rgba(229, 232, 238, 0.42) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(229, 232, 238, 0.42) 1px, transparent 1px),
+        var(--bg-page);
+      background-size: 80px 80px;
+      background-position: center 110px;
+    }
+
+    .home-stage {
+      width: min(860px, calc(100vw - 440px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 22px;
+    }
+
+    .bot-avatar,
+    .chat-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      background:
+        radial-gradient(circle at 50% 48%, #031418 0 18%, transparent 19%),
+        radial-gradient(circle at 40% 44%, #00ffce 0 3px, transparent 4px),
+        radial-gradient(circle at 60% 44%, #00ffce 0 3px, transparent 4px),
+        linear-gradient(135deg, #64d5ff, #ff6b9a);
+      border: 4px solid rgba(255, 255, 255, 0.88);
+      box-shadow: var(--shadow-card);
+    }
+
+    .hero-kicker {
+      margin: 0 0 2px;
+      color: var(--text-secondary);
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .hero-title {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 24px;
+      line-height: 1.2;
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .hero-title .accent {
+      color: #ff9f00;
+    }
+
+    .composer {
+      position: relative;
+      min-height: 204px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1.5px solid #fff;
+      box-shadow: var(--shadow-input);
+      padding: 14px 16px 12px;
+    }
+
+    .reference-thumb {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      background:
+        radial-gradient(circle at 56% 48%, rgba(0, 255, 206, 0.8), transparent 12%),
+        radial-gradient(circle at 34% 30%, rgba(77, 94, 255, 0.9), transparent 20%),
+        linear-gradient(135deg, #071126, #243b85 48%, #081119);
+      box-shadow: var(--shadow-card);
+    }
+
+    .reference-thumb .tiny-x {
+      position: absolute;
+      right: -7px;
+      top: -7px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: rgba(0, 8, 24, 0.62);
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    .selected-row {
+      min-height: 62px;
+      margin-left: 66px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .attached-chip,
+    .mode-chip,
+    .model-chip {
+      height: 30px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 9px;
+      color: var(--text-primary);
+      background: #f4f5f7;
+      border: 1px solid transparent;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .attached-chip.image {
+      color: #9c6100;
+      background: #fff3d8;
+      border-color: #ffe4ad;
+    }
+
+    .attached-chip.spec {
+      color: #6f48c9;
+      background: #f2ecff;
+      border-color: #e2d5ff;
+    }
+
+    .chip-close {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      color: currentColor;
+      background: transparent;
+      padding: 0;
+      margin-left: -2px;
+      opacity: 0.75;
+    }
+
+    .chip-close:hover {
+      background: rgba(0, 8, 24, 0.08);
+      opacity: 1;
+    }
+
+    .chip-close .ui-icon {
+      width: 12px;
+      height: 12px;
+    }
+
+    .composer-input {
+      width: 100%;
+      min-height: 44px;
+      margin-top: 10px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text-primary);
+      font-size: 16px;
+      line-height: 1.6;
+      padding: 0;
+    }
+
+    .prompt-line {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 8px;
+      color: var(--text-primary);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .skill-chip {
+      height: 28px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      color: #9c6100;
+      background: #fff3d8;
+      border: 1px solid #ffe4ad;
+      font-size: 14px;
+      font-weight: 600;
+      flex: 0 0 auto;
+    }
+
+    .prompt-text {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .composer-input::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .composer-toolbar {
+      min-height: 42px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .toolbar-left,
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex-wrap: wrap;
+    }
+
+    .composer-options {
+      margin: 10px -16px -12px;
+      padding: 13px 16px 0;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .composer-dropdown {
+      position: relative;
+    }
+
+    .composer-option-btn {
+      height: 32px;
+      min-width: 112px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      color: var(--text-secondary);
+      background: #f9fafc;
+      border: 1px solid #e3e7ee;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .composer-option-btn.primary {
+      color: var(--text-strong);
+      background: #fff;
+      font-weight: 600;
+    }
+
+    .composer-option-btn strong {
+      color: var(--text-strong);
+      font-weight: 600;
+    }
+
+    .composer-menu {
+      position: absolute;
+      left: 0;
+      top: 38px;
+      width: 252px;
+      max-height: 342px;
+      overflow: auto;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid #e6e9ef;
+      box-shadow: 0 16px 38px rgba(0, 8, 24, 0.13);
+      padding: 8px;
+      display: none;
+      z-index: 20;
+    }
+
+    .composer-menu.show {
+      display: grid;
+      gap: 8px;
+    }
+
+    .composer-menu.searchable {
+      width: 288px;
+    }
+
+    .composer-dropdown:nth-child(4) .composer-menu {
+      width: 344px;
+      right: 0;
+      left: auto;
+    }
+
+    .composer-menu-search {
+      height: 34px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 10px;
+      color: var(--text-tertiary);
+      background: #f4f5f7;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .composer-menu-search input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text-primary);
+    }
+
+    .composer-menu-label {
+      margin: 4px 4px 2px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .composer-menu-item {
+      min-height: 40px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 7px 10px;
+      color: var(--text-primary);
+      text-align: left;
+      background: transparent;
+      font-size: 13px;
+    }
+
+    .composer-menu-item:hover,
+    .composer-menu-item.active {
+      background: #f4f5f7;
+    }
+
+    .composer-menu-item span,
+    .composer-menu-item strong {
+      display: block;
+    }
+
+    .composer-menu-item strong {
+      color: var(--text-strong);
+      font-size: 13px;
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+
+    .composer-menu-item span {
+      margin-top: 2px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+
+    .round-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--text-primary);
+      background: #f4f5f7;
+    }
+
+    .round-icon.active {
+      background: #edeff1;
+    }
+
+    .action-chip {
+      height: 32px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      color: var(--text-secondary);
+      background: #f4f5f7;
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .model-chip {
+      height: 34px;
+      color: var(--text-secondary);
+      background: #f4f5f7;
+      border-color: #e8ebf0;
+    }
+
+    .send-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--text-strong);
+      box-shadow: var(--shadow-card);
+    }
+
+    .add-menu {
+      position: absolute;
+      left: 16px;
+      bottom: -222px;
+      width: 300px;
+      padding: 8px;
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: 0 18px 44px rgba(0, 8, 24, 0.16);
+      border: 1px solid var(--border-subtle);
+      display: none;
+      z-index: 4;
+    }
+
+    .add-menu.show {
+      display: block;
+    }
+
+    .add-menu-item {
+      width: 100%;
+      min-height: 42px;
+      border-radius: 9px;
+      display: grid;
+      grid-template-columns: 24px 1fr 18px;
+      align-items: center;
+      gap: 8px;
+      padding: 0 10px;
+      color: var(--text-primary);
+      background: transparent;
+      text-align: left;
+      font-size: 15px;
+    }
+
+    .add-menu-item:hover,
+    .add-menu-item.featured {
+      background: #f4f5f7;
+    }
+
+    .add-menu-item.featured {
+      color: var(--brand-blue);
+      font-weight: 600;
+    }
+
+    .mini-link {
+      height: 30px;
+      border-radius: 9px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      color: var(--text-strong);
+      background: #edeff1;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .recommend-section {
+      width: min(624px, 100%);
+      margin-top: 24px;
+    }
+
+    .recommend-title {
+      margin: 0 0 12px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .recommend-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px 12px;
+    }
+
+    .recommend-card {
+      min-width: 0;
+      text-align: left;
+      background: transparent;
+    }
+
+    .template-preview {
+      height: 146px;
+      border-radius: 10px;
+      border: 1px solid #dfe3ea;
+      background: #f4f5f7;
+      display: grid;
+      place-items: center;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .template-art {
+      position: relative;
+      border-radius: 6px;
+      box-shadow: 0 8px 18px rgba(0, 8, 24, 0.16);
+      display: grid;
+      place-items: center;
+    }
+
+    .template-art.story {
+      width: 72px;
+      height: 118px;
+      background: linear-gradient(160deg, #d4359b, #4667f0);
+    }
+
+    .template-art.square-hot {
+      width: 102px;
+      height: 102px;
+      background: linear-gradient(135deg, #b826e9, #fb1e25 48%, #ffb844);
+    }
+
+    .template-art.cover {
+      width: 124px;
+      height: 66px;
+      background: #d25287;
+    }
+
+    .template-art.square-social {
+      width: 102px;
+      height: 102px;
+      background: linear-gradient(135deg, #8d2bff, #fa0fb9);
+    }
+
+    .template-art.linkedin-post {
+      width: 124px;
+      height: 66px;
+      background: #0d93c8;
+    }
+
+    .template-art.linkedin-video {
+      width: 124px;
+      height: 66px;
+      background: linear-gradient(135deg, #2c7894, #36c4c2);
+    }
+
+    .template-art.tiktok {
+      width: 72px;
+      height: 118px;
+      background: linear-gradient(180deg, #05040a, #15142a);
+    }
+
+    .template-art.x-post {
+      width: 124px;
+      height: 66px;
+      background: linear-gradient(135deg, #111, #2e2e2e);
+    }
+
+    .platform-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      min-width: 20px;
+      height: 20px;
+      border-radius: 5px;
+      display: inline-grid;
+      place-items: center;
+      color: #fff;
+      background: #0b84ff;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .platform-badge.instagram {
+      background: linear-gradient(135deg, #ff7a00, #e3287b);
+    }
+
+    .platform-badge.dark {
+      background: #05070d;
+    }
+
+    .play-dot {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: rgba(0, 8, 24, 0.38);
+      font-size: 11px;
+    }
+
+    .template-name {
+      display: block;
+      color: var(--text-strong);
+      font-size: 14px;
+      line-height: 1.2;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .template-meta {
+      display: block;
+      margin-top: 4px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .project-page {
+      height: 100%;
+      display: grid;
+      grid-template-columns: 520px minmax(680px, 1fr);
+      background: var(--bg-page);
+    }
+
+    .library-screen {
+      padding: 34px 42px 56px;
+      overflow: auto;
+      background: var(--bg-page);
+    }
+
+    .library-shell {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    .library-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .library-title-row {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      min-width: 0;
+    }
+
+    .library-title-row h1 {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 24px;
+      line-height: 1.25;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .library-tabs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .library-tab {
+      height: 40px;
+      border-radius: 12px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-quaternary);
+      background: transparent;
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .library-tab.active {
+      color: var(--text-strong);
+      background: #fff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .tab-count {
+      height: 20px;
+      min-width: 20px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      padding: 0 6px;
+      color: var(--brand-blue);
+      background: #eef1ff;
+      font-size: 12px;
+    }
+
+    .library-actions,
+    .library-filter-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .library-filter-row {
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .filter-pill {
+      height: 38px;
+      border-radius: 19px;
+      padding: 0 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--border-subtle);
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .filter-pill.active {
+      color: var(--brand-blue);
+      border-color: var(--brand-blue);
+      background: #eef1ff;
+    }
+
+    .small-chip {
+      height: 24px;
+      border-radius: 8px;
+      padding: 0 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-secondary);
+      background: #f6f7f9;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .asset-library-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(214px, 1fr));
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .asset-library-card {
+      min-height: 236px;
+      border-radius: 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      text-align: left;
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .asset-library-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0, 8, 24, 0.08);
+    }
+
+    .asset-preview {
+      height: 150px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .asset-preview.image-a {
+      background:
+        radial-gradient(circle at 24% 24%, rgba(255,255,255,0.35), transparent 20%),
+        linear-gradient(135deg, #6376ff, #7b4fb2);
+    }
+
+    .asset-preview.image-b {
+      background:
+        radial-gradient(circle at 72% 24%, rgba(255,255,255,0.32), transparent 18%),
+        linear-gradient(135deg, #e765d0, #f95f75);
+    }
+
+    .asset-preview.image-c {
+      background:
+        radial-gradient(circle at 18% 74%, rgba(255,255,255,0.34), transparent 18%),
+        linear-gradient(135deg, #37b6ff, #02d8d1);
+    }
+
+    .asset-preview.image-d {
+      background:
+        radial-gradient(circle at 72% 22%, rgba(255,255,255,0.3), transparent 18%),
+        linear-gradient(135deg, #ff6688, #ffe142);
+    }
+
+    .asset-preview.video {
+      background: #080f16;
+    }
+
+    .asset-preview.audio {
+      color: #18bf83;
+      background: #092329;
+    }
+
+    .media-tag {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      height: 24px;
+      border-radius: 7px;
+      padding: 0 8px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--brand-blue);
+      background: rgba(255, 255, 255, 0.88);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .media-tag.video-tag {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.36);
+    }
+
+    .media-tag.audio-tag {
+      color: #18bf83;
+      background: rgba(24, 191, 131, 0.16);
+      border: 1px solid rgba(24, 191, 131, 0.32);
+    }
+
+    .asset-card-body {
+      padding: 14px 16px 16px;
+    }
+
+    .asset-card-title {
+      display: block;
+      margin: 0 0 6px;
+      color: var(--text-strong);
+      font-size: 15px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .asset-card-meta {
+      color: var(--text-tertiary);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .source-row {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .source-chip {
+      height: 24px;
+      border-radius: 8px;
+      padding: 0 8px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--text-secondary);
+      background: #f6f7f9;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .source-chip.agent {
+      color: var(--brand-blue);
+      background: #eef1ff;
+    }
+
+    .audio-wave {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      width: 150px;
+      height: 70px;
+    }
+
+    .audio-wave span {
+      display: block;
+      width: 4px;
+      border-radius: 8px;
+      background: currentColor;
+      opacity: 0.9;
+    }
+
+    .spec-library-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 18px;
+    }
+
+    .spec-library-card {
+      min-height: 248px;
+      border-radius: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+
+    .spec-library-card.active {
+      border-color: var(--brand-blue);
+      box-shadow: 0 0 0 1px var(--brand-blue), var(--shadow-card);
+    }
+
+    .spec-card-body {
+      padding: 18px 18px 16px;
+    }
+
+    .spec-card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .spec-card-title-row h3 {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .status {
+      height: 26px;
+      border-radius: 13px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      color: #12a66d;
+      background: #dcf8ec;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .spec-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding-top: 14px;
+      margin-top: 14px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .project-chat {
+      min-width: 0;
+      border-right: 1px solid #e0e4eb;
+      padding: 18px 22px 0 30px;
+      overflow: auto;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-titlebar {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-strong);
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 18px;
+      flex: 0 0 auto;
+    }
+
+    .back-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      color: var(--text-primary);
+      background: transparent;
+    }
+
+    .message {
+      width: min(390px, 100%);
+      margin: 0 0 22px 54px;
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.65;
+      flex: 0 0 auto;
+    }
+
+    .message.agent {
+      margin-left: 40px;
+    }
+
+    .agent-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 10px 0;
+    }
+
+    .chat-avatar {
+      width: 24px;
+      height: 24px;
+      border-width: 2px;
+    }
+
+    .agent-name {
+      color: var(--text-strong);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .create-spec-screen {
+      padding: 34px 42px 56px;
+      overflow: auto;
+      background: var(--bg-page);
+    }
+
+    .create-spec-shell {
+      width: min(1040px, 100%);
+      margin: 0 auto;
+    }
+
+    .create-spec-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .create-spec-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .create-spec-title h1 {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 24px;
+      line-height: 1.25;
+      font-weight: 600;
+    }
+
+    .create-spec-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .create-spec-card,
+    .spec-preview-card {
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #fff;
+      box-shadow: var(--shadow-card);
+      padding: 20px;
+    }
+
+    .create-mode-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .create-method {
+      min-height: 62px;
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+      background: #f9fafc;
+      padding: 14px;
+      color: var(--text-secondary);
+      text-align: left;
+    }
+
+    .create-method.active {
+      color: var(--brand-blue);
+      background: #eef1ff;
+      border-color: var(--brand-blue);
+    }
+
+    .create-method strong {
+      display: block;
+      margin-bottom: 0;
+      color: var(--text-strong);
+      font-size: 15px;
+    }
+
+    .upload-zone {
+      min-height: 154px;
+      border-radius: 16px;
+      border: 1.5px dashed #c5cbd8;
+      background: #f9fafc;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--text-tertiary);
+      margin-bottom: 18px;
+      padding: 20px;
+    }
+
+    .upload-zone.dragging {
+      border-color: var(--brand-blue);
+      background: #eef1ff;
+    }
+
+    .upload-zone strong {
+      display: block;
+      margin: 8px 0 4px;
+      color: var(--text-strong);
+      font-size: 15px;
+    }
+
+    .upload-type-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .upload-type-pill {
+      height: 26px;
+      border-radius: 8px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--text-secondary);
+      background: #edeff1;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .upload-action-pill {
+      height: 32px;
+      border-radius: 10px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand-blue);
+      background: #eef1ff;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 14px;
+    }
+
+    .section-label {
+      margin: 0 0 12px;
+      color: var(--text-strong);
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .preview-palette {
+      height: 14px;
+      border-radius: 8px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 0.55fr 0.5fr;
+      margin-bottom: 18px;
+    }
+
+    .preview-logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, #5870ff, #8b5cf6);
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .preview-rule-list {
+      display: grid;
+      gap: 10px;
+      margin: 14px 0 0;
+      padding: 0;
+      list-style: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .preview-rule-list li {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .tool-tag {
+      height: 24px;
+      border-radius: 7px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 9px;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #fff;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+
+    .artifact-card {
+      width: 118px;
+      border-radius: 12px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+
+    .artifact-thumb {
+      width: 118px;
+      height: 158px;
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 72% 18%, rgba(255,255,255,0.85) 0 6%, transparent 7%),
+        radial-gradient(circle at 24% 78%, rgba(0,255,206,0.38) 0 15%, transparent 16%),
+        linear-gradient(135deg, #6f55ff 0%, #d9489a 48%, #ffb24d 100%);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      margin-bottom: 8px;
+    }
+
+    .issue-list {
+      margin: 10px 0 0;
+      padding-left: 20px;
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .satisfaction {
+      margin: 20px 0 20px auto;
+      width: 310px;
+      min-height: 36px;
+      border-radius: 8px;
+      border: 1px solid #d9d1ff;
+      background: rgba(255, 255, 255, 0.75);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 8px;
+      color: var(--text-secondary);
+      font-size: 11px;
+    }
+
+    .bottom-composer {
+      position: sticky;
+      bottom: 0;
+      z-index: 4;
+      flex: 0 0 auto;
+      margin: auto -22px 0 -30px;
+      padding: 10px 22px 12px 30px;
+      background: linear-gradient(180deg, rgba(244,245,247,0), var(--bg-page) 16%, var(--bg-page) 100%);
+    }
+
+    .quick-skills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 10px;
+      flex-wrap: wrap;
+    }
+
+    .quick-skill {
+      height: 32px;
+      border-radius: 10px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-primary);
+      background: #fff;
+      font-size: 13px;
+      box-shadow: var(--shadow-card);
+    }
+
+    .project-input {
+      min-height: 118px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid #fff;
+      box-shadow: var(--shadow-input);
+      padding: 14px;
+    }
+
+    .project-input textarea {
+      width: 100%;
+      height: 54px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text-primary);
+      font-size: 14px;
+    }
+
+    .project-input-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .canvas-panel {
+      position: relative;
+      overflow: hidden;
+      padding: 28px 30px 20px;
+      background: #f7f8fa;
+    }
+
+    .canvas-top-actions {
+      position: absolute;
+      right: 24px;
+      top: 22px;
+      z-index: 2;
+      display: flex;
+      gap: 10px;
+    }
+
+    .canvas-floating {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: var(--shadow-float);
+    }
+
+    .canvas-publish-btn {
+      height: 46px;
+      border-radius: 14px;
+      padding: 0 18px;
+      color: #fff;
+      background: var(--brand-blue);
+      box-shadow: var(--shadow-float);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .canvas-publish-btn:disabled {
+      color: rgba(255,255,255,0.9);
+      background: #c9ced8;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    .infinite-canvas {
+      height: calc(100vh - 110px);
+      min-height: 610px;
+      border-radius: 20px;
+      background:
+        linear-gradient(rgba(0, 8, 24, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 8, 24, 0.035) 1px, transparent 1px),
+        #fff;
+      background-size: 72px 72px;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.02);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .canvas-tool-rail {
+      position: absolute;
+      left: 18px;
+      top: 44%;
+      transform: translateY(-50%);
+      display: grid;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: var(--shadow-float);
+      z-index: 3;
+    }
+
+    .canvas-tool {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--text-primary);
+      background: transparent;
+    }
+
+    .canvas-tool.active {
+      background: #edeff1;
+    }
+
+    .artboard {
+      position: absolute;
+      left: 28%;
+      top: 28%;
+      width: 300px;
+      height: 390px;
+      border: 1px solid rgba(0, 8, 24, 0.06);
+      background:
+        radial-gradient(circle at 70% 20%, rgba(255,255,255,0.86) 0 7%, transparent 8%),
+        radial-gradient(circle at 26% 78%, rgba(0,255,206,0.34) 0 15%, transparent 16%),
+        linear-gradient(135deg, #6f55ff 0%, #d9489a 48%, #ffb24d 100%);
+      box-shadow: 0 14px 32px rgba(0, 8, 24, 0.12);
+      cursor: pointer;
+    }
+
+    .canvas-panel.has-selection .artboard {
+      border: 2px solid #4d8dff;
+      box-shadow: 0 18px 46px rgba(0, 8, 24, 0.16);
+    }
+
+    .artboard::before {
+      content: "no_filter_collage_v2_2.png";
+      position: absolute;
+      left: -2px;
+      top: -28px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .artboard::after {
+      content: "2928×3904";
+      position: absolute;
+      right: -2px;
+      top: -28px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .selection-corner {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      border-radius: 2px;
+      background: #fff;
+      border: 2px solid #4d8dff;
+      display: none;
+    }
+
+    .canvas-panel.has-selection .selection-corner {
+      display: block;
+    }
+
+    .selection-corner.tl { left: -6px; top: -6px; }
+    .selection-corner.tr { right: -6px; top: -6px; }
+    .selection-corner.bl { left: -6px; bottom: -6px; }
+    .selection-corner.br { right: -6px; bottom: -6px; }
+
+    .artboard-alt {
+      position: absolute;
+      left: calc(28% + 358px);
+      top: 28%;
+      width: 178px;
+      height: 245px;
+      border-radius: 2px;
+      background:
+        radial-gradient(circle at 70% 20%, rgba(255,255,255,0.84) 0 7%, transparent 8%),
+        radial-gradient(circle at 24% 78%, rgba(0,255,206,0.3) 0 15%, transparent 16%),
+        linear-gradient(135deg, #243b85 0%, #a74db9 52%, #ff9c3d 100%);
+      box-shadow: 0 10px 22px rgba(0, 8, 24, 0.08);
+    }
+
+    .selection-toolbar {
+      position: absolute;
+      left: calc(28% - 48px);
+      top: calc(28% + 410px);
+      min-width: 455px;
+      min-height: 46px;
+      border-radius: 12px;
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: var(--shadow-float);
+      z-index: 4;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity 0.16s ease, transform 0.16s ease;
+    }
+
+    .canvas-panel.has-selection .selection-toolbar {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .toolbar-text-btn {
+      width: 107px;
+      height: 34px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 0 10px;
+      color: var(--text-strong);
+      background: transparent;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .selection-toolbar .ui-icon {
+      width: 20px;
+      height: 20px;
+      color: var(--text-strong);
+      stroke: currentColor;
+      stroke-width: 1.55;
+    }
+
+    .selection-toolbar .ui-icon [fill]:not([fill="none"]) {
+      fill: currentColor;
+    }
+
+    .canvas-action {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: var(--text-primary);
+      background: transparent;
+      position: relative;
+    }
+
+    .canvas-action:hover,
+    .canvas-action.save {
+      background: #edeff1;
+    }
+
+    .canvas-action.save {
+      color: #9c6100;
+    }
+
+    .canvas-action .tip {
+      position: absolute;
+      bottom: 38px;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 28px;
+      padding: 0 9px;
+      border-radius: 8px;
+      display: none;
+      align-items: center;
+      color: #fff;
+      background: rgba(0, 8, 24, 0.84);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .canvas-action:hover .tip {
+      display: inline-flex;
+    }
+
+    .zoom-box {
+      position: absolute;
+      right: 22px;
+      bottom: 20px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 10px;
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.94);
+      box-shadow: var(--shadow-float);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .modal,
+    .drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: none;
+    }
+
+    .modal.show,
+    .drawer.show {
+      display: block;
+    }
+
+    .scrim {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 8, 24, 0.28);
+    }
+
+    .drawer-panel {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 420px;
+      height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: #fff;
+      box-shadow: -18px 0 44px rgba(0, 8, 24, 0.16);
+    }
+
+    .drawer-head {
+      min-height: 64px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 18px;
+    }
+
+    .drawer-head h2 {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .drawer-body {
+      overflow: auto;
+      padding: 14px 18px 18px;
+    }
+
+    .publish-section {
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0 0 16px;
+      margin-bottom: 16px;
+    }
+
+    .publish-section h3 {
+      margin: 0 0 10px;
+      color: var(--text-strong);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .modal-panel {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 880px;
+      max-height: min(760px, calc(100vh - 64px));
+      overflow: auto;
+      transform: translate(-50%, -50%);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 18px 52px rgba(0, 8, 24, 0.2);
+      padding: 20px;
+    }
+
+    .modal-panel.small {
+      width: 600px;
+    }
+
+    .modal-panel.account-auth-panel {
+      width: 400px;
+      max-height: none;
+      border-radius: 10px;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .account-auth-panel .panel-head {
+      min-height: 88px;
+      align-items: center;
+      margin: 0;
+      padding: 24px 24px 20px 28px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .account-auth-title {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .account-auth-title h2 {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 18px;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .account-auth-body {
+      padding: 32px 24px 34px;
+      color: #334155;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .account-auth-body p {
+      margin: 0 0 10px;
+    }
+
+    .account-auth-body a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+
+    .account-auth-panel .modal-actions {
+      margin: 0;
+      padding: 24px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .modal-panel.publish-success-panel {
+      width: 360px;
+      padding: 28px 24px 22px;
+      text-align: center;
+      border-radius: 16px;
+    }
+
+    .success-mark {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 16px;
+      color: #fff;
+      background: var(--brand-blue);
+      box-shadow: 0 10px 24px rgba(77, 94, 255, 0.24);
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .publish-success-panel h2 {
+      margin: 0 0 8px;
+      color: var(--text-strong);
+      font-size: 18px;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .publish-success-panel p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .publish-success-panel .modal-actions {
+      justify-content: center;
+      margin-top: 22px;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .panel-head p {
+      margin: 4px 0 0;
+      color: var(--text-tertiary);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .close-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--text-secondary);
+      background: #edeff1;
+      flex: 0 0 auto;
+    }
+
+    .selector-layout {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 16px;
+    }
+
+    .selector-tools {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .search-box {
+      height: 38px;
+      min-width: 280px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      color: var(--text-tertiary);
+      background: #f4f5f7;
+    }
+
+    .search-box input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text-primary);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      height: 34px;
+      border-radius: 10px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      background: #f4f5f7;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .tab.active {
+      color: var(--brand-blue);
+      background: #eef1ff;
+    }
+
+    .selector-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .select-card {
+      min-height: 186px;
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+      background: #fff;
+      overflow: hidden;
+      text-align: left;
+      box-shadow: var(--shadow-card);
+      position: relative;
+    }
+
+    .select-card.active {
+      border-color: var(--brand-blue);
+      box-shadow: 0 0 0 1px var(--brand-blue), var(--shadow-card);
+    }
+
+    .select-preview {
+      height: 108px;
+      background:
+        radial-gradient(circle at 24% 20%, rgba(255,255,255,0.48), transparent 22%),
+        linear-gradient(135deg, #4d5eff, #ff4ad5);
+    }
+
+    .select-preview.video {
+      background: linear-gradient(135deg, #071126, #26385f);
+    }
+
+    .select-preview.audio {
+      display: grid;
+      place-items: center;
+      color: #18bf83;
+      background:
+        repeating-linear-gradient(90deg, rgba(24,191,131,0.28) 0 5px, transparent 5px 14px),
+        linear-gradient(135deg, #092329, #0d3036);
+    }
+
+    .select-body {
+      padding: 10px 12px 12px;
+    }
+
+    .select-title {
+      display: block;
+      color: var(--text-strong);
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .checkmark {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--brand-blue);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .selection-summary {
+      border-radius: 14px;
+      background: #f9fafc;
+      border: 1px solid var(--border-subtle);
+      padding: 14px;
+      min-height: 100%;
+    }
+
+    .summary-title {
+      margin: 0 0 12px;
+      color: var(--text-strong);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .summary-item {
+      min-height: 44px;
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-primary);
+      font-size: 13px;
+    }
+
+    .summary-thumb {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, #4d5eff, #ff4ad5);
+    }
+
+    .summary-thumb.spec {
+      background: linear-gradient(135deg, #5870ff, #8b5cf6);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .primary-btn,
+    .secondary-btn,
+    .ghost-btn {
+      height: 38px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 14px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .primary-btn {
+      color: #fff;
+      background: var(--brand-blue);
+    }
+
+    .secondary-btn {
+      color: var(--text-strong);
+      background: #edeff1;
+    }
+
+    .ghost-btn {
+      color: var(--brand-blue);
+      background: #eef1ff;
+    }
+
+    .spec-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .spec-option {
+      min-height: 112px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      text-align: left;
+    }
+
+    .spec-option.active {
+      border-color: var(--brand-blue);
+      box-shadow: 0 0 0 1px var(--brand-blue), var(--shadow-card);
+    }
+
+    .spec-option-strip {
+      height: 12px;
+      display: grid;
+      grid-template-columns: 1.3fr 0.8fr 0.6fr 0.6fr;
+    }
+
+    .spec-option-body {
+      padding: 12px;
+    }
+
+    .spec-option-title {
+      margin: 0 0 8px;
+      color: var(--text-strong);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .spec-detail {
+      border-radius: 14px;
+      padding: 14px;
+      background: #f9fafc;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 68px 1fr;
+      gap: 10px;
+      align-items: center;
+      min-height: 34px;
+      color: var(--text-primary);
+      font-size: 13px;
+      border-bottom: 1px solid #edeff1;
+    }
+
+    .detail-row:last-child {
+      border-bottom: 0;
+    }
+
+    .detail-label {
+      color: var(--text-tertiary);
+      font-weight: 600;
+    }
+
+    .swatches {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .swatch {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 1px solid rgba(0, 8, 24, 0.08);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field input,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      background: #f9fafc;
+      padding: 11px 12px;
+      color: var(--text-primary);
+      outline: 0;
+      font-weight: 400;
+    }
+
+    .field textarea {
+      min-height: 72px;
+    }
+
+    .account-empty {
+      min-height: 68px;
+      border-radius: 12px;
+      display: grid;
+      align-items: center;
+      padding: 12px;
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+      background: #f4f5f7;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .account-empty strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+
+    .social-connect-list {
+      display: grid;
+      gap: 6px;
+    }
+
+    .social-connect-row {
+      min-height: 38px;
+      border-radius: 12px;
+      display: grid;
+      grid-template-columns: 28px 1fr auto;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 8px;
+      color: var(--text-secondary);
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      text-align: left;
+    }
+
+    .social-connect-row strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 13px;
+      line-height: 1.25;
+    }
+
+    .social-connect-row small {
+      display: block;
+      margin-top: 2px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
+    .platform-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      overflow: hidden;
+    }
+
+    .platform-mark svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    .platform-mark.ig { background: radial-gradient(circle at 30% 105%, #feda75 0 22%, #fa7e1e 32%, #d62976 55%, #962fbf 78%, #4f5bd5 100%); }
+    .platform-mark.fb { background: #1877f2; }
+    .platform-mark.tk { background: #000; }
+    .platform-mark.x { background: #000; }
+    .platform-mark.yt { background: #ff0000; }
+
+    .connect-btn {
+      height: 28px;
+      min-width: 42px;
+      border-radius: 9px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--brand-blue);
+      background: #eef1ff;
+      border: 1px solid #cdd5ff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .connected-account-view {
+      display: none;
+      gap: 8px;
+    }
+
+    .account-section.has-connected .account-empty,
+    .account-section.has-connected .social-connect-list {
+      display: none;
+    }
+
+    .account-section.has-connected .connected-account-view {
+      display: grid;
+    }
+
+    .selected-account-card {
+      min-height: 42px;
+      border-radius: 12px;
+      display: grid;
+      grid-template-columns: 30px 1fr auto;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      color: var(--text-strong);
+      background: #eef1ff;
+      border: 1px solid #cdd5ff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .add-more-account {
+      min-height: 38px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 7px 10px;
+      color: var(--text-secondary);
+      background: #f9fafc;
+      border: 1px solid var(--border-subtle);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .add-more-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .add-more-icons .platform-mark {
+      width: 24px;
+      height: 24px;
+      font-size: 10px;
+    }
+
+    .copy-fields {
+      display: grid;
+      gap: 10px;
+    }
+
+    .copy-fields .field textarea {
+      height: 116px;
+    }
+
+    .tag-editor {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-top: 2px;
+    }
+
+    .tag-chip {
+      position: relative;
+      min-height: 28px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 26px 0 10px;
+      color: var(--text-strong);
+      background: #f4f5f7;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .tag-chip button {
+      position: absolute;
+      right: -5px;
+      top: -6px;
+      width: 18px;
+      height: 18px;
+      padding: 0;
+      background: transparent;
+    }
+
+    .tag-chip button svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    .tag-input {
+      min-width: 120px;
+      flex: 1 1 120px;
+      height: 28px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text-primary);
+    }
+
+    .schedule-section .schedule-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .toggle {
+      width: 44px;
+      height: 24px;
+      border-radius: 999px;
+      background: #d4d6dc;
+      position: relative;
+    }
+
+    .toggle::after {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #fff;
+      transition: 0.16s ease;
+    }
+
+    .schedule-section:not(.collapsed) .toggle {
+      background: var(--brand-blue);
+    }
+
+    .schedule-section:not(.collapsed) .toggle::after {
+      transform: translateX(20px);
+    }
+
+    .schedule-fields {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .schedule-section:not(.collapsed) .schedule-fields {
+      display: grid;
+    }
+
+    .drawer-actions {
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 14px 18px;
+    }
+
+    .drawer-actions .preview-btn {
+      margin-right: auto;
+    }
+
+    .publish-preview-panel {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 322px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid #fff;
+      box-shadow: 0 18px 48px rgba(0, 8, 24, 0.18);
+      padding: 14px;
+      z-index: 42;
+      display: none;
+    }
+
+    .publish-preview-panel.show {
+      display: block;
+    }
+
+    .preview-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .preview-account {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      color: var(--text-strong);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .preview-media {
+      height: 206px;
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 72% 18%, rgba(255,255,255,0.84) 0 7%, transparent 8%),
+        radial-gradient(circle at 22% 78%, rgba(0,255,206,0.34) 0 14%, transparent 15%),
+        linear-gradient(135deg, #6f55ff 0%, #d9489a 48%, #ffb24d 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4);
+    }
+
+    .preview-copy {
+      margin-top: 12px;
+      color: var(--text-primary);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .preview-copy strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text-strong);
+      font-size: 14px;
+    }
+
+    .preview-tags {
+      margin-top: 8px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      color: var(--brand-blue);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .primary-btn:disabled {
+      color: #fff;
+      background: #c9ced8;
+      cursor: not-allowed;
+    }
+
+    .save-preview {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      gap: 14px;
+      align-items: center;
+      border-radius: 14px;
+      background: #f9fafc;
+      border: 1px solid var(--border-subtle);
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+
+    .toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 40;
+      min-width: 250px;
+      height: 46px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      color: var(--text-strong);
+      background: #fff;
+      box-shadow: var(--shadow-float);
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.18s ease;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 1360px) {
+      .app-shell {
+        grid-template-columns: 48px 220px minmax(880px, 1fr);
+      }
+
+      .home-stage {
+        width: min(760px, calc(100vw - 380px));
+      }
+
+      .recommend-section {
+        width: min(624px, 100%);
+      }
+
+      .project-page {
+        grid-template-columns: 470px minmax(620px, 1fr);
+      }
+
+      .artboard {
+        left: 24%;
+      }
+
+      .artboard-alt {
+        left: calc(24% + 342px);
+      }
+
+      .selection-toolbar {
+        left: calc(24% - 54px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <symbol id="i-file-text" viewBox="0 0 24 24">
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
+      <path d="M14 3v5h5"/>
+      <path d="M9 13h6"/>
+      <path d="M9 17h4"/>
+    </symbol>
+    <symbol id="i-image" viewBox="0 0 24 24">
+      <rect x="4" y="4" width="16" height="16" rx="3"/>
+      <circle cx="9" cy="9" r="1.5"/>
+      <path d="m7 17 4-4 3 3 2-2 3 3"/>
+    </symbol>
+    <symbol id="i-video" viewBox="0 0 24 24">
+      <rect x="3" y="6" width="13" height="12" rx="3"/>
+      <path d="m16 10 5-3v10l-5-3z"/>
+    </symbol>
+    <symbol id="i-podcast" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="2.5"/>
+      <path d="M8.5 16a6 6 0 1 1 7 0"/>
+      <path d="M6 19a9.5 9.5 0 1 1 12 0"/>
+      <path d="M12 14.5V21"/>
+    </symbol>
+    <symbol id="i-send" viewBox="0 0 24 24">
+      <path d="m22 2-7 20-4-9-9-4z"/>
+      <path d="M22 2 11 13"/>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14"/>
+    </symbol>
+    <symbol id="i-x" viewBox="0 0 24 24">
+      <path d="M18 6 6 18M6 6l12 12"/>
+    </symbol>
+    <symbol id="i-search" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="7"/>
+      <path d="m21 21-4.3-4.3"/>
+    </symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24">
+      <rect x="4" y="4" width="6" height="6" rx="1"/>
+      <rect x="14" y="4" width="6" height="6" rx="1"/>
+      <rect x="4" y="14" width="6" height="6" rx="1"/>
+      <rect x="14" y="14" width="6" height="6" rx="1"/>
+    </symbol>
+    <symbol id="i-list" viewBox="0 0 24 24">
+      <path d="M8 6h13M8 12h13M8 18h13"/>
+      <path d="M3 6h.01M3 12h.01M3 18h.01"/>
+    </symbol>
+    <symbol id="i-home" viewBox="0 0 24 24">
+      <path d="m3 10 9-7 9 7"/>
+      <path d="M5 9v11h14V9"/>
+      <path d="M10 20v-6h4v6"/>
+    </symbol>
+    <symbol id="i-database" viewBox="0 0 24 24">
+      <ellipse cx="12" cy="5" rx="8" ry="3"/>
+      <path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/>
+      <path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>
+    </symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24">
+      <path d="M4 6h6l2 2h8v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>
+    </symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24">
+      <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+      <path d="M10 21h4"/>
+    </symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24">
+      <rect x="3" y="4" width="18" height="12" rx="2"/>
+      <path d="M8 21h8M12 16v5"/>
+    </symbol>
+    <symbol id="i-more" viewBox="0 0 24 24">
+      <path d="M12 12h.01M19 12h.01M5 12h.01"/>
+    </symbol>
+    <symbol id="i-palette" viewBox="0 0 24 24">
+      <path d="M12 3a9 9 0 0 0 0 18h1.5a2 2 0 0 0 1.2-3.6 1 1 0 0 1 .6-1.8H17a4 4 0 0 0 0-8h-1"/>
+      <circle cx="7.5" cy="10" r=".7"/>
+      <circle cx="10.5" cy="7.5" r=".7"/>
+      <circle cx="14.5" cy="7.5" r=".7"/>
+    </symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24">
+      <path d="m9 18 6-6-6-6"/>
+    </symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24">
+      <path d="m6 9 6 6 6-6"/>
+    </symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24">
+      <path d="M12 16V4"/>
+      <path d="m7 9 5-5 5 5"/>
+      <path d="M20 16v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3"/>
+    </symbol>
+    <symbol id="i-link" viewBox="0 0 24 24">
+      <path d="M10 13a5 5 0 0 0 7.1 0l2-2a5 5 0 0 0-7.1-7.1l-1.1 1.1"/>
+      <path d="M14 11a5 5 0 0 0-7.1 0l-2 2A5 5 0 0 0 12 20.1l1.1-1.1"/>
+    </symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24">
+      <path d="M13 2 4 14h7l-1 8 10-13h-7z"/>
+    </symbol>
+    <symbol id="i-target" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9"/>
+      <circle cx="12" cy="12" r="4"/>
+      <path d="m15 9 3-3"/>
+    </symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24">
+      <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3"/>
+      <path d="M2 14h4M10 8h4M18 16h4"/>
+    </symbol>
+    <symbol id="i-box" viewBox="0 0 24 24">
+      <path d="m21 8-9-5-9 5 9 5 9-5z"/>
+      <path d="M3 8v8l9 5 9-5V8"/>
+      <path d="M12 13v8"/>
+    </symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24">
+      <path d="M8 3H3v5M16 3h5v5M8 21H3v-5M21 16v5h-5"/>
+    </symbol>
+    <symbol id="i-download" viewBox="0 0 24 24">
+      <path d="M12 3v12"/>
+      <path d="m7 10 5 5 5-5"/>
+      <path d="M5 21h14"/>
+    </symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24">
+      <path d="M12 20h9"/>
+      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+    </symbol>
+    <symbol id="i-eraser" viewBox="0 0 24 24">
+      <path d="m7 21-4-4 10-10 6 6-8 8Z"/>
+      <path d="M14 6 18 2l4 4-4 4M12 21h9"/>
+    </symbol>
+  </svg>
+
+  <div class="app-shell">
+    <nav class="icon-rail" aria-label="主导航">
+      <button class="rail-btn active" data-screen="start-screen" aria-label="首页"><svg class="ui-icon"><use href="#i-home"></use></svg></button>
+      <button class="rail-btn" data-screen="asset-library-screen" aria-label="知识库"><svg class="ui-icon"><use href="#i-database"></use></svg></button>
+      <button class="rail-btn" data-screen="spec-library-screen" aria-label="视觉规范"><svg class="ui-icon"><use href="#i-palette"></use></svg></button>
+      <button class="rail-btn" aria-label="产物"><span class="rail-badge">New</span><svg class="ui-icon"><use href="#i-box"></use></svg></button>
+    </nav>
+
+    <aside class="project-side" id="side-panel">
+      <div class="side-panel-view project-nav">
+        <div class="brand-row">
+          <div class="sky-logo" aria-hidden="true"></div>
+          <span class="brand-word">Skywork</span>
+        </div>
+        <button class="new-project" data-screen="start-screen"><svg class="ui-icon"><use href="#i-plus"></use></svg>New Projects</button>
+        <div class="side-group">
+          <button class="side-link"><svg class="ui-icon"><use href="#i-zap"></use></svg>Explore Skills</button>
+          <button class="side-link"><svg class="ui-icon"><use href="#i-file-text"></use></svg>Scheduled Tasks</button>
+        </div>
+        <div class="side-section-title">
+          <span>Projects</span>
+          <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-right"></use></svg>
+        </div>
+        <div class="project-list">
+          <button class="project-item active"><span>Skywork产品大型升级方案</span><span class="sync-dot"></span></button>
+          <button class="project-item"><span>agent度量框架</span></button>
+          <button class="project-item"><span>融资清单建议</span></button>
+          <button class="project-item"><span>音乐MV</span></button>
+          <button class="project-item"><span>演变推演</span></button>
+          <button class="project-item"><span>Skywork用户成本收入深度分析</span></button>
+          <button class="project-item"><span>运势分析</span></button>
+          <button class="project-item"><span>Image技能用户需求分析</span></button>
+          <button class="project-item"><span>梦幻星空MacBook壁纸</span><span class="sync-dot"></span></button>
+          <button class="project-item"><span>小学生爱眼日手抄报</span></button>
+          <button class="project-item"><span>跟点系统</span></button>
+        </div>
+      </div>
+
+      <div class="side-panel-view knowledge-nav">
+        <h2 class="knowledge-side-title">知识库</h2>
+        <button class="knowledge-create">新增+</button>
+        <div class="knowledge-list">
+          <button class="knowledge-item" data-kb-item="files">
+            <span class="knowledge-icon"><svg class="ui-icon"><use href="#i-file-text"></use></svg></span>
+            <span><strong>文件库</strong><span class="knowledge-meta">PDF · DOCX · TXT · 等</span></span>
+            <span class="knowledge-count">239</span>
+          </button>
+          <button class="knowledge-item" data-kb-item="assets" data-screen="asset-library-screen">
+            <span class="knowledge-icon asset"><svg class="ui-icon"><use href="#i-image"></use></svg></span>
+            <span><strong>素材库</strong><span class="knowledge-meta">图片 · 视频 · 音频</span></span>
+            <span class="knowledge-count">23</span>
+          </button>
+          <button class="knowledge-item" data-kb-item="specs" data-screen="spec-library-screen">
+            <span class="knowledge-icon spec"><svg class="ui-icon"><use href="#i-palette"></use></svg></span>
+            <span><strong>视觉规范库</strong><span class="knowledge-meta">Logo · 配色 · 字体 · 约束</span></span>
+            <span class="knowledge-count">11</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <header class="topbar">
+      <div class="top-left">
+        <button class="hamburger" aria-label="折叠侧边栏"><svg class="ui-icon"><use href="#i-list"></use></svg></button>
+      </div>
+      <div class="top-actions">
+        <button class="top-icon" aria-label="移动端"><svg class="ui-icon"><use href="#i-file-text"></use></svg></button>
+        <button class="top-icon" aria-label="通知"><span class="rail-badge" style="right:-2px;top:0">51</span><svg class="ui-icon"><use href="#i-bell"></use></svg></button>
+        <span class="top-chip"><svg class="ui-icon"><use href="#i-monitor"></use></svg>Desktop</span>
+        <span class="top-chip credit-chip">C 331,490</span>
+        <span class="top-chip plan-chip">Plus</span>
+        <span class="avatar-chip">416</span>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="screen start-screen active" id="start-screen">
+        <div class="home-stage">
+          <div class="hero">
+            <div class="bot-avatar"></div>
+            <div>
+              <p class="hero-kicker">Hi, I'm [test]温迪的2号</p>
+              <h1 class="hero-title">Create, Edit, and Refine <span class="accent">Images</span> in One Place</h1>
+            </div>
+          </div>
+
+          <div class="composer">
+            <div class="reference-thumb"><span class="tiny-x">×</span></div>
+            <div class="selected-row" id="selected-row"></div>
+            <div class="prompt-line">
+              <span class="skill-chip">poster</span>
+              <span class="prompt-text">使用以上参考，生成 3 张 Skywork 社媒海报，并准备发布到 Instagram、Facebook、TikTok、Twitter、YouTube。</span>
+            </div>
+            <div class="composer-toolbar">
+              <div class="toolbar-left">
+                <button class="round-icon active" id="add-trigger" aria-label="添加"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
+                <button class="action-chip"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-target"></use></svg>Goal</button>
+                <button class="action-chip"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-sliders"></use></svg>Connect Tools</button>
+                <button class="action-chip"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-zap"></use></svg>1 skill</button>
+              </div>
+              <div class="toolbar-right">
+                <span class="model-chip">✧ Auto Model <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
+                <button class="send-btn" data-screen="execute-screen" aria-label="发起任务"><svg class="ui-icon"><use href="#i-send"></use></svg></button>
+              </div>
+            </div>
+
+            <div class="composer-options">
+              <div class="composer-dropdown">
+                <button class="composer-option-btn primary" data-composer-trigger><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-palette"></use></svg><span data-composer-value>Skywork 主品牌规范</span><svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></button>
+                <div class="composer-menu searchable">
+                  <label class="composer-menu-search"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-search"></use></svg><input placeholder="搜索视觉规范" /></label>
+                  <span class="composer-menu-label">已添加</span>
+                  <button class="composer-menu-item active" data-composer-choice="Skywork 主品牌规范"><strong>Skywork 主品牌规范</strong></button>
+                  <button class="composer-menu-item" data-composer-choice="视频营销品牌规范"><strong>视频营销品牌规范</strong></button>
+                  <button class="composer-menu-item" data-composer-choice="极简暗色系规范"><strong>极简暗色系规范</strong></button>
+                </div>
+              </div>
+              <div class="composer-dropdown">
+                <button class="composer-option-btn" data-composer-trigger><span>图片分辨率</span><strong data-composer-value>1K</strong><svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></button>
+                <div class="composer-menu">
+                  <button class="composer-menu-item active" data-composer-choice="1K">1K</button>
+                  <button class="composer-menu-item" data-composer-choice="2K">2K</button>
+                  <button class="composer-menu-item" data-composer-choice="4K">4K</button>
+                </div>
+              </div>
+              <div class="composer-dropdown">
+                <button class="composer-option-btn" data-composer-trigger><span>宽高比</span><strong data-composer-value>16:9</strong><svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></button>
+                <div class="composer-menu">
+                  <button class="composer-menu-item active" data-composer-choice="16:9">16:9</button>
+                  <button class="composer-menu-item" data-composer-choice="1:1">1:1</button>
+                  <button class="composer-menu-item" data-composer-choice="4:5">4:5</button>
+                  <button class="composer-menu-item" data-composer-choice="9:16">9:16</button>
+                  <button class="composer-menu-item" data-composer-choice="3:4">3:4</button>
+                </div>
+              </div>
+              <div class="composer-dropdown">
+                <button class="composer-option-btn" data-composer-trigger><span>社媒类型</span><strong data-composer-value>Instagram 快拍</strong><svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></button>
+                <div class="composer-menu">
+                  <button class="composer-menu-item active" data-composer-choice="Instagram 快拍"><strong>Instagram 快拍</strong><span>9:16 · Story</span></button>
+                  <button class="composer-menu-item" data-composer-choice="Instagram 帖子（4:5）"><strong>Instagram 帖子（4:5）</strong><span>Feed post</span></button>
+                  <button class="composer-menu-item" data-composer-choice="Facebook 帖子（横版）"><strong>Facebook 帖子（横版）</strong><span>Landscape post</span></button>
+                  <button class="composer-menu-item" data-composer-choice="Facebook 封面（横版）"><strong>Facebook 封面（横版）</strong><span>Page cover</span></button>
+                  <button class="composer-menu-item" data-composer-choice="TikTok 视频"><strong>TikTok 视频</strong><span>9:16 · Short video</span></button>
+                  <button class="composer-menu-item" data-composer-choice="Twitter / X 帖子"><strong>Twitter / X 帖子</strong><span>16:9 · Post</span></button>
+                  <button class="composer-menu-item" data-composer-choice="YouTube Shorts"><strong>YouTube Shorts</strong><span>9:16 · Shorts</span></button>
+                  <button class="composer-menu-item" data-composer-choice="YouTube 缩略图"><strong>YouTube 缩略图</strong><span>16:9 · Thumbnail</span></button>
+                  <button class="composer-menu-item" data-composer-choice="YouTube 视频"><strong>YouTube 视频</strong><span>16:9 · Video</span></button>
+                </div>
+              </div>
+            </div>
+
+            <div class="add-menu" id="add-menu">
+              <button class="add-menu-item"><svg class="ui-icon"><use href="#i-upload"></use></svg><span>Local Upload</span><svg class="ui-icon"><use href="#i-chevron-right"></use></svg></button>
+              <button class="add-menu-item"><svg class="ui-icon"><use href="#i-database"></use></svg><span>Upload from knowledge base</span><svg class="ui-icon"><use href="#i-chevron-right"></use></svg></button>
+              <button class="add-menu-item featured" data-open-asset-picker><svg class="ui-icon"><use href="#i-image"></use></svg><span>素材库</span><svg class="ui-icon"><use href="#i-chevron-right"></use></svg></button>
+              <button class="add-menu-item"><svg class="ui-icon"><use href="#i-link"></use></svg><span>Links & Text</span><svg class="ui-icon"><use href="#i-chevron-right"></use></svg></button>
+              <button class="add-menu-item"><svg class="ui-icon"><use href="#i-podcast"></use></svg><span>VoiceNote</span><svg class="ui-icon"><use href="#i-chevron-right"></use></svg></button>
+              <button class="add-menu-item"><svg class="ui-icon"><use href="#i-file-text"></use></svg><span>My Preset Prompts</span><svg class="ui-icon"><use href="#i-chevron-right"></use></svg></button>
+            </div>
+          </div>
+
+          <section class="recommend-section" aria-label="热门推荐">
+            <h2 class="recommend-title">热门推荐</h2>
+            <div class="recommend-grid">
+              <button class="recommend-card">
+                <span class="template-preview"><span class="template-art story"><span class="platform-badge instagram">◎</span></span></span>
+                <span class="template-name">Instagram Story</span>
+                <span class="template-meta">9:16 · 1080×1920</span>
+              </button>
+              <button class="recommend-card">
+                <span class="template-preview"><span class="template-art square-hot"><span class="platform-badge instagram">◎</span></span></span>
+                <span class="template-name">Instagram Post</span>
+                <span class="template-meta">4:5 · 1080×1350</span>
+              </button>
+              <button class="recommend-card">
+                <span class="template-preview"><span class="template-art cover"><span class="platform-badge">f</span></span></span>
+                <span class="template-name">Facebook Cover</span>
+                <span class="template-meta">1.91:1 · 1640×856</span>
+              </button>
+              <button class="recommend-card">
+                <span class="template-preview"><span class="template-art square-social"><span class="platform-badge">f</span></span></span>
+                <span class="template-name">Facebook Post</span>
+                <span class="template-meta">1:1 · 1080×1080</span>
+              </button>
+              <button class="recommend-card">
+                <span class="template-preview"><span class="template-art tiktok"><span class="platform-badge dark">♪</span><span class="play-dot">▶</span></span></span>
+                <span class="template-name">TikTok Video</span>
+                <span class="template-meta">9:16 · 1080×1920</span>
+              </button>
+              <button class="recommend-card">
+                <span class="template-preview"><span class="template-art x-post"><span class="platform-badge dark">X</span></span></span>
+                <span class="template-name">Twitter / X Post</span>
+                <span class="template-meta">16:9 · 1600×900</span>
+              </button>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen" id="execute-screen">
+        <div class="project-page">
+          <section class="project-chat">
+            <div class="project-titlebar">
+              <button class="back-btn" data-screen="start-screen" aria-label="返回"><svg class="ui-icon"><path d="m15 18-6-6 6-6"/></svg></button>
+              <span>创建海洋背景拼贴海报</span>
+            </div>
+
+            <div class="message agent">
+              <div class="agent-row">
+                <div class="chat-avatar"></div>
+                <span class="agent-name">Skywork Design</span>
+                <span class="tool-tag">✹ Claude Opus 4.6</span>
+              </div>
+              <p>Let me regenerate with these corrections, using the reference image and selected visual guideline to anchor the composition:</p>
+              <span class="tool-tag"><svg class="ui-icon" style="width:14px;height:14px"><use href="#i-image"></use></svg>poster_edit</span>
+              <div class="artifact-card">
+                <div class="artifact-thumb"></div>
+                <span>visual_design_task, Publish artifact</span>
+              </div>
+            </div>
+
+            <div class="message agent">
+              <p>Great progress! The composition is much better now. Key remaining issues to fix:</p>
+              <ol class="issue-list">
+                <li><strong>Tag position</strong> should overlap the top-right corner of the portrait.</li>
+                <li><strong>Tag text rotation</strong> should read normally left-to-right.</li>
+                <li><strong>Portrait width</strong> can be slightly wider to hit about 60% of poster width.</li>
+              </ol>
+            </div>
+
+            <div class="message agent">
+              <span class="tool-tag"><svg class="ui-icon" style="width:14px;height:14px"><use href="#i-image"></use></svg>poster_edit</span>
+              <div class="artifact-card">
+                <div class="artifact-thumb"></div>
+                <span>visual_design_task, screenshot_page</span>
+              </div>
+              <p>An error occurred with the LLM</p>
+            </div>
+
+            <div class="satisfaction">
+              Are you satisfied with the result of this task?
+              <span>😊 Satisfied</span><span>😐 Neutral</span><span>😞 Unsatisfied</span>
+            </div>
+
+            <div class="bottom-composer">
+              <div class="quick-skills">
+                <span class="quick-skill"><svg class="ui-icon" style="width:16px;height:16px;color:#ff576d"><use href="#i-file-text"></use></svg>Slides</span>
+                <span class="quick-skill"><svg class="ui-icon" style="width:16px;height:16px;color:#4d5eff"><use href="#i-file-text"></use></svg>Documents</span>
+                <span class="quick-skill"><svg class="ui-icon" style="width:16px;height:16px;color:#faae15"><use href="#i-image"></use></svg>Images</span>
+                <span class="quick-skill"><svg class="ui-icon" style="width:16px;height:16px;color:#29cc5f"><use href="#i-grid"></use></svg>Sheets</span>
+                <span class="quick-skill"><svg class="ui-icon" style="width:16px;height:16px;color:#ff4ad5"><use href="#i-video"></use></svg>Videos</span>
+              </div>
+              <div class="project-input">
+                <textarea placeholder="Try tasks, workflows, or scheduling tasks - type @ to add files or skills."></textarea>
+                <div class="project-input-actions">
+                  <div class="toolbar-left">
+                    <button class="round-icon"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
+                    <button class="action-chip"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-target"></use></svg>Goal</button>
+                    <button class="action-chip"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-sliders"></use></svg>Connect Tools</button>
+                    <button class="action-chip"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-zap"></use></svg>Skills</button>
+                  </div>
+                  <div class="toolbar-right">
+                    <span class="model-chip">✧ Auto Model <span style="color:#ff3838;font-size:11px;font-weight:700">New</span></span>
+                    <button class="send-btn" aria-label="发送"><svg class="ui-icon"><use href="#i-send"></use></svg></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="canvas-panel" data-canvas-panel>
+            <div class="canvas-top-actions">
+              <button class="canvas-publish-btn" data-open-publish disabled aria-disabled="true">发布到社媒</button>
+              <button class="canvas-floating" aria-label="下载"><svg class="ui-icon"><use href="#i-download"></use></svg></button>
+              <button class="canvas-floating" aria-label="关闭"><svg class="ui-icon"><use href="#i-x"></use></svg></button>
+            </div>
+            <div class="infinite-canvas">
+              <div class="canvas-tool-rail">
+                <button class="canvas-tool"><svg class="ui-icon"><use href="#i-grid"></use></svg></button>
+                <button class="canvas-tool"><svg class="ui-icon"><path d="M12 5v14M5 12h14"/></svg></button>
+                <button class="canvas-tool"><svg class="ui-icon"><path d="M12 20V4M6 8h12"/></svg></button>
+                <button class="canvas-tool"><svg class="ui-icon"><use href="#i-image"></use></svg></button>
+                <button class="canvas-tool active"><svg class="ui-icon"><path d="m5 3 14 8-6 2-2 6z"/></svg></button>
+                <button class="canvas-tool"><svg class="ui-icon"><path d="M18 11a6 6 0 1 1-4-5.65"/></svg></button>
+              </div>
+
+              <div class="artboard" data-select-artboard tabindex="0" role="button" aria-label="选择画布图片">
+                <span class="selection-corner tl"></span>
+                <span class="selection-corner tr"></span>
+                <span class="selection-corner bl"></span>
+                <span class="selection-corner br"></span>
+              </div>
+              <div class="artboard-alt"></div>
+
+              <div class="selection-toolbar" aria-label="选中图片操作">
+                <button class="toolbar-text-btn">Add to Chat</button>
+                <button class="canvas-action" aria-label="变体"><svg class="ui-icon"><use href="#i-sliders"></use></svg></button>
+                <button class="canvas-action" aria-label="橡皮擦"><svg class="ui-icon"><use href="#i-eraser"></use></svg></button>
+                <button class="canvas-action" aria-label="文字"><svg class="ui-icon"><path d="M4 7V5h16v2M9 19h6M12 5v14"/></svg></button>
+                <button class="canvas-action" aria-label="高清"><span style="font-size:11px;font-weight:800">HD</span></button>
+                <button class="canvas-action save" data-open-save-artifact aria-label="保存到素材库">
+                  <svg class="ui-icon"><use href="#i-database"></use></svg>
+                  <span class="tip">保存到素材库</span>
+                </button>
+                <button class="canvas-action" aria-label="下载"><svg class="ui-icon"><use href="#i-download"></use></svg></button>
+                <button class="canvas-action" aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
+              </div>
+
+              <div class="zoom-box">
+                <svg class="ui-icon" style="width:18px;height:18px"><path d="M3 12h18"/></svg>
+                12%
+                <svg class="ui-icon" style="width:18px;height:18px"><use href="#i-plus"></use></svg>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="screen library-screen" id="asset-library-screen">
+        <div class="library-shell">
+          <div class="library-header">
+            <div class="library-title-row">
+              <h1>知识库</h1>
+              <nav class="library-tabs" aria-label="知识库模块">
+                <button class="library-tab"><svg class="ui-icon"><use href="#i-file-text"></use></svg>文件库 <span class="tab-count">6</span></button>
+                <button class="library-tab active" data-screen="asset-library-screen"><svg class="ui-icon"><use href="#i-image"></use></svg>素材库 <span class="tab-count">23</span></button>
+                <button class="library-tab" data-screen="spec-library-screen"><svg class="ui-icon"><use href="#i-palette"></use></svg>品类视觉规范库 <span class="tab-count">11</span></button>
+              </nav>
+            </div>
+            <div class="library-actions">
+              <label class="search-box"><svg class="ui-icon"><use href="#i-search"></use></svg><input placeholder="搜索素材名称、标签、来源..." /></label>
+              <button class="round-icon active" aria-label="网格视图"><svg class="ui-icon"><use href="#i-grid"></use></svg></button>
+              <button class="round-icon" aria-label="列表视图"><svg class="ui-icon"><use href="#i-list"></use></svg></button>
+              <button class="primary-btn" data-open-upload><svg class="ui-icon"><use href="#i-plus"></use></svg>添加内容</button>
+            </div>
+          </div>
+
+          <div class="library-filter-row">
+            <div class="library-actions" style="justify-content:flex-start">
+              <button class="filter-pill active">全部</button>
+              <button class="filter-pill"><svg class="ui-icon"><use href="#i-image"></use></svg>图片</button>
+              <button class="filter-pill"><svg class="ui-icon"><use href="#i-video"></use></svg>视频</button>
+              <button class="filter-pill"><svg class="ui-icon"><use href="#i-podcast"></use></svg>音频</button>
+            </div>
+            <div class="library-actions">
+              <span class="small-chip">来源：全部</span>
+              <span class="small-chip">排序：最近使用</span>
+              <span class="small-chip">已选 0</span>
+            </div>
+          </div>
+
+          <div class="asset-library-grid">
+            <button class="asset-library-card">
+              <div class="asset-preview image-a"><span class="media-tag">IMG</span></div>
+              <span class="asset-card-body"><span class="asset-card-title">品牌主视觉.png</span><span class="asset-card-meta">2.1 MB · 1920×1080 · 昨天</span><span class="source-row"><span class="source-chip agent">Agent 产物</span><span class="small-chip">品牌</span></span></span>
+            </button>
+            <button class="asset-library-card">
+              <div class="asset-preview image-b"><span class="media-tag">IMG</span></div>
+              <span class="asset-card-body"><span class="asset-card-title">产品截图合集.png</span><span class="asset-card-meta">4.7 MB · 1440×900 · 3天前</span><span class="source-row"><span class="source-chip">本地上传</span><span class="small-chip">截图</span></span></span>
+            </button>
+            <button class="asset-library-card">
+              <div class="asset-preview video"><span class="media-tag video-tag">VID</span><span class="send-btn" style="width:54px;height:54px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.45)"><svg class="ui-icon"><path d="m8 5 11 7-11 7z"/></svg></span></div>
+              <span class="asset-card-body"><span class="asset-card-title">演示视频_v3.mp4</span><span class="asset-card-meta">128 MB · 00:42 · 上周</span><span class="source-row"><span class="source-chip agent">Agent 产物</span><span class="small-chip">投放</span></span></span>
+            </button>
+            <button class="asset-library-card">
+              <div class="asset-preview image-c"><span class="media-tag">IMG</span></div>
+              <span class="asset-card-body"><span class="asset-card-title">插画素材包.png</span><span class="asset-card-meta">8.3 MB · 2048×2048 · 上周</span><span class="source-row"><span class="source-chip">本地上传</span><span class="small-chip">插画</span></span></span>
+            </button>
+            <button class="asset-library-card">
+              <div class="asset-preview audio">
+                <span class="media-tag audio-tag">AUD</span>
+                <div class="audio-wave" aria-hidden="true">
+                  <span style="height:22px"></span><span style="height:46px"></span><span style="height:34px"></span><span style="height:62px"></span><span style="height:28px"></span><span style="height:52px"></span><span style="height:38px"></span><span style="height:58px"></span>
+                </div>
+              </div>
+              <span class="asset-card-body"><span class="asset-card-title">背景音乐_轻快.mp3</span><span class="asset-card-meta">6.2 MB · 01:36 · 2周前</span><span class="source-row"><span class="source-chip">本地上传</span><span class="small-chip">音乐</span></span></span>
+            </button>
+            <button class="asset-library-card">
+              <div class="asset-preview image-d"><span class="media-tag">IMG</span></div>
+              <span class="asset-card-body"><span class="asset-card-title">节日配图_春节.png</span><span class="asset-card-meta">3.4 MB · 1080×1080 · 2周前</span><span class="source-row"><span class="source-chip agent">Agent 产物</span><span class="small-chip">节日</span></span></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen library-screen" id="spec-library-screen">
+        <div class="library-shell">
+          <div class="library-header">
+            <div class="library-title-row">
+              <h1>知识库</h1>
+              <nav class="library-tabs" aria-label="知识库模块">
+                <button class="library-tab" data-screen="asset-library-screen"><svg class="ui-icon"><use href="#i-image"></use></svg>素材库 <span class="tab-count">23</span></button>
+                <button class="library-tab active" data-screen="spec-library-screen"><svg class="ui-icon"><use href="#i-palette"></use></svg>品类视觉规范库 <span class="tab-count">11</span></button>
+              </nav>
+            </div>
+            <div class="library-actions">
+              <label class="search-box"><svg class="ui-icon"><use href="#i-search"></use></svg><input placeholder="搜索规范、品类、品牌..." /></label>
+              <button class="round-icon active" aria-label="网格视图"><svg class="ui-icon"><use href="#i-grid"></use></svg></button>
+              <button class="primary-btn" data-create-spec><svg class="ui-icon"><use href="#i-plus"></use></svg>新建规范</button>
+            </div>
+          </div>
+
+          <div class="library-filter-row">
+            <div class="library-actions" style="justify-content:flex-start">
+              <button class="filter-pill active">全部</button>
+              <button class="filter-pill">使用中</button>
+              <button class="filter-pill">品牌规范</button>
+              <button class="filter-pill">投放规范</button>
+              <button class="filter-pill">电商品类</button>
+            </div>
+            <div class="library-actions">
+              <span class="small-chip">排序：最近编辑</span>
+              <span class="small-chip">默认规范：Skywork 主品牌</span>
+            </div>
+          </div>
+
+          <div class="spec-library-grid">
+            <article class="spec-library-card active">
+              <div class="spec-option-strip"><span style="background:#5870ff"></span><span style="background:#8b5cf6"></span><span style="background:#111629"></span><span style="background:#e5e7eb"></span></div>
+              <div class="spec-card-body">
+                <div class="spec-card-title-row"><h3>Skywork 主品牌规范</h3><span class="status">使用中</span></div>
+                <div class="detail-row"><span class="detail-label">Logo</span><span class="design-pill" style="width:max-content">SW</span></div>
+                <div class="detail-row"><span class="detail-label">主色</span><span class="swatches"><i class="swatch" style="background:#5870ff"></i><i class="swatch" style="background:#8b5cf6"></i><i class="swatch" style="background:#111629"></i><i class="swatch" style="background:#e5e7eb"></i></span></div>
+                <div class="detail-row"><span class="detail-label">字体</span><span>Inter, PingFang SC</span></div>
+                <div class="spec-actions"><button class="secondary-btn">编辑规范</button><button class="primary-btn" data-start-task-spec="Skywork 主品牌规范">发起任务</button></div>
+              </div>
+            </article>
+            <article class="spec-library-card">
+              <div class="spec-option-strip"><span style="background:#ff6b1a"></span><span style="background:#ffe48a"></span><span style="background:#7f2d15"></span><span style="background:#fff5e8"></span></div>
+              <div class="spec-card-body">
+                <div class="spec-card-title-row"><h3>视频营销品牌规范</h3></div>
+                <div class="detail-row"><span class="detail-label">主色</span><span class="swatches"><i class="swatch" style="background:#ff6b1a"></i><i class="swatch" style="background:#ffe48a"></i><i class="swatch" style="background:#7f2d15"></i><i class="swatch" style="background:#fff5e8"></i></span></div>
+                <div class="detail-row"><span class="detail-label">字体</span><span>思源黑体</span></div>
+                <div class="detail-row"><span class="detail-label">约束</span><span>高对比标题、3 秒内出现卖点</span></div>
+                <div class="spec-actions"><button class="secondary-btn">编辑规范</button><button class="primary-btn" data-start-task-spec="视频营销品牌规范">发起任务</button></div>
+              </div>
+            </article>
+            <article class="spec-library-card">
+              <div class="spec-option-strip"><span style="background:#071126"></span><span style="background:#35b8ee"></span><span style="background:#e6f5fb"></span><span style="background:#f8fafc"></span></div>
+              <div class="spec-card-body">
+                <div class="spec-card-title-row"><h3>极简暗色系规范</h3></div>
+                <div class="detail-row"><span class="detail-label">主色</span><span class="swatches"><i class="swatch" style="background:#071126"></i><i class="swatch" style="background:#35b8ee"></i><i class="swatch" style="background:#e6f5fb"></i><i class="swatch" style="background:#f8fafc"></i></span></div>
+                <div class="detail-row"><span class="detail-label">字体</span><span>DM Sans, JetBrains Mono</span></div>
+                <div class="detail-row"><span class="detail-label">文档</span><span class="small-chip">暗色规范约束.pdf</span></div>
+                <div class="spec-actions"><button class="secondary-btn">编辑规范</button><button class="primary-btn" data-start-task-spec="极简暗色系规范">发起任务</button></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen create-spec-screen" id="create-spec-screen">
+        <div class="create-spec-shell">
+          <div class="create-spec-header">
+            <div class="create-spec-title">
+              <button class="back-btn" data-screen="start-screen" aria-label="返回"><svg class="ui-icon"><path d="m15 18-6-6 6-6"/></svg></button>
+              <div>
+                <h1>新建视觉规范</h1>
+              </div>
+            </div>
+            <div class="toolbar-right">
+              <button class="secondary-btn" data-screen="start-screen">取消</button>
+              <button class="primary-btn" data-toast="视觉规范已创建">保存规范</button>
+            </div>
+          </div>
+
+          <div class="create-spec-layout">
+            <section class="create-spec-card">
+              <div class="create-mode-grid">
+                <button class="create-method active">
+                  <strong>上传资料创建</strong>
+                </button>
+                <button class="create-method">
+                  <strong>手动输入创建</strong>
+                </button>
+              </div>
+
+              <div class="upload-zone">
+                <div>
+                  <svg class="ui-icon" style="width:34px;height:34px;margin:0 auto;color:var(--brand-blue)"><use href="#i-upload"></use></svg>
+                  <strong>上传品牌资料或参考素材</strong>
+                </div>
+              </div>
+
+              <h2 class="section-label">规范信息</h2>
+              <div class="form-grid">
+                <label class="field">规范名称<input value="新品电商视觉规范" /></label>
+                <label class="field">适用品类<input value="电商海报 / 短视频封面" /></label>
+                <label class="field full">主色板<input value="#111827, #4D5EFF, #F9FAFC, #18BF83" /></label>
+                <label class="field full">字体<input value="Inter, PingFang SC" /></label>
+                <label class="field full">风格关键词<textarea>干净、强转化、商品主体突出、保留明确价格和利益点。</textarea></label>
+                <label class="field full">禁用项<textarea>不可使用低清 Logo；不要将品牌蓝和大面积紫色渐变混用；营销素材需要保留明确 CTA。</textarea></label>
+              </div>
+            </section>
+
+            <aside class="spec-preview-card">
+              <h2 class="section-label">规范预览</h2>
+              <div class="preview-palette">
+                <span style="background:#111827"></span>
+                <span style="background:#4d5eff"></span>
+                <span style="background:#f9fafc"></span>
+                <span style="background:#18bf83"></span>
+              </div>
+              <div class="preview-logo">SW</div>
+              <div class="detail-row"><span class="detail-label">Logo</span><span>使用清晰主 Logo</span></div>
+              <div class="detail-row"><span class="detail-label">主色</span><span class="swatches"><i class="swatch" style="background:#111827"></i><i class="swatch" style="background:#4d5eff"></i><i class="swatch" style="background:#f9fafc"></i><i class="swatch" style="background:#18bf83"></i></span></div>
+              <div class="detail-row"><span class="detail-label">字体</span><span>Inter, PingFang SC</span></div>
+              <ul class="preview-rule-list">
+                <li><span>✓</span><span>商品主体优先，核心卖点需在首屏可见。</span></li>
+                <li><span>✓</span><span>配色需保持高对比，避免低清或拉伸 Logo。</span></li>
+                <li><span>✓</span><span>图片、视频封面任务默认带入这套规范。</span></li>
+              </ul>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal" id="asset-picker" aria-hidden="true">
+    <div class="scrim" data-close></div>
+    <div class="modal-panel">
+      <div class="panel-head">
+        <div>
+          <h2>选择素材库内容</h2>
+        </div>
+        <button class="close-btn" data-close-account-link><svg class="ui-icon"><use href="#i-x"></use></svg></button>
+      </div>
+      <div class="selector-layout">
+        <div>
+          <div class="selector-tools">
+            <label class="search-box"><svg class="ui-icon"><use href="#i-search"></use></svg><input placeholder="搜索素材名称、标签、来源" /></label>
+            <div class="tabs">
+              <button class="tab active">全部</button>
+              <button class="tab"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-image"></use></svg>图片</button>
+              <button class="tab"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-video"></use></svg>视频</button>
+              <button class="tab"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-podcast"></use></svg>音频</button>
+            </div>
+          </div>
+          <div class="selector-grid">
+            <button class="select-card active">
+              <span class="checkmark">✓</span>
+              <div class="select-preview"></div>
+              <span class="select-body"><span class="select-title">品牌主视觉.png</span></span>
+            </button>
+            <button class="select-card active">
+              <span class="checkmark">✓</span>
+              <div class="select-preview video"></div>
+              <span class="select-body"><span class="select-title">演示视频_v3.mp4</span></span>
+            </button>
+            <button class="select-card">
+              <div class="select-preview audio"></div>
+              <span class="select-body"><span class="select-title">背景音乐_轻快.mp3</span></span>
+            </button>
+            <button class="select-card">
+              <div class="select-preview" style="background:linear-gradient(135deg,#37b6ff,#02d8d1)"></div>
+              <span class="select-body"><span class="select-title">产品截图合集.png</span></span>
+            </button>
+            <button class="select-card">
+              <div class="select-preview" style="background:linear-gradient(135deg,#ff6688,#ffe142)"></div>
+              <span class="select-body"><span class="select-title">节日配图_春节.png</span></span>
+            </button>
+            <button class="select-card">
+              <div class="select-preview video" style="background:linear-gradient(135deg,#151b29,#6b37ff)"></div>
+              <span class="select-body"><span class="select-title">TikTok 竖版短片.mp4</span></span>
+            </button>
+          </div>
+        </div>
+        <aside class="selection-summary">
+          <h3 class="summary-title">已选 2 个素材</h3>
+          <div class="summary-list">
+            <div class="summary-item"><span class="summary-thumb"></span><span>品牌主视觉.png</span></div>
+            <div class="summary-item"><span class="summary-thumb" style="background:#071126"></span><span>演示视频_v3.mp4</span></div>
+          </div>
+        </aside>
+      </div>
+      <div class="modal-actions">
+        <button class="secondary-btn" data-close>取消</button>
+        <button class="primary-btn" data-apply-assets>添加到任务</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="spec-picker" aria-hidden="true">
+    <div class="scrim" data-close></div>
+    <div class="modal-panel">
+      <div class="panel-head">
+        <div>
+          <h2>选择视觉规范</h2>
+        </div>
+        <button class="close-btn" data-close-account-link><svg class="ui-icon"><use href="#i-x"></use></svg></button>
+      </div>
+      <div class="selector-layout">
+        <div>
+          <div class="selector-tools">
+            <label class="search-box"><svg class="ui-icon"><use href="#i-search"></use></svg><input placeholder="搜索规范、品牌、品类" /></label>
+            <a class="ghost-btn" href="#create-spec-screen" data-create-spec><svg class="ui-icon"><use href="#i-plus"></use></svg>创建新规范 ↗</a>
+          </div>
+          <div class="spec-list">
+            <button class="spec-option active">
+              <div class="spec-option-strip"><span style="background:#5870ff"></span><span style="background:#8b5cf6"></span><span style="background:#111629"></span><span style="background:#e5e7eb"></span></div>
+              <div class="spec-option-body">
+                <h3 class="spec-option-title">Skywork 主品牌规范</h3>
+              </div>
+            </button>
+            <button class="spec-option">
+              <div class="spec-option-strip"><span style="background:#ff6b1a"></span><span style="background:#ffe48a"></span><span style="background:#7f2d15"></span><span style="background:#fff5e8"></span></div>
+              <div class="spec-option-body">
+                <h3 class="spec-option-title">视频营销品牌规范</h3>
+              </div>
+            </button>
+            <button class="spec-option">
+              <div class="spec-option-strip"><span style="background:#071126"></span><span style="background:#35b8ee"></span><span style="background:#e6f5fb"></span><span style="background:#f8fafc"></span></div>
+              <div class="spec-option-body">
+                <h3 class="spec-option-title">极简暗色系规范</h3>
+              </div>
+            </button>
+          </div>
+        </div>
+        <aside class="spec-detail">
+          <h3 class="summary-title">Skywork 主品牌规范</h3>
+          <div class="detail-row"><span class="detail-label">Logo</span><span class="design-pill" style="width:max-content">SW</span></div>
+          <div class="detail-row"><span class="detail-label">主色</span><span class="swatches"><i class="swatch" style="background:#5870ff"></i><i class="swatch" style="background:#8b5cf6"></i><i class="swatch" style="background:#111629"></i><i class="swatch" style="background:#e5e7eb"></i></span></div>
+          <div class="detail-row"><span class="detail-label">字体</span><span>Inter, PingFang SC</span></div>
+          <div class="detail-row"><span class="detail-label">关键词</span><span>清晰、轻量、可信赖</span></div>
+          <div class="detail-row"><span class="detail-label">禁用项</span><span>不可使用低清 Logo；避免大面积紫色渐变混用。</span></div>
+        </aside>
+      </div>
+      <div class="modal-actions">
+        <button class="secondary-btn" data-close>取消</button>
+        <button class="primary-btn" data-apply-spec>使用该规范</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="drawer" id="publish-drawer" aria-hidden="true">
+    <div class="scrim" data-close></div>
+    <aside class="drawer-panel">
+      <div class="drawer-head">
+        <h2>发布到社媒</h2>
+        <button class="close-btn" data-close><svg class="ui-icon"><use href="#i-x"></use></svg></button>
+      </div>
+      <div class="drawer-body">
+        <section class="publish-section account-section">
+          <h3>社交媒体账号</h3>
+          <div class="account-empty">
+            <strong>No social accounts connected</strong>
+            Connect at least one social media account to publish or schedule your post.
+          </div>
+          <div class="social-connect-list">
+            <button class="social-connect-row" data-connect-account>
+              <span class="platform-mark ig">◎</span>
+              <span><strong>Instagram</strong><small>Business or Creator accounts</small></span>
+              <span class="connect-btn">Add</span>
+            </button>
+            <button class="social-connect-row" data-connect-account>
+              <span class="platform-mark fb">f</span>
+              <span><strong>Facebook</strong><small>Page</small></span>
+              <span class="connect-btn">Add</span>
+            </button>
+            <button class="social-connect-row" data-connect-account>
+              <span class="platform-mark tk">♪</span>
+              <span><strong>TikTok</strong><small>Profile</small></span>
+              <span class="connect-btn">Add</span>
+            </button>
+            <button class="social-connect-row" data-connect-account>
+              <span class="platform-mark x">X</span>
+              <span><strong>Twitter</strong><small>Profile</small></span>
+              <span class="connect-btn">Add</span>
+            </button>
+            <button class="social-connect-row" data-connect-account>
+              <span class="platform-mark yt">▶</span>
+              <span><strong>YouTube</strong><small>Channel</small></span>
+              <span class="connect-btn">Add</span>
+            </button>
+          </div>
+          <div class="connected-account-view" data-connected-account-view>
+            <div class="selected-account-card">
+              <span class="platform-mark ig" data-selected-platform-mark>◎</span>
+              <strong data-selected-platform-name>Instagram</strong>
+              <span class="checkmark" style="position:static">✓</span>
+            </div>
+            <button class="add-more-account" type="button">
+              <span>添加更多平台账号</span>
+              <span class="add-more-icons">
+                <span class="platform-mark fb">f</span>
+                <span class="platform-mark tk">♪</span>
+                <span class="platform-mark x">X</span>
+                <span class="platform-mark yt">▶</span>
+              </span>
+            </button>
+          </div>
+        </section>
+
+        <section class="publish-section">
+          <h3>发布文案</h3>
+          <div class="copy-fields">
+            <label class="field">标题<input value="Skywork campaign visual system" /></label>
+            <label class="field">描述<textarea>Turn ideas into polished campaign visuals in one Skywork canvas. Create, refine, and prepare social-ready assets without switching tools.</textarea></label>
+            <label class="field">Tag
+              <div class="tag-editor" data-tag-editor>
+                <span class="tag-chip">#AIProductivity<button type="button" data-remove-tag aria-label="删除 #AIProductivity"><svg viewBox="0 0 20 20" fill="none"><path opacity="0.6" d="M10 18.3334C14.6024 18.3334 18.3334 14.6024 18.3334 10C18.3334 5.39765 14.6024 1.66669 10 1.66669C5.39765 1.66669 1.66669 5.39765 1.66669 10C1.66669 14.6024 5.39765 18.3334 10 18.3334Z" fill="#7F8896"/><path d="M10.8833 10L12.8 8.08338C13.0416 7.84172 13.0416 7.44172 12.8 7.20005C12.5583 6.95838 12.1583 6.95838 11.9166 7.20005L9.99997 9.11671L8.08331 7.20005C7.84164 6.95838 7.44164 6.95838 7.19997 7.20005C6.95831 7.44172 6.95831 7.84172 7.19997 8.08338L9.11664 10L7.19997 11.9167C6.95831 12.1584 6.95831 12.5584 7.19997 12.8C7.32497 12.925 7.48331 12.9834 7.64164 12.9834C7.79997 12.9834 7.95831 12.925 8.08331 12.8L9.99997 10.8834L11.9166 12.8C12.0416 12.925 12.2 12.9834 12.3583 12.9834C12.5166 12.9834 12.675 12.925 12.8 12.8C13.0416 12.5584 13.0416 12.1584 12.8 11.9167L10.8833 10Z" fill="#7F8896"/></svg></button></span>
+                <span class="tag-chip">#DesignWorkflow<button type="button" data-remove-tag aria-label="删除 #DesignWorkflow"><svg viewBox="0 0 20 20" fill="none"><path opacity="0.6" d="M10 18.3334C14.6024 18.3334 18.3334 14.6024 18.3334 10C18.3334 5.39765 14.6024 1.66669 10 1.66669C5.39765 1.66669 1.66669 5.39765 1.66669 10C1.66669 14.6024 5.39765 18.3334 10 18.3334Z" fill="#7F8896"/><path d="M10.8833 10L12.8 8.08338C13.0416 7.84172 13.0416 7.44172 12.8 7.20005C12.5583 6.95838 12.1583 6.95838 11.9166 7.20005L9.99997 9.11671L8.08331 7.20005C7.84164 6.95838 7.44164 6.95838 7.19997 7.20005C6.95831 7.44172 6.95831 7.84172 7.19997 8.08338L9.11664 10L7.19997 11.9167C6.95831 12.1584 6.95831 12.5584 7.19997 12.8C7.32497 12.925 7.48331 12.9834 7.64164 12.9834C7.79997 12.9834 7.95831 12.925 8.08331 12.8L9.99997 10.8834L11.9166 12.8C12.0416 12.925 12.2 12.9834 12.3583 12.9834C12.5166 12.9834 12.675 12.925 12.8 12.8C13.0416 12.5584 13.0416 12.1584 12.8 11.9167L10.8833 10Z" fill="#7F8896"/></svg></button></span>
+                <input class="tag-input" data-tag-input placeholder="添加 tag" />
+              </div>
+            </label>
+          </div>
+        </section>
+
+        <section class="publish-section schedule-section collapsed">
+          <div class="schedule-row">
+            <h3 style="margin:0">定时发布</h3>
+            <button class="toggle" data-toggle-schedule aria-label="开启定时"></button>
+          </div>
+          <div class="schedule-fields">
+            <label class="field">发布日期<input type="date" value="2026-06-26" /></label>
+            <label class="field">时间<input type="time" value="09:30" /></label>
+          </div>
+        </section>
+      </div>
+      <div class="drawer-actions">
+        <button class="secondary-btn preview-btn" data-open-publish-preview>预览</button>
+        <button class="secondary-btn" data-close>取消</button>
+        <button class="primary-btn" data-publish-submit disabled aria-disabled="true">发布</button>
+      </div>
+    </aside>
+  </div>
+
+  <div class="modal" id="publish-success-modal" aria-hidden="true">
+    <div class="scrim" data-close-publish-success></div>
+    <div class="modal-panel publish-success-panel">
+      <div class="success-mark">✓</div>
+      <h2>发布已提交</h2>
+      <p>内容将在 5 分钟左右发布成功，你可以稍后在对应社媒平台查看发布状态。</p>
+      <div class="modal-actions">
+        <button class="primary-btn" data-close-publish-success>知道了</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="publish-preview-panel" id="publish-preview-panel" aria-hidden="true">
+    <div class="preview-head">
+      <div class="preview-account">
+        <span class="platform-mark ig" data-preview-platform-mark>◎</span>
+        <span data-preview-platform-name>Instagram</span>
+      </div>
+      <button class="close-btn" data-close-publish-preview aria-label="关闭预览"><svg class="ui-icon"><use href="#i-x"></use></svg></button>
+    </div>
+    <div class="preview-media"></div>
+    <div class="preview-copy">
+      <strong data-preview-title>Skywork campaign visual system</strong>
+      <span data-preview-description>Turn ideas into polished campaign visuals in one Skywork canvas. Create, refine, and prepare social-ready assets without switching tools.</span>
+      <div class="preview-tags" data-preview-tags>
+        <span>#AIProductivity</span><span>#DesignWorkflow</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="account-link-modal" aria-hidden="true">
+    <div class="scrim" data-close-account-link></div>
+    <div class="modal-panel account-auth-panel">
+      <div class="panel-head">
+        <div class="account-auth-title">
+          <span class="platform-mark fb" data-auth-platform-mark>f</span>
+          <h2>Link your <span data-auth-platform-name>Facebook</span> Account</h2>
+        </div>
+        <button class="close-btn" data-close-account-link><svg class="ui-icon"><use href="#i-x"></use></svg></button>
+      </div>
+      <div class="account-auth-body">
+        <p>At the moment we can only support <span data-auth-platform-body>Facebook</span> accounts with Pages.</p>
+        <p>If you haven't created Pages on your <span data-auth-platform-body>Facebook</span> account, <a href="#" tabindex="-1">click here</a>.</p>
+        <p>You will need to grant access to all the <span data-auth-platform-body>Facebook</span> pages. Otherwise your page linking will fail. You can however later select the pages.</p>
+      </div>
+      <div class="modal-actions">
+        <button class="secondary-btn" data-close-account-link>Cancel</button>
+        <button class="primary-btn" data-confirm-account-link>Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="save-artifact-modal" aria-hidden="true">
+    <div class="scrim" data-close></div>
+    <div class="modal-panel small">
+      <div class="panel-head">
+        <div>
+          <h2>保存到素材库</h2>
+        </div>
+        <button class="close-btn" data-close><svg class="ui-icon"><use href="#i-x"></use></svg></button>
+      </div>
+      <div class="save-preview">
+        <div class="artifact-thumb"></div>
+        <div>
+          <strong style="display:block;color:var(--text-strong);margin-bottom:6px">no_filter_collage_v2_2.png</strong>
+          <span style="color:var(--text-tertiary);font-size:13px">Agent 生成产物 · 2928×3904 · PNG</span>
+        </div>
+      </div>
+      <div class="form-grid">
+        <label class="field">素材名称<input value="海洋背景拼贴海报.png" /></label>
+        <label class="field">归属分组<input value="Agent 生成素材" /></label>
+        <label class="field full">标签<input value="海报, 社媒, 海洋背景, 可复用" /></label>
+        <label class="field full">来源备注<textarea>来自任务「创建海洋背景拼贴海报」，保留画布产物和任务上下文。</textarea></label>
+      </div>
+      <div class="modal-actions">
+        <button class="secondary-btn" data-close>取消</button>
+        <button class="primary-btn" data-toast="产物已保存到素材库">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="local-upload-modal" aria-hidden="true">
+    <div class="scrim" data-close></div>
+    <div class="modal-panel small">
+      <div class="panel-head">
+        <div>
+          <h2>本地上传</h2>
+        </div>
+        <button class="close-btn" data-close><svg class="ui-icon"><use href="#i-x"></use></svg></button>
+      </div>
+      <label class="upload-zone drop-zone" for="local-upload-input">
+        <div>
+          <svg class="ui-icon" style="width:36px;height:36px;margin:0 auto;color:var(--brand-blue)"><use href="#i-upload"></use></svg>
+          <strong>拖拽文件到这里</strong>
+          <span class="upload-action-pill">选择文件</span>
+          <div class="upload-type-row">
+            <span class="upload-type-pill">PNG / JPG</span>
+            <span class="upload-type-pill">MP4 / MOV</span>
+            <span class="upload-type-pill">MP3 / WAV</span>
+          </div>
+        </div>
+      </label>
+      <input id="local-upload-input" type="file" accept="image/*,video/*,audio/*" multiple hidden />
+      <div class="form-grid">
+        <label class="field">归属分组<input value="素材库" /></label>
+        <label class="field">标签<input value="本地上传" /></label>
+      </div>
+      <div class="modal-actions">
+        <button class="secondary-btn" data-close>取消</button>
+        <button class="primary-btn" data-close data-toast="素材已上传">上传</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><span class="checkmark" style="position:static">✓</span><span id="toast-text">已保存</span></div>
+
+  <script>
+    const $ = (selector, root = document) => root.querySelector(selector);
+    const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+    function showLayer(id) {
+      const layer = $(id);
+      if (!layer) return;
+      layer.classList.add("show");
+      layer.setAttribute("aria-hidden", "false");
+      $("#add-menu")?.classList.remove("show");
+    }
+
+    function hideLayers() {
+      $$(".modal.show, .drawer.show").forEach((layer) => {
+        layer.classList.remove("show");
+        layer.setAttribute("aria-hidden", "true");
+      });
+      hidePublishPreview();
+    }
+
+    function hidePublishPreview() {
+      const preview = $("#publish-preview-panel");
+      if (!preview) return;
+      preview.classList.remove("show");
+      preview.setAttribute("aria-hidden", "true");
+    }
+
+    function closePublishSuccess() {
+      $("#publish-success-modal")?.classList.remove("show");
+      $("#publish-success-modal")?.setAttribute("aria-hidden", "true");
+      $("#publish-drawer")?.classList.remove("show");
+      $("#publish-drawer")?.setAttribute("aria-hidden", "true");
+      hidePublishPreview();
+    }
+
+    function showToast(text) {
+      $("#toast-text").textContent = text;
+      const toast = $("#toast");
+      toast.classList.add("show");
+      window.setTimeout(() => toast.classList.remove("show"), 1800);
+      hideLayers();
+    }
+
+    function setScreen(id) {
+      $$(".screen").forEach((screen) => screen.classList.toggle("active", screen.id === id));
+      $(".app-shell")?.classList.toggle("detail-mode", id === "execute-screen");
+      const knowledgeScreens = ["asset-library-screen", "spec-library-screen", "create-spec-screen"];
+      const isKnowledge = knowledgeScreens.includes(id);
+      $$(".rail-btn").forEach((btn) => {
+        const isActive = (isKnowledge && btn.dataset.screen === "asset-library-screen") || (!isKnowledge && btn.dataset.screen === id) || (!btn.dataset.screen && id === "execute-screen");
+        btn.classList.toggle("active", isActive);
+      });
+      $("#side-panel")?.classList.toggle("knowledge-mode", isKnowledge);
+      $$("[data-kb-item]").forEach((item) => {
+        const key = id === "spec-library-screen" || id === "create-spec-screen" ? "specs" : id === "asset-library-screen" ? "assets" : "";
+        item.classList.toggle("active", item.dataset.kbItem === key);
+      });
+      hideLayers();
+      $("#add-menu")?.classList.remove("show");
+    }
+
+    function ensureChip(className, html) {
+      const row = $("#selected-row");
+      if (!row || row.querySelector("." + className)) return;
+      const span = document.createElement("span");
+      span.className = className;
+      span.innerHTML = html;
+      row.appendChild(span);
+    }
+
+    function setSpecChip(name) {
+      const row = $("#selected-row");
+      if (!row) return;
+      row.querySelector(".from-spec")?.remove();
+      ensureChip("attached-chip spec from-spec", `<svg class="ui-icon" style="width:16px;height:16px"><use href="#i-palette"></use></svg>${name} <button class="chip-close" data-remove-chip aria-label="移除视觉规范"><svg class="ui-icon"><use href="#i-x"></use></svg></button>`);
+    }
+
+    $("#add-trigger")?.addEventListener("click", () => {
+      $("#add-menu").classList.toggle("show");
+    });
+    $$("[data-screen]").forEach((btn) => btn.addEventListener("click", () => setScreen(btn.dataset.screen)));
+    $$("[data-create-spec]").forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+        window.location.hash = "create-spec-screen";
+        setScreen("create-spec-screen");
+      });
+    });
+    $$("[data-open-asset-picker]").forEach((btn) => btn.addEventListener("click", () => showLayer("#asset-picker")));
+    $$("[data-open-spec-picker]").forEach((btn) => btn.addEventListener("click", () => showLayer("#spec-picker")));
+    $$("[data-open-save-artifact]").forEach((btn) => btn.addEventListener("click", () => showLayer("#save-artifact-modal")));
+    $$("[data-open-upload]").forEach((btn) => btn.addEventListener("click", () => showLayer("#local-upload-modal")));
+    $$("[data-open-publish]").forEach((btn) => btn.addEventListener("click", () => {
+      if (btn.disabled) return;
+      showLayer("#publish-drawer");
+    }));
+    $$("[data-start-task-spec]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        setSpecChip(btn.dataset.startTaskSpec);
+        window.location.hash = "start-screen";
+        setScreen("start-screen");
+      });
+    });
+    $$("[data-close], .scrim").forEach((btn) => btn.addEventListener("click", hideLayers));
+    $$("[data-toast]").forEach((btn) => btn.addEventListener("click", () => showToast(btn.dataset.toast)));
+
+    $$("[data-composer-trigger]").forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const menu = btn.closest(".composer-dropdown")?.querySelector(".composer-menu");
+        $$(".composer-menu.show").forEach((item) => {
+          if (item !== menu) item.classList.remove("show");
+        });
+        menu?.classList.toggle("show");
+      });
+    });
+
+    $$(".composer-menu-item[data-composer-choice]").forEach((item) => {
+      item.addEventListener("click", () => {
+        const dropdown = item.closest(".composer-dropdown");
+        dropdown?.querySelector("[data-composer-value]") && (dropdown.querySelector("[data-composer-value]").textContent = item.dataset.composerChoice);
+        dropdown?.querySelectorAll(".composer-menu-item").forEach((option) => option.classList.toggle("active", option === item));
+        dropdown?.querySelector(".composer-menu")?.classList.remove("show");
+      });
+    });
+
+    function syncPublishButton() {
+      const hasAccount = Boolean($(".social-connect-row.connected"));
+      const publish = $("#publish-drawer .primary-btn");
+      if (!publish) return;
+      publish.disabled = !hasAccount;
+      publish.setAttribute("aria-disabled", String(!hasAccount));
+    }
+
+    function syncCanvasSelection(selected) {
+      const panel = $("[data-canvas-panel]");
+      const publish = $(".canvas-publish-btn");
+      panel?.classList.toggle("has-selection", selected);
+      if (!publish) return;
+      publish.disabled = !selected;
+      publish.setAttribute("aria-disabled", String(!selected));
+    }
+
+    $("[data-select-artboard]")?.addEventListener("click", () => syncCanvasSelection(true));
+    $("[data-select-artboard]")?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        syncCanvasSelection(true);
+      }
+    });
+    $(".infinite-canvas")?.addEventListener("click", (event) => {
+      if (event.target.closest(".artboard, .selection-toolbar, .canvas-tool-rail, .zoom-box")) return;
+      syncCanvasSelection(false);
+    });
+
+    function updatePublishPreview() {
+      const preview = $("#publish-preview-panel");
+      if (!preview) return;
+      const selectedName = $("[data-selected-platform-name]")?.textContent?.trim() || "Instagram";
+      const selectedMark = $("[data-selected-platform-mark]")?.cloneNode(true);
+      const previewMark = $("[data-preview-platform-mark]");
+      const title = $(".copy-fields input")?.value?.trim() || "Skywork campaign visual system";
+      const description = $(".copy-fields textarea")?.value?.trim() || "";
+      const tags = $$(".tag-chip").map((chip) => chip.firstChild?.textContent?.trim()).filter(Boolean);
+      $("[data-preview-platform-name]").textContent = selectedName;
+      if (selectedMark && previewMark) {
+        selectedMark.setAttribute("data-preview-platform-mark", "");
+        previewMark.replaceWith(selectedMark);
+      }
+      $("[data-preview-title]").textContent = title;
+      $("[data-preview-description]").textContent = description;
+      const tagWrap = $("[data-preview-tags]");
+      if (tagWrap) {
+        tagWrap.innerHTML = "";
+        tags.forEach((tag) => {
+          const item = document.createElement("span");
+          item.textContent = tag;
+          tagWrap.appendChild(item);
+        });
+      }
+    }
+
+    $("[data-open-publish-preview]")?.addEventListener("click", () => {
+      updatePublishPreview();
+      const preview = $("#publish-preview-panel");
+      preview?.classList.add("show");
+      preview?.setAttribute("aria-hidden", "false");
+    });
+
+    $("[data-close-publish-preview]")?.addEventListener("click", hidePublishPreview);
+
+    $("[data-publish-submit]")?.addEventListener("click", (event) => {
+      const btn = event.currentTarget;
+      if (btn.disabled) return;
+      showLayer("#publish-success-modal");
+    });
+
+    $$("[data-close-publish-success]").forEach((btn) => btn.addEventListener("click", closePublishSuccess));
+
+    let pendingAccountRow = null;
+
+    function closeAccountLinkModal() {
+      $("#account-link-modal")?.classList.remove("show");
+      $("#account-link-modal")?.setAttribute("aria-hidden", "true");
+      pendingAccountRow = null;
+    }
+
+    $$("[data-close-account-link]").forEach((btn) => btn.addEventListener("click", closeAccountLinkModal));
+
+    $$("[data-connect-account]").forEach((row) => {
+      row.addEventListener("click", () => {
+        pendingAccountRow = row;
+        const platform = row.querySelector("strong")?.textContent || "Facebook";
+        const mark = row.querySelector(".platform-mark")?.cloneNode(true);
+        $("[data-auth-platform-name]").textContent = platform;
+        $$("[data-auth-platform-body]").forEach((item) => (item.textContent = platform));
+        if (mark && $("[data-auth-platform-mark]")) {
+          mark.setAttribute("data-auth-platform-mark", "");
+          $("[data-auth-platform-mark]").replaceWith(mark);
+        }
+        showLayer("#account-link-modal");
+      });
+    });
+
+    $("[data-confirm-account-link]")?.addEventListener("click", () => {
+      if (!pendingAccountRow) return;
+      const platform = pendingAccountRow.querySelector("strong")?.textContent || "Instagram";
+      const mark = pendingAccountRow.querySelector(".platform-mark")?.cloneNode(true);
+      pendingAccountRow.classList.add("connected");
+      pendingAccountRow.querySelector(".connect-btn").textContent = "Added";
+      $("[data-selected-platform-name]").textContent = platform;
+      if (mark && $("[data-selected-platform-mark]")) {
+        $("[data-selected-platform-mark]").replaceWith(mark);
+        mark.setAttribute("data-selected-platform-mark", "");
+      }
+      $(".account-section")?.classList.add("has-connected");
+      syncPublishButton();
+      $("#account-link-modal")?.classList.remove("show");
+      $("#account-link-modal")?.setAttribute("aria-hidden", "true");
+      pendingAccountRow = null;
+    });
+
+    $("[data-toggle-schedule]")?.addEventListener("click", () => {
+      $(".schedule-section")?.classList.toggle("collapsed");
+    });
+
+    function normalizeTag(value) {
+      const text = value.trim().replace(/^[#,，\s]+/, "");
+      return text ? `#${text}` : "";
+    }
+
+    function addTagFromInput() {
+      const input = $("[data-tag-input]");
+      const editor = $("[data-tag-editor]");
+      if (!input || !editor) return;
+      const tag = normalizeTag(input.value);
+      if (!tag) return;
+      const chip = document.createElement("span");
+      chip.className = "tag-chip";
+      chip.innerHTML = `${tag}<button type="button" data-remove-tag aria-label="删除 ${tag}"><svg viewBox="0 0 20 20" fill="none"><path opacity="0.6" d="M10 18.3334C14.6024 18.3334 18.3334 14.6024 18.3334 10C18.3334 5.39765 14.6024 1.66669 10 1.66669C5.39765 1.66669 1.66669 5.39765 1.66669 10C1.66669 14.6024 5.39765 18.3334 10 18.3334Z" fill="#7F8896"/><path d="M10.8833 10L12.8 8.08338C13.0416 7.84172 13.0416 7.44172 12.8 7.20005C12.5583 6.95838 12.1583 6.95838 11.9166 7.20005L9.99997 9.11671L8.08331 7.20005C7.84164 6.95838 7.44164 6.95838 7.19997 7.20005C6.95831 7.44172 6.95831 7.84172 7.19997 8.08338L9.11664 10L7.19997 11.9167C6.95831 12.1584 6.95831 12.5584 7.19997 12.8C7.32497 12.925 7.48331 12.9834 7.64164 12.9834C7.79997 12.9834 7.95831 12.925 8.08331 12.8L9.99997 10.8834L11.9166 12.8C12.0416 12.925 12.2 12.9834 12.3583 12.9834C12.5166 12.9834 12.675 12.925 12.8 12.8C13.0416 12.5584 13.0416 12.1584 12.8 11.9167L10.8833 10Z" fill="#7F8896"/></svg></button>`;
+      editor.insertBefore(chip, input);
+      input.value = "";
+    }
+
+    $("[data-tag-editor]")?.addEventListener("click", (event) => {
+      const remove = event.target.closest("[data-remove-tag]");
+      if (remove) remove.closest(".tag-chip")?.remove();
+    });
+
+    $("[data-tag-input]")?.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === ",") {
+        event.preventDefault();
+        addTagFromInput();
+      }
+    });
+
+    $$(".drop-zone").forEach((zone) => {
+      ["dragenter", "dragover"].forEach((eventName) => {
+        zone.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          zone.classList.add("dragging");
+        });
+      });
+      ["dragleave", "drop"].forEach((eventName) => {
+        zone.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          zone.classList.remove("dragging");
+          if (eventName === "drop") showToast("素材已添加到上传队列");
+        });
+      });
+    });
+
+    $$("[data-apply-assets]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        $(".reference-thumb")?.classList.add("from-library");
+        showToast("素材已添加到任务");
+      });
+    });
+
+    $$("[data-apply-spec]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        setSpecChip("Skywork 主品牌规范");
+        showToast("视觉规范已添加到任务");
+      });
+    });
+
+    $("#selected-row")?.addEventListener("click", (event) => {
+      const close = event.target.closest("[data-remove-chip]");
+      if (!close) return;
+      event.preventDefault();
+      event.stopPropagation();
+      close.closest(".attached-chip")?.remove();
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".composer-dropdown")) $$(".composer-menu.show").forEach((menu) => menu.classList.remove("show"));
+    });
+
+    $$(".select-card, .spec-option").forEach((card) => {
+      card.addEventListener("click", () => {
+        if (card.classList.contains("spec-option")) {
+          $$(".spec-option").forEach((item) => item.classList.remove("active"));
+          card.classList.add("active");
+          return;
+        }
+        card.classList.toggle("active");
+        let mark = card.querySelector(".checkmark");
+        if (card.classList.contains("active") && !mark) {
+          mark = document.createElement("span");
+          mark.className = "checkmark";
+          mark.textContent = "✓";
+          card.appendChild(mark);
+        } else if (!card.classList.contains("active") && mark) {
+          mark.remove();
+        }
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        hideLayers();
+        $("#add-menu")?.classList.remove("show");
+        $$(".composer-menu.show").forEach((menu) => menu.classList.remove("show"));
+      }
+    });
+
+    if (window.location.hash === "#create-spec-screen") {
+      setScreen("create-spec-screen");
+    }
+  </script>
+</body>
+</html>
