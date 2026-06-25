@@ -1135,7 +1135,7 @@
     .project-page {
       height: 100%;
       display: grid;
-      grid-template-columns: 520px minmax(680px, 1fr);
+      grid-template-columns: 610px minmax(540px, 1fr);
       background: var(--bg-page);
     }
 
@@ -1885,7 +1885,7 @@
       z-index: 4;
       flex: 0 0 auto;
       margin: auto -22px 0 -30px;
-      padding: 10px 22px 12px 30px;
+      padding: 10px 22px 10px 30px;
       background: linear-gradient(180deg, rgba(244,245,247,0), var(--bg-page) 16%, var(--bg-page) 100%);
     }
 
@@ -1894,16 +1894,18 @@
       align-items: center;
       gap: 8px;
       margin: 0 0 10px;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      white-space: nowrap;
     }
 
     .quick-skill {
       height: 32px;
-      border-radius: 10px;
+      border-radius: 11px;
       padding: 0 12px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      flex: 0 0 auto;
       color: var(--text-primary);
       background: #fff;
       font-size: 13px;
@@ -1911,22 +1913,24 @@
     }
 
     .project-input {
-      min-height: 118px;
-      border-radius: 18px;
+      min-height: 108px;
+      border-radius: 16px;
       background: rgba(255, 255, 255, 0.86);
       border: 1px solid #fff;
       box-shadow: var(--shadow-input);
-      padding: 14px;
+      padding: 14px 14px 12px;
     }
 
     .project-input textarea {
       width: 100%;
-      height: 54px;
+      height: 50px;
       border: 0;
       outline: 0;
       background: transparent;
       color: var(--text-primary);
       font-size: 14px;
+      line-height: 1.55;
+      resize: none;
     }
 
     .project-input-actions {
@@ -1934,6 +1938,54 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+    }
+
+    .project-input-actions .toolbar-left,
+    .project-input-actions .toolbar-right {
+      flex-wrap: nowrap;
+      flex: 0 0 auto;
+    }
+
+    .bottom-composer .model-chip {
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .composer-new-badge {
+      height: 16px;
+      border-radius: 6px;
+      padding: 0 5px;
+      display: inline-flex;
+      align-items: center;
+      color: #fff;
+      background: #ff3838;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .bottom-composer .send-btn {
+      width: 38px;
+      height: 38px;
+      background: #d4d8e2;
+      color: #fff;
+      box-shadow: none;
+    }
+
+    .composer-disclaimer {
+      margin: 8px 0 0;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.2;
+      text-align: center;
     }
 
     .canvas-panel {
@@ -1949,7 +2001,160 @@
       top: 22px;
       z-index: 2;
       display: flex;
+      align-items: center;
       gap: 10px;
+    }
+
+    .canvas-convert-wrap {
+      position: relative;
+    }
+
+    .canvas-convert-btn {
+      height: 46px;
+      border-radius: 14px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-strong);
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid #fff;
+      box-shadow: var(--shadow-float);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .convert-icon-stack {
+      display: inline-flex;
+      align-items: center;
+      padding-left: 4px;
+    }
+
+    .convert-icon-stack .platform-mark {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      margin-left: -4px;
+      box-shadow: 0 0 0 2px #fff;
+    }
+
+    .convert-plus {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-left: -4px;
+      display: grid;
+      place-items: center;
+      color: var(--text-secondary);
+      background: #edeff1;
+      border: 2px solid #fff;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .convert-popover {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 10px);
+      width: 344px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid #fff;
+      box-shadow: var(--shadow-float);
+      display: none;
+      z-index: 5;
+    }
+
+    .convert-popover.show {
+      display: block;
+    }
+
+    .convert-popover-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .convert-popover h3 {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .convert-popover p {
+      margin: 2px 0 0;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .convert-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      max-height: 260px;
+      overflow: auto;
+    }
+
+    .convert-option {
+      min-height: 58px;
+      border-radius: 12px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 9px;
+      align-items: center;
+      color: var(--text-primary);
+      background: #f9fafc;
+      border: 1px solid #edeff1;
+      text-align: left;
+    }
+
+    .convert-option.active {
+      border-color: rgba(77, 94, 255, 0.45);
+      background: #eef1ff;
+    }
+
+    .convert-option .platform-mark {
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+    }
+
+    .convert-option strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 12px;
+      line-height: 1.25;
+      white-space: nowrap;
+    }
+
+    .convert-option span:last-child {
+      display: block;
+      margin-top: 2px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .convert-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      padding-top: 12px;
+    }
+
+    .convert-artboard {
+      position: absolute;
+      border: 1px solid rgba(0, 8, 24, 0.06);
+      background: linear-gradient(135deg, #4d5eff 0%, #4d8dff 52%, #37b6ff 100%);
+      box-shadow: 0 12px 28px rgba(0, 8, 24, 0.1);
     }
 
     .canvas-floating {
@@ -2775,26 +2980,31 @@
     .platform-mark {
       width: 28px;
       height: 28px;
-      border-radius: 50%;
+      border-radius: 8px;
       display: grid;
       place-items: center;
-      color: #fff;
-      font-size: 11px;
-      font-weight: 800;
+      background: transparent;
       overflow: hidden;
+      flex: 0 0 auto;
     }
 
     .platform-mark svg {
-      width: 18px;
-      height: 18px;
+      width: 100%;
+      height: 100%;
       display: block;
     }
 
-    .platform-mark.ig { background: radial-gradient(circle at 30% 105%, #feda75 0 22%, #fa7e1e 32%, #d62976 55%, #962fbf 78%, #4f5bd5 100%); }
-    .platform-mark.fb { background: #1877f2; }
-    .platform-mark.tk { background: #000; }
-    .platform-mark.x { background: #000; }
-    .platform-mark.yt { background: #ff0000; }
+    .platform-mark.ig svg,
+    .platform-mark.fb svg,
+    .platform-mark.tk svg,
+    .platform-mark.x svg {
+      border-radius: 8px;
+    }
+
+    .platform-mark.yt {
+      width: 31px;
+      border-radius: 7px;
+    }
 
     .connect-btn {
       height: 28px;
@@ -2863,7 +3073,11 @@
     .add-more-icons .platform-mark {
       width: 24px;
       height: 24px;
-      font-size: 10px;
+      border-radius: 7px;
+    }
+
+    .add-more-icons .platform-mark.yt {
+      width: 27px;
     }
 
     .copy-fields {
@@ -3109,7 +3323,7 @@
       }
 
       .project-page {
-        grid-template-columns: 470px minmax(620px, 1fr);
+        grid-template-columns: 600px minmax(520px, 1fr);
       }
 
       .artboard {
@@ -3250,6 +3464,44 @@
     <symbol id="i-eraser" viewBox="0 0 24 24">
       <path d="m7 21-4-4 10-10 6 6-8 8Z"/>
       <path d="M14 6 18 2l4 4-4 4M12 21h9"/>
+    </symbol>
+    <symbol id="social-tiktok" viewBox="0 0 1024 1024">
+      <path d="M0 0m192 0l640 0q192 0 192 192l0 640q0 192-192 192l-640 0q-192 0-192-192l0-640q0-192 192-192Z" fill="#000000"></path>
+      <path d="M444.608 416.256V384.64a200.512 200.512 0 0 0-32.512-2.56 241.536 241.536 0 0 0-241.408 241.152c0 82.112 41.088 153.92 103.552 197.568a239.616 239.616 0 0 1-65.024-164.224C208.32 525.76 313.6 418.816 444.608 416.256z" fill="#00F2EA"></path>
+      <path d="M450.56 767.744c59.136 0 107.904-47.04 110.464-106.048V135.744h95.872c-1.664-11.136-3.392-22.208-3.392-33.344H522.496v525.952a110.4 110.4 0 0 1-110.4 106.048c-18.88 0-35.968-4.224-51.392-12.8 20.544 28.16 53.12 46.144 89.92 46.144z" fill="#00F2EA"></path>
+      <path d="M736.512 255.488a179.84 179.84 0 0 1-44.48-119.68h-35.136a183.296 183.296 0 0 0 79.616 119.68zM412.096 513.792c-60.8 0-110.464 49.6-110.464 110.272 0 42.816 24 79.552 59.072 97.536-12.8-17.92-20.48-40.192-20.48-64.128 0-60.8 49.6-110.336 110.4-110.336 11.072 0 22.208 1.664 32.512 5.12V417.92a200.576 200.576 0 0 0-32.512-2.56h-6.016v102.592a135.616 135.616 0 0 0-32.512-4.224z" fill="#FF004F"></path>
+      <path d="M836.672 314.496v101.76a305.664 305.664 0 0 1-182.336-59.008v266.88a241.536 241.536 0 0 1-380.096 197.504 243.008 243.008 0 0 0 177.216 76.992 241.536 241.536 0 0 0 241.408-241.152v-266.88a313.6 313.6 0 0 0 182.4 59.008V317.888c-13.76 0-26.56-0.832-38.592-3.392z" fill="#FF004F"></path>
+      <path d="M653.44 624.128v-266.88a313.536 313.536 0 0 0 182.4 59.008v-101.76a185.152 185.152 0 0 1-99.328-59.008 182.4 182.4 0 0 1-80.448-119.68H561.024v525.952a110.4 110.4 0 0 1-110.4 105.984 110.72 110.72 0 0 1-89.92-46.144 111.04 111.04 0 0 1-59.072-97.472c0-60.8 49.664-110.336 110.464-110.336 11.136 0 22.208 1.664 32.512 5.12V416.256a241.088 241.088 0 0 0-236.288 241.216c0 63.296 24.832 121.408 65.088 164.16a242.688 242.688 0 0 0 138.688 43.648 241.024 241.024 0 0 0 241.408-241.152z" fill="#FFFFFF"></path>
+    </symbol>
+    <symbol id="social-facebook" viewBox="0 0 1024 1024">
+      <path d="M546.986667 1024H56.490667A56.533333 56.533333 0 0 1 0 967.466667V56.533333C0 25.301333 25.301333 0 56.533333 0h910.933334C998.698667 0 1024 25.301333 1024 56.533333v910.933334c0 31.232-25.301333 56.533333-56.533333 56.533333H706.56v-396.544h133.12l19.882667-154.538667H706.56V374.186667c0-44.714667 12.373333-75.221333 76.586667-75.221334h81.834666v-138.24c-14.165333-1.92-62.72-6.101333-119.253333-6.101333-118.016 0-198.784 72.021333-198.784 204.288v113.92H413.525333v154.581333h133.418667V1024z" fill="#3B5998"></path>
+    </symbol>
+    <symbol id="social-instagram" viewBox="0 0 1024 1024">
+      <path d="M229.518 1024h122.206L158.896 900.414 0.396 807.796C7.318 928.18 107.432 1024 229.518 1024z" fill="#FDE494"></path>
+      <path d="M670.896 953.38l-138.012-35.31H229.518c-68.144 0-123.586-55.442-123.586-123.586v-67.752l-52.966-56.84L0 679.256v115.226c0 4.472 0.144 8.908 0.396 13.314L351.724 1024h417.534l-98.362-70.62z" fill="#FEA150"></path>
+      <path d="M883.31 880.28c-22.488 23.274-53.986 37.788-88.828 37.788H532.884L769.258 1024h25.224c82.404 0 154.792-43.658 195.28-109.054l-54.044-32.188-52.408-2.478z" fill="#FF5D4A"></path>
+      <path d="M918.068 652.028v142.456c0 33.304-13.266 63.55-34.758 85.798l106.454 34.666c21.692-35.04 34.236-76.312 34.236-120.466v-125.61l-54.792-30.782-51.14 13.938z" fill="#E45261"></path>
+      <path d="M1024 298.38l-56.406-13.432-49.526 29.652v337.428L1024 668.872z" fill="#FF4D95"></path>
+      <path d="M1024 229.518c0-115.266-85.416-210.946-196.272-227.1L688.86 60.202l-70.366 45.73h175.988c68.144 0 123.586 55.442 123.586 123.586V314.6L1024 298.38v-68.862z" fill="#CB319C"></path>
+      <path d="M635.464 0L504.1 49.272l-103.61 56.66h218.004L827.728 2.416A230.44 230.44 0 0 0 794.482 0H635.464z" fill="#8A3293"></path>
+      <path d="M512 812.138c36.716 0 71.908-6.64 104.452-18.76l-172.04-78.094-182.356-37.314C315.892 758.78 407.826 812.138 512 812.138z" fill="#FF5D4A"></path>
+      <path d="M658.306 610.716C626.54 657.646 572.81 688.552 512 688.552c-80.546 0-148.616-54.236-169.734-128.092l-47.364-29.602-81.694 9.076a298.268 298.268 0 0 0 48.85 138.034l354.396 115.41c76.606-28.528 138.474-87.514 170.916-162.136l-63.506-32.17-65.558 11.644z" fill="#E45261"></path>
+      <path d="M335.448 512c0-43.756 16.036-83.814 42.494-114.692l-75.316-10.536-76.5 33.784A298.956 298.956 0 0 0 211.862 512c0 9.424 0.488 18.73 1.342 27.932l129.06 20.524A175.948 175.948 0 0 1 335.448 512z m476.69 0c0-64.276-20.318-123.892-54.856-172.78l-74.794-10.616-76.836 33.834c49.746 31.262 82.9 86.596 82.9 149.562 0 36.54-11.16 70.522-30.246 98.716l129.062 20.524A298.324 298.324 0 0 0 812.138 512z" fill="#FF4D95"></path>
+      <path d="M512 335.448c34.388 0 66.484 9.918 93.652 26.99l151.63-23.218C702.89 262.234 613.222 211.862 512 211.862c-133.62 0-247.108 87.778-285.874 208.69l151.816-23.248c32.404-37.82 80.464-61.856 134.058-61.856z m282.482-35.31c38.94 0 70.62-31.68 70.62-70.62s-31.68-70.62-70.62-70.62c-38.94 0-70.62 31.68-70.62 70.62s31.68 70.62 70.62 70.62z" fill="#CB319C"></path>
+      <path d="M105.932 627.128L54.94 601.694 0 592.632v86.626l105.932 47.474z" fill="#FF5D4A"></path>
+      <path d="M0 506.028v86.604l105.932 34.496V522.874l-55.04-19.788z" fill="#E45261"></path>
+      <path d="M105.932 438.958l-54.434-0.492L0 455.18v50.848l105.932 16.846z" fill="#FF4D95"></path>
+      <path d="M105.932 359.514l-56.11 5.692L0 411.924v43.256l105.932-16.222z" fill="#CB319C"></path>
+      <path d="M0 411.924l105.932-52.41v-120.79L43.8 244.666 0 286.482z" fill="#8A3293"></path>
+      <path d="M410.118 0L168.412 92.962 2.774 193.856A230.44 230.44 0 0 0 0 229.518v56.964l105.932-47.756v-9.21c0-68.144 55.442-123.586 123.586-123.586h170.974L635.464 0H410.118z" fill="#523494"></path>
+      <path d="M229.518 0C115.09 0 19.956 84.176 2.774 193.856L410.118 0h-180.6z" fill="#2D2D87"></path>
+    </symbol>
+    <symbol id="social-youtube" viewBox="0 0 1024 1024">
+      <path d="M426.666667 682.666667V384l256 149.845333L426.666667 682.666667z m587.093333-355.541334s-10.026667-71.04-40.704-102.357333c-38.954667-41.088-82.602667-41.258667-102.613333-43.648C727.168 170.666667 512.213333 170.666667 512.213333 170.666667h-0.426666s-214.954667 0-358.229334 10.453333c-20.053333 2.389333-63.658667 2.56-102.656 43.648-30.677333 31.317333-40.661333 102.4-40.661333 102.4S0 410.538667 0 493.952v78.293333c0 83.456 10.24 166.912 10.24 166.912s9.984 71.04 40.661333 102.357334c38.997333 41.088 90.154667 39.765333 112.938667 44.074666C245.76 893.568 512 896 512 896s215.168-0.341333 358.442667-10.752c20.053333-2.432 63.658667-2.602667 102.613333-43.690667 30.72-31.317333 40.704-102.4 40.704-102.4s10.24-83.413333 10.24-166.869333v-78.250667c0-83.456-10.24-166.912-10.24-166.912z" fill="#FF0000"></path>
+    </symbol>
+    <symbol id="social-x" viewBox="0 0 1024 1024">
+      <path d="M0 0h1024v1024H0z" fill="#000000"></path>
+      <path d="M537.088 422.5536l142.6944-187.904h85.6576l-188.16 246.3232 212.0704 308.3776h-170.1376l-131.9936-190.4128-145.3056 190.4128H258.6624l188.416-248.2176-212.3776-306.4832h173.2608l129.1776 187.904z m106.8544 311.296h44.1856L383.0784 290.2016H336.384l307.5584 443.7504z" fill="#FFFFFF"></path>
     </symbol>
   </svg>
 
@@ -3502,7 +3754,7 @@
                 <span class="quick-skill"><svg class="ui-icon" style="width:16px;height:16px;color:#4d5eff"><use href="#i-file-text"></use></svg>Documents</span>
                 <span class="quick-skill"><svg class="ui-icon" style="width:16px;height:16px;color:#faae15"><use href="#i-image"></use></svg>Images</span>
                 <span class="quick-skill"><svg class="ui-icon" style="width:16px;height:16px;color:#29cc5f"><use href="#i-grid"></use></svg>Sheets</span>
-                <span class="quick-skill"><svg class="ui-icon" style="width:16px;height:16px;color:#ff4ad5"><use href="#i-video"></use></svg>Videos</span>
+                <span class="quick-skill">More options <svg class="ui-icon" style="width:13px;height:13px"><use href="#i-chevron-right"></use></svg></span>
               </div>
               <div class="project-input">
                 <textarea placeholder="Try tasks, workflows, or scheduling tasks - type @ to add files or skills."></textarea>
@@ -3510,20 +3762,81 @@
                   <div class="toolbar-left">
                     <button class="round-icon"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
                     <button class="action-chip"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-target"></use></svg>Goal</button>
-                    <button class="action-chip"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-sliders"></use></svg>Connect Tools</button>
-                    <button class="action-chip"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-zap"></use></svg>Skills</button>
+                    <button class="action-chip" aria-label="展开更多操作"><svg class="ui-icon" style="width:18px;height:18px;transform:rotate(180deg)"><use href="#i-chevron-down"></use></svg></button>
                   </div>
                   <div class="toolbar-right">
-                    <span class="model-chip">✧ Auto Model <span style="color:#ff3838;font-size:11px;font-weight:700">New</span></span>
+                    <span class="model-chip">✧ Auto Model <span class="composer-new-badge">New</span><svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
                     <button class="send-btn" aria-label="发送"><svg class="ui-icon"><use href="#i-send"></use></svg></button>
                   </div>
                 </div>
               </div>
+              <p class="composer-disclaimer">Skywork may provide inaccurate responses. Please verify them for accuracy.</p>
             </div>
           </section>
 
           <section class="canvas-panel" data-canvas-panel>
             <div class="canvas-top-actions">
+              <div class="canvas-convert-wrap">
+                <button class="canvas-convert-btn" type="button" data-toggle-convert>
+                  <span class="convert-icon-stack" aria-hidden="true">
+                    <span class="platform-mark ig"><svg><use href="#social-instagram"></use></svg></span>
+                    <span class="platform-mark tk"><svg><use href="#social-tiktok"></use></svg></span>
+                    <span class="convert-plus">+</span>
+                  </span>
+                  一键转换
+                </button>
+                <div class="convert-popover" id="convert-popover" aria-hidden="true">
+                  <div class="convert-popover-head">
+                    <div>
+                      <h3>选择社媒尺寸</h3>
+                      <p>可多选，确认后会在画布生成对应尺寸。</p>
+                    </div>
+                    <button class="close-btn" type="button" data-close-convert aria-label="关闭"><svg class="ui-icon"><use href="#i-x"></use></svg></button>
+                  </div>
+                  <div class="convert-options">
+                    <button class="convert-option active" type="button" data-convert-option data-label="Instagram 快拍" data-ratio="9:16" data-platform="ig">
+                      <span class="platform-mark ig"><svg><use href="#social-instagram"></use></svg></span>
+                      <span><strong>Instagram 快拍</strong><span>9:16 · Story</span></span>
+                    </button>
+                    <button class="convert-option active" type="button" data-convert-option data-label="Instagram 帖子（4:5）" data-ratio="4:5" data-platform="ig">
+                      <span class="platform-mark ig"><svg><use href="#social-instagram"></use></svg></span>
+                      <span><strong>Instagram 帖子</strong><span>4:5 · Feed post</span></span>
+                    </button>
+                    <button class="convert-option" type="button" data-convert-option data-label="Facebook 帖子（横版）" data-ratio="16:9" data-platform="fb">
+                      <span class="platform-mark fb"><svg><use href="#social-facebook"></use></svg></span>
+                      <span><strong>Facebook 帖子</strong><span>16:9 · Landscape</span></span>
+                    </button>
+                    <button class="convert-option" type="button" data-convert-option data-label="Facebook 封面（横版）" data-ratio="1.91:1" data-platform="fb">
+                      <span class="platform-mark fb"><svg><use href="#social-facebook"></use></svg></span>
+                      <span><strong>Facebook 封面</strong><span>1.91:1 · Page cover</span></span>
+                    </button>
+                    <button class="convert-option" type="button" data-convert-option data-label="TikTok 视频" data-ratio="9:16" data-platform="tk">
+                      <span class="platform-mark tk"><svg><use href="#social-tiktok"></use></svg></span>
+                      <span><strong>TikTok 视频</strong><span>9:16 · Short video</span></span>
+                    </button>
+                    <button class="convert-option" type="button" data-convert-option data-label="Twitter / X 帖子" data-ratio="16:9" data-platform="x">
+                      <span class="platform-mark x"><svg><use href="#social-x"></use></svg></span>
+                      <span><strong>Twitter / X 帖子</strong><span>16:9 · Post</span></span>
+                    </button>
+                    <button class="convert-option" type="button" data-convert-option data-label="YouTube Shorts" data-ratio="9:16" data-platform="yt">
+                      <span class="platform-mark yt"><svg><use href="#social-youtube"></use></svg></span>
+                      <span><strong>YouTube Shorts</strong><span>9:16 · Shorts</span></span>
+                    </button>
+                    <button class="convert-option" type="button" data-convert-option data-label="YouTube 缩略图" data-ratio="16:9" data-platform="yt">
+                      <span class="platform-mark yt"><svg><use href="#social-youtube"></use></svg></span>
+                      <span><strong>YouTube 缩略图</strong><span>16:9 · Thumbnail</span></span>
+                    </button>
+                    <button class="convert-option" type="button" data-convert-option data-label="YouTube 视频" data-ratio="16:9" data-platform="yt">
+                      <span class="platform-mark yt"><svg><use href="#social-youtube"></use></svg></span>
+                      <span><strong>YouTube 视频</strong><span>16:9 · Video</span></span>
+                    </button>
+                  </div>
+                  <div class="convert-actions">
+                    <button class="secondary-btn" type="button" data-close-convert>取消</button>
+                    <button class="primary-btn" type="button" data-confirm-convert>确认转换</button>
+                  </div>
+                </div>
+              </div>
               <button class="canvas-publish-btn" data-open-publish disabled aria-disabled="true">发布到社媒</button>
               <button class="canvas-floating" aria-label="下载"><svg class="ui-icon"><use href="#i-download"></use></svg></button>
               <button class="canvas-floating" aria-label="关闭"><svg class="ui-icon"><use href="#i-x"></use></svg></button>
@@ -3596,44 +3909,44 @@
                 </div>
                 <div class="social-connect-list">
                   <button class="social-connect-row" data-connect-account>
-                    <span class="platform-mark ig">◎</span>
+                    <span class="platform-mark ig"><svg aria-hidden="true"><use href="#social-instagram"></use></svg></span>
                     <span><strong>Instagram</strong><small>Business or Creator accounts</small></span>
                     <span class="connect-btn">Add</span>
                   </button>
                   <button class="social-connect-row" data-connect-account>
-                    <span class="platform-mark fb">f</span>
+                    <span class="platform-mark fb"><svg aria-hidden="true"><use href="#social-facebook"></use></svg></span>
                     <span><strong>Facebook</strong><small>Page</small></span>
                     <span class="connect-btn">Add</span>
                   </button>
                   <button class="social-connect-row" data-connect-account>
-                    <span class="platform-mark tk">♪</span>
+                    <span class="platform-mark tk"><svg aria-hidden="true"><use href="#social-tiktok"></use></svg></span>
                     <span><strong>TikTok</strong><small>Profile</small></span>
                     <span class="connect-btn">Add</span>
                   </button>
                   <button class="social-connect-row" data-connect-account>
-                    <span class="platform-mark x">X</span>
+                    <span class="platform-mark x"><svg aria-hidden="true"><use href="#social-x"></use></svg></span>
                     <span><strong>Twitter</strong><small>Profile</small></span>
                     <span class="connect-btn">Add</span>
                   </button>
                   <button class="social-connect-row" data-connect-account>
-                    <span class="platform-mark yt">▶</span>
+                    <span class="platform-mark yt"><svg aria-hidden="true"><use href="#social-youtube"></use></svg></span>
                     <span><strong>YouTube</strong><small>Channel</small></span>
                     <span class="connect-btn">Add</span>
                   </button>
                 </div>
                 <div class="connected-account-view" data-connected-account-view>
                   <div class="selected-account-card">
-                    <span class="platform-mark ig" data-selected-platform-mark>◎</span>
+                    <span class="platform-mark ig" data-selected-platform-mark><svg aria-hidden="true"><use href="#social-instagram"></use></svg></span>
                     <strong data-selected-platform-name>Instagram</strong>
                     <span class="checkmark" style="position:static">✓</span>
                   </div>
                   <button class="add-more-account" type="button">
                     <span>添加更多平台账号</span>
                     <span class="add-more-icons">
-                      <span class="platform-mark fb">f</span>
-                      <span class="platform-mark tk">♪</span>
-                      <span class="platform-mark x">X</span>
-                      <span class="platform-mark yt">▶</span>
+                      <span class="platform-mark fb"><svg aria-hidden="true"><use href="#social-facebook"></use></svg></span>
+                      <span class="platform-mark tk"><svg aria-hidden="true"><use href="#social-tiktok"></use></svg></span>
+                      <span class="platform-mark x"><svg aria-hidden="true"><use href="#social-x"></use></svg></span>
+                      <span class="platform-mark yt"><svg aria-hidden="true"><use href="#social-youtube"></use></svg></span>
                     </span>
                   </button>
                 </div>
@@ -4007,44 +4320,44 @@
           </div>
           <div class="social-connect-list">
             <button class="social-connect-row" data-connect-account>
-              <span class="platform-mark ig">◎</span>
+              <span class="platform-mark ig"><svg aria-hidden="true"><use href="#social-instagram"></use></svg></span>
               <span><strong>Instagram</strong><small>Business or Creator accounts</small></span>
               <span class="connect-btn">Add</span>
             </button>
             <button class="social-connect-row" data-connect-account>
-              <span class="platform-mark fb">f</span>
+              <span class="platform-mark fb"><svg aria-hidden="true"><use href="#social-facebook"></use></svg></span>
               <span><strong>Facebook</strong><small>Page</small></span>
               <span class="connect-btn">Add</span>
             </button>
             <button class="social-connect-row" data-connect-account>
-              <span class="platform-mark tk">♪</span>
+              <span class="platform-mark tk"><svg aria-hidden="true"><use href="#social-tiktok"></use></svg></span>
               <span><strong>TikTok</strong><small>Profile</small></span>
               <span class="connect-btn">Add</span>
             </button>
             <button class="social-connect-row" data-connect-account>
-              <span class="platform-mark x">X</span>
+              <span class="platform-mark x"><svg aria-hidden="true"><use href="#social-x"></use></svg></span>
               <span><strong>Twitter</strong><small>Profile</small></span>
               <span class="connect-btn">Add</span>
             </button>
             <button class="social-connect-row" data-connect-account>
-              <span class="platform-mark yt">▶</span>
+              <span class="platform-mark yt"><svg aria-hidden="true"><use href="#social-youtube"></use></svg></span>
               <span><strong>YouTube</strong><small>Channel</small></span>
               <span class="connect-btn">Add</span>
             </button>
           </div>
           <div class="connected-account-view" data-connected-account-view>
             <div class="selected-account-card">
-              <span class="platform-mark ig" data-selected-platform-mark>◎</span>
+              <span class="platform-mark ig" data-selected-platform-mark><svg aria-hidden="true"><use href="#social-instagram"></use></svg></span>
               <strong data-selected-platform-name>Instagram</strong>
               <span class="checkmark" style="position:static">✓</span>
             </div>
             <button class="add-more-account" type="button">
               <span>添加更多平台账号</span>
               <span class="add-more-icons">
-                <span class="platform-mark fb">f</span>
-                <span class="platform-mark tk">♪</span>
-                <span class="platform-mark x">X</span>
-                <span class="platform-mark yt">▶</span>
+                <span class="platform-mark fb"><svg aria-hidden="true"><use href="#social-facebook"></use></svg></span>
+                <span class="platform-mark tk"><svg aria-hidden="true"><use href="#social-tiktok"></use></svg></span>
+                <span class="platform-mark x"><svg aria-hidden="true"><use href="#social-x"></use></svg></span>
+                <span class="platform-mark yt"><svg aria-hidden="true"><use href="#social-youtube"></use></svg></span>
               </span>
             </button>
           </div>
@@ -4099,7 +4412,7 @@
   <div class="publish-preview-panel" id="publish-preview-panel" aria-hidden="true">
     <div class="preview-head">
       <div class="preview-account">
-        <span class="platform-mark ig" data-preview-platform-mark>◎</span>
+        <span class="platform-mark ig" data-preview-platform-mark><svg aria-hidden="true"><use href="#social-instagram"></use></svg></span>
         <span data-preview-platform-name>Instagram</span>
       </div>
       <button class="close-btn" data-close-publish-preview aria-label="关闭预览"><svg class="ui-icon"><use href="#i-x"></use></svg></button>
@@ -4119,7 +4432,7 @@
     <div class="modal-panel account-auth-panel">
       <div class="panel-head">
         <div class="account-auth-title">
-          <span class="platform-mark fb" data-auth-platform-mark>f</span>
+          <span class="platform-mark fb" data-auth-platform-mark><svg aria-hidden="true"><use href="#social-facebook"></use></svg></span>
           <h2>Link your <span data-auth-platform-name>Facebook</span> Account</h2>
         </div>
         <button class="close-btn" data-close-account-link><svg class="ui-icon"><use href="#i-x"></use></svg></button>
@@ -4354,8 +4667,63 @@
       }
     });
     $(".infinite-canvas")?.addEventListener("click", (event) => {
-      if (event.target.closest(".artboard, .selection-toolbar, .canvas-tool-rail, .zoom-box")) return;
+      if (event.target.closest(".artboard, .convert-artboard, .selection-toolbar, .canvas-tool-rail, .zoom-box")) return;
+      closeConvertPopover();
       syncCanvasSelection(false);
+    });
+
+    function closeConvertPopover() {
+      $("#convert-popover")?.classList.remove("show");
+      $("#convert-popover")?.setAttribute("aria-hidden", "true");
+    }
+
+    $("[data-toggle-convert]")?.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const popover = $("#convert-popover");
+      if (!popover) return;
+      const next = !popover.classList.contains("show");
+      popover.classList.toggle("show", next);
+      popover.setAttribute("aria-hidden", String(!next));
+    });
+    $("#convert-popover")?.addEventListener("click", (event) => event.stopPropagation());
+
+    $$("[data-close-convert]").forEach((btn) => btn.addEventListener("click", closeConvertPopover));
+
+    $$("[data-convert-option]").forEach((option) => {
+      option.addEventListener("click", () => option.classList.toggle("active"));
+    });
+
+    const convertSizes = {
+      "9:16": { width: 126, height: 224 },
+      "4:5": { width: 152, height: 190 },
+      "16:9": { width: 220, height: 124 },
+      "1.91:1": { width: 230, height: 120 }
+    };
+
+    function addConvertedArtboards(options) {
+      const canvas = $(".infinite-canvas");
+      if (!canvas) return;
+      $$(".convert-artboard", canvas).forEach((item) => item.remove());
+      options.forEach((option, index) => {
+        const size = convertSizes[option.dataset.ratio] || convertSizes["16:9"];
+        const artboard = document.createElement("div");
+        artboard.className = "convert-artboard";
+        artboard.style.width = `${size.width}px`;
+        artboard.style.height = `${size.height}px`;
+        artboard.style.left = `${Math.min(76, 52 + (index % 2) * 22)}%`;
+        artboard.style.top = `${22 + Math.floor(index / 2) * 28}%`;
+        artboard.setAttribute("role", "img");
+        artboard.setAttribute("aria-label", option.dataset.label || "转换后的社媒尺寸图片");
+        canvas.appendChild(artboard);
+      });
+    }
+
+    $("[data-confirm-convert]")?.addEventListener("click", () => {
+      const selected = $$("[data-convert-option].active");
+      if (!selected.length) return;
+      addConvertedArtboards(selected);
+      closeConvertPopover();
+      syncCanvasSelection(true);
     });
 
     function updatePublishPreview() {
