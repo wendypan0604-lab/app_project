@@ -1136,6 +1136,112 @@
       background: var(--bg-page);
     }
 
+    .publish-page {
+      height: 100%;
+      display: grid;
+      grid-template-columns: minmax(520px, 1fr) 430px;
+      gap: 0;
+      background: var(--bg-page);
+    }
+
+    .publish-media-side {
+      min-width: 0;
+      padding: 24px 28px 28px;
+      border-right: 1px solid #e0e4eb;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      gap: 20px;
+      overflow: auto;
+    }
+
+    .publish-page-head {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-strong);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .publish-image-stage {
+      min-height: 560px;
+      border-radius: 20px;
+      display: grid;
+      place-items: center;
+      background:
+        linear-gradient(rgba(0, 8, 24, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 8, 24, 0.035) 1px, transparent 1px),
+        #fff;
+      background-size: 72px 72px;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
+    }
+
+    .publish-selected-image {
+      position: relative;
+      width: min(390px, 58vh);
+      aspect-ratio: 3 / 4;
+      border: 2px solid #4d8dff;
+      background:
+        radial-gradient(circle at 70% 20%, rgba(255,255,255,0.86) 0 7%, transparent 8%),
+        radial-gradient(circle at 26% 78%, rgba(0,255,206,0.34) 0 15%, transparent 16%),
+        linear-gradient(135deg, #6f55ff 0%, #d9489a 48%, #ffb24d 100%);
+      box-shadow: 0 18px 46px rgba(0, 8, 24, 0.16);
+    }
+
+    .publish-selected-image::before {
+      content: "no_filter_collage_v2_2.png";
+      position: absolute;
+      left: -2px;
+      top: -28px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .publish-config-side {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: #fff;
+    }
+
+    .publish-config-head {
+      min-height: 64px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 18px;
+    }
+
+    .publish-config-head h2 {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .publish-config-body {
+      overflow: auto;
+      padding: 14px 18px 18px;
+    }
+
+    .publish-page-actions {
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 14px 18px;
+    }
+
+    .publish-page-actions .preview-btn {
+      margin-right: auto;
+    }
+
     .library-screen {
       padding: 34px 42px 56px;
       overflow: auto;
@@ -3179,12 +3285,11 @@
     </symbol>
   </svg>
 
-  <div class="app-shell">
+  <div class="app-shell detail-mode">
     <nav class="icon-rail" aria-label="主导航">
-      <button class="rail-btn active" data-screen="start-screen" aria-label="首页"><svg class="ui-icon"><use href="#i-home"></use></svg></button>
       <button class="rail-btn" data-screen="asset-library-screen" aria-label="知识库"><svg class="ui-icon"><use href="#i-database"></use></svg></button>
       <button class="rail-btn" data-screen="spec-library-screen" aria-label="视觉规范"><svg class="ui-icon"><use href="#i-palette"></use></svg></button>
-      <button class="rail-btn" aria-label="产物"><span class="rail-badge">New</span><svg class="ui-icon"><use href="#i-box"></use></svg></button>
+      <button class="rail-btn active" aria-label="产物"><span class="rail-badge">New</span><svg class="ui-icon"><use href="#i-box"></use></svg></button>
     </nav>
 
     <aside class="project-side" id="side-panel">
@@ -3193,7 +3298,7 @@
           <div class="sky-logo" aria-hidden="true"></div>
           <span class="brand-word">Skywork</span>
         </div>
-        <button class="new-project" data-screen="start-screen"><svg class="ui-icon"><use href="#i-plus"></use></svg>New Projects</button>
+        <button class="new-project" data-screen="execute-screen"><svg class="ui-icon"><use href="#i-plus"></use></svg>New Projects</button>
         <div class="side-group">
           <button class="side-link"><svg class="ui-icon"><use href="#i-zap"></use></svg>Explore Skills</button>
           <button class="side-link"><svg class="ui-icon"><use href="#i-file-text"></use></svg>Scheduled Tasks</button>
@@ -3255,7 +3360,7 @@
     </header>
 
     <main class="workspace">
-      <section class="screen start-screen active" id="start-screen">
+      <section class="screen start-screen" id="start-screen">
         <div class="home-stage">
           <div class="hero">
             <div class="bot-avatar"></div>
@@ -3378,11 +3483,11 @@
         </div>
       </section>
 
-      <section class="screen" id="execute-screen">
+      <section class="screen active" id="execute-screen">
         <div class="project-page">
           <section class="project-chat">
             <div class="project-titlebar">
-              <button class="back-btn" data-screen="start-screen" aria-label="返回"><svg class="ui-icon"><path d="m15 18-6-6 6-6"/></svg></button>
+              <button class="back-btn" data-screen="execute-screen" aria-label="返回"><svg class="ui-icon"><path d="m15 18-6-6 6-6"/></svg></button>
               <span>创建海洋背景拼贴海报</span>
             </div>
 
@@ -3494,6 +3599,110 @@
               </div>
             </div>
           </section>
+        </div>
+      </section>
+
+      <section class="screen" id="publish-screen">
+        <div class="publish-page">
+          <section class="publish-media-side">
+            <div class="publish-page-head">
+              <button class="back-btn" data-screen="execute-screen" aria-label="返回"><svg class="ui-icon"><path d="m15 18-6-6 6-6"/></svg></button>
+              <span>发布到社媒</span>
+            </div>
+            <div class="publish-image-stage">
+              <div class="publish-selected-image" aria-label="已选择的图片"></div>
+            </div>
+          </section>
+
+          <aside class="publish-config-side">
+            <div class="publish-config-head">
+              <h2>发布到社媒</h2>
+              <button class="close-btn" data-screen="execute-screen" aria-label="关闭"><svg class="ui-icon"><use href="#i-x"></use></svg></button>
+            </div>
+            <div class="publish-config-body">
+              <section class="publish-section account-section">
+                <h3>社交媒体账号</h3>
+                <div class="account-empty">
+                  <strong>No social accounts connected</strong>
+                  Connect at least one social media account to publish or schedule your post.
+                </div>
+                <div class="social-connect-list">
+                  <button class="social-connect-row" data-connect-account>
+                    <span class="platform-mark ig">◎</span>
+                    <span><strong>Instagram</strong><small>Business or Creator accounts</small></span>
+                    <span class="connect-btn">Add</span>
+                  </button>
+                  <button class="social-connect-row" data-connect-account>
+                    <span class="platform-mark fb">f</span>
+                    <span><strong>Facebook</strong><small>Page</small></span>
+                    <span class="connect-btn">Add</span>
+                  </button>
+                  <button class="social-connect-row" data-connect-account>
+                    <span class="platform-mark tk">♪</span>
+                    <span><strong>TikTok</strong><small>Profile</small></span>
+                    <span class="connect-btn">Add</span>
+                  </button>
+                  <button class="social-connect-row" data-connect-account>
+                    <span class="platform-mark x">X</span>
+                    <span><strong>Twitter</strong><small>Profile</small></span>
+                    <span class="connect-btn">Add</span>
+                  </button>
+                  <button class="social-connect-row" data-connect-account>
+                    <span class="platform-mark yt">▶</span>
+                    <span><strong>YouTube</strong><small>Channel</small></span>
+                    <span class="connect-btn">Add</span>
+                  </button>
+                </div>
+                <div class="connected-account-view" data-connected-account-view>
+                  <div class="selected-account-card">
+                    <span class="platform-mark ig" data-selected-platform-mark>◎</span>
+                    <strong data-selected-platform-name>Instagram</strong>
+                    <span class="checkmark" style="position:static">✓</span>
+                  </div>
+                  <button class="add-more-account" type="button">
+                    <span>添加更多平台账号</span>
+                    <span class="add-more-icons">
+                      <span class="platform-mark fb">f</span>
+                      <span class="platform-mark tk">♪</span>
+                      <span class="platform-mark x">X</span>
+                      <span class="platform-mark yt">▶</span>
+                    </span>
+                  </button>
+                </div>
+              </section>
+
+              <section class="publish-section">
+                <h3>发布文案</h3>
+                <div class="copy-fields">
+                  <label class="field">标题<input value="Skywork campaign visual system" /></label>
+                  <label class="field">描述<textarea>Turn ideas into polished campaign visuals in one Skywork canvas. Create, refine, and prepare social-ready assets without switching tools.</textarea></label>
+                  <label class="field">Tag
+                    <div class="tag-editor" data-tag-editor>
+                      <span class="tag-chip">#AIProductivity<button type="button" data-remove-tag aria-label="删除 #AIProductivity"><svg viewBox="0 0 20 20" fill="none"><path opacity="0.6" d="M10 18.3334C14.6024 18.3334 18.3334 14.6024 18.3334 10C18.3334 5.39765 14.6024 1.66669 10 1.66669C5.39765 1.66669 1.66669 5.39765 1.66669 10C1.66669 14.6024 5.39765 18.3334 10 18.3334Z" fill="#7F8896"/><path d="M10.8833 10L12.8 8.08338C13.0416 7.84172 13.0416 7.44172 12.8 7.20005C12.5583 6.95838 12.1583 6.95838 11.9166 7.20005L9.99997 9.11671L8.08331 7.20005C7.84164 6.95838 7.44164 6.95838 7.19997 7.20005C6.95831 7.44172 6.95831 7.84172 7.19997 8.08338L9.11664 10L7.19997 11.9167C6.95831 12.1584 6.95831 12.5584 7.19997 12.8C7.32497 12.925 7.48331 12.9834 7.64164 12.9834C7.79997 12.9834 7.95831 12.925 8.08331 12.8L9.99997 10.8834L11.9166 12.8C12.0416 12.925 12.2 12.9834 12.3583 12.9834C12.5166 12.9834 12.675 12.925 12.8 12.8C13.0416 12.5584 13.0416 12.1584 12.8 11.9167L10.8833 10Z" fill="#7F8896"/></svg></button></span>
+                      <span class="tag-chip">#DesignWorkflow<button type="button" data-remove-tag aria-label="删除 #DesignWorkflow"><svg viewBox="0 0 20 20" fill="none"><path opacity="0.6" d="M10 18.3334C14.6024 18.3334 18.3334 14.6024 18.3334 10C18.3334 5.39765 14.6024 1.66669 10 1.66669C5.39765 1.66669 1.66669 5.39765 1.66669 10C1.66669 14.6024 5.39765 18.3334 10 18.3334Z" fill="#7F8896"/><path d="M10.8833 10L12.8 8.08338C13.0416 7.84172 13.0416 7.44172 12.8 7.20005C12.5583 6.95838 12.1583 6.95838 11.9166 7.20005L9.99997 9.11671L8.08331 7.20005C7.84164 6.95838 7.44164 6.95838 7.19997 7.20005C6.95831 7.44172 6.95831 7.84172 7.19997 8.08338L9.11664 10L7.19997 11.9167C6.95831 12.1584 6.95831 12.5584 7.19997 12.8C7.32497 12.925 7.48331 12.9834 7.64164 12.9834C7.79997 12.9834 7.95831 12.925 8.08331 12.8L9.99997 10.8834L11.9166 12.8C12.0416 12.925 12.2 12.9834 12.3583 12.9834C12.5166 12.9834 12.675 12.925 12.8 12.8C13.0416 12.5584 13.0416 12.1584 12.8 11.9167L10.8833 10Z" fill="#7F8896"/></svg></button></span>
+                      <input class="tag-input" data-tag-input placeholder="添加 tag" />
+                    </div>
+                  </label>
+                </div>
+              </section>
+
+              <section class="publish-section schedule-section collapsed">
+                <div class="schedule-row">
+                  <h3 style="margin:0">定时发布</h3>
+                  <button class="toggle" data-toggle-schedule aria-label="开启定时"></button>
+                </div>
+                <div class="schedule-fields">
+                  <label class="field">发布日期<input type="date" value="2026-06-26" /></label>
+                  <label class="field">时间<input type="time" value="09:30" /></label>
+                </div>
+              </section>
+            </div>
+            <div class="publish-page-actions">
+              <button class="secondary-btn preview-btn" data-open-publish-preview>预览</button>
+              <button class="secondary-btn" data-screen="execute-screen">取消</button>
+              <button class="primary-btn" data-publish-submit disabled aria-disabled="true">发布</button>
+            </div>
+          </aside>
         </div>
       </section>
 
@@ -3634,13 +3843,13 @@
         <div class="create-spec-shell">
           <div class="create-spec-header">
             <div class="create-spec-title">
-              <button class="back-btn" data-screen="start-screen" aria-label="返回"><svg class="ui-icon"><path d="m15 18-6-6 6-6"/></svg></button>
+              <button class="back-btn" data-screen="execute-screen" aria-label="返回"><svg class="ui-icon"><path d="m15 18-6-6 6-6"/></svg></button>
               <div>
                 <h1>新建视觉规范</h1>
               </div>
             </div>
             <div class="toolbar-right">
-              <button class="secondary-btn" data-screen="start-screen">取消</button>
+              <button class="secondary-btn" data-screen="execute-screen">取消</button>
               <button class="primary-btn" data-toast="视觉规范已创建">保存规范</button>
             </div>
           </div>
@@ -4055,6 +4264,7 @@
       $("#publish-success-modal")?.setAttribute("aria-hidden", "true");
       $("#publish-drawer")?.classList.remove("show");
       $("#publish-drawer")?.setAttribute("aria-hidden", "true");
+      setScreen("execute-screen");
       hidePublishPreview();
     }
 
@@ -4068,7 +4278,7 @@
 
     function setScreen(id) {
       $$(".screen").forEach((screen) => screen.classList.toggle("active", screen.id === id));
-      $(".app-shell")?.classList.toggle("detail-mode", id === "execute-screen");
+      $(".app-shell")?.classList.toggle("detail-mode", id === "execute-screen" || id === "publish-screen");
       const knowledgeScreens = ["asset-library-screen", "spec-library-screen", "create-spec-screen"];
       const isKnowledge = knowledgeScreens.includes(id);
       $$(".rail-btn").forEach((btn) => {
@@ -4117,13 +4327,13 @@
     $$("[data-open-upload]").forEach((btn) => btn.addEventListener("click", () => showLayer("#local-upload-modal")));
     $$("[data-open-publish]").forEach((btn) => btn.addEventListener("click", () => {
       if (btn.disabled) return;
-      showLayer("#publish-drawer");
+      setScreen("publish-screen");
     }));
     $$("[data-start-task-spec]").forEach((btn) => {
       btn.addEventListener("click", () => {
         setSpecChip(btn.dataset.startTaskSpec);
-        window.location.hash = "start-screen";
-        setScreen("start-screen");
+        window.location.hash = "execute-screen";
+        setScreen("execute-screen");
       });
     });
     $$("[data-close], .scrim").forEach((btn) => btn.addEventListener("click", hideLayers));
@@ -4150,8 +4360,10 @@
     });
 
     function syncPublishButton() {
-      const hasAccount = Boolean($(".social-connect-row.connected"));
-      const publish = $("#publish-drawer .primary-btn");
+      const activePublishScreen = $(".screen.active");
+      const scope = activePublishScreen?.id === "publish-screen" ? activePublishScreen : $("#publish-drawer");
+      const hasAccount = Boolean(scope?.querySelector(".social-connect-row.connected"));
+      const publish = scope?.querySelector("[data-publish-submit]");
       if (!publish) return;
       publish.disabled = !hasAccount;
       publish.setAttribute("aria-disabled", String(!hasAccount));
@@ -4181,12 +4393,14 @@
     function updatePublishPreview() {
       const preview = $("#publish-preview-panel");
       if (!preview) return;
-      const selectedName = $("[data-selected-platform-name]")?.textContent?.trim() || "Instagram";
-      const selectedMark = $("[data-selected-platform-mark]")?.cloneNode(true);
+      const activePublishScreen = $(".screen.active");
+      const copyScope = activePublishScreen?.id === "publish-screen" ? activePublishScreen : $("#publish-drawer");
+      const selectedName = copyScope?.querySelector("[data-selected-platform-name]")?.textContent?.trim() || "Instagram";
+      const selectedMark = copyScope?.querySelector("[data-selected-platform-mark]")?.cloneNode(true);
       const previewMark = $("[data-preview-platform-mark]");
-      const title = $(".copy-fields input")?.value?.trim() || "Skywork campaign visual system";
-      const description = $(".copy-fields textarea")?.value?.trim() || "";
-      const tags = $$(".tag-chip").map((chip) => chip.firstChild?.textContent?.trim()).filter(Boolean);
+      const title = copyScope?.querySelector(".copy-fields input")?.value?.trim() || "Skywork campaign visual system";
+      const description = copyScope?.querySelector(".copy-fields textarea")?.value?.trim() || "";
+      const tags = $$(".tag-chip", copyScope || document).map((chip) => chip.firstChild?.textContent?.trim()).filter(Boolean);
       $("[data-preview-platform-name]").textContent = selectedName;
       if (selectedMark && previewMark) {
         selectedMark.setAttribute("data-preview-platform-mark", "");
@@ -4205,20 +4419,20 @@
       }
     }
 
-    $("[data-open-publish-preview]")?.addEventListener("click", () => {
+    $$("[data-open-publish-preview]").forEach((btn) => btn.addEventListener("click", () => {
       updatePublishPreview();
       const preview = $("#publish-preview-panel");
       preview?.classList.add("show");
       preview?.setAttribute("aria-hidden", "false");
-    });
+    }));
 
     $("[data-close-publish-preview]")?.addEventListener("click", hidePublishPreview);
 
-    $("[data-publish-submit]")?.addEventListener("click", (event) => {
+    $$("[data-publish-submit]").forEach((submit) => submit.addEventListener("click", (event) => {
       const btn = event.currentTarget;
       if (btn.disabled) return;
       showLayer("#publish-success-modal");
-    });
+    }));
 
     $$("[data-close-publish-success]").forEach((btn) => btn.addEventListener("click", closePublishSuccess));
 
@@ -4253,30 +4467,30 @@
       const mark = pendingAccountRow.querySelector(".platform-mark")?.cloneNode(true);
       pendingAccountRow.classList.add("connected");
       pendingAccountRow.querySelector(".connect-btn").textContent = "Added";
-      $("[data-selected-platform-name]").textContent = platform;
-      if (mark && $("[data-selected-platform-mark]")) {
-        $("[data-selected-platform-mark]").replaceWith(mark);
+      const scope = pendingAccountRow.closest(".account-section");
+      scope?.querySelector("[data-selected-platform-name]") && (scope.querySelector("[data-selected-platform-name]").textContent = platform);
+      if (mark && scope?.querySelector("[data-selected-platform-mark]")) {
+        scope.querySelector("[data-selected-platform-mark]").replaceWith(mark);
         mark.setAttribute("data-selected-platform-mark", "");
       }
-      $(".account-section")?.classList.add("has-connected");
+      scope?.classList.add("has-connected");
       syncPublishButton();
       $("#account-link-modal")?.classList.remove("show");
       $("#account-link-modal")?.setAttribute("aria-hidden", "true");
       pendingAccountRow = null;
     });
 
-    $("[data-toggle-schedule]")?.addEventListener("click", () => {
-      $(".schedule-section")?.classList.toggle("collapsed");
-    });
+    $$("[data-toggle-schedule]").forEach((btn) => btn.addEventListener("click", () => {
+      btn.closest(".schedule-section")?.classList.toggle("collapsed");
+    }));
 
     function normalizeTag(value) {
       const text = value.trim().replace(/^[#,，\s]+/, "");
       return text ? `#${text}` : "";
     }
 
-    function addTagFromInput() {
-      const input = $("[data-tag-input]");
-      const editor = $("[data-tag-editor]");
+    function addTagFromInput(input) {
+      const editor = input?.closest("[data-tag-editor]");
       if (!input || !editor) return;
       const tag = normalizeTag(input.value);
       if (!tag) return;
@@ -4287,17 +4501,17 @@
       input.value = "";
     }
 
-    $("[data-tag-editor]")?.addEventListener("click", (event) => {
+    $$("[data-tag-editor]").forEach((editor) => editor.addEventListener("click", (event) => {
       const remove = event.target.closest("[data-remove-tag]");
       if (remove) remove.closest(".tag-chip")?.remove();
-    });
+    }));
 
-    $("[data-tag-input]")?.addEventListener("keydown", (event) => {
+    $$("[data-tag-input]").forEach((input) => input.addEventListener("keydown", (event) => {
       if (event.key === "Enter" || event.key === ",") {
         event.preventDefault();
-        addTagFromInput();
+        addTagFromInput(input);
       }
-    });
+    }));
 
     $$(".drop-zone").forEach((zone) => {
       ["dragenter", "dragover"].forEach((eventName) => {
@@ -4371,6 +4585,8 @@
 
     if (window.location.hash === "#create-spec-screen") {
       setScreen("create-spec-screen");
+    } else {
+      setScreen("execute-screen");
     }
   </script>
 </body>
