@@ -1170,14 +1170,10 @@
     .publish-image-stage {
       min-height: 560px;
       border-radius: 20px;
-      display: grid;
-      place-items: center;
-      background:
-        linear-gradient(rgba(0, 8, 24, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 8, 24, 0.035) 1px, transparent 1px),
-        #fff;
-      background-size: 72px 72px;
+      padding: 18px;
+      background: #fff;
       box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.03);
+      overflow: auto;
     }
 
     .publish-selected-image {
@@ -1191,6 +1187,319 @@
 
     .publish-selected-image::before {
       content: none;
+    }
+
+    .publish-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap: 16px;
+      align-items: start;
+    }
+
+    .publish-original-preview {
+      min-height: 420px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: #f9fafc;
+      border: 1px solid var(--border-subtle);
+      padding: 24px;
+    }
+
+    .publish-original-art {
+      width: min(390px, 56vh);
+      aspect-ratio: 3 / 4;
+      border: 2px solid #4d8dff;
+      background: linear-gradient(135deg, #4d5eff 0%, #4d8dff 52%, #37b6ff 100%);
+      box-shadow: 0 18px 46px rgba(0, 8, 24, 0.14);
+    }
+
+    .social-preview-card {
+      min-width: 0;
+      background: transparent;
+    }
+
+    .social-preview-frame {
+      border-radius: 16px;
+      background: #fff;
+      border: 1px solid #dfe4ec;
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+    }
+
+    .social-preview-meta {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 2px 8px;
+      color: var(--text-strong);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .social-preview-meta .platform-mark {
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
+    }
+
+    .social-preview-meta small {
+      margin-left: auto;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .preview-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--brand-blue);
+      font-size: 12px;
+      font-weight: 700;
+      flex: 0 0 auto;
+    }
+
+    .social-art {
+      position: relative;
+      min-height: 196px;
+      background: linear-gradient(135deg, #4d5eff 0%, #4d8dff 52%, #37b6ff 100%);
+      overflow: hidden;
+    }
+
+    .social-art::before,
+    .social-art::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.22);
+    }
+
+    .social-art::before {
+      width: 170px;
+      height: 170px;
+      right: -50px;
+      top: -48px;
+    }
+
+    .social-art::after {
+      width: 220px;
+      height: 220px;
+      left: -92px;
+      bottom: -120px;
+      background: rgba(0,8,24,0.12);
+    }
+
+    .social-art-copy {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      bottom: 12px;
+      z-index: 1;
+      color: #fff;
+      text-shadow: 0 1px 8px rgba(0,8,24,0.18);
+    }
+
+    .social-art-copy strong {
+      display: block;
+      max-width: 180px;
+      font-size: 15px;
+      line-height: 1.1;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .social-art-copy span {
+      display: block;
+      margin-top: 8px;
+      font-size: 10px;
+      line-height: 1.3;
+    }
+
+    .ig-post-preview {
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    .ig-post-head,
+    .facebook-head {
+      min-height: 46px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 9px 10px;
+      color: var(--text-strong);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .ig-post-head .ui-icon,
+    .facebook-head .ui-icon {
+      margin-left: auto;
+      width: 16px;
+      height: 16px;
+    }
+
+    .ig-post-preview .social-art {
+      margin: 0 10px;
+      border-radius: 4px;
+      min-height: 235px;
+    }
+
+    .ig-actions,
+    .facebook-actions {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 12px;
+      color: var(--text-strong);
+    }
+
+    .ig-actions .ui-icon,
+    .facebook-actions .ui-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .ig-actions .ui-icon:last-child {
+      margin-left: auto;
+    }
+
+    .ig-caption,
+    .facebook-copy {
+      padding: 0 12px 14px;
+      color: var(--text-strong);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .ig-caption span,
+    .facebook-copy span {
+      display: block;
+      margin-top: 5px;
+      color: var(--text-secondary);
+    }
+
+    .ig-story-preview {
+      max-width: 264px;
+      margin: 0 auto;
+      background: #041d34;
+    }
+
+    .ig-story-preview .story-frame {
+      position: relative;
+      aspect-ratio: 9 / 16;
+      background: #05223c;
+      overflow: hidden;
+    }
+
+    .story-progress {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      top: 8px;
+      height: 2px;
+      border-radius: 99px;
+      background: rgba(255,255,255,0.35);
+      z-index: 2;
+    }
+
+    .story-progress::before {
+      content: "";
+      display: block;
+      width: 58%;
+      height: 100%;
+      border-radius: inherit;
+      background: #fff;
+    }
+
+    .story-head {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      top: 18px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .story-head .ui-icon {
+      margin-left: auto;
+      width: 18px;
+      height: 18px;
+    }
+
+    .ig-story-preview .social-art {
+      position: absolute;
+      inset: 0 0 72px;
+      border-radius: 0;
+      min-height: 0;
+    }
+
+    .story-cta {
+      position: absolute;
+      right: 14px;
+      bottom: 86px;
+      z-index: 2;
+      height: 28px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 13px;
+      color: #fff;
+      background: var(--brand-blue);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .facebook-preview {
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    .facebook-head {
+      align-items: flex-start;
+    }
+
+    .facebook-head span {
+      display: block;
+    }
+
+    .facebook-head small {
+      display: block;
+      margin-top: 2px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .facebook-preview .social-art {
+      margin: 0 12px;
+      border-radius: 5px;
+      min-height: 260px;
+    }
+
+    .facebook-actions {
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--text-secondary);
+      font-size: 11px;
+    }
+
+    @media (max-width: 1260px) {
+      .publish-preview-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     .publish-config-side {
@@ -3034,19 +3343,126 @@
       display: grid;
     }
 
-    .selected-account-card {
-      min-height: 42px;
+    .connected-account-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .bound-account-row {
+      position: relative;
+      min-height: 48px;
       border-radius: 12px;
       display: grid;
-      grid-template-columns: 30px 1fr auto;
+      grid-template-columns: 30px 1fr auto auto;
       align-items: center;
       gap: 10px;
       padding: 8px 10px;
       color: var(--text-strong);
-      background: #eef1ff;
-      border: 1px solid #cdd5ff;
+      background: #f9fafc;
+      border: 1px solid var(--border-subtle);
       font-size: 13px;
       font-weight: 700;
+    }
+
+    .bound-account-row.selected {
+      background: #eef1ff;
+      border-color: #cdd5ff;
+    }
+
+    .bound-account-row.disabled {
+      color: var(--text-tertiary);
+      background: #f5f6f8;
+      cursor: not-allowed;
+    }
+
+    .bound-account-row.disabled .platform-mark,
+    .bound-account-row.disabled strong {
+      opacity: 0.45;
+    }
+
+    .bound-account-row small {
+      display: block;
+      margin-top: 2px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.25;
+      font-weight: 500;
+    }
+
+    .bound-account-row.disabled small {
+      color: var(--text-quaternary);
+    }
+
+    .account-check {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--brand-blue);
+      font-size: 12px;
+      font-weight: 700;
+      opacity: 0;
+    }
+
+    .bound-account-row.selected .account-check {
+      opacity: 1;
+    }
+
+    .account-more-wrap {
+      position: relative;
+    }
+
+    .account-more-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: var(--text-secondary);
+      background: transparent;
+    }
+
+    .account-more-btn:hover,
+    .account-more-wrap.show .account-more-btn {
+      background: #edeff1;
+    }
+
+    .account-more-menu {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 6px);
+      min-width: 112px;
+      padding: 6px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-float);
+      display: none;
+      z-index: 8;
+    }
+
+    .account-more-wrap.show .account-more-menu {
+      display: block;
+    }
+
+    .account-menu-item {
+      width: 100%;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      padding: 0 9px;
+      color: var(--danger);
+      background: transparent;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .account-menu-item:hover {
+      background: #fff1f3;
     }
 
     .add-more-account {
@@ -3891,7 +4307,9 @@
               <span>发布到社媒</span>
             </div>
             <div class="publish-image-stage">
-              <div class="publish-selected-image" aria-label="已选择的图片"></div>
+              <div class="publish-preview-grid" data-publish-preview-grid>
+                <div class="publish-original-preview"><div class="publish-original-art" aria-label="原图预览"></div></div>
+              </div>
             </div>
           </section>
 
@@ -3935,10 +4353,34 @@
                   </button>
                 </div>
                 <div class="connected-account-view" data-connected-account-view>
-                  <div class="selected-account-card">
-                    <span class="platform-mark ig" data-selected-platform-mark><svg aria-hidden="true"><use href="#social-instagram"></use></svg></span>
-                    <strong data-selected-platform-name>Instagram</strong>
-                    <span class="checkmark" style="position:static">✓</span>
+                  <div class="connected-account-list">
+                    <div class="bound-account-row selected" data-bound-account data-platform="Instagram">
+                      <span class="platform-mark ig"><svg aria-hidden="true"><use href="#social-instagram"></use></svg></span>
+                      <span><strong>Instagram</strong><small>Business or Creator account</small></span>
+                      <span class="account-check">✓</span>
+                      <span class="account-more-wrap">
+                        <button class="account-more-btn" type="button" data-account-more aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
+                        <span class="account-more-menu"><button class="account-menu-item" type="button" data-unlink-account>Unlink</button></span>
+                      </span>
+                    </div>
+                    <div class="bound-account-row selected" data-bound-account data-platform="Facebook">
+                      <span class="platform-mark fb"><svg aria-hidden="true"><use href="#social-facebook"></use></svg></span>
+                      <span><strong>Facebook</strong><small>Page</small></span>
+                      <span class="account-check">✓</span>
+                      <span class="account-more-wrap">
+                        <button class="account-more-btn" type="button" data-account-more aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
+                        <span class="account-more-menu"><button class="account-menu-item" type="button" data-unlink-account>Unlink</button></span>
+                      </span>
+                    </div>
+                    <div class="bound-account-row disabled" data-bound-account data-platform="YouTube" aria-disabled="true">
+                      <span class="platform-mark yt"><svg aria-hidden="true"><use href="#social-youtube"></use></svg></span>
+                      <span><strong>YouTube</strong><small>Image are not supported</small></span>
+                      <span class="account-check">✓</span>
+                      <span class="account-more-wrap">
+                        <button class="account-more-btn" type="button" data-account-more aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
+                        <span class="account-more-menu"><button class="account-menu-item" type="button" data-unlink-account>Unlink</button></span>
+                      </span>
+                    </div>
                   </div>
                   <button class="add-more-account" type="button">
                     <span>添加更多平台账号</span>
@@ -4346,10 +4788,34 @@
             </button>
           </div>
           <div class="connected-account-view" data-connected-account-view>
-            <div class="selected-account-card">
-              <span class="platform-mark ig" data-selected-platform-mark><svg aria-hidden="true"><use href="#social-instagram"></use></svg></span>
-              <strong data-selected-platform-name>Instagram</strong>
-              <span class="checkmark" style="position:static">✓</span>
+            <div class="connected-account-list">
+              <div class="bound-account-row selected" data-bound-account data-platform="Instagram">
+                <span class="platform-mark ig"><svg aria-hidden="true"><use href="#social-instagram"></use></svg></span>
+                <span><strong>Instagram</strong><small>Business or Creator account</small></span>
+                <span class="account-check">✓</span>
+                <span class="account-more-wrap">
+                  <button class="account-more-btn" type="button" data-account-more aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
+                  <span class="account-more-menu"><button class="account-menu-item" type="button" data-unlink-account>Unlink</button></span>
+                </span>
+              </div>
+              <div class="bound-account-row selected" data-bound-account data-platform="Facebook">
+                <span class="platform-mark fb"><svg aria-hidden="true"><use href="#social-facebook"></use></svg></span>
+                <span><strong>Facebook</strong><small>Page</small></span>
+                <span class="account-check">✓</span>
+                <span class="account-more-wrap">
+                  <button class="account-more-btn" type="button" data-account-more aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
+                  <span class="account-more-menu"><button class="account-menu-item" type="button" data-unlink-account>Unlink</button></span>
+                </span>
+              </div>
+              <div class="bound-account-row disabled" data-bound-account data-platform="YouTube" aria-disabled="true">
+                <span class="platform-mark yt"><svg aria-hidden="true"><use href="#social-youtube"></use></svg></span>
+                <span><strong>YouTube</strong><small>Image are not supported</small></span>
+                <span class="account-check">✓</span>
+                <span class="account-more-wrap">
+                  <button class="account-more-btn" type="button" data-account-more aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
+                  <span class="account-more-menu"><button class="account-menu-item" type="button" data-unlink-account>Unlink</button></span>
+                </span>
+              </div>
             </div>
             <button class="add-more-account" type="button">
               <span>添加更多平台账号</span>
@@ -4449,6 +4915,23 @@
     </div>
   </div>
 
+  <div class="modal" id="account-unlink-modal" aria-hidden="true">
+    <div class="scrim" data-close-unlink-confirm></div>
+    <div class="modal-panel small">
+      <div class="panel-head">
+        <div>
+          <h2>Unlink account?</h2>
+        </div>
+        <button class="close-btn" data-close-unlink-confirm><svg class="ui-icon"><use href="#i-x"></use></svg></button>
+      </div>
+      <p style="margin:8px 0 0;color:var(--text-secondary);font-size:14px;line-height:1.55">This platform account will be removed from the current publish configuration.</p>
+      <div class="modal-actions">
+        <button class="secondary-btn" data-close-unlink-confirm>Cancel</button>
+        <button class="primary-btn" data-confirm-unlink>Confirm</button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal" id="save-artifact-modal" aria-hidden="true">
     <div class="scrim" data-close></div>
     <div class="modal-panel small">
@@ -4530,6 +5013,7 @@
         layer.classList.remove("show");
         layer.setAttribute("aria-hidden", "true");
       });
+      if (typeof closeAccountMenus === "function") closeAccountMenus();
       hidePublishPreview();
     }
 
@@ -4609,6 +5093,8 @@
     $$("[data-open-publish]").forEach((btn) => btn.addEventListener("click", () => {
       if (btn.disabled) return;
       setScreen("publish-screen");
+      syncPublishButton();
+      renderPublishMediaPreview();
     }));
     $$("[data-start-task-spec]").forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -4643,11 +5129,108 @@
     function syncPublishButton() {
       const activePublishScreen = $(".screen.active");
       const scope = activePublishScreen?.id === "publish-screen" ? activePublishScreen : $("#publish-drawer");
-      const hasAccount = Boolean(scope?.querySelector(".social-connect-row.connected"));
+      const accountSection = scope?.querySelector(".account-section.has-connected");
+      const hasAccount = Boolean(accountSection?.querySelector("[data-bound-account].selected:not(.disabled)"));
       const publish = scope?.querySelector("[data-publish-submit]");
       if (!publish) return;
       publish.disabled = !hasAccount;
       publish.setAttribute("aria-disabled", String(!hasAccount));
+    }
+
+    const platformAccountNames = {
+      Instagram: "wendypan0604...",
+      Facebook: "Skylalala",
+      YouTube: "Skywork Channel"
+    };
+
+    const platformIconIds = {
+      Instagram: "social-instagram",
+      Facebook: "social-facebook",
+      YouTube: "social-youtube",
+      TikTok: "social-tiktok",
+      Twitter: "social-x"
+    };
+
+    const platformClasses = {
+      Instagram: "ig",
+      Facebook: "fb",
+      YouTube: "yt",
+      TikTok: "tk",
+      Twitter: "x"
+    };
+
+    function platformMarkHtml(platform) {
+      const id = platformIconIds[platform] || "social-instagram";
+      const className = platformClasses[platform] || "ig";
+      return `<span class="platform-mark ${className}"><svg aria-hidden="true"><use href="#${id}"></use></svg></span>`;
+    }
+
+    function socialArtHtml() {
+      return `<div class="social-art"><div class="social-art-copy"><strong>The card-sized AI voice recorder</strong><span>Turn your spoken conversations into actionable tasks...</span></div></div>`;
+    }
+
+    function instagramPostPreview(accountName) {
+      return `
+        <article class="social-preview-card ig-post-preview">
+          <div class="social-preview-meta">${platformMarkHtml("Instagram")}<span>Instagram · ${accountName}</span><small>Feed</small></div>
+          <div class="social-preview-frame">
+            <div class="ig-post-head"><span class="preview-avatar">W</span><span>${accountName}</span><svg class="ui-icon"><use href="#i-more"></use></svg></div>
+            ${socialArtHtml()}
+            <div class="ig-actions"><svg class="ui-icon"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 1 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg><svg class="ui-icon"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 1 1 17 0Z"/></svg><svg class="ui-icon"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><svg class="ui-icon"><path d="M19 21 12 17 5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2Z"/></svg></div>
+            <div class="ig-caption"><strong>${accountName}</strong> Skywork Note:<span>View all 10 comments</span></div>
+          </div>
+        </article>`;
+    }
+
+    function instagramStoryPreview(accountName) {
+      return `
+        <article class="social-preview-card ig-story-preview">
+          <div class="social-preview-meta">${platformMarkHtml("Instagram")}<span>Instagram · ${accountName}</span><small>Story</small></div>
+          <div class="social-preview-frame">
+            <div class="story-frame">
+              <div class="story-progress"></div>
+              <div class="story-head"><span class="preview-avatar">W</span><span>${accountName}</span><svg class="ui-icon"><use href="#i-x"></use></svg></div>
+              ${socialArtHtml()}
+              <span class="story-cta">Shop Now</span>
+            </div>
+          </div>
+        </article>`;
+    }
+
+    function facebookPreview(accountName) {
+      return `
+        <article class="social-preview-card facebook-preview">
+          <div class="social-preview-meta">${platformMarkHtml("Facebook")}<span>Facebook · ${accountName}</span><small>Post</small></div>
+          <div class="social-preview-frame">
+            <div class="facebook-head"><span class="preview-avatar">S</span><span><strong>${accountName}</strong><small>Just Now</small></span><svg class="ui-icon"><use href="#i-more"></use></svg></div>
+            <div class="facebook-copy">Skywork Note: Turn your spoken conversations into actionable tasks...</div>
+            ${socialArtHtml()}
+            <div class="facebook-actions"><span>♡ Like</span><span>□ Comment</span><span>↗ Share</span></div>
+          </div>
+        </article>`;
+    }
+
+    function renderPublishMediaPreview() {
+      const grid = $("[data-publish-preview-grid]");
+      const publishScreen = $("#publish-screen");
+      if (!grid || !publishScreen) return;
+      const accountSection = publishScreen.querySelector(".account-section.has-connected");
+      const accounts = accountSection ? $$("[data-bound-account].selected:not(.disabled)", accountSection) : [];
+      grid.innerHTML = "";
+      if (!accounts.length) {
+        grid.innerHTML = `<div class="publish-original-preview"><div class="publish-original-art" aria-label="原图预览"></div></div>`;
+        return;
+      }
+      accounts.forEach((account) => {
+        const platform = account.dataset.platform || account.querySelector("strong")?.textContent?.trim() || "Instagram";
+        const accountName = platformAccountNames[platform] || account.querySelector("strong")?.textContent?.trim() || platform;
+        if (platform === "Instagram") {
+          grid.insertAdjacentHTML("beforeend", instagramPostPreview(accountName));
+          grid.insertAdjacentHTML("beforeend", instagramStoryPreview(accountName));
+        } else if (platform === "Facebook") {
+          grid.insertAdjacentHTML("beforeend", facebookPreview(accountName));
+        }
+      });
     }
 
     function syncCanvasSelection(selected) {
@@ -4731,8 +5314,9 @@
       if (!preview) return;
       const activePublishScreen = $(".screen.active");
       const copyScope = activePublishScreen?.id === "publish-screen" ? activePublishScreen : $("#publish-drawer");
-      const selectedName = copyScope?.querySelector("[data-selected-platform-name]")?.textContent?.trim() || "Instagram";
-      const selectedMark = copyScope?.querySelector("[data-selected-platform-mark]")?.cloneNode(true);
+      const selectedAccount = copyScope?.querySelector("[data-bound-account].selected:not(.disabled)");
+      const selectedName = selectedAccount?.querySelector("strong")?.textContent?.trim() || "Instagram";
+      const selectedMark = selectedAccount?.querySelector(".platform-mark")?.cloneNode(true);
       const previewMark = $("[data-preview-platform-mark]");
       const title = copyScope?.querySelector(".copy-fields input")?.value?.trim() || "Skywork campaign visual system";
       const description = copyScope?.querySelector(".copy-fields textarea")?.value?.trim() || "";
@@ -4773,6 +5357,7 @@
     $$("[data-close-publish-success]").forEach((btn) => btn.addEventListener("click", closePublishSuccess));
 
     let pendingAccountRow = null;
+    let pendingUnlinkRow = null;
 
     function closeAccountLinkModal() {
       $("#account-link-modal")?.classList.remove("show");
@@ -4799,21 +5384,73 @@
 
     $("[data-confirm-account-link]")?.addEventListener("click", () => {
       if (!pendingAccountRow) return;
-      const platform = pendingAccountRow.querySelector("strong")?.textContent || "Instagram";
-      const mark = pendingAccountRow.querySelector(".platform-mark")?.cloneNode(true);
-      pendingAccountRow.classList.add("connected");
-      pendingAccountRow.querySelector(".connect-btn").textContent = "Added";
       const scope = pendingAccountRow.closest(".account-section");
-      scope?.querySelector("[data-selected-platform-name]") && (scope.querySelector("[data-selected-platform-name]").textContent = platform);
-      if (mark && scope?.querySelector("[data-selected-platform-mark]")) {
-        scope.querySelector("[data-selected-platform-mark]").replaceWith(mark);
-        mark.setAttribute("data-selected-platform-mark", "");
-      }
       scope?.classList.add("has-connected");
+      pendingAccountRow.closest(".social-connect-list")?.querySelectorAll("[data-connect-account]").forEach((row) => {
+        const platform = row.querySelector("strong")?.textContent || "";
+        if (["Instagram", "Facebook", "YouTube"].includes(platform)) {
+          row.classList.add("connected");
+          row.querySelector(".connect-btn") && (row.querySelector(".connect-btn").textContent = "Added");
+        }
+      });
       syncPublishButton();
+      renderPublishMediaPreview();
       $("#account-link-modal")?.classList.remove("show");
       $("#account-link-modal")?.setAttribute("aria-hidden", "true");
       pendingAccountRow = null;
+    });
+
+    function closeAccountMenus() {
+      $$(".account-more-wrap.show").forEach((wrap) => wrap.classList.remove("show"));
+    }
+
+    $$("[data-bound-account]").forEach((row) => {
+      row.addEventListener("click", (event) => {
+        if (event.target.closest("[data-account-more], [data-unlink-account], .account-more-menu")) return;
+        if (row.classList.contains("disabled")) return;
+        row.classList.toggle("selected");
+        syncPublishButton();
+        renderPublishMediaPreview();
+      });
+    });
+
+    $$("[data-account-more]").forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const wrap = btn.closest(".account-more-wrap");
+        const wasOpen = wrap?.classList.contains("show");
+        closeAccountMenus();
+        wrap?.classList.toggle("show", !wasOpen);
+      });
+    });
+
+    $$("[data-unlink-account]").forEach((btn) => {
+      btn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        pendingUnlinkRow = btn.closest("[data-bound-account]");
+        closeAccountMenus();
+        showLayer("#account-unlink-modal");
+      });
+    });
+
+    function closeUnlinkConfirm() {
+      $("#account-unlink-modal")?.classList.remove("show");
+      $("#account-unlink-modal")?.setAttribute("aria-hidden", "true");
+      pendingUnlinkRow = null;
+    }
+
+    $$("[data-close-unlink-confirm]").forEach((btn) => btn.addEventListener("click", closeUnlinkConfirm));
+
+    $("[data-confirm-unlink]")?.addEventListener("click", () => {
+      if (!pendingUnlinkRow) return;
+      const section = pendingUnlinkRow.closest(".account-section");
+      pendingUnlinkRow.remove();
+      if (!section?.querySelector("[data-bound-account]")) {
+        section?.classList.remove("has-connected");
+      }
+      syncPublishButton();
+      renderPublishMediaPreview();
+      closeUnlinkConfirm();
     });
 
     $$("[data-toggle-schedule]").forEach((btn) => btn.addEventListener("click", () => {
