@@ -3164,6 +3164,200 @@
       border: 1px solid var(--border-subtle);
     }
 
+    .modal-panel.account-manager-panel {
+      width: min(760px, calc(100vw - 72px));
+      max-height: min(720px, calc(100vh - 64px));
+      padding: 18px;
+    }
+
+    .account-manager-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .account-manager-title {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .account-manager-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .account-manager-view {
+      display: none;
+    }
+
+    .account-manager-view.active {
+      display: block;
+    }
+
+    .manager-account-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .manager-account-card {
+      min-height: 98px;
+      border-radius: 16px;
+      display: grid;
+      grid-template-columns: 36px 1fr auto;
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      color: var(--text-primary);
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      text-align: left;
+    }
+
+    .manager-account-card.connected {
+      border-color: var(--text-strong);
+    }
+
+    .manager-account-card .platform-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+    }
+
+    .manager-account-card strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .manager-account-card small {
+      display: block;
+      margin-top: 4px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .manager-account-card .connect-btn {
+      min-width: 86px;
+      color: var(--text-secondary);
+      background: #f4f5f7;
+      border-color: transparent;
+    }
+
+    .manager-account-card.connected .connect-btn {
+      color: var(--text-secondary);
+      background: #f4f5f7;
+    }
+
+    .publish-history-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .history-row {
+      min-height: 84px;
+      border-radius: 14px;
+      display: grid;
+      grid-template-columns: 68px 1fr;
+      gap: 12px;
+      padding: 10px;
+      background: #f9fafc;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .history-thumb {
+      width: 68px;
+      height: 68px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #4d5eff 0%, #4d8dff 52%, #37b6ff 100%);
+    }
+
+    .history-copy {
+      min-width: 0;
+      display: grid;
+      gap: 7px;
+      align-content: center;
+    }
+
+    .history-copy strong {
+      color: var(--text-strong);
+      font-size: 13px;
+      line-height: 1.35;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .history-copy p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .history-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.3;
+    }
+
+    .history-meta span {
+      height: 22px;
+      border-radius: 7px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 7px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .history-status {
+      height: 22px;
+      border-radius: 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 7px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .history-status.published {
+      color: #138a55;
+      background: #e9f8f0;
+    }
+
+    .history-status.reviewing {
+      color: #9a6400;
+      background: #fff5d8;
+    }
+
+    .history-status.rejected {
+      color: #b4232f;
+      background: #fff1f3;
+    }
+
+    .history-status.failed {
+      color: #7a2e0e;
+      background: #fff0e8;
+    }
+
     .detail-row {
       display: grid;
       grid-template-columns: 68px 1fr;
@@ -4382,7 +4576,7 @@
                       </span>
                     </div>
                   </div>
-                  <button class="add-more-account" type="button">
+                  <button class="add-more-account" type="button" data-open-account-manager>
                     <span>添加更多平台账号</span>
                     <span class="add-more-icons">
                       <span class="platform-mark fb"><svg aria-hidden="true"><use href="#social-facebook"></use></svg></span>
@@ -4817,7 +5011,7 @@
                 </span>
               </div>
             </div>
-            <button class="add-more-account" type="button">
+            <button class="add-more-account" type="button" data-open-account-manager>
               <span>添加更多平台账号</span>
               <span class="add-more-icons">
                 <span class="platform-mark fb"><svg aria-hidden="true"><use href="#social-facebook"></use></svg></span>
@@ -4929,6 +5123,94 @@
         <button class="secondary-btn" data-close-unlink-confirm>Cancel</button>
         <button class="primary-btn" data-confirm-unlink>Confirm</button>
       </div>
+    </div>
+  </div>
+
+  <div class="modal" id="account-manager-modal" aria-hidden="true">
+    <div class="scrim" data-close-account-manager></div>
+    <div class="modal-panel account-manager-panel">
+      <div class="account-manager-head">
+        <h2 class="account-manager-title" data-account-manager-title>添加更多平台账号</h2>
+        <div class="account-manager-actions">
+          <button class="secondary-btn" type="button" data-show-account-history>查看发布历史</button>
+          <button class="close-btn" type="button" data-close-account-manager aria-label="关闭"><svg class="ui-icon"><use href="#i-x"></use></svg></button>
+        </div>
+      </div>
+      <div class="account-manager-view active" data-account-manager-view="accounts">
+        <div class="manager-account-grid">
+          <div class="manager-account-card connected">
+            <span class="platform-mark ig"><svg aria-hidden="true"><use href="#social-instagram"></use></svg></span>
+            <span><strong>Instagram</strong><small>Business or Creator account</small></span>
+            <button class="connect-btn" type="button">Disconnect</button>
+          </div>
+          <div class="manager-account-card connected">
+            <span class="platform-mark fb"><svg aria-hidden="true"><use href="#social-facebook"></use></svg></span>
+            <span><strong>Facebook</strong><small>Page · Skylalala</small></span>
+            <button class="connect-btn" type="button">Disconnect</button>
+          </div>
+          <div class="manager-account-card">
+            <span class="platform-mark tk"><svg aria-hidden="true"><use href="#social-tiktok"></use></svg></span>
+            <span><strong>TikTok</strong><small>Profile</small></span>
+            <button class="connect-btn" type="button">Connect</button>
+          </div>
+          <div class="manager-account-card">
+            <span class="platform-mark x"><svg aria-hidden="true"><use href="#social-x"></use></svg></span>
+            <span><strong>Twitter / X</strong><small>Profile</small></span>
+            <button class="connect-btn" type="button">Connect</button>
+          </div>
+          <div class="manager-account-card connected">
+            <span class="platform-mark yt"><svg aria-hidden="true"><use href="#social-youtube"></use></svg></span>
+            <span><strong>YouTube</strong><small>Channel · Skywork Channel</small></span>
+            <button class="connect-btn" type="button">Disconnect</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="publish-history-modal" aria-hidden="true">
+    <div class="scrim" data-close-publish-history></div>
+    <div class="modal-panel account-manager-panel">
+      <div class="account-manager-head">
+        <h2 class="account-manager-title">发布历史</h2>
+        <div class="account-manager-actions">
+          <button class="close-btn" type="button" data-close-publish-history aria-label="关闭"><svg class="ui-icon"><use href="#i-x"></use></svg></button>
+        </div>
+      </div>
+        <div class="publish-history-list">
+          <article class="history-row">
+            <div class="history-thumb"></div>
+            <div class="history-copy">
+              <strong>Skywork campaign visual system</strong>
+              <p>Turn ideas into polished campaign visuals in one Skywork canvas. Create, refine, and prepare social-ready assets without switching tools.</p>
+              <div class="history-meta"><span>Instagram · Feed post</span><span>2026-06-25 09:30</span><span class="history-status published">已发布</span></div>
+            </div>
+          </article>
+          <article class="history-row">
+            <div class="history-thumb"></div>
+            <div class="history-copy">
+              <strong>AI voice recorder launch visual</strong>
+              <p>Turn your spoken conversations into actionable tasks with a compact card-sized recorder for daily workflows.</p>
+              <div class="history-meta"><span>Facebook · Post</span><span>2026-06-24 18:12</span><span class="history-status reviewing">审核中</span></div>
+            </div>
+          </article>
+          <article class="history-row">
+            <div class="history-thumb"></div>
+            <div class="history-copy">
+              <strong>Creator workflow story set</strong>
+              <p>Build campaign visuals, adapt formats, and preview social publishing in one connected Skywork canvas.</p>
+              <div class="history-meta"><span>Instagram · Story</span><span>2026-06-22 11:05</span><span class="history-status rejected">审核不通过</span></div>
+            </div>
+          </article>
+          <article class="history-row">
+            <div class="history-thumb"></div>
+            <div class="history-copy">
+              <strong>Social launch thumbnail pack</strong>
+              <p>Prepare platform-specific campaign visuals and schedule them across connected social channels.</p>
+              <div class="history-meta"><span>Twitter / X · Post</span><span>2026-06-20 16:42</span><span class="history-status failed">发布失败</span></div>
+            </div>
+          </article>
+        </div>
     </div>
   </div>
 
@@ -5430,6 +5712,43 @@
         pendingUnlinkRow = btn.closest("[data-bound-account]");
         closeAccountMenus();
         showLayer("#account-unlink-modal");
+      });
+    });
+
+    function showAccountManagerView(view) {
+      $$("[data-account-manager-view]").forEach((item) => item.classList.toggle("active", item.dataset.accountManagerView === view));
+      const title = $("[data-account-manager-title]");
+      const historyBtn = $("[data-show-account-history]");
+      if (title) title.textContent = "添加更多平台账号";
+      if (historyBtn) historyBtn.textContent = "查看发布历史";
+    }
+
+    $$("[data-open-account-manager]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        $("#publish-history-modal")?.classList.remove("show");
+        $("#publish-history-modal")?.setAttribute("aria-hidden", "true");
+        showAccountManagerView("accounts");
+        showLayer("#account-manager-modal");
+      });
+    });
+
+    $$("[data-close-account-manager]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        $("#account-manager-modal")?.classList.remove("show");
+        $("#account-manager-modal")?.setAttribute("aria-hidden", "true");
+      });
+    });
+
+    $("[data-show-account-history]")?.addEventListener("click", () => {
+      $("#account-manager-modal")?.classList.remove("show");
+      $("#account-manager-modal")?.setAttribute("aria-hidden", "true");
+      showLayer("#publish-history-modal");
+    });
+
+    $$("[data-close-publish-history]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        $("#publish-history-modal")?.classList.remove("show");
+        $("#publish-history-modal")?.setAttribute("aria-hidden", "true");
       });
     });
 
