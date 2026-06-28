@@ -1929,6 +1929,44 @@
       margin-left: 40px;
     }
 
+    .message.user {
+      align-self: flex-end;
+      margin: 0 14px 22px auto;
+      padding: 12px 14px;
+      border-radius: 16px;
+      color: var(--text-strong);
+      background: #ecf2ff;
+      line-height: 1.55;
+    }
+
+    .message.convert-result .artifact-card {
+      margin-top: 10px;
+    }
+
+    .convert-result-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .convert-result-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      color: var(--text-secondary);
+      background: #f9fafc;
+      border: 1px solid #edeff1;
+      font-size: 12px;
+    }
+
+    .convert-result-chip strong {
+      color: var(--text-strong);
+      font-size: 12px;
+    }
+
     .agent-row {
       display: flex;
       align-items: center;
@@ -2402,6 +2440,19 @@
       line-height: 1.4;
     }
 
+    .convert-context {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 10px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      color: var(--text-secondary);
+      background: #f4f6fb;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
     .convert-options {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -2452,6 +2503,10 @@
       white-space: nowrap;
     }
 
+    .convert-option .resolution-note {
+      color: var(--brand-blue);
+    }
+
     .convert-actions {
       display: flex;
       justify-content: flex-end;
@@ -2464,6 +2519,18 @@
       border: 1px solid rgba(0, 8, 24, 0.06);
       background: linear-gradient(135deg, #4d5eff 0%, #4d8dff 52%, #37b6ff 100%);
       box-shadow: 0 12px 28px rgba(0, 8, 24, 0.1);
+    }
+
+    .convert-artboard::after {
+      content: attr(data-label);
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      color: rgba(255,255,255,0.92);
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.25;
     }
 
     .canvas-floating {
@@ -3500,7 +3567,8 @@
     .platform-mark.ig svg,
     .platform-mark.fb svg,
     .platform-mark.tk svg,
-    .platform-mark.x svg {
+    .platform-mark.x svg,
+    .platform-mark.in svg {
       border-radius: 8px;
     }
 
@@ -3547,7 +3615,7 @@
       min-height: 48px;
       border-radius: 12px;
       display: grid;
-      grid-template-columns: 30px 1fr auto auto;
+      grid-template-columns: 30px 1fr auto;
       align-items: center;
       gap: 10px;
       padding: 8px 10px;
@@ -3602,61 +3670,6 @@
 
     .bound-account-row.selected .account-check {
       opacity: 1;
-    }
-
-    .account-more-wrap {
-      position: relative;
-    }
-
-    .account-more-btn {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      display: grid;
-      place-items: center;
-      color: var(--text-secondary);
-      background: transparent;
-    }
-
-    .account-more-btn:hover,
-    .account-more-wrap.show .account-more-btn {
-      background: #edeff1;
-    }
-
-    .account-more-menu {
-      position: absolute;
-      right: 0;
-      top: calc(100% + 6px);
-      min-width: 112px;
-      padding: 6px;
-      border-radius: 10px;
-      background: #fff;
-      border: 1px solid var(--border-subtle);
-      box-shadow: var(--shadow-float);
-      display: none;
-      z-index: 8;
-    }
-
-    .account-more-wrap.show .account-more-menu {
-      display: block;
-    }
-
-    .account-menu-item {
-      width: 100%;
-      height: 32px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      padding: 0 9px;
-      color: var(--danger);
-      background: transparent;
-      font-size: 13px;
-      font-weight: 600;
-      text-align: left;
-    }
-
-    .account-menu-item:hover {
-      background: #fff1f3;
     }
 
     .add-more-account {
@@ -4113,6 +4126,10 @@
       <path d="M0 0h1024v1024H0z" fill="#000000"></path>
       <path d="M537.088 422.5536l142.6944-187.904h85.6576l-188.16 246.3232 212.0704 308.3776h-170.1376l-131.9936-190.4128-145.3056 190.4128H258.6624l188.416-248.2176-212.3776-306.4832h173.2608l129.1776 187.904z m106.8544 311.296h44.1856L383.0784 290.2016H336.384l307.5584 443.7504z" fill="#FFFFFF"></path>
     </symbol>
+    <symbol id="social-linkedin" viewBox="0 0 1024 1024">
+      <path d="M0 0h1024v1024H0z" fill="#0A66C2"></path>
+      <path d="M246.6 347.8h-142V804h142V347.8zM175.5 285.5c45.4 0 73.6-30.1 73.6-67.7-.8-38.4-28.2-67.7-72.7-67.7s-73.6 29.3-73.6 67.7c0 37.6 28.2 67.7 71.9 67.7h.8zM321.8 804h142V549.2c0-13.6 1-27.3 5-37 10.3-27.2 33.8-55.4 73.2-55.4 51.6 0 72.3 39.3 72.3 96.9V804h142V537.3c0-142.9-76.2-209.4-177.8-209.4-82.7 0-119.4 45.9-139.9 77.9h1v-58h-142c1.8 43.1 0 456.2 0 456.2z" fill="#fff"></path>
+    </symbol>
   </svg>
 
   <div class="app-shell detail-mode">
@@ -4399,46 +4416,46 @@
                   <div class="convert-popover-head">
                     <div>
                       <h3>选择社媒尺寸</h3>
-                      <p>可多选，确认后会在画布生成对应尺寸。</p>
+                      <p>可多选，确认后自动把所选图片和转换指令发送给 agent。</p>
                     </div>
                     <button class="close-btn" type="button" data-close-convert aria-label="关闭"><svg class="ui-icon"><use href="#i-x"></use></svg></button>
                   </div>
+                  <div class="convert-context">
+                    <svg class="ui-icon" style="width:15px;height:15px"><use href="#i-image"></use></svg>
+                    已选中 1 张图片，可继续多选画布图片后批量转换
+                  </div>
                   <div class="convert-options">
-                    <button class="convert-option active" type="button" data-convert-option data-label="Instagram 快拍" data-ratio="9:16" data-platform="ig">
-                      <span class="platform-mark ig"><svg><use href="#social-instagram"></use></svg></span>
-                      <span><strong>Instagram 快拍</strong><span>9:16 · Story</span></span>
+                    <button class="convert-option active" type="button" data-convert-option data-label="Facebook 帖子横版" data-query-label="Facebook 帖子横版" data-ratio="16:9" data-platform="fb">
+                      <span class="platform-mark fb"><svg><use href="#social-facebook"></use></svg></span>
+                      <span><strong>Facebook 帖子横版</strong><span>16:9 · <span class="resolution-note">＞1080</span></span></span>
                     </button>
-                    <button class="convert-option active" type="button" data-convert-option data-label="Instagram 帖子（4:5）" data-ratio="4:5" data-platform="ig">
+                    <button class="convert-option active" type="button" data-convert-option data-label="Instagram 帖子" data-query-label="Instagram 帖子" data-ratio="4:5" data-platform="ig">
                       <span class="platform-mark ig"><svg><use href="#social-instagram"></use></svg></span>
                       <span><strong>Instagram 帖子</strong><span>4:5 · Feed post</span></span>
                     </button>
-                    <button class="convert-option" type="button" data-convert-option data-label="Facebook 帖子（横版）" data-ratio="16:9" data-platform="fb">
+                    <button class="convert-option" type="button" data-convert-option data-label="Instagram 快拍" data-query-label="Instagram 快拍" data-ratio="9:16" data-platform="ig">
+                      <span class="platform-mark ig"><svg><use href="#social-instagram"></use></svg></span>
+                      <span><strong>Instagram 快拍</strong><span>9:16 · Story</span></span>
+                    </button>
+                    <button class="convert-option" type="button" data-convert-option data-label="Facebook 主页封面" data-query-label="Facebook 主页封面" data-ratio="27:10" data-platform="fb">
                       <span class="platform-mark fb"><svg><use href="#social-facebook"></use></svg></span>
-                      <span><strong>Facebook 帖子</strong><span>16:9 · Landscape</span></span>
+                      <span><strong>Facebook 主页封面</strong><span>27:10 · Page cover</span></span>
                     </button>
-                    <button class="convert-option" type="button" data-convert-option data-label="Facebook 封面（横版）" data-ratio="1.91:1" data-platform="fb">
-                      <span class="platform-mark fb"><svg><use href="#social-facebook"></use></svg></span>
-                      <span><strong>Facebook 封面</strong><span>1.91:1 · Page cover</span></span>
+                    <button class="convert-option" type="button" data-convert-option data-label="LinkedIn 帖子" data-query-label="LinkedIn 帖子" data-ratio="1:1" data-platform="in">
+                      <span class="platform-mark in"><svg><use href="#social-linkedin"></use></svg></span>
+                      <span><strong>LinkedIn 帖子</strong><span>1:1 · Post</span></span>
                     </button>
-                    <button class="convert-option" type="button" data-convert-option data-label="TikTok 视频" data-ratio="9:16" data-platform="tk">
-                      <span class="platform-mark tk"><svg><use href="#social-tiktok"></use></svg></span>
-                      <span><strong>TikTok 视频</strong><span>9:16 · Short video</span></span>
-                    </button>
-                    <button class="convert-option" type="button" data-convert-option data-label="Twitter / X 帖子" data-ratio="16:9" data-platform="x">
+                    <button class="convert-option" type="button" data-convert-option data-label="Twitter 帖子横版" data-query-label="Twitter 帖子横版" data-ratio="16:9" data-platform="x">
                       <span class="platform-mark x"><svg><use href="#social-x"></use></svg></span>
-                      <span><strong>Twitter / X 帖子</strong><span>16:9 · Post</span></span>
+                      <span><strong>Twitter 帖子横版</strong><span>16:9 · Post</span></span>
                     </button>
-                    <button class="convert-option" type="button" data-convert-option data-label="YouTube Shorts" data-ratio="9:16" data-platform="yt">
+                    <button class="convert-option" type="button" data-convert-option data-label="YouTube 封面" data-query-label="YouTube 封面" data-ratio="16:9" data-platform="yt">
                       <span class="platform-mark yt"><svg><use href="#social-youtube"></use></svg></span>
-                      <span><strong>YouTube Shorts</strong><span>9:16 · Shorts</span></span>
+                      <span><strong>YouTube 封面</strong><span>16:9 · 视频封面</span></span>
                     </button>
-                    <button class="convert-option" type="button" data-convert-option data-label="YouTube 缩略图" data-ratio="16:9" data-platform="yt">
+                    <button class="convert-option" type="button" data-convert-option data-label="YouTube 频道 logo" data-query-label="YouTube 频道 logo" data-ratio="1:1" data-platform="yt">
                       <span class="platform-mark yt"><svg><use href="#social-youtube"></use></svg></span>
-                      <span><strong>YouTube 缩略图</strong><span>16:9 · Thumbnail</span></span>
-                    </button>
-                    <button class="convert-option" type="button" data-convert-option data-label="YouTube 视频" data-ratio="16:9" data-platform="yt">
-                      <span class="platform-mark yt"><svg><use href="#social-youtube"></use></svg></span>
-                      <span><strong>YouTube 视频</strong><span>16:9 · Video</span></span>
+                      <span><strong>YouTube 频道 logo</strong><span>1:1 · 简约辨识</span></span>
                     </button>
                   </div>
                   <div class="convert-actions">
@@ -4552,28 +4569,16 @@
                       <span class="platform-mark ig"><svg aria-hidden="true"><use href="#social-instagram"></use></svg></span>
                       <span><strong>Instagram</strong><small>Business or Creator account</small></span>
                       <span class="account-check">✓</span>
-                      <span class="account-more-wrap">
-                        <button class="account-more-btn" type="button" data-account-more aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
-                        <span class="account-more-menu"><button class="account-menu-item" type="button" data-unlink-account>Unlink</button></span>
-                      </span>
                     </div>
                     <div class="bound-account-row selected" data-bound-account data-platform="Facebook">
                       <span class="platform-mark fb"><svg aria-hidden="true"><use href="#social-facebook"></use></svg></span>
                       <span><strong>Facebook</strong><small>Page</small></span>
                       <span class="account-check">✓</span>
-                      <span class="account-more-wrap">
-                        <button class="account-more-btn" type="button" data-account-more aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
-                        <span class="account-more-menu"><button class="account-menu-item" type="button" data-unlink-account>Unlink</button></span>
-                      </span>
                     </div>
                     <div class="bound-account-row disabled" data-bound-account data-platform="YouTube" aria-disabled="true">
                       <span class="platform-mark yt"><svg aria-hidden="true"><use href="#social-youtube"></use></svg></span>
                       <span><strong>YouTube</strong><small>Image are not supported</small></span>
                       <span class="account-check">✓</span>
-                      <span class="account-more-wrap">
-                        <button class="account-more-btn" type="button" data-account-more aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
-                        <span class="account-more-menu"><button class="account-menu-item" type="button" data-unlink-account>Unlink</button></span>
-                      </span>
                     </div>
                   </div>
                   <button class="add-more-account" type="button" data-open-account-manager>
@@ -4987,28 +4992,16 @@
                 <span class="platform-mark ig"><svg aria-hidden="true"><use href="#social-instagram"></use></svg></span>
                 <span><strong>Instagram</strong><small>Business or Creator account</small></span>
                 <span class="account-check">✓</span>
-                <span class="account-more-wrap">
-                  <button class="account-more-btn" type="button" data-account-more aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
-                  <span class="account-more-menu"><button class="account-menu-item" type="button" data-unlink-account>Unlink</button></span>
-                </span>
               </div>
               <div class="bound-account-row selected" data-bound-account data-platform="Facebook">
                 <span class="platform-mark fb"><svg aria-hidden="true"><use href="#social-facebook"></use></svg></span>
                 <span><strong>Facebook</strong><small>Page</small></span>
                 <span class="account-check">✓</span>
-                <span class="account-more-wrap">
-                  <button class="account-more-btn" type="button" data-account-more aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
-                  <span class="account-more-menu"><button class="account-menu-item" type="button" data-unlink-account>Unlink</button></span>
-                </span>
               </div>
               <div class="bound-account-row disabled" data-bound-account data-platform="YouTube" aria-disabled="true">
                 <span class="platform-mark yt"><svg aria-hidden="true"><use href="#social-youtube"></use></svg></span>
                 <span><strong>YouTube</strong><small>Image are not supported</small></span>
                 <span class="account-check">✓</span>
-                <span class="account-more-wrap">
-                  <button class="account-more-btn" type="button" data-account-more aria-label="更多"><svg class="ui-icon"><use href="#i-more"></use></svg></button>
-                  <span class="account-more-menu"><button class="account-menu-item" type="button" data-unlink-account>Unlink</button></span>
-                </span>
               </div>
             </div>
             <button class="add-more-account" type="button" data-open-account-manager>
@@ -5141,12 +5134,12 @@
           <div class="manager-account-card connected">
             <span class="platform-mark ig"><svg aria-hidden="true"><use href="#social-instagram"></use></svg></span>
             <span><strong>Instagram</strong><small>Business or Creator account</small></span>
-            <button class="connect-btn" type="button">Disconnect</button>
+            <button class="connect-btn" type="button" data-manager-unlink="Instagram">Unlink</button>
           </div>
           <div class="manager-account-card connected">
             <span class="platform-mark fb"><svg aria-hidden="true"><use href="#social-facebook"></use></svg></span>
             <span><strong>Facebook</strong><small>Page · Skylalala</small></span>
-            <button class="connect-btn" type="button">Disconnect</button>
+            <button class="connect-btn" type="button" data-manager-unlink="Facebook">Unlink</button>
           </div>
           <div class="manager-account-card">
             <span class="platform-mark tk"><svg aria-hidden="true"><use href="#social-tiktok"></use></svg></span>
@@ -5161,7 +5154,7 @@
           <div class="manager-account-card connected">
             <span class="platform-mark yt"><svg aria-hidden="true"><use href="#social-youtube"></use></svg></span>
             <span><strong>YouTube</strong><small>Channel · Skywork Channel</small></span>
-            <button class="connect-btn" type="button">Disconnect</button>
+            <button class="connect-btn" type="button" data-manager-unlink="YouTube">Unlink</button>
           </div>
         </div>
       </div>
@@ -5562,7 +5555,8 @@
       "9:16": { width: 126, height: 224 },
       "4:5": { width: 152, height: 190 },
       "16:9": { width: 220, height: 124 },
-      "1.91:1": { width: 230, height: 120 }
+      "27:10": { width: 238, height: 88 },
+      "1:1": { width: 154, height: 154 }
     };
 
     function addConvertedArtboards(options) {
@@ -5577,16 +5571,45 @@
         artboard.style.height = `${size.height}px`;
         artboard.style.left = `${Math.min(76, 52 + (index % 2) * 22)}%`;
         artboard.style.top = `${22 + Math.floor(index / 2) * 28}%`;
+        artboard.dataset.label = option.dataset.label || "转换结果";
         artboard.setAttribute("role", "img");
         artboard.setAttribute("aria-label", option.dataset.label || "转换后的社媒尺寸图片");
         canvas.appendChild(artboard);
       });
     }
 
+    function appendConvertMessages(options) {
+      const chat = $(".project-chat");
+      const composer = $(".bottom-composer");
+      if (!chat || !composer) return;
+      $$(".message.convert-flow").forEach((item) => item.remove());
+      const labels = options.map((option) => option.dataset.queryLabel || option.dataset.label).filter(Boolean);
+      const userMessage = document.createElement("div");
+      userMessage.className = "message user convert-flow";
+      userMessage.textContent = `使用已选中的图片，${labels.map((label) => `类型：转成${label}`).join("；")}。`;
+
+      const agentMessage = document.createElement("div");
+      agentMessage.className = "message agent convert-result convert-flow";
+      agentMessage.innerHTML = `
+        <div class="agent-row">
+          <div class="chat-avatar"></div>
+          <span class="agent-name">温迪的2号</span>
+          <span class="tool-tag">poster_convert</span>
+        </div>
+        <p>已基于所选图片生成 ${labels.length} 个社媒尺寸版本，并添加到右侧画布。</p>
+        <div class="convert-result-list">
+          ${options.map((option) => `<span class="convert-result-chip"><strong>${option.dataset.label || "社媒尺寸"}</strong><span>${option.dataset.ratio || "Auto"}</span></span>`).join("")}
+        </div>`;
+      chat.insertBefore(userMessage, composer);
+      chat.insertBefore(agentMessage, composer);
+      agentMessage.scrollIntoView({ block: "nearest" });
+    }
+
     $("[data-confirm-convert]")?.addEventListener("click", () => {
       const selected = $$("[data-convert-option].active");
       if (!selected.length) return;
       addConvertedArtboards(selected);
+      appendConvertMessages(selected);
       closeConvertPopover();
       syncCanvasSelection(true);
     });
@@ -5682,13 +5705,8 @@
       pendingAccountRow = null;
     });
 
-    function closeAccountMenus() {
-      $$(".account-more-wrap.show").forEach((wrap) => wrap.classList.remove("show"));
-    }
-
     $$("[data-bound-account]").forEach((row) => {
       row.addEventListener("click", (event) => {
-        if (event.target.closest("[data-account-more], [data-unlink-account], .account-more-menu")) return;
         if (row.classList.contains("disabled")) return;
         row.classList.toggle("selected");
         syncPublishButton();
@@ -5696,21 +5714,13 @@
       });
     });
 
-    $$("[data-account-more]").forEach((btn) => {
+    $$("[data-manager-unlink]").forEach((btn) => {
       btn.addEventListener("click", (event) => {
         event.stopPropagation();
-        const wrap = btn.closest(".account-more-wrap");
-        const wasOpen = wrap?.classList.contains("show");
-        closeAccountMenus();
-        wrap?.classList.toggle("show", !wasOpen);
-      });
-    });
-
-    $$("[data-unlink-account]").forEach((btn) => {
-      btn.addEventListener("click", (event) => {
-        event.stopPropagation();
-        pendingUnlinkRow = btn.closest("[data-bound-account]");
-        closeAccountMenus();
+        const platform = btn.dataset.managerUnlink;
+        pendingUnlinkRow = platform ? $(`[data-bound-account][data-platform="${platform}"]`) : null;
+        $("#account-manager-modal")?.classList.remove("show");
+        $("#account-manager-modal")?.setAttribute("aria-hidden", "true");
         showLayer("#account-unlink-modal");
       });
     });
