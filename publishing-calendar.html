@@ -389,14 +389,13 @@
 
     .empty-layout {
       min-height: calc(100vh - 164px);
-      display: grid;
-      place-items: center;
-      padding: 10px 20px 24px;
+      padding: 8px 12px 18px;
     }
 
     .empty-center {
-      width: min(1080px, 100%);
-      text-align: center;
+      width: 100%;
+      height: 100%;
+      text-align: left;
     }
 
     .empty-mark {
@@ -496,7 +495,9 @@
     .empty-main {
       margin-top: 0;
       display: grid;
-      gap: 18px;
+      grid-template-columns: minmax(0, 1fr) 240px;
+      gap: 16px;
+      align-items: stretch;
       text-align: left;
     }
 
@@ -506,13 +507,16 @@
     }
 
     .blank-calendar {
-      width: min(980px, 100%);
-      margin: 0 auto;
+      width: 100%;
+      min-height: calc(100vh - 220px);
       border-radius: 16px;
       background: rgba(255, 255, 255, 0.88);
       border: 1px solid #fff;
       box-shadow: var(--shadow-card);
-      padding: 14px;
+      padding: 16px;
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      align-content: start;
     }
 
     .blank-calendar-top {
@@ -525,9 +529,65 @@
 
     .blank-calendar-title {
       color: var(--text-strong);
-      font-size: 16px;
+      font-size: 18px;
       line-height: 1.4;
       font-weight: 650;
+    }
+
+    .empty-calendar-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .calendar-nav-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .calendar-month-control {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .calendar-month-control .icon-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: #f4f5f7;
+      border: 1px solid var(--border-subtle);
+      box-shadow: none;
+    }
+
+    .empty-view-toggle {
+      height: 34px;
+      padding: 3px;
+      border-radius: 12px;
+      background: #edeff1;
+      display: inline-flex;
+      gap: 2px;
+    }
+
+    .empty-view-toggle button {
+      min-width: 42px;
+      border-radius: 9px;
+      padding: 0 10px;
+      color: var(--text-quaternary);
+      background: transparent;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .empty-view-toggle button.active {
+      color: var(--text-strong);
+      background: #fff;
+      box-shadow: var(--shadow-card);
     }
 
     .blank-calendar-grid {
@@ -537,6 +597,7 @@
       border-radius: 12px;
       overflow: hidden;
       background: #fff;
+      height: 100%;
     }
 
     .blank-head,
@@ -561,7 +622,7 @@
     }
 
     .blank-day {
-      min-height: 96px;
+      min-height: 108px;
       position: relative;
       background: rgba(255, 255, 255, 0.96);
     }
@@ -595,19 +656,33 @@
       top: 50%;
       z-index: 2;
       transform: translate(-50%, -50%);
-      min-height: 34px;
-      border-radius: 12px;
-      padding: 0 12px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-tertiary);
+      width: min(360px, calc(100% - 40px));
+      min-height: 150px;
+      border-radius: 16px;
+      padding: 18px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--text-secondary);
       background: rgba(255, 255, 255, 0.92);
       border: 1px solid var(--border-subtle);
       box-shadow: var(--shadow-card);
+    }
+
+    .blank-calendar-empty strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 16px;
+      line-height: 1.45;
+      font-weight: 650;
+    }
+
+    .blank-calendar-empty span {
+      display: block;
+      margin-top: 6px;
+      color: var(--text-tertiary);
       font-size: 13px;
-      font-weight: 600;
-      white-space: nowrap;
+      line-height: 1.55;
     }
 
     .blank-calendar-wrap {
@@ -615,9 +690,9 @@
     }
 
     .blank-calendar-action {
-      margin-top: 12px;
+      margin-top: 14px;
       display: flex;
-      justify-content: flex-end;
+      justify-content: center;
     }
 
     .value-grid {
@@ -666,17 +741,42 @@
     }
 
     .process-list {
-      width: min(860px, 100%);
-      margin: 0 auto;
+      width: 100%;
+      height: 100%;
+      margin: 0;
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 0;
+      gap: 10px;
+      align-content: start;
       text-align: left;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid #fff;
+      box-shadow: var(--shadow-card);
+      padding: 16px;
+    }
+
+    .process-list::before {
+      content: "从计划到发布";
+      display: block;
+      color: var(--text-strong);
+      font-size: 16px;
+      line-height: 1.45;
+      font-weight: 650;
+      margin-bottom: 2px;
+    }
+
+    .process-list::after {
+      content: "Skywork 会根据目标生成发布计划、创建图文视频内容，并在账号授权后按排期发布到社媒平台。";
+      display: block;
+      color: var(--text-tertiary);
+      font-size: 13px;
+      line-height: 1.55;
+      margin-top: 4px;
     }
 
     .process-step {
-      min-height: 70px;
-      padding: 6px 10px 0;
+      min-height: 58px;
+      padding: 0 0 0 36px;
       background: transparent;
       border: 0;
       color: var(--text-secondary);
@@ -696,16 +796,18 @@
       background: var(--text-strong);
       font-size: 12px;
       font-weight: 700;
-      margin-bottom: 8px;
+      position: absolute;
+      left: 0;
+      top: 0;
     }
 
     .process-step::after {
       content: "";
       position: absolute;
-      left: 44px;
-      right: 8px;
-      top: 18px;
-      height: 1px;
+      left: 13px;
+      top: 32px;
+      bottom: 4px;
+      width: 1px;
       background: var(--border-subtle);
     }
 
@@ -960,6 +1062,22 @@
       border: 1px dashed #dfe4ec;
       font-size: 13px;
       font-weight: 600;
+      cursor: pointer;
+    }
+
+    .brief-field label.upload-tile {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 0;
+      line-height: 1;
+    }
+
+    .upload-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
     }
 
     .upload-note {
@@ -1044,6 +1162,9 @@
       grid-template-columns: 42px 1fr;
       gap: 10px;
       align-items: start;
+      position: relative;
+      text-align: left;
+      cursor: pointer;
     }
 
     .setup-side .platform-card {
@@ -1058,6 +1179,22 @@
       border-color: #dfe5ff;
       box-shadow: 0 0 0 1px #dfe5ff, var(--shadow-card);
       background: #fbfcff;
+    }
+
+    .platform-card.selected::after {
+      content: "✓";
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--brand-blue);
+      font-size: 11px;
+      font-weight: 800;
     }
 
     .platform-logo {
@@ -1115,6 +1252,10 @@
       grid-template-columns: minmax(620px, 1fr) 360px;
       gap: 16px;
       align-items: start;
+    }
+
+    .flow-two-col.strategy-full {
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .flow-card {
@@ -1493,6 +1634,10 @@
       padding: 0 14px;
       font-weight: 600;
       white-space: nowrap;
+    }
+
+    .header-create-plan[hidden] {
+      display: none !important;
     }
 
     .primary-btn {
@@ -2036,6 +2181,8 @@
     .ig { background: linear-gradient(135deg, #ff9f00, #ff4ad5 55%, #6b37ff); }
     .tt { background: #000818; }
     .fb { background: #1877f2; }
+    .yt { background: #ff0033; }
+    .tw { background: #000818; }
     .x { background: #15181c; }
     .yt { background: #ff3838; }
 
@@ -2337,6 +2484,84 @@
     .tag-editor {
       height: 36px;
       padding: 0 10px;
+    }
+
+    .asset-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .asset-card {
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+      background: #fff;
+      box-shadow: var(--shadow-card);
+      padding: 8px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .asset-card.selected {
+      border-color: var(--brand-blue);
+      box-shadow: 0 0 0 2px rgba(77, 94, 255, 0.12);
+    }
+
+    .asset-thumb {
+      aspect-ratio: 1 / 1;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #f4f5f7;
+      position: relative;
+    }
+
+    .asset-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .asset-thumb.video {
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background:
+        radial-gradient(circle at 70% 24%, rgba(255, 255, 255, 0.48), transparent 18%),
+        linear-gradient(135deg, #000818, #6b37ff 56%, #ff4ad5);
+    }
+
+    .asset-play {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(0, 8, 24, 0.72);
+    }
+
+    .asset-card strong {
+      display: block;
+      margin-top: 8px;
+      color: var(--text-strong);
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .asset-card span {
+      display: block;
+      margin-top: 3px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .asset-note {
+      margin: 12px 0 0;
+      color: var(--text-tertiary);
+      font-size: 13px;
+      line-height: 1.5;
     }
 
     .modal-backdrop {
@@ -2694,8 +2919,26 @@
         grid-template-columns: minmax(620px, 1fr) 340px;
       }
 
+      .blank-calendar {
+        min-height: calc(100vh - 210px);
+      }
+
       .day-cell {
         min-height: 142px;
+      }
+    }
+
+    @media (max-width: 1180px) {
+      .empty-main {
+        grid-template-columns: 1fr;
+      }
+
+      .blank-calendar {
+        min-height: 620px;
+      }
+
+      .process-list {
+        height: auto;
       }
     }
   </style>
@@ -2716,6 +2959,9 @@
     <symbol id="i-video" viewBox="0 0 24 24">
       <rect x="3" y="6" width="13" height="12" rx="3"/>
       <path d="m16 10 5-3v10l-5-3z"/>
+    </symbol>
+    <symbol id="i-play" viewBox="0 0 24 24">
+      <path d="m8 5 12 7-12 7z"/>
     </symbol>
     <symbol id="i-send" viewBox="0 0 24 24">
       <path d="m22 2-7 20-4-9-9-4z"/>
@@ -2865,7 +3111,7 @@
             <h1 class="page-title">自动化营销</h1>
           </div>
           <div class="head-actions">
-            <button class="primary-btn" data-goto="setup"><svg class="ui-icon"><use href="#i-plus"></use></svg>创建营销计划</button>
+            <button class="primary-btn header-create-plan" data-goto="setup"><svg class="ui-icon"><use href="#i-plus"></use></svg>创建营销计划</button>
             <button class="secondary-btn" data-modal="accountModal"><svg class="ui-icon"><use href="#i-database"></use></svg>社媒账号管理</button>
             <button class="secondary-btn" data-modal="historyModal"><svg class="ui-icon"><use href="#i-file-text"></use></svg>发布历史</button>
           </div>
@@ -2878,6 +3124,24 @@
                 <aside class="blank-calendar" aria-label="发布日历">
                   <div class="blank-calendar-top">
                     <span class="blank-calendar-title">发布日历</span>
+                  </div>
+                  <div class="empty-calendar-toolbar" aria-label="日历工具栏">
+                    <div class="calendar-nav-group">
+                      <div class="calendar-month-control">
+                        <button class="icon-btn" aria-label="上个月"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(90deg)"><use href="#i-chevron-down"></use></svg></button>
+                        <span class="select-pill">2026年7月</span>
+                        <button class="icon-btn" aria-label="下个月"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(-90deg)"><use href="#i-chevron-down"></use></svg></button>
+                      </div>
+                      <button class="secondary-btn" data-toast="已回到今天">今天</button>
+                      <div class="empty-view-toggle" aria-label="视图范围">
+                        <button class="active">月</button>
+                        <button>周</button>
+                      </div>
+                    </div>
+                    <div class="calendar-nav-group">
+                      <span class="select-pill">全部平台 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
+                      <span class="select-pill">全部账号 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
+                    </div>
                   </div>
                   <div class="blank-calendar-wrap">
                     <div class="blank-calendar-grid">
@@ -2910,10 +3174,15 @@
                       <div class="blank-day">18</div>
                       <div class="blank-day">19</div>
                     </div>
-                    <div class="blank-calendar-empty">暂无内容</div>
-                  </div>
-                  <div class="blank-calendar-action">
-                    <button class="primary-btn" data-goto="setup"><svg class="ui-icon"><use href="#i-plus"></use></svg>创建营销计划</button>
+                    <div class="blank-calendar-empty">
+                      <div>
+                        <strong>还没有发布计划</strong>
+                        <span>创建营销计划后，内容会按日期自动排入日历。</span>
+                        <div class="blank-calendar-action">
+                          <button class="primary-btn" data-goto="setup"><svg class="ui-icon"><use href="#i-plus"></use></svg>创建营销计划</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </aside>
                 <div class="process-list" aria-label="自动化营销流程">
@@ -2921,10 +3190,6 @@
                   <div class="process-step" data-index="2"><b>设置发布</b>平台和频率</div>
                   <div class="process-step" data-index="3"><b>生成计划</b>确认内容节奏</div>
                   <div class="process-step" data-index="4"><b>进入日历</b>生成并发布</div>
-                </div>
-                <div class="empty-copy">
-                  <h2 class="empty-title">让 Skywork 自动运营你的社媒内容</h2>
-                  <p class="empty-subtitle">告诉 Skywork 你要推广什么。系统会自动规划发布节奏、生成图文和视频物料，并按排期发布到已授权的社媒平台。</p>
                 </div>
               </div>
             </div>
@@ -2934,16 +3199,13 @@
         <section class="flow-screen" data-screen="setup">
           <div class="setup-layout">
               <div class="flow-card">
-                <div class="panel-head">
-                  <h2 class="panel-title">创建发布计划</h2>
-                <span class="panel-meta">描述产品、活动目标和发布要求</span>
-                </div>
               <div class="brief-form">
                 <div class="brief-field">
                   <label for="productBrief">产品 / 活动介绍</label>
                   <textarea class="brief-textarea" id="productBrief">冷萃咖啡新品上市，主打更清爽的口感、低糖和早晨专注场景。希望用视觉内容突出“第一杯冷萃”的仪式感，目标是新品上市预热，提高点击和到店购买。</textarea>
                   <div class="upload-row" style="margin-top:10px">
-                    <button class="upload-tile" data-toast="已打开参考资料上传"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-plus"></use></svg>上传参考资料</button>
+                    <label class="upload-tile" for="referenceUpload"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-plus"></use></svg>上传参考资料</label>
+                    <input class="upload-input" id="referenceUpload" type="file" multiple accept="image/*,video/*,.pdf,.doc,.docx,.ppt,.pptx,.txt,.md" />
                   </div>
                 </div>
                 <div class="brief-two-col">
@@ -2991,7 +3253,7 @@
                   </span>
                 </div>
                 <div class="platform-grid">
-                  <div class="platform-card selected">
+                  <div class="platform-card selected" role="button" tabindex="0">
                     <div class="platform-logo ig">IG</div>
                     <div class="platform-main">
                       <strong>Instagram</strong>
@@ -2999,7 +3261,7 @@
                       <div class="account-row"><span class="status-pill review">未绑定</span><button class="connect-btn" data-toast="已打开 Instagram 授权确认弹窗">连接账号</button></div>
                     </div>
                   </div>
-                  <div class="platform-card selected">
+                  <div class="platform-card selected" role="button" tabindex="0">
                     <div class="platform-logo tt">TT</div>
                     <div class="platform-main">
                       <strong>TikTok</strong>
@@ -3007,7 +3269,7 @@
                       <div class="account-row"><span class="status-pill scheduled">已连接 @skywork_note</span><button class="connect-btn connected">已连接</button></div>
                     </div>
                   </div>
-                  <div class="platform-card">
+                  <div class="platform-card" role="button" tabindex="0">
                     <div class="platform-logo fb">f</div>
                     <div class="platform-main">
                       <strong>Facebook Page</strong>
@@ -3015,12 +3277,27 @@
                       <div class="account-row"><span class="status-pill review">未绑定</span><button class="connect-btn" data-toast="已打开 Facebook Page 授权确认弹窗">连接 Page</button></div>
                     </div>
                   </div>
+                  <div class="platform-card" role="button" tabindex="0">
+                    <div class="platform-logo yt">YT</div>
+                    <div class="platform-main">
+                      <strong>YouTube</strong>
+                      <p>Shorts、长视频和社区帖</p>
+                      <div class="account-row"><span class="status-pill review">未绑定</span><button class="connect-btn" data-toast="已打开 YouTube 授权确认弹窗">连接频道</button></div>
+                    </div>
+                  </div>
+                  <div class="platform-card" role="button" tabindex="0">
+                    <div class="platform-logo tw">X</div>
+                    <div class="platform-main">
+                      <strong>Twitter / X</strong>
+                      <p>图文帖、短文案和话题标签</p>
+                      <div class="account-row"><span class="status-pill review">未绑定</span><button class="connect-btn" data-toast="已打开 X 授权确认弹窗">连接账号</button></div>
+                    </div>
+                  </div>
                 </div>
               </section>
               <section class="flow-card">
                 <div class="panel-head">
                   <h2 class="panel-title">发布节奏</h2>
-                  <span class="panel-meta">可编辑</span>
                 </div>
                 <div class="edit-control-grid" style="grid-template-columns:1fr">
                   <div class="rhythm-form">
@@ -3061,7 +3338,7 @@
               <span>生成中</span>
             </div>
           </div>
-          <div class="flow-two-col">
+          <div class="flow-two-col strategy-full">
             <div class="flow-card">
               <div class="strategy-list">
                 <div class="strategy-item">
@@ -3152,37 +3429,15 @@
                 <button class="secondary-btn" data-goto="setup">返回修改设置</button>
                 <div class="flow-actions-right">
                   <button class="secondary-btn" data-toast="Skywork 已重新生成计划"><svg class="ui-icon"><use href="#i-refresh"></use></svg>重新生成</button>
-                  <button class="primary-btn" data-goto="calendar"><svg class="ui-icon"><use href="#i-check"></use></svg>确认发布计划</button>
+                  <button class="primary-btn" data-goto="calendar"><svg class="ui-icon"><use href="#i-check"></use></svg>开始生成素材</button>
                 </div>
               </div>
             </div>
 
-            <aside class="flow-card">
-              <div class="panel-head">
-                <h2 class="panel-title">计划摘要</h2>
-                <span class="panel-meta">生成内容前</span>
-              </div>
-              <div class="metric-row" style="grid-template-columns:1fr 1fr;margin-bottom:12px">
-                <div class="metric"><strong>20</strong><span>计划内容</span></div>
-                <div class="metric"><strong>4</strong><span>内容主题</span></div>
-              </div>
-              <div class="detail-list">
-                <div class="detail-row"><span class="detail-label">平台</span><span>Instagram、TikTok、Facebook</span></div>
-                <div class="detail-row"><span class="detail-label">形式</span><span>单图、多图、视频</span></div>
-                <div class="detail-row"><span class="detail-label">来源</span><span>Skywork 自动生成的多模态内容</span></div>
-              </div>
-            </aside>
           </div>
         </section>
 
         <section class="flow-screen" data-screen="calendar">
-          <div class="metric-row">
-            <div class="metric"><strong>20</strong><span>计划内容</span></div>
-            <div class="metric"><strong>6</strong><span>生成中</span></div>
-            <div class="metric"><strong>9</strong><span>待生成</span></div>
-            <div class="metric"><strong>5</strong><span>已排期发布</span></div>
-          </div>
-
           <div class="main-grid">
             <section class="calendar-panel">
             <div class="calendar-toolbar">
@@ -3191,9 +3446,6 @@
                 <span class="select-pill">全部平台 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
                 <span class="select-pill">全部状态 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
                 <span class="select-pill">冷萃新品上市 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
-              </div>
-              <div class="toolbar-right">
-                <button class="primary-btn" data-goto="setup"><svg class="ui-icon"><use href="#i-sparkles"></use></svg>生成下一期发布计划</button>
               </div>
             </div>
 
@@ -3345,10 +3597,6 @@
 
           <aside class="right-stack">
             <section class="review-panel">
-              <div class="panel-head">
-                <h2 class="panel-title">当前选中内容</h2>
-                <span class="status-pill generate">生成中</span>
-              </div>
               <article class="post-preview-card">
                 <div class="post-top">
                   <div class="post-account"><span class="preview-avatar"></span><span>@skywork_note</span></div>
@@ -3379,6 +3627,7 @@
                 </div>
               </div>
               <div class="action-row">
+                <button class="secondary-btn" data-modal="assetModal"><svg class="ui-icon"><use href="#i-image"></use></svg>更换素材</button>
                 <button class="primary-btn" data-toast="已打开关联项目"><svg class="ui-icon"><use href="#i-box"></use></svg>打开项目</button>
               </div>
             </section>
@@ -3465,6 +3714,47 @@
     </section>
   </div>
 
+  <div class="modal-backdrop" id="assetModal" aria-hidden="true">
+    <section class="modal-panel" role="dialog" aria-label="更换素材">
+      <div class="modal-head">
+        <h2 class="modal-title">更换素材</h2>
+        <button class="icon-btn" data-close-modal aria-label="关闭"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
+      </div>
+      <div class="asset-grid">
+        <button class="asset-card selected" type="button">
+          <div class="asset-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="深烘冷萃海报" /></div>
+          <strong>深烘冷萃海报</strong>
+          <span>Instagram feed · 当前使用</span>
+        </button>
+        <button class="asset-card" type="button">
+          <div class="asset-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="早间冷萃竖版图" /></div>
+          <strong>早间冷萃竖版图</strong>
+          <span>Instagram story</span>
+        </button>
+        <button class="asset-card" type="button">
+          <div class="asset-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="Coffee culture 方图" /></div>
+          <strong>Coffee culture 方图</strong>
+          <span>Instagram feed</span>
+        </button>
+        <button class="asset-card" type="button">
+          <div class="asset-thumb"><img src="image-generation-flow/assets/coffee-culture-poster-page.jpg" alt="咖啡文化长图" /></div>
+          <strong>咖啡文化长图</strong>
+          <span>Facebook page Post</span>
+        </button>
+        <button class="asset-card" type="button">
+          <div class="asset-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
+          <strong>15 秒通勤短视频</strong>
+          <span>Tiktok video</span>
+        </button>
+      </div>
+      <p class="asset-note">可前往项目继续生成更多素材后选择</p>
+      <div class="query-actions">
+        <button class="secondary-btn" data-toast="已打开关联项目"><svg class="ui-icon"><use href="#i-box"></use></svg>打开项目</button>
+        <button class="primary-btn" data-close-modal>确认更换</button>
+      </div>
+    </section>
+  </div>
+
   <div class="toast" id="toast"><svg class="ui-icon" style="color:var(--brand-blue)"><use href="#i-sparkles"></use></svg><span>已更新</span></div>
 
   <script>
@@ -3489,6 +3779,18 @@
       }, 3000);
     }
 
+    function updateHeaderCreateAction(screenName) {
+      const createButton = document.querySelector(".header-create-plan");
+      if (!createButton) return;
+      createButton.hidden = !["empty", "calendar"].includes(screenName);
+    }
+
+    function updatePageTitle(screenName) {
+      const pageTitle = document.querySelector(".page-title");
+      if (!pageTitle) return;
+      pageTitle.textContent = ["setup", "strategy"].includes(screenName) ? "创建营销计划" : "自动化营销";
+    }
+
     function setScreen(screenName) {
       document.querySelectorAll(".flow-screen").forEach((screen) => {
         screen.classList.toggle("active", screen.dataset.screen === screenName);
@@ -3502,8 +3804,14 @@
       });
 
       document.querySelector(".workspace").scrollTo({ top: 0, behavior: "smooth" });
+      updatePageTitle(screenName);
+      updateHeaderCreateAction(screenName);
       if (screenName === "strategy") showStrategyGenerating();
     }
+
+    const initialScreen = document.querySelector(".flow-screen.active")?.dataset.screen || "empty";
+    updatePageTitle(initialScreen);
+    updateHeaderCreateAction(initialScreen);
 
     document.querySelectorAll("[data-toast]").forEach((button) => {
       button.addEventListener("click", () => {
@@ -3549,6 +3857,28 @@
           showToast("已选中，可手动复制");
           target?.select?.();
         }
+      });
+    });
+
+    document.querySelectorAll(".asset-card").forEach((button) => {
+      button.addEventListener("click", () => {
+        button.parentElement.querySelectorAll(".asset-card").forEach((item) => item.classList.remove("selected"));
+        button.classList.add("selected");
+      });
+    });
+
+    document.querySelectorAll(".platform-card").forEach((card) => {
+      const togglePlatform = () => card.classList.toggle("selected");
+
+      card.addEventListener("click", (event) => {
+        if (event.target.closest(".connect-btn")) return;
+        togglePlatform();
+      });
+
+      card.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        togglePlatform();
       });
     });
 
