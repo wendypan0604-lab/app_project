@@ -1,0 +1,3632 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Skywork 自动化营销原型</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='10' fill='%23F4F5F7'/%3E%3Cpath d='M7 12h10' stroke='%234D5EFF' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M15 20h10' stroke='%2300FFCE' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bg-page: #f4f5f7;
+      --bg-rail: #eef2f7;
+      --bg-panel: rgba(255, 255, 255, 0.9);
+      --bg-glass: rgba(255, 255, 255, 0.82);
+      --bg-chip: #edeff1;
+      --bg-soft: #f9fafc;
+      --text-primary: #333b46;
+      --text-strong: #000818;
+      --text-secondary: #485568;
+      --text-tertiary: #979fab;
+      --text-quaternary: #7f8896;
+      --brand-blue: #4d5eff;
+      --brand-cyan: #00ffce;
+      --func-image: #faae15;
+      --func-video: #6b37ff;
+      --func-story: #ff4ad5;
+      --success: #18bf83;
+      --warning: #ffaa00;
+      --danger: #ff576d;
+      --border-default: #fff;
+      --border-subtle: #edeff1;
+      --shadow-card: 0 1px 6px rgba(0, 8, 24, 0.04);
+      --shadow-float: 0 3px 12px rgba(0, 8, 24, 0.12);
+      --shadow-input: 0 12px 20.8px -17px rgba(0, 8, 24, 0.12);
+      font-family: Outfit, "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-width: 1280px;
+      min-height: 760px;
+      color: var(--text-primary);
+      background: var(--bg-page);
+      overflow: hidden;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    .ui-icon {
+      width: 20px;
+      height: 20px;
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex: 0 0 auto;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 48px 240px minmax(960px, 1fr);
+      grid-template-rows: 52px 1fr;
+    }
+
+    .icon-rail {
+      grid-row: 1 / span 2;
+      background: var(--bg-rail);
+      border-right: 1px solid #dfe4ec;
+      padding: 14px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .sky-logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: url("assets/skywork-logo.png") center / cover no-repeat;
+      flex: 0 0 auto;
+    }
+
+    .sky-logo::before,
+    .sky-logo::after {
+      content: none;
+    }
+
+    .rail-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: #526071;
+      background: transparent;
+      position: relative;
+    }
+
+    .rail-btn.active {
+      color: var(--text-strong);
+      background: #fff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .rail-badge {
+      position: absolute;
+      top: -4px;
+      right: -7px;
+      height: 14px;
+      padding: 0 4px;
+      border-radius: 6px;
+      color: #fff;
+      background: #ff3838;
+      font-size: 9px;
+      line-height: 14px;
+      font-weight: 700;
+    }
+
+    .project-side {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      border-right: 1px solid #dfe4ec;
+      background: rgba(255, 255, 255, 0.62);
+      padding: 10px 12px 20px;
+      overflow: hidden;
+    }
+
+    .brand-row {
+      height: 38px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 10px;
+    }
+
+    .brand-word {
+      color: var(--text-strong);
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .new-project {
+      width: 100%;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 14px;
+      color: var(--text-strong);
+      background: #fff;
+      font-size: 15px;
+      font-weight: 500;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 12px;
+    }
+
+    .side-group {
+      display: grid;
+      gap: 4px;
+      margin: 10px 0 16px;
+    }
+
+    .side-link {
+      min-height: 34px;
+      border-radius: 8px;
+      padding: 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #596678;
+      background: transparent;
+      text-align: left;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .side-link.active {
+      color: var(--text-strong);
+      background: #fff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .side-link .ui-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .side-section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 8px 8px 6px;
+    }
+
+    .project-list {
+      display: grid;
+      gap: 2px;
+      max-height: calc(100vh - 312px);
+      overflow: hidden;
+    }
+
+    .project-item {
+      min-height: 31px;
+      border-radius: 8px;
+      padding: 0 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: #667286;
+      background: transparent;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    .project-item.active {
+      color: var(--brand-blue);
+    }
+
+    .sync-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: conic-gradient(from 90deg, var(--brand-blue), var(--brand-cyan), #ffae2b, var(--brand-blue));
+    }
+
+    .topbar {
+      grid-column: 3;
+      grid-row: 1;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px 0 20px;
+      border-bottom: 1px solid #dfe4ec;
+      background: linear-gradient(90deg, #eef2f7 0%, #f4f5f7 46%, #f0eef9 100%);
+    }
+
+    .top-left,
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .design-pill,
+    .top-chip {
+      height: 30px;
+      border-radius: 16px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      background: rgba(255, 255, 255, 0.66);
+      border: 1px solid rgba(255, 255, 255, 0.88);
+      font-size: 14px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .beta {
+      color: #ff8c00;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .top-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--text-secondary);
+      background: transparent;
+    }
+
+    .credit-chip {
+      color: #8f5a00;
+      border-color: #f9d48a;
+      background: #fff8e8;
+    }
+
+    .plan-chip {
+      color: #7a35dc;
+      border-color: #dbc6ff;
+      background: #f2ecff;
+    }
+
+    .avatar-chip {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #8f5a00;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .workspace {
+      grid-column: 3;
+      grid-row: 2;
+      height: calc(100vh - 52px);
+      min-height: 708px;
+      padding: 18px 22px 22px;
+      overflow: auto;
+    }
+
+    .workspace-card {
+      min-height: calc(100vh - 92px);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid #fff;
+      box-shadow: var(--shadow-card);
+      padding: 20px;
+    }
+
+    .flow-screen {
+      display: none;
+      min-height: calc(100vh - 220px);
+    }
+
+    .flow-screen.active {
+      display: block;
+    }
+
+    .stepper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 18px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .step-pill {
+      min-height: 28px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      background: #f4f5f7;
+      color: var(--text-tertiary);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .step-pill.active {
+      color: var(--text-strong);
+      background: #fff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .step-pill.done {
+      color: var(--brand-blue);
+      background: #eef1ff;
+      border-color: #dfe5ff;
+    }
+
+    .empty-layout {
+      min-height: calc(100vh - 164px);
+      display: grid;
+      place-items: center;
+      padding: 10px 20px 24px;
+    }
+
+    .empty-center {
+      width: min(1080px, 100%);
+      text-align: center;
+    }
+
+    .empty-mark {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 18px;
+      border-radius: 24px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background:
+        radial-gradient(circle at 72% 25%, rgba(255, 255, 255, 0.46), transparent 18%),
+        linear-gradient(135deg, var(--brand-blue), #7c5cff 52%, var(--brand-cyan));
+      box-shadow: 0 18px 38px rgba(77, 94, 255, 0.2);
+    }
+
+    .empty-title {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 24px;
+      line-height: 1.25;
+      font-weight: 650;
+      letter-spacing: 0;
+    }
+
+    .empty-subtitle {
+      margin: 8px auto 0;
+      max-width: 640px;
+      color: var(--text-tertiary);
+      font-size: 15px;
+      line-height: 1.55;
+    }
+
+    .goal-composer {
+      width: min(760px, 100%);
+      min-height: 220px;
+      margin: 0 auto;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1.5px solid #fff;
+      box-shadow: var(--shadow-input);
+      padding: 16px;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      gap: 14px;
+      text-align: left;
+    }
+
+    .goal-textarea {
+      width: 100%;
+      min-height: 126px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text-primary);
+      font-size: 18px;
+      line-height: 1.6;
+      padding: 4px 0;
+    }
+
+    .goal-textarea::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .composer-bottom {
+      min-height: 46px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .suggested-row {
+      margin-top: 14px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .suggestion-btn {
+      min-height: 34px;
+      border-radius: 12px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      background: #edeff1;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .empty-main {
+      margin-top: 0;
+      display: grid;
+      gap: 18px;
+      text-align: left;
+    }
+
+    .empty-copy {
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .blank-calendar {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid #fff;
+      box-shadow: var(--shadow-card);
+      padding: 14px;
+    }
+
+    .blank-calendar-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .blank-calendar-title {
+      color: var(--text-strong);
+      font-size: 16px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .blank-calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .blank-head,
+    .blank-day {
+      min-height: 38px;
+      border-right: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 8px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .blank-head:nth-child(7n),
+    .blank-day:nth-child(7n) {
+      border-right: 0;
+    }
+
+    .blank-head {
+      background: #f9fafc;
+      text-align: center;
+    }
+
+    .blank-day {
+      min-height: 96px;
+      position: relative;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .blank-day:nth-last-child(-n + 7) {
+      border-bottom: 0;
+    }
+
+    .blank-day.has-placeholder::after {
+      content: "";
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      bottom: 10px;
+      height: 16px;
+      border-radius: 6px;
+      background: #eef1ff;
+      border: 1px dashed #cfd7ff;
+    }
+
+    .blank-calendar-note {
+      margin: 12px 0 0;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .blank-calendar-empty {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 2;
+      transform: translate(-50%, -50%);
+      min-height: 34px;
+      border-radius: 12px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-tertiary);
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .blank-calendar-wrap {
+      position: relative;
+    }
+
+    .blank-calendar-action {
+      margin-top: 12px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .value-grid {
+      width: 100%;
+      margin: 24px auto 0;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      text-align: left;
+    }
+
+    .value-card {
+      min-height: 138px;
+      border-radius: 14px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid #fff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .value-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand-blue), #7c5cff);
+      margin-bottom: 12px;
+    }
+
+    .value-card strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 15px;
+      line-height: 1.45;
+      font-weight: 650;
+    }
+
+    .value-card span {
+      display: block;
+      margin-top: 6px;
+      color: var(--text-tertiary);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .process-list {
+      width: min(860px, 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0;
+      text-align: left;
+    }
+
+    .process-step {
+      min-height: 70px;
+      padding: 6px 10px 0;
+      background: transparent;
+      border: 0;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.45;
+      position: relative;
+    }
+
+    .process-step::before {
+      content: attr(data-index);
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--text-strong);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .process-step::after {
+      content: "";
+      position: absolute;
+      left: 44px;
+      right: 8px;
+      top: 18px;
+      height: 1px;
+      background: var(--border-subtle);
+    }
+
+    .process-step:last-child::after {
+      display: none;
+    }
+
+    .process-step b {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--text-strong);
+      font-size: 13px;
+    }
+
+    .setup-layout {
+      display: grid;
+      grid-template-columns: minmax(560px, 1fr) 420px;
+      gap: 16px;
+      align-items: start;
+      justify-content: stretch;
+    }
+
+    .brief-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .brief-field {
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      padding: 12px;
+    }
+
+    .brief-field label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-strong);
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .brief-input,
+    .brief-select,
+    .brief-textarea {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      color: var(--text-primary);
+      background: #f9fafc;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .brief-select {
+      appearance: none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, var(--text-tertiary) 50%),
+        linear-gradient(135deg, var(--text-tertiary) 50%, transparent 50%);
+      background-position:
+        calc(100% - 18px) 50%,
+        calc(100% - 12px) 50%;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+    }
+
+    .brief-textarea {
+      min-height: 132px;
+    }
+
+    .brief-input::placeholder,
+    .brief-textarea::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .brief-two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .preference-row,
+    .upload-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .preference-chip {
+      min-height: 34px;
+      border-radius: 12px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      background: #f4f5f7;
+      border: 1px solid var(--border-subtle);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .brief-field label.preference-chip {
+      display: inline-flex;
+      margin-bottom: 0;
+    }
+
+    .preference-chip.selected {
+      color: #3d4bdb;
+      background: #eef1ff;
+      border-color: #dfe5ff;
+    }
+
+    .preference-chip input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .preference-check {
+      width: 16px;
+      height: 16px;
+      border-radius: 5px;
+      display: inline-grid;
+      place-items: center;
+      color: #fff;
+      background: var(--brand-blue);
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    .preference-chip:not(.selected) .preference-check {
+      color: transparent;
+      background: #fff;
+      border: 1px solid #dfe4ec;
+    }
+
+    .rhythm-form {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .rhythm-field {
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      padding: 12px;
+    }
+
+    .rhythm-label {
+      display: block;
+      margin-bottom: 10px;
+      color: var(--text-strong);
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .weekly-count-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .weekly-count-input {
+      width: 84px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid #dfe4ec;
+      background: #f9fafc;
+      color: var(--text-strong);
+      font-size: 14px;
+      font-weight: 650;
+      text-align: center;
+    }
+
+    .weekly-count-suffix {
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .rhythm-option-row,
+    .time-segment-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .rhythm-option {
+      min-height: 34px;
+      border-radius: 12px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      background: #f4f5f7;
+      border: 1px solid var(--border-subtle);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .rhythm-option.selected {
+      color: #3d4bdb;
+      background: #eef1ff;
+      border-color: #dfe5ff;
+    }
+
+    .rhythm-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .design-guideline-select {
+      display: grid;
+      grid-template-columns: 1fr minmax(220px, 0.8fr);
+      gap: 12px;
+      align-items: center;
+    }
+
+    .design-guideline-copy {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-strong);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .upload-tile {
+      min-height: 40px;
+      border-radius: 12px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--text-secondary);
+      background: #f9fafc;
+      border: 1px dashed #dfe4ec;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .upload-note {
+      margin: 8px 0 0;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .setup-side {
+      display: grid;
+      gap: 12px;
+    }
+
+    .info-tip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .help-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      color: var(--text-secondary);
+      background: #edeff1;
+      border: 1px solid var(--border-subtle);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: default;
+    }
+
+    .tip-popover {
+      position: absolute;
+      left: calc(100% + 8px);
+      top: 50%;
+      z-index: 5;
+      width: 276px;
+      transform: translateY(-50%);
+      border-radius: 14px;
+      padding: 12px;
+      color: var(--text-secondary);
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-float);
+      font-size: 12px;
+      line-height: 1.55;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.16s ease;
+    }
+
+    .info-tip:hover .tip-popover,
+    .info-tip:focus-within .tip-popover {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .setup-side .platform-grid {
+      grid-template-columns: 1fr;
+      margin-top: 0;
+    }
+
+    .platform-card {
+      min-height: 116px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .setup-side .platform-card {
+      min-height: 88px;
+    }
+
+    .setup-side .platform-main p {
+      margin-bottom: 8px;
+    }
+
+    .platform-card.selected {
+      border-color: #dfe5ff;
+      box-shadow: 0 0 0 1px #dfe5ff, var(--shadow-card);
+      background: #fbfcff;
+    }
+
+    .platform-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .platform-main strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 14px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .platform-main p {
+      margin: 4px 0 10px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .account-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .connect-btn {
+      min-height: 28px;
+      border-radius: 10px;
+      padding: 0 10px;
+      color: var(--brand-blue);
+      background: #eef1ff;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .connect-btn.connected {
+      color: #11835d;
+      background: #e7f8ef;
+    }
+
+    .flow-two-col {
+      display: grid;
+      grid-template-columns: minmax(620px, 1fr) 360px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .flow-card {
+      border-radius: 14px;
+      background: var(--bg-glass);
+      border: 1px solid #fff;
+      box-shadow: var(--shadow-card);
+      padding: 16px;
+    }
+
+    .edit-control-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 12px 0 14px;
+    }
+
+    .edit-control {
+      min-height: 92px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      padding: 12px;
+    }
+
+    .edit-control label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--text-strong);
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 650;
+      margin-bottom: 10px;
+    }
+
+    .edit-link {
+      min-height: 26px;
+      border-radius: 9px;
+      padding: 0 8px;
+      color: var(--brand-blue);
+      background: #eef1ff;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .draft-table {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .draft-row {
+      min-height: 74px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      display: grid;
+      grid-template-columns: 82px minmax(0, 1fr) 188px;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+    }
+
+    .draft-date {
+      color: var(--text-strong);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .draft-date span {
+      display: block;
+      margin-top: 3px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .draft-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .draft-main strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .draft-detail {
+      min-height: 24px;
+      border-radius: 8px;
+      padding: 0 8px;
+      color: var(--brand-blue);
+      background: #eef1ff;
+      font-size: 12px;
+      font-weight: 650;
+      flex: 0 0 auto;
+    }
+
+    .draft-main span {
+      display: block;
+      margin-top: 4px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .draft-actions {
+      display: grid;
+      justify-items: end;
+      gap: 8px;
+    }
+
+    .mini-edit-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .mini-edit {
+      min-height: 26px;
+      border-radius: 9px;
+      padding: 0 8px;
+      color: var(--text-secondary);
+      background: #f4f5f7;
+      border: 1px solid var(--border-subtle);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .flow-actions {
+      margin-top: 16px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .flow-actions.split {
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .flow-actions-right {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .strategy-screen {
+      position: relative;
+    }
+
+    .strategy-loading {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      border-radius: 14px;
+      display: none;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(3px);
+    }
+
+    .strategy-screen.generating .strategy-loading {
+      display: grid;
+    }
+
+    .loading-box {
+      min-width: 220px;
+      border-radius: 16px;
+      padding: 18px;
+      display: grid;
+      justify-items: center;
+      gap: 10px;
+      color: var(--text-strong);
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-float);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .loading-spinner {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 3px solid #e8ebff;
+      border-top-color: var(--brand-blue);
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .artifact-card {
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+    }
+
+    .project-source {
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      padding: 12px;
+      margin-bottom: 14px;
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .project-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
+    }
+
+    .project-source strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 14px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .project-source span {
+      display: block;
+      margin-top: 3px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .artifact-file-head {
+      min-height: 48px;
+      padding: 10px 12px;
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 8px;
+      align-items: center;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .file-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+    }
+
+    .file-icon.image { background: var(--func-image); }
+    .file-icon.video { background: var(--func-video); }
+
+    .artifact-file-head strong {
+      display: block;
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.3;
+      font-weight: 650;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .artifact-file-head span {
+      display: block;
+      margin-top: 2px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+    }
+
+    .artifact-preview {
+      height: 168px;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #1b2135, #4d5eff);
+    }
+
+    .artifact-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .artifact-preview.video {
+      background:
+        radial-gradient(circle at 70% 22%, rgba(255, 255, 255, 0.48), transparent 17%),
+        linear-gradient(135deg, #000818, #6b37ff 52%, #ff4ad5);
+    }
+
+    .artifact-body {
+      padding: 12px;
+    }
+
+    .artifact-body strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 14px;
+      line-height: 1.35;
+    }
+
+    .artifact-body p {
+      margin: 5px 0 10px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .page-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .page-title {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 24px;
+      line-height: 1.25;
+      font-weight: 650;
+      letter-spacing: 0;
+    }
+
+    .page-subtitle {
+      margin: 6px 0 0;
+      max-width: 720px;
+      color: var(--text-tertiary);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .head-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .primary-btn,
+    .secondary-btn,
+    .ghost-btn,
+    .icon-btn {
+      height: 38px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 14px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .primary-btn {
+      color: #fff;
+      background: var(--text-strong);
+    }
+
+    .secondary-btn {
+      color: var(--text-strong);
+      background: var(--bg-chip);
+    }
+
+    .ghost-btn {
+      color: var(--brand-blue);
+      background: #eef1ff;
+    }
+
+    .icon-btn {
+      width: 38px;
+      padding: 0;
+      color: var(--text-secondary);
+      background: #f6f7f9;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .top-grid {
+      display: grid;
+      grid-template-columns: minmax(560px, 1.55fr) minmax(320px, 0.85fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .brief-panel,
+    .strategy-panel,
+    .calendar-panel,
+    .review-panel,
+    .queue-panel {
+      border-radius: 14px;
+      background: var(--bg-glass);
+      border: 1px solid #fff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .brief-panel {
+      padding: 16px;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .panel-title {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 16px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .panel-meta {
+      color: var(--text-tertiary);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .brief-box {
+      min-height: 144px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1.5px solid #fff;
+      box-shadow: var(--shadow-input);
+      padding: 14px;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      gap: 12px;
+    }
+
+    .brief-copy {
+      color: var(--text-primary);
+      font-size: 16px;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .brief-tools {
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .chip-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+
+    .chip {
+      min-height: 30px;
+      border-radius: 12px;
+      padding: 0 9px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      background: #f4f5f7;
+      border: 1px solid transparent;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .chip.blue {
+      color: #3d4bdb;
+      background: #eef1ff;
+      border-color: #dfe5ff;
+    }
+
+    .chip.purple {
+      color: #6f48c9;
+      background: #f2ecff;
+      border-color: #e2d5ff;
+    }
+
+    .chip.orange {
+      color: #9c6100;
+      background: #fff3d8;
+      border-color: #ffe4ad;
+    }
+
+    .chip.green {
+      color: #11835d;
+      background: #e7f8ef;
+      border-color: #cbf1df;
+    }
+
+    .format-chip {
+      min-height: 24px;
+      border-radius: 7px;
+      padding: 0 7px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-secondary);
+      background: #fff;
+      border: 1px solid #dfe4ec;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .format-chip::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 2px;
+      background: #faad14;
+      flex: 0 0 auto;
+    }
+
+    .format-chip.multi::before {
+      background: var(--brand-blue);
+    }
+
+    .format-chip.video::before {
+      background: #6b37ff;
+      border-radius: 50%;
+    }
+
+    .send-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--brand-blue);
+      box-shadow: var(--shadow-card);
+    }
+
+    .strategy-panel {
+      padding: 16px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 12px;
+    }
+
+    .strategy-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .strategy-item {
+      min-height: 54px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+    }
+
+    .strategy-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand-blue), #7c5cff);
+    }
+
+    .strategy-item strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .strategy-item span {
+      display: block;
+      margin-top: 2px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .metric {
+      min-height: 76px;
+      border-radius: 14px;
+      padding: 12px;
+      background: var(--bg-glass);
+      border: 1px solid #fff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 22px;
+      line-height: 1.2;
+      font-weight: 700;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 7px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: minmax(660px, 1fr) 372px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .calendar-panel {
+      padding: 16px;
+    }
+
+    .calendar-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .toolbar-left,
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .select-pill {
+      height: 34px;
+      border-radius: 12px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-secondary);
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .segmented {
+      height: 36px;
+      padding: 3px;
+      border-radius: 12px;
+      background: #edeff1;
+      display: inline-flex;
+      gap: 2px;
+    }
+
+    .segmented button {
+      width: 34px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      color: var(--text-quaternary);
+      background: transparent;
+    }
+
+    .segmented button.active {
+      color: var(--text-strong);
+      background: #fff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(96px, 1fr));
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .day-head,
+    .day-cell {
+      border-right: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .day-head:nth-child(7n),
+    .day-cell:nth-child(7n) {
+      border-right: 0;
+    }
+
+    .day-head {
+      min-height: 38px;
+      padding: 10px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      font-weight: 650;
+      background: #f9fafc;
+    }
+
+    .day-cell {
+      min-height: 158px;
+      padding: 9px;
+      position: relative;
+      background: rgba(255, 255, 255, 0.92);
+    }
+
+    .day-cell:nth-last-child(-n + 7) {
+      border-bottom: 0;
+    }
+
+    .day-number {
+      color: var(--text-tertiary);
+      font-size: 12px;
+      font-weight: 650;
+      margin-bottom: 8px;
+    }
+
+    .day-cell.today .day-number {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--text-strong);
+      margin-top: -3px;
+    }
+
+    .next-plan-slot {
+      min-height: 78px;
+      border-radius: 12px;
+      border: 1px dashed #cfd7ff;
+      background: #f6f8ff;
+      color: var(--brand-blue);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 10px;
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .plan-card {
+      border-radius: 12px;
+      background: #f9fafc;
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 8px;
+    }
+
+    .plan-card.compact {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      align-items: stretch;
+      min-height: 74px;
+    }
+
+    .plan-card.compact .platform-preview {
+      min-height: 74px;
+      border-bottom: 0;
+      border-right: 1px solid var(--border-subtle);
+    }
+
+    .plan-card.compact .ig-post-preview {
+      padding: 5px;
+    }
+
+    .plan-card.compact .preview-header {
+      display: none;
+    }
+
+    .plan-card.compact .preview-image {
+      height: 62px;
+      border-radius: 8px;
+    }
+
+    .plan-card.compact .reel-preview,
+    .plan-card.compact .story-preview {
+      height: 74px;
+      min-height: 74px;
+    }
+
+    .day-more {
+      width: 100%;
+      min-height: 28px;
+      border-radius: 9px;
+      color: var(--brand-blue);
+      background: #eef1ff;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .plan-cover {
+      height: 58px;
+      background: linear-gradient(135deg, #263355, #4d5eff 48%, #00c4a7);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .plan-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .plan-cover.video {
+      background:
+        radial-gradient(circle at 72% 22%, rgba(255, 255, 255, 0.42), transparent 18%),
+        linear-gradient(135deg, #120d2e, #6b37ff 52%, #ff4ad5);
+    }
+
+    .play-mark {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: rgba(0, 8, 24, 0.62);
+    }
+
+    .play-mark::before {
+      content: "";
+      width: 0;
+      height: 0;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 8px solid currentColor;
+      margin-left: 2px;
+    }
+
+    .plan-body {
+      padding: 8px;
+    }
+
+    .plan-title {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .plan-meta-line {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .platforms {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .platform-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .ig { background: linear-gradient(135deg, #ff9f00, #ff4ad5 55%, #6b37ff); }
+    .tt { background: #000818; }
+    .fb { background: #1877f2; }
+    .x { background: #15181c; }
+    .yt { background: #ff3838; }
+
+    .time {
+      color: var(--text-tertiary);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .status-pill {
+      min-height: 22px;
+      border-radius: 8px;
+      padding: 0 7px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .status-pill.draft {
+      color: #6f48c9;
+      background: #f2ecff;
+    }
+
+    .status-pill.generate {
+      color: #9c6100;
+      background: #fff3d8;
+    }
+
+    .status-pill.review {
+      color: #3343ca;
+      background: #eef1ff;
+    }
+
+    .status-pill.scheduled {
+      color: #11835d;
+      background: #e7f8ef;
+    }
+
+    .status-pill.pending {
+      color: #7f8896;
+      background: #edeff1;
+    }
+
+    .plan-project {
+      margin-top: 6px;
+      color: var(--brand-blue);
+      font-size: 11px;
+      line-height: 1.3;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .platform-preview {
+      min-height: 78px;
+      background: #fff;
+      border-bottom: 1px solid var(--border-subtle);
+      overflow: hidden;
+    }
+
+    .ig-post-preview {
+      padding: 6px;
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 5px;
+      color: var(--text-strong);
+      font-size: 9px;
+      font-weight: 700;
+    }
+
+    .preview-avatar {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff9f00, #ff4ad5 55%, #6b37ff);
+      flex: 0 0 auto;
+    }
+
+    .preview-image {
+      height: 44px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #263355, #4d5eff 48%, #00c4a7);
+    }
+
+    .preview-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .reel-preview,
+    .story-preview {
+      height: 78px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 72% 22%, rgba(255, 255, 255, 0.42), transparent 18%),
+        linear-gradient(135deg, #120d2e, #6b37ff 52%, #ff4ad5);
+    }
+
+    .story-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .facebook-post-preview {
+      padding: 7px;
+      background: #f7f9ff;
+    }
+
+    .facebook-card-image {
+      height: 52px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .facebook-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .preview-generating {
+      height: 78px;
+      display: grid;
+      place-items: center;
+      color: var(--text-tertiary);
+      background: linear-gradient(135deg, #f4f5f7, #eef1ff);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .right-stack {
+      display: grid;
+      gap: 16px;
+    }
+
+    .review-panel,
+    .queue-panel {
+      padding: 16px;
+    }
+
+    .campaign-card {
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 12px;
+    }
+
+    .post-preview-card {
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 12px;
+    }
+
+    .post-top {
+      height: 46px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .post-account {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-strong);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .post-media {
+      height: 248px;
+      background: #f4f5f7;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .post-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .media-action {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      min-height: 30px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      color: var(--text-strong);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: var(--shadow-card);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .post-caption {
+      padding: 12px;
+      color: var(--text-primary);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .post-caption strong {
+      color: var(--text-strong);
+      font-weight: 700;
+    }
+
+    .editable-copy {
+      display: grid;
+      gap: 10px;
+      margin: 12px 0;
+    }
+
+    .copy-field {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .copy-field-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .copy-field-head label {
+      margin: 0;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .copy-action {
+      min-height: 24px;
+      border-radius: 8px;
+      padding: 0 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--brand-blue);
+      background: #eef1ff;
+      font-size: 12px;
+      font-weight: 650;
+      flex: 0 0 auto;
+    }
+
+    .copy-editor,
+    .tag-editor {
+      width: 100%;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      background: #f9fafc;
+      color: var(--text-primary);
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.45;
+      outline: none;
+    }
+
+    .copy-editor {
+      min-height: 76px;
+      padding: 10px;
+      resize: vertical;
+    }
+
+    .tag-editor {
+      height: 36px;
+      padding: 0 10px;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 36px;
+      background: rgba(0, 8, 24, 0.2);
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal-panel {
+      width: min(760px, calc(100vw - 72px));
+      max-height: calc(100vh - 72px);
+      overflow: auto;
+      border-radius: 20px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-float);
+      padding: 18px;
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .modal-head .icon-btn .ui-icon {
+      transform: rotate(45deg);
+    }
+
+    .modal-title {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 20px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .modal-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .account-modal-row,
+    .history-row {
+      border-radius: 16px;
+      border: 1px solid var(--border-subtle);
+      background: #fff;
+      box-shadow: var(--shadow-card);
+      padding: 12px;
+    }
+
+    .account-modal-row {
+      display: grid;
+      grid-template-columns: 42px 1fr auto;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .account-modal-row strong,
+    .history-row strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .account-modal-row span,
+    .history-row span,
+    .history-row p {
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .history-row {
+      display: grid;
+      grid-template-columns: 76px 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .history-thumb {
+      width: 76px;
+      height: 76px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f4f5f7;
+    }
+
+    .history-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .history-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .query-textarea {
+      width: 100%;
+      min-height: 180px;
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+      background: #f9fafc;
+      color: var(--text-primary);
+      padding: 12px;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.65;
+      resize: vertical;
+      outline: none;
+    }
+
+    .query-textarea[readonly] {
+      color: var(--text-secondary);
+      background: #fff;
+    }
+
+    .query-note {
+      margin: 10px 0 0;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .query-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .campaign-hero {
+      height: 126px;
+      background: linear-gradient(135deg, #1b2135, #4d5eff);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .campaign-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .campaign-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent, rgba(0, 8, 24, 0.34));
+    }
+
+    .campaign-body {
+      padding: 12px;
+    }
+
+    .campaign-body h3 {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .campaign-body p {
+      margin: 6px 0 10px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .detail-list {
+      display: grid;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .detail-row {
+      min-height: 36px;
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 10px;
+      align-items: center;
+      color: var(--text-primary);
+      font-size: 13px;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 8px;
+    }
+
+    .detail-row:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .detail-label {
+      color: var(--text-tertiary);
+      font-weight: 600;
+    }
+
+    .action-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .queue-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .queue-item {
+      min-height: 68px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 10px;
+      align-items: center;
+      padding: 8px;
+    }
+
+    .queue-thumb {
+      width: 52px;
+      height: 52px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #4d5eff, #ff4ad5);
+    }
+
+    .queue-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .queue-thumb.video {
+      background:
+        radial-gradient(circle at 68% 28%, rgba(255, 255, 255, 0.5), transparent 15%),
+        linear-gradient(135deg, #000818, #6b37ff 56%, #ff4ad5);
+    }
+
+    .queue-item strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .queue-item span {
+      display: block;
+      margin-top: 4px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .timeline-step {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 8px;
+      align-items: start;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .step-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--brand-blue);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .step-dot.pending {
+      color: var(--text-tertiary);
+      background: #edeff1;
+    }
+
+    .toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      z-index: 40;
+      min-width: 250px;
+      height: 46px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      color: var(--text-strong);
+      background: #fff;
+      box-shadow: var(--shadow-float);
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.18s ease;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 1440px) {
+      .app-shell {
+        grid-template-columns: 48px 220px minmax(920px, 1fr);
+      }
+
+      .workspace {
+        padding: 14px 16px 18px;
+      }
+
+      .top-grid {
+        grid-template-columns: minmax(540px, 1.35fr) minmax(300px, 0.85fr);
+      }
+
+      .main-grid {
+        grid-template-columns: minmax(620px, 1fr) 340px;
+      }
+
+      .day-cell {
+        min-height: 142px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+    <symbol id="i-file-text" viewBox="0 0 24 24">
+      <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
+      <path d="M14 3v5h5"/>
+      <path d="M9 13h6"/>
+      <path d="M9 17h4"/>
+    </symbol>
+    <symbol id="i-image" viewBox="0 0 24 24">
+      <rect x="4" y="4" width="16" height="16" rx="3"/>
+      <circle cx="9" cy="9" r="1.5"/>
+      <path d="m7 17 4-4 3 3 2-2 3 3"/>
+    </symbol>
+    <symbol id="i-video" viewBox="0 0 24 24">
+      <rect x="3" y="6" width="13" height="12" rx="3"/>
+      <path d="m16 10 5-3v10l-5-3z"/>
+    </symbol>
+    <symbol id="i-send" viewBox="0 0 24 24">
+      <path d="m22 2-7 20-4-9-9-4z"/>
+      <path d="M22 2 11 13"/>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24">
+      <path d="M12 5v14M5 12h14"/>
+    </symbol>
+    <symbol id="i-search" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="7"/>
+      <path d="m21 21-4.3-4.3"/>
+    </symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24">
+      <rect x="4" y="4" width="6" height="6" rx="1"/>
+      <rect x="14" y="4" width="6" height="6" rx="1"/>
+      <rect x="4" y="14" width="6" height="6" rx="1"/>
+      <rect x="14" y="14" width="6" height="6" rx="1"/>
+    </symbol>
+    <symbol id="i-list" viewBox="0 0 24 24">
+      <path d="M8 6h13M8 12h13M8 18h13"/>
+      <path d="M3 6h.01M3 12h.01M3 18h.01"/>
+    </symbol>
+    <symbol id="i-home" viewBox="0 0 24 24">
+      <path d="m3 10 9-7 9 7"/>
+      <path d="M5 9v11h14V9"/>
+      <path d="M10 20v-6h4v6"/>
+    </symbol>
+    <symbol id="i-database" viewBox="0 0 24 24">
+      <ellipse cx="12" cy="5" rx="8" ry="3"/>
+      <path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/>
+      <path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>
+    </symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24">
+      <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+      <path d="M10 21h4"/>
+    </symbol>
+    <symbol id="i-monitor" viewBox="0 0 24 24">
+      <rect x="3" y="4" width="18" height="12" rx="2"/>
+      <path d="M8 21h8M12 16v5"/>
+    </symbol>
+    <symbol id="i-more" viewBox="0 0 24 24">
+      <path d="M12 12h.01M19 12h.01M5 12h.01"/>
+    </symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24">
+      <path d="M13 2 4 14h7l-1 8 10-13h-7z"/>
+    </symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24">
+      <rect x="3" y="4" width="18" height="17" rx="3"/>
+      <path d="M8 2v4M16 2v4M3 10h18"/>
+    </symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24">
+      <path d="M13 3 11.4 8.4 6 10l5.4 1.6L13 17l1.6-5.4L20 10l-5.4-1.6L13 3Z"/>
+      <path d="m5.5 15-.8 2.7-2.7.8 2.7.8.8 2.7.8-2.7 2.7-.8-2.7-.8-.8-2.7Z"/>
+    </symbol>
+    <symbol id="i-target" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="9"/>
+      <circle cx="12" cy="12" r="4"/>
+      <path d="m15 9 3-3"/>
+    </symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24">
+      <path d="m9 18 6-6-6-6"/>
+    </symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24">
+      <path d="m6 9 6 6 6-6"/>
+    </symbol>
+    <symbol id="i-box" viewBox="0 0 24 24">
+      <path d="m21 8-9-5-9 5 9 5 9-5z"/>
+      <path d="M3 8v8l9 5 9-5V8"/>
+      <path d="M12 13v8"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24">
+      <path d="m20 6-11 11-5-5"/>
+    </symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24">
+      <path d="M21 12a9 9 0 0 1-15.4 6.4L3 16"/>
+      <path d="M3 21v-5h5"/>
+      <path d="M3 12A9 9 0 0 1 18.4 5.6L21 8"/>
+      <path d="M21 3v5h-5"/>
+    </symbol>
+    <symbol id="i-download" viewBox="0 0 24 24">
+      <path d="M12 3v12"/>
+      <path d="m7 10 5 5 5-5"/>
+      <path d="M5 21h14"/>
+    </symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24">
+      <rect x="8" y="8" width="12" height="12" rx="2"/>
+      <path d="M4 16V6a2 2 0 0 1 2-2h10"/>
+    </symbol>
+  </svg>
+
+  <div class="app-shell">
+    <nav class="icon-rail" aria-label="主导航">
+      <div class="sky-logo" aria-label="Skywork"></div>
+      <button class="rail-btn" aria-label="首页"><svg class="ui-icon"><use href="#i-home"></use></svg></button>
+      <button class="rail-btn" aria-label="知识库"><svg class="ui-icon"><use href="#i-database"></use></svg></button>
+      <button class="rail-btn active" aria-label="产物"><span class="rail-badge">New</span><svg class="ui-icon"><use href="#i-box"></use></svg></button>
+    </nav>
+
+    <aside class="project-side">
+      <div class="brand-row">
+        <div class="sky-logo" aria-hidden="true"></div>
+        <span class="brand-word">Skywork</span>
+      </div>
+      <button class="new-project"><svg class="ui-icon"><use href="#i-plus"></use></svg>新建项目</button>
+      <div class="side-group">
+        <button class="side-link"><svg class="ui-icon"><use href="#i-zap"></use></svg>专家与技能</button>
+        <button class="side-link"><svg class="ui-icon"><use href="#i-file-text"></use></svg>定时任务</button>
+        <button class="side-link active"><svg class="ui-icon"><use href="#i-calendar"></use></svg>自动化营销</button>
+      </div>
+      <div class="side-section-title">
+        <span>项目</span>
+        <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-right"></use></svg>
+      </div>
+      <div class="project-list">
+        <button class="project-item active"><span>小猫房间玩耍海报设计</span><span class="sync-dot"></span></button>
+        <button class="project-item"><span>Skywork Posters Agent发布...</span></button>
+        <button class="project-item"><span>Skywork Video宣传海报设计</span></button>
+        <button class="project-item"><span>Skywork海报设计</span></button>
+        <button class="project-item"><span>中国八大菜系网站介绍</span></button>
+        <button class="project-item"><span>小猫简笔画图片</span><span class="sync-dot"></span></button>
+        <button class="project-item"><span>生成卡通小咪</span></button>
+        <button class="project-item"><span>YouTube视频内容总结</span></button>
+        <button class="project-item"><span>水蜜桃促销海报生成</span></button>
+        <button class="project-item"><span>鹅鹅鹅饿</span></button>
+        <button class="project-item"><span>图片背景改绿色</span><span class="sync-dot"></span></button>
+        <button class="project-item"><span>每日 Gmail 邮件摘要自动化</span></button>
+      </div>
+    </aside>
+
+    <header class="topbar">
+      <div class="top-left">
+        <span class="design-pill"><svg class="ui-icon" style="width:16px;height:16px;color:#ffaa00"><use href="#i-sparkles"></use></svg>Skywork Design <span class="beta">Beta</span></span>
+      </div>
+      <div class="top-actions">
+        <button class="top-icon" aria-label="设备预览"><svg class="ui-icon"><use href="#i-monitor"></use></svg></button>
+        <button class="top-icon" aria-label="通知"><svg class="ui-icon"><use href="#i-bell"></use></svg></button>
+        <span class="top-chip credit-chip">454,649</span>
+        <span class="top-chip plan-chip">Ultra</span>
+        <span class="avatar-chip">WP</span>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="workspace-card">
+        <div class="page-head">
+          <div>
+            <h1 class="page-title">自动化营销</h1>
+          </div>
+          <div class="head-actions">
+            <button class="primary-btn" data-goto="setup"><svg class="ui-icon"><use href="#i-plus"></use></svg>创建营销计划</button>
+            <button class="secondary-btn" data-modal="accountModal"><svg class="ui-icon"><use href="#i-database"></use></svg>社媒账号管理</button>
+            <button class="secondary-btn" data-modal="historyModal"><svg class="ui-icon"><use href="#i-file-text"></use></svg>发布历史</button>
+          </div>
+        </div>
+
+        <section class="flow-screen active" data-screen="empty">
+          <div class="empty-layout">
+            <div class="empty-center">
+              <div class="empty-main">
+                <aside class="blank-calendar" aria-label="发布日历">
+                  <div class="blank-calendar-top">
+                    <span class="blank-calendar-title">发布日历</span>
+                  </div>
+                  <div class="blank-calendar-wrap">
+                    <div class="blank-calendar-grid">
+                      <div class="blank-head">一</div>
+                      <div class="blank-head">二</div>
+                      <div class="blank-head">三</div>
+                      <div class="blank-head">四</div>
+                      <div class="blank-head">五</div>
+                      <div class="blank-head">六</div>
+                      <div class="blank-head">日</div>
+                      <div class="blank-day">29</div>
+                      <div class="blank-day">30</div>
+                      <div class="blank-day">1</div>
+                      <div class="blank-day">2</div>
+                      <div class="blank-day">3</div>
+                      <div class="blank-day">4</div>
+                      <div class="blank-day">5</div>
+                      <div class="blank-day">6</div>
+                      <div class="blank-day">7</div>
+                      <div class="blank-day">8</div>
+                      <div class="blank-day">9</div>
+                      <div class="blank-day">10</div>
+                      <div class="blank-day">11</div>
+                      <div class="blank-day">12</div>
+                      <div class="blank-day">13</div>
+                      <div class="blank-day">14</div>
+                      <div class="blank-day">15</div>
+                      <div class="blank-day">16</div>
+                      <div class="blank-day">17</div>
+                      <div class="blank-day">18</div>
+                      <div class="blank-day">19</div>
+                    </div>
+                    <div class="blank-calendar-empty">暂无内容</div>
+                  </div>
+                  <div class="blank-calendar-action">
+                    <button class="primary-btn" data-goto="setup"><svg class="ui-icon"><use href="#i-plus"></use></svg>创建营销计划</button>
+                  </div>
+                </aside>
+                <div class="process-list" aria-label="自动化营销流程">
+                  <div class="process-step" data-index="1"><b>填写目标</b>描述产品活动</div>
+                  <div class="process-step" data-index="2"><b>设置发布</b>平台和频率</div>
+                  <div class="process-step" data-index="3"><b>生成计划</b>确认内容节奏</div>
+                  <div class="process-step" data-index="4"><b>进入日历</b>生成并发布</div>
+                </div>
+                <div class="empty-copy">
+                  <h2 class="empty-title">让 Skywork 自动运营你的社媒内容</h2>
+                  <p class="empty-subtitle">告诉 Skywork 你要推广什么。系统会自动规划发布节奏、生成图文和视频物料，并按排期发布到已授权的社媒平台。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="flow-screen" data-screen="setup">
+          <div class="setup-layout">
+              <div class="flow-card">
+                <div class="panel-head">
+                  <h2 class="panel-title">创建发布计划</h2>
+                <span class="panel-meta">描述产品、活动目标和发布要求</span>
+                </div>
+              <div class="brief-form">
+                <div class="brief-field">
+                  <label for="productBrief">产品 / 活动介绍</label>
+                  <textarea class="brief-textarea" id="productBrief">冷萃咖啡新品上市，主打更清爽的口感、低糖和早晨专注场景。希望用视觉内容突出“第一杯冷萃”的仪式感，目标是新品上市预热，提高点击和到店购买。</textarea>
+                  <div class="upload-row" style="margin-top:10px">
+                    <button class="upload-tile" data-toast="已打开参考资料上传"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-plus"></use></svg>上传参考资料</button>
+                  </div>
+                </div>
+                <div class="brief-two-col">
+                  <div class="brief-field">
+                    <label>内容形式偏好</label>
+                    <div class="preference-row">
+                      <label class="preference-chip selected"><input type="checkbox" checked /><span class="preference-check">✓</span><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-image"></use></svg>图片</label>
+                      <label class="preference-chip selected"><input type="checkbox" checked /><span class="preference-check">✓</span><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-grid"></use></svg>多图</label>
+                      <label class="preference-chip selected"><input type="checkbox" checked /><span class="preference-check">✓</span><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-video"></use></svg>视频</label>
+                    </div>
+                  </div>
+                  <div class="brief-field">
+                    <label for="campaignPeriod">计划周期</label>
+                    <select class="brief-select" id="campaignPeriod">
+                      <option>未来 1 周</option>
+                      <option selected>未来 2 周</option>
+                      <option>未来 1 个月</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="brief-field">
+                  <label for="designGuideline">使用设计规范</label>
+                  <div class="design-guideline-select">
+                    <div class="design-guideline-copy"><svg class="ui-icon" style="width:16px;height:16px;color:var(--brand-blue)"><use href="#i-file-text"></use></svg>选择已创建的设计规范</div>
+                    <select class="brief-select" id="designGuideline">
+                      <option selected>Skywork light</option>
+                      <option>Kitty</option>
+                      <option>Google</option>
+                      <option>Skywork AI Workspace</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="flow-actions">
+                <button class="primary-btn" data-goto="strategy"><svg class="ui-icon"><use href="#i-sparkles"></use></svg>生成发布计划</button>
+              </div>
+            </div>
+            <aside class="setup-side">
+              <section class="flow-card">
+                <div class="panel-head">
+                  <h2 class="panel-title">发布平台</h2>
+                  <span class="panel-meta info-tip">
+                    为什么要绑定账号
+                    <span class="tip-popover">不绑定账号也可以先创建发布日历。绑定后，Skywork 可在你确认计划后自动发布，并同步追踪发布状态。</span>
+                  </span>
+                </div>
+                <div class="platform-grid">
+                  <div class="platform-card selected">
+                    <div class="platform-logo ig">IG</div>
+                    <div class="platform-main">
+                      <strong>Instagram</strong>
+                      <p>Feed、Story、Reels、轮播图</p>
+                      <div class="account-row"><span class="status-pill review">未绑定</span><button class="connect-btn" data-toast="已打开 Instagram 授权确认弹窗">连接账号</button></div>
+                    </div>
+                  </div>
+                  <div class="platform-card selected">
+                    <div class="platform-logo tt">TT</div>
+                    <div class="platform-main">
+                      <strong>TikTok</strong>
+                      <p>短视频和图文内容</p>
+                      <div class="account-row"><span class="status-pill scheduled">已连接 @skywork_note</span><button class="connect-btn connected">已连接</button></div>
+                    </div>
+                  </div>
+                  <div class="platform-card">
+                    <div class="platform-logo fb">f</div>
+                    <div class="platform-main">
+                      <strong>Facebook Page</strong>
+                      <p>Page Feed、多图和视频</p>
+                      <div class="account-row"><span class="status-pill review">未绑定</span><button class="connect-btn" data-toast="已打开 Facebook Page 授权确认弹窗">连接 Page</button></div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <section class="flow-card">
+                <div class="panel-head">
+                  <h2 class="panel-title">发布节奏</h2>
+                  <span class="panel-meta">可编辑</span>
+                </div>
+                <div class="edit-control-grid" style="grid-template-columns:1fr">
+                  <div class="rhythm-form">
+                    <div class="rhythm-field">
+                      <span class="rhythm-label">每周发布条数</span>
+                      <div class="weekly-count-control">
+                        <input class="weekly-count-input" type="number" min="1" max="21" value="5" aria-label="每周发布条数" />
+                        <span class="weekly-count-suffix">条 / 周</span>
+                      </div>
+                    </div>
+                    <div class="rhythm-field">
+                      <span class="rhythm-label">发布日期偏好</span>
+                      <div class="rhythm-option-row">
+                        <label class="rhythm-option selected"><input type="radio" name="datePriority" checked />工作日优先</label>
+                        <label class="rhythm-option"><input type="radio" name="datePriority" />周末优先</label>
+                      </div>
+                    </div>
+                    <div class="rhythm-field">
+                      <span class="rhythm-label">发布时间段</span>
+                      <div class="time-segment-grid">
+                        <label class="rhythm-option selected"><input type="checkbox" checked />早间 07:00-10:00</label>
+                        <label class="rhythm-option"><input type="checkbox" />午间 11:00-14:00</label>
+                        <label class="rhythm-option selected"><input type="checkbox" checked />傍晚 17:00-20:00</label>
+                        <label class="rhythm-option"><input type="checkbox" />夜间 20:00-23:00</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </aside>
+          </div>
+        </section>
+
+        <section class="flow-screen strategy-screen" data-screen="strategy" id="strategyScreen">
+          <div class="strategy-loading" aria-live="polite">
+            <div class="loading-box">
+              <span class="loading-spinner" aria-hidden="true"></span>
+              <span>生成中</span>
+            </div>
+          </div>
+          <div class="flow-two-col">
+            <div class="flow-card">
+              <div class="strategy-list">
+                <div class="strategy-item">
+                  <span class="strategy-icon"><svg class="ui-icon"><use href="#i-target"></use></svg></span>
+                  <span><strong>营销目标</strong><span>新品上市预热，提高点击和到店购买，用生活方式内容突出“第一杯冷萃”的仪式感。</span></span>
+                </div>
+              </div>
+
+              <div class="edit-control-grid" aria-label="可编辑发布计划参数">
+                <div class="edit-control">
+                  <label>发布频次</label>
+                  <div class="chip-row">
+                    <span class="chip blue">每周 5 条</span>
+                    <span class="chip">工作日优先</span>
+                    <span class="chip">避开周日</span>
+                  </div>
+                </div>
+                <div class="edit-control">
+                  <label>发布平台</label>
+                  <div class="chip-row">
+                    <span class="chip blue">Instagram</span>
+                    <span class="chip green">TikTok</span>
+                    <span class="chip orange">Facebook</span>
+                  </div>
+                </div>
+                <div class="edit-control">
+                  <label>发布时间</label>
+                  <div class="chip-row">
+                    <span class="chip">09:00-10:00</span>
+                    <span class="chip">12:00-13:00</span>
+                    <span class="chip">18:00-20:00</span>
+                  </div>
+                </div>
+                <div class="edit-control">
+                  <label>内容形式</label>
+                  <div class="chip-row">
+                    <span class="chip orange">单图</span>
+                    <span class="chip blue">多图</span>
+                    <span class="chip purple">视频</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="draft-table">
+                <div class="draft-row">
+                  <div class="draft-date">7月8日<span>09:20</span></div>
+                  <div class="draft-main">
+                    <div class="draft-title-row"><strong>新品预热：第一口冷萃</strong><button class="draft-detail" data-query-modal>详情</button></div>
+                    <span>主视觉海报 + TikTok 图文组，突出早晨第一杯的仪式感。</span>
+                  </div>
+                  <div class="draft-actions">
+                    <div class="chip-row"><span class="format-chip multi">多图</span><span class="chip blue">Instagram feed</span><span class="chip green">Tiktok photo</span></div>
+                  </div>
+                </div>
+                <div class="draft-row">
+                  <div class="draft-date">7月9日<span>18:30</span></div>
+                  <div class="draft-main">
+                    <div class="draft-title-row"><strong>15 秒通勤短视频</strong><button class="draft-detail" data-query-modal>详情</button></div>
+                    <span>带动态字幕的短视频，用通勤场景切入产品卖点。</span>
+                  </div>
+                  <div class="draft-actions">
+                    <div class="chip-row"><span class="format-chip video">视频</span><span class="chip green">Tiktok video</span><span class="chip blue">Instagram Reels</span></div>
+                  </div>
+                </div>
+                <div class="draft-row">
+                  <div class="draft-date">7月10日<span>12:10</span></div>
+                  <div class="draft-main">
+                    <div class="draft-title-row"><strong>风味笔记 Story 组</strong><button class="draft-detail" data-query-modal>详情</button></div>
+                    <span>竖版 Story 卡片，展示风味信息和购买引导。</span>
+                  </div>
+                  <div class="draft-actions">
+                    <div class="chip-row"><span class="format-chip multi">多图</span><span class="chip blue">Instagram story</span></div>
+                  </div>
+                </div>
+                <div class="draft-row">
+                  <div class="draft-date">7月13日<span>08:40</span></div>
+                  <div class="draft-main">
+                    <div class="draft-title-row"><strong>烘焙幕后故事</strong><button class="draft-detail" data-query-modal>详情</button></div>
+                    <span>科普型内容，解释产地信息和烘焙风味。</span>
+                  </div>
+                  <div class="draft-actions">
+                    <div class="chip-row"><span class="format-chip single">单图</span><span class="chip blue">Instagram feed</span><span class="chip orange">Facebook page Post</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flow-actions split">
+                <button class="secondary-btn" data-goto="setup">返回修改设置</button>
+                <div class="flow-actions-right">
+                  <button class="secondary-btn" data-toast="Skywork 已重新生成计划"><svg class="ui-icon"><use href="#i-refresh"></use></svg>重新生成</button>
+                  <button class="primary-btn" data-goto="calendar"><svg class="ui-icon"><use href="#i-check"></use></svg>确认发布计划</button>
+                </div>
+              </div>
+            </div>
+
+            <aside class="flow-card">
+              <div class="panel-head">
+                <h2 class="panel-title">计划摘要</h2>
+                <span class="panel-meta">生成内容前</span>
+              </div>
+              <div class="metric-row" style="grid-template-columns:1fr 1fr;margin-bottom:12px">
+                <div class="metric"><strong>20</strong><span>计划内容</span></div>
+                <div class="metric"><strong>4</strong><span>内容主题</span></div>
+              </div>
+              <div class="detail-list">
+                <div class="detail-row"><span class="detail-label">平台</span><span>Instagram、TikTok、Facebook</span></div>
+                <div class="detail-row"><span class="detail-label">形式</span><span>单图、多图、视频</span></div>
+                <div class="detail-row"><span class="detail-label">来源</span><span>Skywork 自动生成的多模态内容</span></div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="flow-screen" data-screen="calendar">
+          <div class="metric-row">
+            <div class="metric"><strong>20</strong><span>计划内容</span></div>
+            <div class="metric"><strong>6</strong><span>生成中</span></div>
+            <div class="metric"><strong>9</strong><span>待生成</span></div>
+            <div class="metric"><strong>5</strong><span>已排期发布</span></div>
+          </div>
+
+          <div class="main-grid">
+            <section class="calendar-panel">
+            <div class="calendar-toolbar">
+              <div class="toolbar-left">
+                <h2 class="panel-title" style="margin-right:8px">2026年7月</h2>
+                <span class="select-pill">全部平台 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
+                <span class="select-pill">全部状态 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
+                <span class="select-pill">冷萃新品上市 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
+              </div>
+              <div class="toolbar-right">
+                <button class="primary-btn" data-goto="setup"><svg class="ui-icon"><use href="#i-sparkles"></use></svg>生成下一期发布计划</button>
+              </div>
+            </div>
+
+            <div class="calendar-grid">
+              <div class="day-head">周一</div>
+              <div class="day-head">周二</div>
+              <div class="day-head">周三</div>
+              <div class="day-head">周四</div>
+              <div class="day-head">周五</div>
+              <div class="day-head">周六</div>
+              <div class="day-head">周日</div>
+
+              <div class="day-cell"><div class="day-number">29</div></div>
+              <div class="day-cell"><div class="day-number">30</div></div>
+              <div class="day-cell"><div class="day-number">1</div></div>
+              <div class="day-cell"><div class="day-number">2</div></div>
+              <div class="day-cell"><div class="day-number">3</div></div>
+              <div class="day-cell"><div class="day-number">4</div></div>
+              <div class="day-cell"><div class="day-number">5</div></div>
+
+              <div class="day-cell"><div class="day-number">6</div></div>
+              <div class="day-cell"><div class="day-number">7</div></div>
+              <div class="day-cell today">
+                <div class="day-number">8</div>
+                <article class="plan-card compact">
+                  <div class="platform-preview ig-post-preview">
+                    <div class="preview-header"><span class="preview-avatar"></span><span>@skywork_note</span></div>
+                    <div class="preview-image"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="Cold brew hero poster" /></div>
+                  </div>
+                  <div class="plan-body">
+                    <p class="plan-title">新品预热：第一口冷萃</p>
+                    <div class="plan-project">项目：冷萃新品上市</div>
+                    <div class="plan-meta-line">
+                      <div class="platforms"><span class="platform-dot ig">IG</span></div>
+                      <span class="time">09:20</span>
+                    </div>
+                    <div style="margin-top:7px"><span class="status-pill generate">生成中</span></div>
+                  </div>
+                </article>
+                <article class="plan-card compact">
+                  <div class="platform-preview story-preview"><span class="play-mark"></span></div>
+                  <div class="plan-body">
+                    <p class="plan-title">第一口冷萃短视频</p>
+                    <div class="plan-project">项目：冷萃新品上市</div>
+                    <div class="plan-meta-line">
+                      <div class="platforms"><span class="platform-dot tt">TT</span></div>
+                      <span class="time">09:20</span>
+                    </div>
+                    <div style="margin-top:7px"><span class="status-pill generate">生成中</span></div>
+                  </div>
+                </article>
+                <button class="day-more" data-toast="已切换到 7月8日 当日视图">展开当日视图</button>
+              </div>
+              <div class="day-cell">
+                <div class="day-number">9</div>
+                <article class="plan-card">
+                  <div class="platform-preview reel-preview"><span class="play-mark"></span></div>
+                  <div class="plan-body">
+                    <p class="plan-title">15 秒通勤短视频</p>
+                    <div class="plan-project">项目：冷萃新品上市</div>
+                    <div class="plan-meta-line">
+                      <div class="platforms"><span class="platform-dot tt">TT</span><span class="platform-dot ig">IG</span></div>
+                      <span class="time">18:30</span>
+                    </div>
+                    <div style="margin-top:7px"><span class="status-pill generate">生成中</span></div>
+                  </div>
+                </article>
+              </div>
+              <div class="day-cell">
+                <div class="day-number">10</div>
+                <article class="plan-card">
+                  <div class="platform-preview story-preview"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="Story asset" /></div>
+                  <div class="plan-body">
+                    <p class="plan-title">风味笔记 Story</p>
+                    <div class="plan-project">项目：冷萃新品上市</div>
+                    <div class="plan-meta-line">
+                      <div class="platforms"><span class="platform-dot ig">IG</span></div>
+                      <span class="time">12:10</span>
+                    </div>
+                    <div style="margin-top:7px"><span class="status-pill pending">待生成</span></div>
+                  </div>
+                </article>
+              </div>
+              <div class="day-cell"><div class="day-number">11</div></div>
+              <div class="day-cell"><div class="day-number">12</div></div>
+
+              <div class="day-cell">
+                <div class="day-number">13</div>
+                <article class="plan-card">
+                  <div class="platform-preview facebook-post-preview">
+                    <div class="preview-header"><span class="platform-dot fb">f</span><span>Skywork Coffee</span></div>
+                    <div class="facebook-card-image"><img src="image-generation-flow/assets/coffee-culture-poster-page.jpg" alt="Poster page" /></div>
+                  </div>
+                  <div class="plan-body">
+                    <p class="plan-title">烘焙幕后故事</p>
+                    <div class="plan-project">项目：冷萃新品上市</div>
+                    <div class="plan-meta-line">
+                      <div class="platforms"><span class="platform-dot ig">IG</span><span class="platform-dot fb">f</span></div>
+                      <span class="time">08:40</span>
+                    </div>
+                    <div style="margin-top:7px"><span class="status-pill scheduled">已排期</span></div>
+                  </div>
+                </article>
+              </div>
+              <div class="day-cell"><div class="day-number">14</div></div>
+              <div class="day-cell">
+                <div class="day-number">15</div>
+                <article class="plan-card">
+                  <div class="platform-preview reel-preview"><span class="play-mark"></span></div>
+                  <div class="plan-body">
+                    <p class="plan-title">UGC 风格试喝</p>
+                    <div class="plan-project">项目：冷萃新品上市</div>
+                    <div class="plan-meta-line">
+                      <div class="platforms"><span class="platform-dot tt">TT</span><span class="platform-dot x">X</span></div>
+                      <span class="time">17:45</span>
+                    </div>
+                    <div style="margin-top:7px"><span class="status-pill pending">待生成</span></div>
+                  </div>
+                </article>
+              </div>
+              <div class="day-cell"><div class="day-number">16</div></div>
+              <div class="day-cell">
+                <div class="day-number">17</div>
+                <article class="plan-card">
+                  <div class="platform-preview ig-post-preview">
+                    <div class="preview-header"><span class="preview-avatar"></span><span>@skywork_note</span></div>
+                    <div class="preview-image"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="Coffee poster" /></div>
+                  </div>
+                  <div class="plan-body">
+                    <p class="plan-title">限时上市提醒</p>
+                    <div class="plan-project">项目：冷萃新品上市</div>
+                    <div class="plan-meta-line">
+                      <div class="platforms"><span class="platform-dot ig">IG</span><span class="platform-dot tt">TT</span></div>
+                      <span class="time">11:30</span>
+                    </div>
+                    <div style="margin-top:7px"><span class="status-pill scheduled">已排期</span></div>
+                  </div>
+                </article>
+              </div>
+              <div class="day-cell"><div class="day-number">18</div></div>
+              <div class="day-cell">
+                <div class="day-number">19</div>
+                <button class="next-plan-slot" data-goto="setup">
+                  <span><svg class="ui-icon" style="width:18px;height:18px;margin:0 auto 6px"><use href="#i-plus"></use></svg>生成下一期计划</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <aside class="right-stack">
+            <section class="review-panel">
+              <div class="panel-head">
+                <h2 class="panel-title">当前选中内容</h2>
+                <span class="status-pill generate">生成中</span>
+              </div>
+              <article class="post-preview-card">
+                <div class="post-top">
+                  <div class="post-account"><span class="preview-avatar"></span><span>@skywork_note</span></div>
+                  <span class="platform-dot ig">IG</span>
+                </div>
+                <div class="post-media">
+                  <img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="Instagram post preview" />
+                  <a class="media-action" href="image-generation-flow/coffee_dark_1x1_2.jpg" download="cold-brew-instagram-post.jpg"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-download"></use></svg>下载</a>
+                </div>
+                <div class="post-caption">
+                  <strong>skywork_note</strong> 用一杯更冷、更慢的冷萃，开启今天的专注时刻。#ColdBrew #MorningFocus
+                </div>
+              </article>
+              <div class="editable-copy">
+                <div class="copy-field">
+                  <div class="copy-field-head">
+                    <label for="selectedCopy">文案</label>
+                    <button class="copy-action" data-copy-target="selectedCopy"><svg class="ui-icon" style="width:14px;height:14px"><use href="#i-copy"></use></svg>复制</button>
+                  </div>
+                  <textarea class="copy-editor" id="selectedCopy">用一杯更冷、更慢的冷萃，开启今天的专注时刻。</textarea>
+                </div>
+                <div class="copy-field">
+                  <div class="copy-field-head">
+                    <label for="selectedTags">Tag</label>
+                    <button class="copy-action" data-copy-target="selectedTags"><svg class="ui-icon" style="width:14px;height:14px"><use href="#i-copy"></use></svg>复制</button>
+                  </div>
+                  <input class="tag-editor" id="selectedTags" value="#ColdBrew #MorningFocus" />
+                </div>
+              </div>
+              <div class="action-row">
+                <button class="primary-btn" data-toast="已打开关联项目"><svg class="ui-icon"><use href="#i-box"></use></svg>打开项目</button>
+              </div>
+            </section>
+          </aside>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="accountModal" aria-hidden="true">
+    <section class="modal-panel" role="dialog" aria-label="账号管理">
+      <div class="modal-head">
+        <h2 class="modal-title">账号管理</h2>
+        <button class="icon-btn" data-close-modal aria-label="关闭"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
+      </div>
+      <div class="modal-list">
+        <div class="account-modal-row">
+          <span class="platform-logo ig">IG</span>
+          <div><strong>Instagram</strong><span>未绑定账号。绑定后可自动发布 Feed、Story、Reels。</span></div>
+          <button class="secondary-btn" data-toast="已打开 Instagram 授权确认弹窗">连接账号</button>
+        </div>
+        <div class="account-modal-row">
+          <span class="platform-logo tt">TT</span>
+          <div><strong>TikTok</strong><span>已连接 @skywork_note，可发布短视频和图文。</span></div>
+          <span class="status-pill scheduled">已连接</span>
+        </div>
+        <div class="account-modal-row">
+          <span class="platform-logo fb">f</span>
+          <div><strong>Facebook Page</strong><span>未绑定 Page。可稍后连接，不影响创建发布计划。</span></div>
+          <button class="secondary-btn" data-toast="已打开 Facebook Page 授权确认弹窗">连接 Page</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="historyModal" aria-hidden="true">
+    <section class="modal-panel" role="dialog" aria-label="发布历史">
+      <div class="modal-head">
+        <h2 class="modal-title">发布历史</h2>
+        <button class="icon-btn" data-close-modal aria-label="关闭"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
+      </div>
+      <div class="modal-list">
+        <article class="history-row">
+          <div class="history-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="Published post" /></div>
+          <div>
+            <strong>用一杯更冷、更慢的冷萃，开启今天的专注时刻。</strong>
+            <div class="history-meta"><span class="chip blue">Instagram · Feed post</span><button class="copy-action" data-toast="已打开平台原帖">查看原帖</button></div>
+          </div>
+          <div><span class="status-pill scheduled">Published</span><span style="display:block;margin-top:12px">2026-07-08 16:19</span></div>
+        </article>
+        <article class="history-row">
+          <div class="history-thumb"><img src="image-generation-flow/assets/coffee-culture-poster-page.jpg" alt="Published post" /></div>
+          <div>
+            <strong>烘焙幕后故事：从产地到第一口香气。</strong>
+            <div class="history-meta"><span class="chip orange">Facebook · Feed post</span><button class="copy-action" data-toast="已打开平台原帖">查看原帖</button></div>
+          </div>
+          <div><span class="status-pill scheduled">Published</span><span style="display:block;margin-top:12px">2026-07-07 15:46</span></div>
+        </article>
+        <article class="history-row">
+          <div class="history-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="Failed post" /></div>
+          <div>
+            <strong>限时上市提醒：冷萃新品本周到店。</strong>
+            <div class="history-meta"><span class="chip blue">Instagram · Story</span><button class="copy-action" data-toast="已打开失败原因">查看原因</button></div>
+          </div>
+          <div><span class="status-pill review">Failed</span><span style="display:block;margin-top:12px">2026-07-07 15:39</span></div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="queryModal" aria-hidden="true">
+    <section class="modal-panel" role="dialog" aria-label="生成 Query">
+      <div class="modal-head">
+        <h2 class="modal-title">生成 Query</h2>
+        <button class="icon-btn" data-close-modal aria-label="关闭"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
+      </div>
+      <textarea class="query-textarea" id="queryText" readonly>为冷萃咖啡新品上市生成一组社媒发布物料。画面需要突出“早晨第一杯冷萃”的仪式感，整体风格清爽、现代、有生活方式感。生成 1 张 Instagram feed 方图、1 组 TikTok photo 图文素材，主视觉包含冷萃杯、冰块、晨光和桌面场景。文案语气克制但有吸引力，强调更冷、更慢、更专注的开始。</textarea>
+      <p class="query-note">我们会参考你上传的资料文件进行生成</p>
+      <div class="query-actions">
+        <button class="secondary-btn" id="editQueryBtn">编辑</button>
+        <button class="primary-btn" id="saveQueryBtn" hidden>保存 Query</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast"><svg class="ui-icon" style="color:var(--brand-blue)"><use href="#i-sparkles"></use></svg><span>已更新</span></div>
+
+  <script>
+    const toast = document.getElementById("toast");
+    let toastTimer = 0;
+    const flowOrder = ["empty", "setup", "strategy", "calendar"];
+
+    function showToast(message) {
+      toast.querySelector("span").textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    function showStrategyGenerating() {
+      const strategyScreen = document.getElementById("strategyScreen");
+      if (!strategyScreen) return;
+      strategyScreen.classList.add("generating");
+      window.clearTimeout(strategyScreen._generatingTimer);
+      strategyScreen._generatingTimer = window.setTimeout(() => {
+        strategyScreen.classList.remove("generating");
+      }, 3000);
+    }
+
+    function setScreen(screenName) {
+      document.querySelectorAll(".flow-screen").forEach((screen) => {
+        screen.classList.toggle("active", screen.dataset.screen === screenName);
+      });
+
+      const activeIndex = flowOrder.indexOf(screenName);
+      document.querySelectorAll(".step-pill").forEach((step) => {
+        const stepIndex = flowOrder.indexOf(step.dataset.step);
+        step.classList.toggle("active", step.dataset.step === screenName);
+        step.classList.toggle("done", stepIndex >= 0 && stepIndex < activeIndex);
+      });
+
+      document.querySelector(".workspace").scrollTo({ top: 0, behavior: "smooth" });
+      if (screenName === "strategy") showStrategyGenerating();
+    }
+
+    document.querySelectorAll("[data-toast]").forEach((button) => {
+      button.addEventListener("click", () => {
+        showToast(button.dataset.toast);
+        if (button.textContent.includes("重新生成")) showStrategyGenerating();
+      });
+    });
+
+    document.querySelectorAll("[data-modal]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const modal = document.getElementById(button.dataset.modal);
+        if (!modal) return;
+        modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    document.querySelectorAll("[data-close-modal]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const modal = button.closest(".modal-backdrop");
+        if (!modal) return;
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+      });
+    });
+
+    document.querySelectorAll(".modal-backdrop").forEach((modal) => {
+      modal.addEventListener("click", (event) => {
+        if (event.target !== modal) return;
+        modal.classList.remove("active");
+        modal.setAttribute("aria-hidden", "true");
+      });
+    });
+
+    document.querySelectorAll("[data-copy-target]").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const target = document.getElementById(button.dataset.copyTarget);
+        const value = target?.value || target?.textContent || "";
+        try {
+          await navigator.clipboard.writeText(value);
+          showToast(button.dataset.copyTarget === "selectedTags" ? "Tag 已复制" : "文案已复制");
+        } catch (error) {
+          showToast("已选中，可手动复制");
+          target?.select?.();
+        }
+      });
+    });
+
+    document.querySelectorAll(".preference-chip input").forEach((input) => {
+      input.addEventListener("change", () => {
+        input.closest(".preference-chip")?.classList.toggle("selected", input.checked);
+      });
+    });
+
+    document.querySelectorAll(".rhythm-option input").forEach((input) => {
+      input.addEventListener("change", () => {
+        if (input.type === "radio") {
+          document.querySelectorAll(`input[name="${input.name}"]`).forEach((item) => {
+            item.closest(".rhythm-option")?.classList.toggle("selected", item.checked);
+          });
+          return;
+        }
+        input.closest(".rhythm-option")?.classList.toggle("selected", input.checked);
+      });
+    });
+
+    document.querySelectorAll("[data-query-modal]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const modal = document.getElementById("queryModal");
+        const queryText = document.getElementById("queryText");
+        const editQueryBtn = document.getElementById("editQueryBtn");
+        const saveQueryBtn = document.getElementById("saveQueryBtn");
+        if (!modal || !queryText || !editQueryBtn || !saveQueryBtn) return;
+        queryText.readOnly = true;
+        editQueryBtn.hidden = false;
+        saveQueryBtn.hidden = true;
+        modal.classList.add("active");
+        modal.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    document.getElementById("editQueryBtn")?.addEventListener("click", () => {
+      const queryText = document.getElementById("queryText");
+      const editQueryBtn = document.getElementById("editQueryBtn");
+      const saveQueryBtn = document.getElementById("saveQueryBtn");
+      if (!queryText || !editQueryBtn || !saveQueryBtn) return;
+      queryText.readOnly = false;
+      queryText.focus();
+      editQueryBtn.hidden = true;
+      saveQueryBtn.hidden = false;
+    });
+
+    document.getElementById("saveQueryBtn")?.addEventListener("click", () => {
+      const queryText = document.getElementById("queryText");
+      const editQueryBtn = document.getElementById("editQueryBtn");
+      const saveQueryBtn = document.getElementById("saveQueryBtn");
+      if (!queryText || !editQueryBtn || !saveQueryBtn) return;
+      queryText.readOnly = true;
+      editQueryBtn.hidden = false;
+      saveQueryBtn.hidden = true;
+      showToast("Query 已更新");
+    });
+
+    document.querySelectorAll("[data-goto]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const next = button.dataset.goto;
+        setScreen(next);
+          const messages = {
+            empty: "已回到自动化营销空状态",
+          setup: "请填写产品介绍、活动目标和发布设置",
+            strategy: "Skywork 已基于你的输入生成发布计划",
+            calendar: "发布计划已确认，内容正在生成并进入日历"
+          };
+        showToast(messages[next] || "已更新");
+      });
+    });
+
+    document.querySelectorAll(".segmented button").forEach((button) => {
+      button.addEventListener("click", () => {
+        button.parentElement.querySelectorAll("button").forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+      });
+    });
+  </script>
+</body>
+</html>
