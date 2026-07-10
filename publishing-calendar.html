@@ -59,6 +59,10 @@
       cursor: pointer;
     }
 
+    [hidden] {
+      display: none !important;
+    }
+
     textarea {
       resize: none;
     }
@@ -1087,6 +1091,269 @@
       line-height: 1.45;
     }
 
+    .app-shell:not(.import-mode) .import-only,
+    .app-shell.import-mode .brief-only {
+      display: none !important;
+    }
+
+    .import-flow-layout {
+      display: grid;
+      grid-template-columns: minmax(640px, 1fr) 320px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .import-flow-layout.project-import-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .import-main-card,
+    .import-side-card {
+      border-radius: 14px;
+      background: var(--bg-glass);
+      border: 1px solid #fff;
+      box-shadow: var(--shadow-card);
+      padding: 16px;
+    }
+
+    .import-side-card {
+      display: grid;
+      gap: 12px;
+    }
+
+    .import-search {
+      height: 42px;
+      border-radius: 13px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 12px;
+      margin-bottom: 12px;
+    }
+
+    .import-search input {
+      width: 100%;
+      border: 0;
+      outline: 0;
+      color: var(--text-primary);
+      background: transparent;
+      font-size: 14px;
+    }
+
+    .project-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .selected-count-pill {
+      min-height: 22px;
+      border-radius: 8px;
+      padding: 0 7px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--brand-blue);
+      background: #eef1ff;
+      border: 1px solid #dfe5ff;
+      font-size: 11px;
+      line-height: 1;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .project-card {
+      min-height: 92px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      position: relative;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .project-card.selected {
+      border-color: #dfe5ff;
+      box-shadow: 0 0 0 1px #dfe5ff, var(--shadow-card);
+      background: #fbfcff;
+    }
+
+    .project-mark,
+    .artifact-check {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: transparent;
+      background: #fff;
+      border: 1px solid #dfe4ec;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .project-card.selected .project-mark,
+    .artifact-card.selected .artifact-check {
+      color: #fff;
+      background: var(--brand-blue);
+      border-color: var(--brand-blue);
+    }
+
+    .project-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, #4d5eff, #00c4a7);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .project-copy strong,
+    .selected-product-card strong,
+    .artifact-card strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 14px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .project-copy span,
+    .selected-product-card span,
+    .artifact-card span {
+      display: block;
+      margin-top: 4px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .import-summary-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .import-summary-item {
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .artifact-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .artifact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .artifact-card,
+    .selected-product-card {
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      padding: 10px;
+      text-align: left;
+      position: relative;
+    }
+
+    .artifact-card {
+      cursor: pointer;
+    }
+
+    .artifact-card.selected {
+      border-color: var(--brand-blue);
+      box-shadow: 0 0 0 2px rgba(77, 94, 255, 0.12);
+    }
+
+    .artifact-check {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 2;
+    }
+
+    .artifact-thumb,
+    .selected-product-thumb,
+    .draft-product-thumb {
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f4f5f7;
+      position: relative;
+    }
+
+    .artifact-thumb,
+    .selected-product-thumb {
+      aspect-ratio: 1 / 1;
+    }
+
+    .artifact-thumb img,
+    .selected-product-thumb img,
+    .draft-product-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .artifact-thumb.video,
+    .selected-product-thumb.video,
+    .draft-product-thumb.video {
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background:
+        radial-gradient(circle at 70% 24%, rgba(255, 255, 255, 0.48), transparent 18%),
+        linear-gradient(135deg, #000818, #6b37ff 56%, #ff4ad5);
+    }
+
+    .selected-products-head {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .selected-product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .draft-row.with-product {
+      grid-template-columns: 82px 76px minmax(0, 1fr) 188px;
+    }
+
+    .draft-product-thumb {
+      width: 76px;
+      height: 64px;
+    }
+
     .setup-side {
       display: grid;
       gap: 12px;
@@ -1461,16 +1728,19 @@
 
     .artifact-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(180px, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
     }
 
     .artifact-card {
       border-radius: 14px;
-      overflow: hidden;
       background: #fff;
       border: 1px solid var(--border-subtle);
       box-shadow: var(--shadow-card);
+      padding: 10px;
+      text-align: left;
+      position: relative;
+      cursor: pointer;
     }
 
     .project-source {
@@ -1983,6 +2253,98 @@
       background: #fff;
     }
 
+    .calendar-list {
+      display: none;
+      gap: 10px;
+    }
+
+    .calendar-panel.list-mode .calendar-grid {
+      display: none;
+    }
+
+    .calendar-panel.list-mode .calendar-list {
+      display: grid;
+    }
+
+    .publish-list-item {
+      min-height: 92px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-card);
+      padding: 12px;
+      display: grid;
+      grid-template-columns: 74px minmax(0, 1fr) 180px 120px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .publish-thumb {
+      width: 74px;
+      height: 68px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #f4f5f7;
+      position: relative;
+    }
+
+    .publish-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .publish-thumb.video {
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background:
+        radial-gradient(circle at 70% 24%, rgba(255, 255, 255, 0.48), transparent 18%),
+        linear-gradient(135deg, #000818, #6b37ff 56%, #ff4ad5);
+    }
+
+    .publish-main {
+      min-width: 0;
+    }
+
+    .publish-main strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 14px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .publish-main span {
+      display: block;
+      margin-top: 5px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .publish-meta {
+      display: grid;
+      gap: 7px;
+      justify-items: start;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .publish-time {
+      color: var(--text-strong);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .publish-state {
+      display: grid;
+      justify-items: end;
+      gap: 8px;
+    }
+
     .day-head,
     .day-cell {
       border-right: 1px solid var(--border-subtle);
@@ -2490,6 +2852,58 @@
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
+    }
+
+    .asset-add-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .asset-add-option {
+      min-height: 56px;
+      border-radius: 12px;
+      border: 1px dashed #dfe4ec;
+      background: #f9fafc;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      color: var(--text-strong);
+      font-size: 13px;
+      font-weight: 650;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .asset-add-option span {
+      display: block;
+      margin-top: 2px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 500;
+    }
+
+    .asset-add-option strong {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--text-strong);
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .asset-add-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--brand-blue);
+      background: #eef1ff;
+      flex: 0 0 auto;
     }
 
     .asset-card {
@@ -3180,6 +3594,7 @@
                         <span>创建营销计划后，内容会按日期自动排入日历。</span>
                         <div class="blank-calendar-action">
                           <button class="primary-btn" data-goto="setup"><svg class="ui-icon"><use href="#i-plus"></use></svg>创建营销计划</button>
+                          <button class="secondary-btn" data-goto="importProjects"><svg class="ui-icon"><use href="#i-box"></use></svg>从项目导入</button>
                         </div>
                       </div>
                     </div>
@@ -3196,11 +3611,116 @@
           </div>
         </section>
 
+        <section class="flow-screen" data-screen="importProjects">
+          <div class="import-flow-layout project-import-layout">
+            <div class="import-main-card">
+              <div class="panel-head">
+                <h2 class="panel-title">选择要导入的项目 <span class="selected-count-pill" id="selectedProjectCount">2 个项目</span></h2>
+                <span class="panel-meta">可使用已选择项目中的图片/视频生成物进行发布</span>
+              </div>
+              <div class="import-search">
+                <svg class="ui-icon" style="width:18px;height:18px;color:var(--text-tertiary)"><use href="#i-search"></use></svg>
+                <input id="projectSearch" type="search" placeholder="搜索项目" />
+              </div>
+              <div class="project-list" id="projectList">
+                <button class="project-card selected" type="button" data-project="coldbrew" data-keywords="冷萃 新品上市 咖啡">
+                  <div class="project-avatar">CB</div>
+                  <div class="project-copy">
+                    <strong>冷萃新品上市</strong>
+                    <span>12 个图片 / 视频产物 · 最近更新 7月8日</span>
+                  </div>
+                  <span class="project-mark">✓</span>
+                </button>
+                <button class="project-card selected" type="button" data-project="summer" data-keywords="夏季 门店 海报">
+                  <div class="project-avatar" style="background:linear-gradient(135deg,#ffaa00,#ff576d)">SU</div>
+                  <div class="project-copy">
+                    <strong>夏季门店活动</strong>
+                    <span>8 个图片 / 视频产物 · 最近更新 7月6日</span>
+                  </div>
+                  <span class="project-mark">✓</span>
+                </button>
+                <button class="project-card" type="button" data-project="ugc" data-keywords="ugc 试喝 短视频">
+                  <div class="project-avatar" style="background:linear-gradient(135deg,#6b37ff,#ff4ad5)">UG</div>
+                  <div class="project-copy">
+                    <strong>UGC 试喝内容</strong>
+                    <span>6 个图片 / 视频产物 · 最近更新 7月3日</span>
+                  </div>
+                  <span class="project-mark">✓</span>
+                </button>
+              </div>
+              <div class="flow-actions split">
+                <button class="secondary-btn" data-goto="empty">返回日历</button>
+                <button class="primary-btn" data-goto="importArtifacts"><svg class="ui-icon"><use href="#i-check"></use></svg>下一步</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="flow-screen" data-screen="importArtifacts">
+          <div class="import-flow-layout project-import-layout">
+            <div class="import-main-card">
+              <div class="panel-head">
+                <h2 class="panel-title">选择要排期的图片和视频 <span class="selected-count-pill" id="selectedArtifactCount">4 个产物</span></h2>
+                <span class="panel-meta">来自已选择项目，可多选</span>
+              </div>
+              <div class="artifact-toolbar">
+                <div class="chip-row">
+                  <span class="chip blue">冷萃新品上市</span>
+                  <span class="chip orange">夏季门店活动</span>
+                </div>
+                <span class="select-pill">全部类型 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
+              </div>
+              <div class="artifact-grid">
+                <button class="artifact-card selected" type="button" data-artifact="coldbrew-square">
+                  <span class="artifact-check">✓</span>
+                  <div class="artifact-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="冷萃主视觉方图" /></div>
+                  <strong>冷萃主视觉方图</strong>
+                  <span>冷萃新品上市 · 图片</span>
+                </button>
+                <button class="artifact-card selected" type="button" data-artifact="coldbrew-story">
+                  <span class="artifact-check">✓</span>
+                  <div class="artifact-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="早间冷萃 Story" /></div>
+                  <strong>早间冷萃 Story</strong>
+                  <span>冷萃新品上市 · 图片</span>
+                </button>
+                <button class="artifact-card selected" type="button" data-artifact="commute-video">
+                  <span class="artifact-check">✓</span>
+                  <div class="artifact-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
+                  <strong>通勤冷萃短视频</strong>
+                  <span>冷萃新品上市 · 视频</span>
+                </button>
+                <button class="artifact-card selected" type="button" data-artifact="culture-poster">
+                  <span class="artifact-check">✓</span>
+                  <div class="artifact-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="咖啡文化海报" /></div>
+                  <strong>咖啡文化海报</strong>
+                  <span>夏季门店活动 · 图片</span>
+                </button>
+                <button class="artifact-card" type="button" data-artifact="culture-page">
+                  <span class="artifact-check">✓</span>
+                  <div class="artifact-thumb"><img src="image-generation-flow/assets/coffee-culture-poster-page.jpg" alt="门店活动长图" /></div>
+                  <strong>门店活动长图</strong>
+                  <span>夏季门店活动 · 图片</span>
+                </button>
+                <button class="artifact-card" type="button" data-artifact="ugc-video">
+                  <span class="artifact-check">✓</span>
+                  <div class="artifact-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
+                  <strong>试喝反应短视频</strong>
+                  <span>UGC 试喝内容 · 视频</span>
+                </button>
+              </div>
+              <div class="flow-actions split">
+                <button class="secondary-btn" data-goto="importProjects">返回选择项目</button>
+                <button class="primary-btn" data-goto="setup"><svg class="ui-icon"><use href="#i-check"></use></svg>确定产物</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section class="flow-screen" data-screen="setup">
           <div class="setup-layout">
               <div class="flow-card">
               <div class="brief-form">
-                <div class="brief-field">
+                <div class="brief-field brief-only">
                   <label for="productBrief">产品 / 活动介绍</label>
                   <textarea class="brief-textarea" id="productBrief">冷萃咖啡新品上市，主打更清爽的口感、低糖和早晨专注场景。希望用视觉内容突出“第一杯冷萃”的仪式感，目标是新品上市预热，提高点击和到店购买。</textarea>
                   <div class="upload-row" style="margin-top:10px">
@@ -3208,7 +3728,38 @@
                     <input class="upload-input" id="referenceUpload" type="file" multiple accept="image/*,video/*,.pdf,.doc,.docx,.ppt,.pptx,.txt,.md" />
                   </div>
                 </div>
-                <div class="brief-two-col">
+                <div class="brief-field import-only">
+                  <div class="selected-products-head">
+                    <div>
+                      <label style="margin-bottom:2px">已选择的项目产物</label>
+                      <span class="panel-meta">Skywork 会基于这些图片和视频生成发布计划</span>
+                    </div>
+                    <button class="secondary-btn" data-goto="importArtifacts">重新选择</button>
+                  </div>
+                  <div class="selected-product-grid">
+                    <article class="selected-product-card">
+                      <div class="selected-product-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="冷萃主视觉方图" /></div>
+                      <strong>冷萃主视觉方图</strong>
+                      <span>冷萃新品上市 · 图片</span>
+                    </article>
+                    <article class="selected-product-card">
+                      <div class="selected-product-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="早间冷萃 Story" /></div>
+                      <strong>早间冷萃 Story</strong>
+                      <span>冷萃新品上市 · 图片</span>
+                    </article>
+                    <article class="selected-product-card">
+                      <div class="selected-product-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
+                      <strong>通勤冷萃短视频</strong>
+                      <span>冷萃新品上市 · 视频</span>
+                    </article>
+                    <article class="selected-product-card">
+                      <div class="selected-product-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="咖啡文化海报" /></div>
+                      <strong>咖啡文化海报</strong>
+                      <span>夏季门店活动 · 图片</span>
+                    </article>
+                  </div>
+                </div>
+                <div class="brief-two-col brief-only">
                   <div class="brief-field">
                     <label>内容形式偏好</label>
                     <div class="preference-row">
@@ -3226,7 +3777,7 @@
                     </select>
                   </div>
                 </div>
-                <div class="brief-field">
+                <div class="brief-field brief-only">
                   <label for="designGuideline">使用设计规范</label>
                   <div class="design-guideline-select">
                     <div class="design-guideline-copy"><svg class="ui-icon" style="width:16px;height:16px;color:var(--brand-blue)"><use href="#i-file-text"></use></svg>选择已创建的设计规范</div>
@@ -3340,10 +3891,16 @@
           </div>
           <div class="flow-two-col strategy-full">
             <div class="flow-card">
-              <div class="strategy-list">
+              <div class="strategy-list brief-only">
                 <div class="strategy-item">
                   <span class="strategy-icon"><svg class="ui-icon"><use href="#i-target"></use></svg></span>
                   <span><strong>营销目标</strong><span>新品上市预热，提高点击和到店购买，用生活方式内容突出“第一杯冷萃”的仪式感。</span></span>
+                </div>
+              </div>
+              <div class="strategy-list import-only">
+                <div class="strategy-item">
+                  <span class="strategy-icon"><svg class="ui-icon"><use href="#i-box"></use></svg></span>
+                  <span><strong>已导入产物</strong><span>来自 2 个项目的 4 个图片 / 视频产物，Skywork 将为每个产物安排发布平台、时间和文案。</span></span>
                 </div>
               </div>
 
@@ -3382,7 +3939,7 @@
                 </div>
               </div>
 
-              <div class="draft-table">
+              <div class="draft-table brief-only">
                 <div class="draft-row">
                   <div class="draft-date">7月8日<span>09:20</span></div>
                   <div class="draft-main">
@@ -3425,11 +3982,58 @@
                 </div>
               </div>
 
+              <div class="draft-table import-only">
+                <div class="draft-row with-product">
+                  <div class="draft-date">7月8日<span>09:20</span></div>
+                  <div class="draft-product-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="冷萃主视觉方图" /></div>
+                  <div class="draft-main">
+                    <div class="draft-title-row"><strong>冷萃主视觉方图</strong></div>
+                    <span>项目：冷萃新品上市 · 作为 Instagram feed 和 Facebook Page Post 发布。</span>
+                  </div>
+                  <div class="draft-actions">
+                    <div class="chip-row"><span class="format-chip single">单图</span><span class="chip blue">Instagram feed</span><span class="chip orange">Facebook page Post</span></div>
+                  </div>
+                </div>
+                <div class="draft-row with-product">
+                  <div class="draft-date">7月9日<span>12:10</span></div>
+                  <div class="draft-product-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="早间冷萃 Story" /></div>
+                  <div class="draft-main">
+                    <div class="draft-title-row"><strong>早间冷萃 Story</strong></div>
+                    <span>项目：冷萃新品上市 · 适配 Instagram story 的竖版发布。</span>
+                  </div>
+                  <div class="draft-actions">
+                    <div class="chip-row"><span class="format-chip single">单图</span><span class="chip blue">Instagram story</span></div>
+                  </div>
+                </div>
+                <div class="draft-row with-product">
+                  <div class="draft-date">7月10日<span>18:30</span></div>
+                  <div class="draft-product-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
+                  <div class="draft-main">
+                    <div class="draft-title-row"><strong>通勤冷萃短视频</strong></div>
+                    <span>项目：冷萃新品上市 · 作为 TikTok video 和 Instagram Reels 发布。</span>
+                  </div>
+                  <div class="draft-actions">
+                    <div class="chip-row"><span class="format-chip video">视频</span><span class="chip green">Tiktok video</span><span class="chip blue">Instagram Reels</span></div>
+                  </div>
+                </div>
+                <div class="draft-row with-product">
+                  <div class="draft-date">7月13日<span>08:40</span></div>
+                  <div class="draft-product-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="咖啡文化海报" /></div>
+                  <div class="draft-main">
+                    <div class="draft-title-row"><strong>咖啡文化海报</strong></div>
+                    <span>项目：夏季门店活动 · 作为 X Post 和 Facebook Page Post 发布。</span>
+                  </div>
+                  <div class="draft-actions">
+                    <div class="chip-row"><span class="format-chip single">单图</span><span class="chip orange">X Post</span><span class="chip orange">Facebook page Post</span></div>
+                  </div>
+                </div>
+              </div>
+
               <div class="flow-actions split">
                 <button class="secondary-btn" data-goto="setup">返回修改设置</button>
                 <div class="flow-actions-right">
                   <button class="secondary-btn" data-toast="Skywork 已重新生成计划"><svg class="ui-icon"><use href="#i-refresh"></use></svg>重新生成</button>
-                  <button class="primary-btn" data-goto="calendar"><svg class="ui-icon"><use href="#i-check"></use></svg>开始生成素材</button>
+                  <button class="primary-btn" data-goto="calendar"><svg class="ui-icon"><use href="#i-check"></use></svg><span class="brief-only">开始生成素材</span><span class="import-only">生成发布日历</span></button>
                 </div>
               </div>
             </div>
@@ -3446,6 +4050,12 @@
                 <span class="select-pill">全部平台 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
                 <span class="select-pill">全部状态 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
                 <span class="select-pill">冷萃新品上市 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
+              </div>
+              <div class="toolbar-right">
+                <div class="segmented" aria-label="日历视图切换">
+                  <button class="active" type="button" data-calendar-view="calendar">日历</button>
+                  <button type="button" data-calendar-view="list">列表</button>
+                </div>
               </div>
             </div>
 
@@ -3470,7 +4080,36 @@
               <div class="day-cell"><div class="day-number">7</div></div>
               <div class="day-cell today">
                 <div class="day-number">8</div>
-                <article class="plan-card compact">
+                <article class="plan-card compact import-only">
+                  <div class="platform-preview ig-post-preview">
+                    <div class="preview-header"><span class="preview-avatar"></span><span>@skywork_note</span></div>
+                    <div class="preview-image"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="冷萃主视觉方图" /></div>
+                  </div>
+                  <div class="plan-body">
+                    <p class="plan-title">冷萃主视觉方图</p>
+                    <div class="plan-project">项目：冷萃新品上市</div>
+                    <div class="plan-meta-line">
+                      <div class="platforms"><span class="platform-dot ig">IG</span></div>
+                      <span class="time">09:20</span>
+                    </div>
+                    <div style="margin-top:7px"><span class="status-pill scheduled">已排期</span></div>
+                  </div>
+                </article>
+                <article class="plan-card compact import-only">
+                  <div class="platform-preview facebook-post-preview">
+                    <div class="facebook-card-image"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="冷萃主视觉方图 Facebook" /></div>
+                  </div>
+                  <div class="plan-body">
+                    <p class="plan-title">冷萃主视觉方图</p>
+                    <div class="plan-project">项目：冷萃新品上市</div>
+                    <div class="plan-meta-line">
+                      <div class="platforms"><span class="platform-dot fb">f</span></div>
+                      <span class="time">09:20</span>
+                    </div>
+                    <div style="margin-top:7px"><span class="status-pill scheduled">已排期</span></div>
+                  </div>
+                </article>
+                <article class="plan-card compact brief-only">
                   <div class="platform-preview ig-post-preview">
                     <div class="preview-header"><span class="preview-avatar"></span><span>@skywork_note</span></div>
                     <div class="preview-image"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="Cold brew hero poster" /></div>
@@ -3485,7 +4124,7 @@
                     <div style="margin-top:7px"><span class="status-pill generate">生成中</span></div>
                   </div>
                 </article>
-                <article class="plan-card compact">
+                <article class="plan-card compact brief-only">
                   <div class="platform-preview story-preview"><span class="play-mark"></span></div>
                   <div class="plan-body">
                     <p class="plan-title">第一口冷萃短视频</p>
@@ -3501,7 +4140,19 @@
               </div>
               <div class="day-cell">
                 <div class="day-number">9</div>
-                <article class="plan-card">
+                <article class="plan-card import-only">
+                  <div class="platform-preview story-preview"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="早间冷萃 Story" /></div>
+                  <div class="plan-body">
+                    <p class="plan-title">早间冷萃 Story</p>
+                    <div class="plan-project">项目：冷萃新品上市</div>
+                    <div class="plan-meta-line">
+                      <div class="platforms"><span class="platform-dot ig">IG</span></div>
+                      <span class="time">12:10</span>
+                    </div>
+                    <div style="margin-top:7px"><span class="status-pill scheduled">已排期</span></div>
+                  </div>
+                </article>
+                <article class="plan-card brief-only">
                   <div class="platform-preview reel-preview"><span class="play-mark"></span></div>
                   <div class="plan-body">
                     <p class="plan-title">15 秒通勤短视频</p>
@@ -3516,7 +4167,19 @@
               </div>
               <div class="day-cell">
                 <div class="day-number">10</div>
-                <article class="plan-card">
+                <article class="plan-card import-only">
+                  <div class="platform-preview reel-preview"><span class="play-mark"></span></div>
+                  <div class="plan-body">
+                    <p class="plan-title">通勤冷萃短视频</p>
+                    <div class="plan-project">项目：冷萃新品上市</div>
+                    <div class="plan-meta-line">
+                      <div class="platforms"><span class="platform-dot tt">TT</span><span class="platform-dot ig">IG</span></div>
+                      <span class="time">18:30</span>
+                    </div>
+                    <div style="margin-top:7px"><span class="status-pill generate">生成中</span></div>
+                  </div>
+                </article>
+                <article class="plan-card brief-only">
                   <div class="platform-preview story-preview"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="Story asset" /></div>
                   <div class="plan-body">
                     <p class="plan-title">风味笔记 Story</p>
@@ -3534,7 +4197,22 @@
 
               <div class="day-cell">
                 <div class="day-number">13</div>
-                <article class="plan-card">
+                <article class="plan-card import-only">
+                  <div class="platform-preview ig-post-preview">
+                    <div class="preview-header"><span class="preview-avatar"></span><span>@skywork_note</span></div>
+                    <div class="preview-image"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="咖啡文化海报" /></div>
+                  </div>
+                  <div class="plan-body">
+                    <p class="plan-title">咖啡文化海报</p>
+                    <div class="plan-project">项目：夏季门店活动</div>
+                    <div class="plan-meta-line">
+                      <div class="platforms"><span class="platform-dot x">X</span><span class="platform-dot fb">f</span></div>
+                      <span class="time">08:40</span>
+                    </div>
+                    <div style="margin-top:7px"><span class="status-pill pending">待发布</span></div>
+                  </div>
+                </article>
+                <article class="plan-card brief-only">
                   <div class="platform-preview facebook-post-preview">
                     <div class="preview-header"><span class="platform-dot fb">f</span><span>Skywork Coffee</span></div>
                     <div class="facebook-card-image"><img src="image-generation-flow/assets/coffee-culture-poster-page.jpg" alt="Poster page" /></div>
@@ -3553,7 +4231,7 @@
               <div class="day-cell"><div class="day-number">14</div></div>
               <div class="day-cell">
                 <div class="day-number">15</div>
-                <article class="plan-card">
+                <article class="plan-card brief-only">
                   <div class="platform-preview reel-preview"><span class="play-mark"></span></div>
                   <div class="plan-body">
                     <p class="plan-title">UGC 风格试喝</p>
@@ -3569,7 +4247,7 @@
               <div class="day-cell"><div class="day-number">16</div></div>
               <div class="day-cell">
                 <div class="day-number">17</div>
-                <article class="plan-card">
+                <article class="plan-card brief-only">
                   <div class="platform-preview ig-post-preview">
                     <div class="preview-header"><span class="preview-avatar"></span><span>@skywork_note</span></div>
                     <div class="preview-image"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="Coffee poster" /></div>
@@ -3592,6 +4270,130 @@
                   <span><svg class="ui-icon" style="width:18px;height:18px;margin:0 auto 6px"><use href="#i-plus"></use></svg>生成下一期计划</span>
                 </button>
               </div>
+            </div>
+
+            <div class="calendar-list" aria-label="发布列表">
+              <article class="publish-list-item import-only">
+                <div class="publish-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="冷萃主视觉方图" /></div>
+                <div class="publish-main">
+                  <strong>冷萃主视觉方图</strong>
+                  <span>项目：冷萃新品上市 · 单图</span>
+                </div>
+                <div class="publish-meta">
+                  <div class="chip-row"><span class="platform-dot ig">IG</span><span>Instagram feed</span></div>
+                  <span class="publish-time">7月8日 09:20</span>
+                </div>
+                <div class="publish-state"><span class="status-pill scheduled">已排期</span><button class="copy-action" data-toast="已打开 Instagram 发布详情">详情</button></div>
+              </article>
+              <article class="publish-list-item import-only">
+                <div class="publish-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="冷萃主视觉方图 Facebook" /></div>
+                <div class="publish-main">
+                  <strong>冷萃主视觉方图</strong>
+                  <span>项目：冷萃新品上市 · 单图</span>
+                </div>
+                <div class="publish-meta">
+                  <div class="chip-row"><span class="platform-dot fb">f</span><span>Facebook page Post</span></div>
+                  <span class="publish-time">7月8日 09:20</span>
+                </div>
+                <div class="publish-state"><span class="status-pill scheduled">已排期</span><button class="copy-action" data-toast="已打开 Facebook 发布详情">详情</button></div>
+              </article>
+              <article class="publish-list-item import-only">
+                <div class="publish-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="早间冷萃 Story" /></div>
+                <div class="publish-main">
+                  <strong>早间冷萃 Story</strong>
+                  <span>项目：冷萃新品上市 · 单图</span>
+                </div>
+                <div class="publish-meta">
+                  <div class="chip-row"><span class="platform-dot ig">IG</span><span>Instagram story</span></div>
+                  <span class="publish-time">7月9日 12:10</span>
+                </div>
+                <div class="publish-state"><span class="status-pill scheduled">已排期</span><button class="copy-action" data-toast="已打开 Story 发布详情">详情</button></div>
+              </article>
+              <article class="publish-list-item import-only">
+                <div class="publish-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
+                <div class="publish-main">
+                  <strong>通勤冷萃短视频</strong>
+                  <span>项目：冷萃新品上市 · 视频</span>
+                </div>
+                <div class="publish-meta">
+                  <div class="chip-row"><span class="platform-dot tt">TT</span><span>Tiktok video</span></div>
+                  <span class="publish-time">7月10日 18:30</span>
+                </div>
+                <div class="publish-state"><span class="status-pill generate">生成中</span><button class="copy-action" data-toast="已打开 TikTok 发布详情">详情</button></div>
+              </article>
+              <article class="publish-list-item import-only">
+                <div class="publish-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
+                <div class="publish-main">
+                  <strong>通勤冷萃短视频</strong>
+                  <span>项目：冷萃新品上市 · 视频</span>
+                </div>
+                <div class="publish-meta">
+                  <div class="chip-row"><span class="platform-dot ig">IG</span><span>Instagram Reels</span></div>
+                  <span class="publish-time">7月10日 18:30</span>
+                </div>
+                <div class="publish-state"><span class="status-pill generate">生成中</span><button class="copy-action" data-toast="已打开 Reels 发布详情">详情</button></div>
+              </article>
+              <article class="publish-list-item import-only">
+                <div class="publish-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="咖啡文化海报" /></div>
+                <div class="publish-main">
+                  <strong>咖啡文化海报</strong>
+                  <span>项目：夏季门店活动 · 单图</span>
+                </div>
+                <div class="publish-meta">
+                  <div class="chip-row"><span class="platform-dot x">X</span><span>X Post</span></div>
+                  <span class="publish-time">7月13日 08:40</span>
+                </div>
+                <div class="publish-state"><span class="status-pill pending">待发布</span><button class="copy-action" data-toast="已打开 X 发布详情">详情</button></div>
+              </article>
+              <article class="publish-list-item import-only">
+                <div class="publish-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="咖啡文化海报 Facebook" /></div>
+                <div class="publish-main">
+                  <strong>咖啡文化海报</strong>
+                  <span>项目：夏季门店活动 · 单图</span>
+                </div>
+                <div class="publish-meta">
+                  <div class="chip-row"><span class="platform-dot fb">f</span><span>Facebook page Post</span></div>
+                  <span class="publish-time">7月13日 08:40</span>
+                </div>
+                <div class="publish-state"><span class="status-pill pending">待发布</span><button class="copy-action" data-toast="已打开 Facebook 发布详情">详情</button></div>
+              </article>
+
+              <article class="publish-list-item brief-only">
+                <div class="publish-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="新品预热方图" /></div>
+                <div class="publish-main">
+                  <strong>新品预热：第一口冷萃</strong>
+                  <span>项目：冷萃新品上市 · 多图</span>
+                </div>
+                <div class="publish-meta">
+                  <div class="chip-row"><span class="platform-dot ig">IG</span><span>Instagram feed</span></div>
+                  <span class="publish-time">7月8日 09:20</span>
+                </div>
+                <div class="publish-state"><span class="status-pill generate">生成中</span><button class="copy-action" data-toast="已打开 Instagram 发布详情">详情</button></div>
+              </article>
+              <article class="publish-list-item brief-only">
+                <div class="publish-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
+                <div class="publish-main">
+                  <strong>15 秒通勤短视频</strong>
+                  <span>项目：冷萃新品上市 · 视频</span>
+                </div>
+                <div class="publish-meta">
+                  <div class="chip-row"><span class="platform-dot tt">TT</span><span>Tiktok video</span></div>
+                  <span class="publish-time">7月9日 18:30</span>
+                </div>
+                <div class="publish-state"><span class="status-pill generate">生成中</span><button class="copy-action" data-toast="已打开 TikTok 发布详情">详情</button></div>
+              </article>
+              <article class="publish-list-item brief-only">
+                <div class="publish-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="风味笔记 Story" /></div>
+                <div class="publish-main">
+                  <strong>风味笔记 Story</strong>
+                  <span>项目：冷萃新品上市 · 多图</span>
+                </div>
+                <div class="publish-meta">
+                  <div class="chip-row"><span class="platform-dot ig">IG</span><span>Instagram story</span></div>
+                  <span class="publish-time">7月10日 12:10</span>
+                </div>
+                <div class="publish-state"><span class="status-pill pending">待生成</span><button class="copy-action" data-toast="已打开 Story 发布详情">详情</button></div>
+              </article>
             </div>
           </section>
 
@@ -3720,6 +4522,21 @@
         <h2 class="modal-title">更换素材</h2>
         <button class="icon-btn" data-close-modal aria-label="关闭"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
       </div>
+      <div class="asset-add-row" aria-label="添加素材">
+        <label class="asset-add-option" for="assetLocalUpload">
+          <span class="asset-add-icon"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-plus"></use></svg></span>
+          <span><strong>本地上传</strong><span>图片 / 视频</span></span>
+        </label>
+        <input class="upload-input" id="assetLocalUpload" type="file" multiple accept="image/*,video/*" />
+        <button class="asset-add-option" type="button" data-toast="已打开云盘选择器">
+          <span class="asset-add-icon"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-database"></use></svg></span>
+          <span><strong>从云盘添加</strong><span>选择已有文件</span></span>
+        </button>
+        <button class="asset-add-option" type="button" data-toast="已打开素材库">
+          <span class="asset-add-icon"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-box"></use></svg></span>
+          <span><strong>从素材库添加</strong><span>复用团队素材</span></span>
+        </button>
+      </div>
       <div class="asset-grid">
         <button class="asset-card selected" type="button">
           <div class="asset-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="深烘冷萃海报" /></div>
@@ -3760,7 +4577,9 @@
   <script>
     const toast = document.getElementById("toast");
     let toastTimer = 0;
-    const flowOrder = ["empty", "setup", "strategy", "calendar"];
+    const appShell = document.querySelector(".app-shell");
+    let creationMode = "brief";
+    const flowOrder = ["empty", "importProjects", "importArtifacts", "setup", "strategy", "calendar"];
 
     function showToast(message) {
       toast.querySelector("span").textContent = message;
@@ -3788,7 +4607,12 @@
     function updatePageTitle(screenName) {
       const pageTitle = document.querySelector(".page-title");
       if (!pageTitle) return;
-      pageTitle.textContent = ["setup", "strategy"].includes(screenName) ? "创建营销计划" : "自动化营销";
+      pageTitle.textContent = ["importProjects", "importArtifacts", "setup", "strategy"].includes(screenName) ? "创建营销计划" : "自动化营销";
+    }
+
+    function setCreationMode(mode) {
+      creationMode = mode === "import" ? "import" : "brief";
+      appShell?.classList.toggle("import-mode", creationMode === "import");
     }
 
     function setScreen(screenName) {
@@ -3812,6 +4636,7 @@
     const initialScreen = document.querySelector(".flow-screen.active")?.dataset.screen || "empty";
     updatePageTitle(initialScreen);
     updateHeaderCreateAction(initialScreen);
+    setCreationMode("brief");
 
     document.querySelectorAll("[data-toast]").forEach((button) => {
       button.addEventListener("click", () => {
@@ -3882,6 +4707,40 @@
       });
     });
 
+    const updateProjectSummary = () => {
+      const selected = document.querySelectorAll(".project-card.selected");
+      const count = document.getElementById("selectedProjectCount");
+      if (count) count.textContent = `${selected.length} 个项目`;
+    };
+
+    document.querySelectorAll(".project-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        card.classList.toggle("selected");
+        updateProjectSummary();
+      });
+    });
+
+    document.getElementById("projectSearch")?.addEventListener("input", (event) => {
+      const value = event.target.value.trim().toLowerCase();
+      document.querySelectorAll(".project-card").forEach((card) => {
+        const text = `${card.textContent} ${card.dataset.keywords || ""}`.toLowerCase();
+        card.hidden = value.length > 0 && !text.includes(value);
+      });
+    });
+
+    const updateArtifactSummary = () => {
+      const selected = document.querySelectorAll(".artifact-card.selected");
+      const count = document.getElementById("selectedArtifactCount");
+      if (count) count.textContent = `${selected.length} 个产物`;
+    };
+
+    document.querySelectorAll(".artifact-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        card.classList.toggle("selected");
+        updateArtifactSummary();
+      });
+    });
+
     document.querySelectorAll(".preference-chip input").forEach((input) => {
       input.addEventListener("change", () => {
         input.closest(".preference-chip")?.classList.toggle("selected", input.checked);
@@ -3940,10 +4799,20 @@
     document.querySelectorAll("[data-goto]").forEach((button) => {
       button.addEventListener("click", () => {
         const next = button.dataset.goto;
+        const current = document.querySelector(".flow-screen.active")?.dataset.screen || "empty";
+        if (next === "importProjects" || next === "importArtifacts" || (next === "setup" && current === "importArtifacts")) {
+          setCreationMode("import");
+        } else if (next === "setup" && current !== "strategy") {
+          setCreationMode("brief");
+        } else if (next === "empty") {
+          setCreationMode("brief");
+        }
         setScreen(next);
           const messages = {
             empty: "已回到自动化营销空状态",
-          setup: "请填写产品介绍、活动目标和发布设置",
+            importProjects: "请选择要导入的项目",
+            importArtifacts: "请选择要排期的图片和视频产物",
+            setup: creationMode === "import" ? "请确认已选择产物和发布设置" : "请填写产品介绍、活动目标和发布设置",
             strategy: "Skywork 已基于你的输入生成发布计划",
             calendar: "发布计划已确认，内容正在生成并进入日历"
           };
@@ -3955,6 +4824,10 @@
       button.addEventListener("click", () => {
         button.parentElement.querySelectorAll("button").forEach((item) => item.classList.remove("active"));
         button.classList.add("active");
+        const calendarPanel = button.closest(".calendar-panel");
+        if (calendarPanel && button.dataset.calendarView) {
+          calendarPanel.classList.toggle("list-mode", button.dataset.calendarView === "list");
+        }
       });
     });
   </script>
