@@ -2323,6 +2323,19 @@
       display: none;
     }
 
+    .filter-group-label {
+      padding: 9px 10px 4px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .filter-group-label.publish-group {
+      margin-top: 5px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
     .filter-option {
       width: 100%;
       min-height: 34px;
@@ -3042,11 +3055,6 @@
       background: #eef1ff;
     }
 
-    .status-pill.account-unbound {
-      color: #3343ca;
-      background: #eef1ff;
-    }
-
     .status-pill.published {
       color: #11835d;
       background: #e7f8ef;
@@ -3062,9 +3070,9 @@
       background: #fff0f3;
     }
 
-    .status-pill.content-waiting {
-      color: #3343ca;
-      background: #eef1ff;
+    .status-pill.pending {
+      color: #7f8896;
+      background: #edeff1;
     }
 
     .account-modal-row.targeted {
@@ -4605,13 +4613,13 @@
                   <button class="select-pill" type="button" aria-haspopup="listbox" aria-expanded="false"><span data-filter-label>全部状态</span><svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></button>
                   <div class="filter-menu" role="listbox" aria-label="按状态筛选" hidden>
                     <button class="filter-option" type="button" role="option" aria-selected="true" data-filter-value="all">全部状态</button>
-                    <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="内容待生成">内容待生成</button>
+                    <div class="filter-group-label" role="presentation">物料生成</div>
+                    <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="待生成">待生成</button>
                     <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="生成中">生成中</button>
-                    <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="生成完成">生成完成</button>
                     <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="生成失败">生成失败</button>
-                    <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="账号未绑定">账号未绑定</button>
+                    <div class="filter-group-label publish-group" role="presentation">发布状态</div>
                     <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="待绑定账号">待绑定账号</button>
-                    <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="待发布">待发布</button>
+                    <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="待排期">待排期</button>
                     <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="已排期">已排期</button>
                     <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="审核中">审核中</button>
                     <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="已发布">已发布</button>
@@ -4662,7 +4670,7 @@
                       <div class="platforms"><span class="platform-dot ig">IG</span></div>
                       <span class="time">09:20</span>
                     </div>
-                    <div class="record-status-row"><span class="status-pill account-unbound">账号未绑定</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button></div>
+                    <div class="record-status-row"><span class="status-pill account-required">待绑定账号</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button></div>
                   </div>
                 </article>
                 <article class="plan-card compact import-only">
@@ -4676,7 +4684,7 @@
                       <div class="platforms"><span class="platform-dot fb">f</span></div>
                       <span class="time">09:20</span>
                     </div>
-                    <div class="record-status-row"><span class="status-pill account-unbound">账号未绑定</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Facebook">绑定账号</button></div>
+                    <div class="record-status-row"><span class="status-pill account-required">待绑定账号</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Facebook">绑定账号</button></div>
                   </div>
                 </article>
                 <article class="plan-card compact brief-only">
@@ -4691,7 +4699,7 @@
                       <div class="platforms"><span class="platform-dot ig">IG</span></div>
                       <span class="time">09:20</span>
                     </div>
-                    <div class="record-status-row"><span class="status-pill account-unbound">账号未绑定</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button></div>
+                    <div class="record-status-row"><span class="status-pill account-required">待绑定账号</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button></div>
                   </div>
                 </article>
                 <article class="plan-card compact brief-only">
@@ -4719,7 +4727,7 @@
                       <div class="platforms"><span class="platform-dot ig">IG</span></div>
                       <span class="time">12:10</span>
                     </div>
-                    <div class="record-status-row"><span class="status-pill account-unbound">账号未绑定</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button></div>
+                    <div class="record-status-row"><span class="status-pill account-required">待绑定账号</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button></div>
                   </div>
                 </article>
                 <article class="plan-card brief-only">
@@ -4743,7 +4751,7 @@
                       <div class="platforms"><span class="platform-dot ig">IG</span></div>
                       <span class="time">18:30</span>
                     </div>
-                    <div class="record-status-row"><span class="status-pill account-unbound">账号未绑定</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button></div>
+                    <div class="record-status-row"><span class="status-pill account-required">待绑定账号</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button></div>
                   </div>
                 </article>
               </div>
@@ -4770,7 +4778,7 @@
                       <div class="platforms"><span class="platform-dot ig">IG</span></div>
                       <span class="time">18:30</span>
                     </div>
-                    <div class="record-status-row"><span class="status-pill account-unbound">账号未绑定</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button></div>
+                    <div class="record-status-row"><span class="status-pill account-required">待绑定账号</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button></div>
                   </div>
                 </article>
                 <article class="plan-card brief-only">
@@ -4782,7 +4790,7 @@
                       <div class="platforms"><span class="platform-dot ig">IG</span></div>
                       <span class="time">12:10</span>
                     </div>
-                    <div class="record-status-row"><span class="status-pill account-unbound">账号未绑定</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button></div>
+                    <div class="record-status-row"><span class="status-pill account-required">待绑定账号</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button></div>
                   </div>
                 </article>
               </div>
@@ -4859,7 +4867,7 @@
                     <span class="scheduled-task-icon"><svg class="ui-icon" style="width:17px;height:17px"><use href="#i-calendar"></use></svg></span>
                     <span class="scheduled-task-copy"><strong>生成新品预热图片组</strong><span>Instagram Feed · TikTok Photo</span></span>
                   </div>
-                  <div class="plan-meta-line"><span class="time">08:00</span><span class="status-pill content-waiting">内容待生成</span></div>
+                  <div class="plan-meta-line"><span class="time">08:00</span><span class="status-pill pending">待生成</span></div>
                 </article>
               </div>
               <div class="day-cell">
@@ -4869,7 +4877,7 @@
                     <span class="scheduled-task-icon"><svg class="ui-icon" style="width:17px;height:17px"><use href="#i-calendar"></use></svg></span>
                     <span class="scheduled-task-copy"><strong>生成通勤短视频</strong><span>TikTok Video · Instagram Reels</span></span>
                   </div>
-                  <div class="plan-meta-line"><span class="time">18:30</span><span class="status-pill content-waiting">内容待生成</span></div>
+                  <div class="plan-meta-line"><span class="time">18:30</span><span class="status-pill pending">待生成</span></div>
                 </article>
                 <article class="plan-card brief-only">
                   <div class="platform-preview reel-preview"><span class="play-mark"></span></div>
@@ -4880,7 +4888,7 @@
                       <div class="platforms"><span class="platform-dot tt">TT</span></div>
                       <span class="time">17:45</span>
                     </div>
-                    <div style="margin-top:7px"><span class="status-pill content-waiting">内容待生成</span></div>
+                    <div style="margin-top:7px"><span class="status-pill pending">待生成</span></div>
                   </div>
                 </article>
                 <article class="plan-card brief-only">
@@ -4892,7 +4900,7 @@
                       <div class="platforms"><span class="platform-dot x">X</span></div>
                       <span class="time">17:45</span>
                     </div>
-                    <div class="record-status-row"><span class="status-pill content-waiting">内容待生成</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="X">绑定账号</button></div>
+                    <div class="record-status-row"><span class="status-pill pending">待生成</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="X">绑定账号</button></div>
                   </div>
                 </article>
               </div>
@@ -4903,7 +4911,7 @@
                     <span class="scheduled-task-icon"><svg class="ui-icon" style="width:17px;height:17px"><use href="#i-calendar"></use></svg></span>
                     <span class="scheduled-task-copy"><strong>生成风味笔记 Story</strong><span>Instagram Story</span></span>
                   </div>
-                  <div class="plan-meta-line"><span class="time">12:10</span><span class="status-pill content-waiting">内容待生成</span></div>
+                  <div class="plan-meta-line"><span class="time">12:10</span><span class="status-pill pending">待生成</span></div>
                 </article>
               </div>
               <div class="day-cell">
@@ -4913,7 +4921,7 @@
                     <span class="scheduled-task-icon"><svg class="ui-icon" style="width:17px;height:17px"><use href="#i-calendar"></use></svg></span>
                     <span class="scheduled-task-copy"><strong>生成烘焙幕后内容</strong><span>Instagram Feed · Facebook Page Post</span></span>
                   </div>
-                  <div class="plan-meta-line"><span class="time">08:40</span><span class="status-pill content-waiting">内容待生成</span></div>
+                  <div class="plan-meta-line"><span class="time">08:40</span><span class="status-pill pending">待生成</span></div>
                 </article>
                 <article class="plan-card brief-only">
                   <div class="platform-preview ig-post-preview">
@@ -4970,12 +4978,12 @@
                     <article class="day-agenda-item">
                       <span class="platform-dot ig">IG</span>
                       <div class="day-agenda-copy"><strong>冷萃主视觉方图</strong><span>Instagram Feed · 冷萃新品上市</span></div>
-                      <span class="status-pill account-unbound">账号未绑定</span>
+                      <span class="status-pill account-required">待绑定账号</span>
                     </article>
                     <article class="day-agenda-item">
                       <span class="platform-dot fb">f</span>
                       <div class="day-agenda-copy"><strong>冷萃主视觉方图</strong><span>Facebook Page Post · 冷萃新品上市</span></div>
-                      <span class="status-pill account-unbound">账号未绑定</span>
+                      <span class="status-pill account-required">待绑定账号</span>
                     </article>
                   </div>
                 </div>
@@ -4985,7 +4993,7 @@
                     <article class="day-agenda-item">
                       <span class="platform-dot ig">IG</span>
                       <div class="day-agenda-copy"><strong>新品预热：第一口冷萃</strong><span>Instagram Feed · 冷萃新品上市</span></div>
-                      <span class="status-pill account-unbound">账号未绑定</span>
+                      <span class="status-pill account-required">待绑定账号</span>
                     </article>
                     <article class="day-agenda-item">
                       <span class="platform-dot tt">TT</span>
@@ -5004,40 +5012,40 @@
               <article class="publish-list-item scheduled-task-list-item brief-only scheduled-only" data-task-key="coldbrew-photo" role="button" tabindex="0">
                 <div class="scheduled-task-main"><span class="scheduled-task-icon"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-calendar"></use></svg></span><span class="scheduled-task-copy"><strong>生成新品预热图片组</strong><span>根据发布计划生成图片、文案与 Tag</span></span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="chip blue">Instagram Feed</span><span class="chip green">TikTok Photo</span></div><span class="publish-time">7月14日 08:00</span></div>
-                <div class="publish-state"><span class="status-pill content-waiting">内容待生成</span><span class="copy-action">详情</span></div>
+                <div class="publish-state"><span class="status-pill pending">待生成</span><span class="copy-action">详情</span></div>
               </article>
               <article class="publish-list-item scheduled-task-list-item brief-only scheduled-only" data-task-key="commute-video" role="button" tabindex="0">
                 <div class="scheduled-task-main"><span class="scheduled-task-icon"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-calendar"></use></svg></span><span class="scheduled-task-copy"><strong>生成 15 秒通勤短视频</strong><span>生成动态字幕、平台文案与视频版本</span></span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="chip green">TikTok Video</span><span class="chip blue">Instagram Reels</span></div><span class="publish-time">7月15日 18:30</span></div>
-                <div class="publish-state"><span class="status-pill content-waiting">内容待生成</span><span class="copy-action">详情</span></div>
+                <div class="publish-state"><span class="status-pill pending">待生成</span><span class="copy-action">详情</span></div>
               </article>
               <article class="publish-list-item scheduled-task-list-item brief-only scheduled-only" data-task-key="flavor-story" role="button" tabindex="0">
                 <div class="scheduled-task-main"><span class="scheduled-task-icon"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-calendar"></use></svg></span><span class="scheduled-task-copy"><strong>生成风味笔记 Story</strong><span>生成竖版 Story 图片组、文案与 Tag</span></span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="chip blue">Instagram Story</span></div><span class="publish-time">7月16日 12:10</span></div>
-                <div class="publish-state"><span class="status-pill content-waiting">内容待生成</span><span class="copy-action">详情</span></div>
+                <div class="publish-state"><span class="status-pill pending">待生成</span><span class="copy-action">详情</span></div>
               </article>
               <article class="publish-list-item scheduled-task-list-item brief-only scheduled-only" data-task-key="roast-story" role="button" tabindex="0">
                 <div class="scheduled-task-main"><span class="scheduled-task-icon"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-calendar"></use></svg></span><span class="scheduled-task-copy"><strong>生成烘焙幕后内容</strong><span>生成科普图片、平台文案与 Tag</span></span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="chip blue">Instagram Feed</span><span class="chip orange">Facebook Page Post</span></div><span class="publish-time">7月17日 08:40</span></div>
-                <div class="publish-state"><span class="status-pill content-waiting">内容待生成</span><span class="copy-action">详情</span></div>
+                <div class="publish-state"><span class="status-pill pending">待生成</span><span class="copy-action">详情</span></div>
               </article>
               <article class="publish-list-item import-only">
                 <div class="publish-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="冷萃主视觉方图" /></div>
                 <div class="publish-main"><strong>冷萃主视觉方图</strong><span>项目：冷萃新品上市 · 单图</span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="platform-dot ig">IG</span><span>Instagram Feed</span></div><span class="publish-time">7月8日 09:20</span></div>
-                <div class="publish-state"><span class="status-pill account-unbound">账号未绑定</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button><button class="copy-action" data-toast="已打开 Instagram 发布详情">详情</button></div>
+                <div class="publish-state"><span class="status-pill account-required">待绑定账号</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button><button class="copy-action" data-toast="已打开 Instagram 发布详情">详情</button></div>
               </article>
               <article class="publish-list-item import-only">
                 <div class="publish-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="冷萃主视觉方图 Facebook" /></div>
                 <div class="publish-main"><strong>冷萃主视觉方图</strong><span>项目：冷萃新品上市 · 单图</span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="platform-dot fb">f</span><span>Facebook Page Post</span></div><span class="publish-time">7月8日 09:20</span></div>
-                <div class="publish-state"><span class="status-pill account-unbound">账号未绑定</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Facebook">绑定账号</button><button class="copy-action" data-toast="已打开 Facebook 发布详情">详情</button></div>
+                <div class="publish-state"><span class="status-pill account-required">待绑定账号</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Facebook">绑定账号</button><button class="copy-action" data-toast="已打开 Facebook 发布详情">详情</button></div>
               </article>
               <article class="publish-list-item import-only">
                 <div class="publish-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="早间冷萃 Story" /></div>
                 <div class="publish-main"><strong>早间冷萃 Story</strong><span>项目：冷萃新品上市 · 单图</span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="platform-dot ig">IG</span><span>Instagram Story</span></div><span class="publish-time">7月9日 12:10</span></div>
-                <div class="publish-state"><span class="status-pill account-unbound">账号未绑定</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button><button class="copy-action" data-toast="已打开 Story 发布详情">详情</button></div>
+                <div class="publish-state"><span class="status-pill account-required">待绑定账号</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button><button class="copy-action" data-toast="已打开 Story 发布详情">详情</button></div>
               </article>
               <article class="publish-list-item import-only">
                 <div class="publish-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
@@ -5049,7 +5057,7 @@
                 <div class="publish-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
                 <div class="publish-main"><strong>通勤冷萃短视频</strong><span>项目：冷萃新品上市 · 视频</span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="platform-dot ig">IG</span><span>Instagram Reels</span></div><span class="publish-time">7月10日 18:30</span></div>
-                <div class="publish-state"><span class="status-pill account-unbound">账号未绑定</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button><button class="copy-action" data-toast="已打开 Reels 发布详情">详情</button></div>
+                <div class="publish-state"><span class="status-pill account-required">待绑定账号</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button><button class="copy-action" data-toast="已打开 Reels 发布详情">详情</button></div>
               </article>
               <article class="publish-list-item import-only">
                 <div class="publish-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="咖啡文化海报" /></div>
@@ -5068,7 +5076,7 @@
                 <div class="publish-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="新品预热方图" /></div>
                 <div class="publish-main"><strong>新品预热：第一口冷萃</strong><span>项目：冷萃新品上市 · 多图</span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="platform-dot ig">IG</span><span>Instagram Feed</span></div><span class="publish-time">7月8日 09:20</span></div>
-                <div class="publish-state"><span class="status-pill account-unbound">账号未绑定</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button><button class="copy-action" data-toast="已打开 Instagram 发布详情">详情</button></div>
+                <div class="publish-state"><span class="status-pill account-required">待绑定账号</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button><button class="copy-action" data-toast="已打开 Instagram 发布详情">详情</button></div>
               </article>
               <article class="publish-list-item brief-only">
                 <div class="publish-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
@@ -5086,13 +5094,13 @@
                 <div class="publish-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
                 <div class="publish-main"><strong>15 秒通勤短视频</strong><span>项目：冷萃新品上市 · 视频</span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="platform-dot ig">IG</span><span>Instagram Reels</span></div><span class="publish-time">7月9日 18:30</span></div>
-                <div class="publish-state"><span class="status-pill account-unbound">账号未绑定</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button><button class="copy-action" data-toast="已打开 Reels 发布详情">详情</button></div>
+                <div class="publish-state"><span class="status-pill account-required">待绑定账号</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button><button class="copy-action" data-toast="已打开 Reels 发布详情">详情</button></div>
               </article>
               <article class="publish-list-item brief-only">
                 <div class="publish-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="风味笔记 Story" /></div>
                 <div class="publish-main"><strong>风味笔记 Story</strong><span>项目：冷萃新品上市 · 多图</span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="platform-dot ig">IG</span><span>Instagram Story</span></div><span class="publish-time">7月10日 12:10</span></div>
-                <div class="publish-state"><span class="status-pill account-unbound">账号未绑定</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button><button class="copy-action" data-toast="已打开 Story 发布详情">详情</button></div>
+                <div class="publish-state"><span class="status-pill account-required">待绑定账号</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button><button class="copy-action" data-toast="已打开 Story 发布详情">详情</button></div>
               </article>
               <article class="publish-list-item brief-only">
                 <div class="publish-thumb"><img src="image-generation-flow/assets/coffee-culture-poster-page.jpg" alt="烘焙幕后故事 Instagram" /></div>
@@ -5110,13 +5118,13 @@
                 <div class="publish-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
                 <div class="publish-main"><strong>UGC 风格试喝</strong><span>项目：冷萃新品上市 · 视频</span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="platform-dot tt">TT</span><span>TikTok Video</span></div><span class="publish-time">7月15日 17:45</span></div>
-                <div class="publish-state"><span class="status-pill content-waiting">内容待生成</span><button class="copy-action" data-toast="已打开 TikTok 发布详情">详情</button></div>
+                <div class="publish-state"><span class="status-pill pending">待生成</span><button class="copy-action" data-toast="已打开 TikTok 发布详情">详情</button></div>
               </article>
               <article class="publish-list-item brief-only">
                 <div class="publish-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
                 <div class="publish-main"><strong>UGC 风格试喝</strong><span>项目：冷萃新品上市 · 视频</span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="platform-dot x">X</span><span>X Post</span></div><span class="publish-time">7月15日 17:45</span></div>
-                <div class="publish-state"><span class="status-pill content-waiting">内容待生成</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="X">绑定账号</button><button class="copy-action" data-toast="已打开 X 发布详情">详情</button></div>
+                <div class="publish-state"><span class="status-pill pending">待生成</span><button class="account-bind-btn" data-modal="accountModal" data-bind-platform="X">绑定账号</button><button class="copy-action" data-toast="已打开 X 发布详情">详情</button></div>
               </article>
               <article class="publish-list-item brief-only">
                 <div class="publish-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="限时上市提醒 Instagram" /></div>
@@ -5180,7 +5188,7 @@
                   <h2 class="panel-title">定时任务详情</h2>
                   <span class="panel-meta">点击日历卡片或列表任务切换</span>
                 </div>
-                <span class="status-pill content-waiting" id="scheduledTaskState">内容待生成</span>
+                <span class="status-pill pending" id="scheduledTaskState">待生成</span>
               </div>
               <div class="scheduled-task-main">
                 <span class="scheduled-task-icon"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-calendar"></use></svg></span>
@@ -5440,9 +5448,9 @@
       const prompt = document.getElementById("scheduledTaskPrompt");
       if (title) title.textContent = task.title;
       if (state) {
-        state.textContent = isRunning ? "生成中" : "内容待生成";
+        state.textContent = isRunning ? "生成中" : "待生成";
         state.classList.toggle("generate", isRunning);
-        state.classList.toggle("content-waiting", !isRunning);
+        state.classList.toggle("pending", !isRunning);
       }
       if (time) time.textContent = `${task.time} · Auto Model`;
       if (prompt) prompt.textContent = task.prompt;
@@ -5527,7 +5535,7 @@
       const record = matching[0];
       const status = record.querySelector(".status-pill")?.textContent.trim() || "";
       const isPublished = status === "已发布";
-      const needsAccount = status === "账号未绑定" || status === "待绑定账号";
+      const needsAccount = status === "待绑定账号";
       const platform = getPublishRecordPlatform(record);
       const deleteButton = document.getElementById("deletePublishPlanBtn");
       const accountBanner = document.querySelector(".review-panel.immediate-only .account-required-banner");
@@ -5794,7 +5802,7 @@
       scheduledTaskExecution[activeScheduledTaskKey] = true;
       document.querySelectorAll(`[data-task-key="${activeScheduledTaskKey}"] .status-pill`).forEach((status) => {
         status.textContent = "生成中";
-        status.classList.remove("content-waiting");
+        status.classList.remove("pending");
         status.classList.add("generate");
       });
       populateScheduledTaskDetails(activeScheduledTaskKey);
