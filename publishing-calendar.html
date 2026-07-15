@@ -1953,6 +1953,74 @@
       gap: 10px;
     }
 
+    .header-create-menu {
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .header-create-menu[hidden] {
+      display: none !important;
+    }
+
+    .create-path-popover {
+      width: 210px;
+      padding-top: 8px;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      z-index: 40;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(-4px);
+      transition: opacity 140ms ease, transform 140ms ease, visibility 140ms ease;
+    }
+
+    .header-create-menu:hover .create-path-popover,
+    .header-create-menu:focus-within .create-path-popover,
+    .header-create-menu.is-open .create-path-popover {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .create-path-menu-panel {
+      padding: 6px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: var(--shadow-float);
+    }
+
+    .create-path-option {
+      width: 100%;
+      min-height: 40px;
+      padding: 0 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--text-primary);
+      background: transparent;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .create-path-option:hover,
+    .create-path-option:focus-visible {
+      color: var(--text-strong);
+      background: #f4f5f7;
+      outline: none;
+    }
+
+    .create-path-option .ui-icon {
+      width: 17px;
+      height: 17px;
+      color: var(--brand-blue);
+    }
+
     .primary-btn,
     .secondary-btn,
     .ghost-btn,
@@ -1966,10 +2034,6 @@
       padding: 0 14px;
       font-weight: 600;
       white-space: nowrap;
-    }
-
-    .header-create-plan[hidden] {
-      display: none !important;
     }
 
     .primary-btn {
@@ -4070,7 +4134,15 @@
             <h1 class="page-title">自动化营销</h1>
           </div>
           <div class="head-actions">
-            <button class="primary-btn header-create-plan" data-goto="setup"><svg class="ui-icon"><use href="#i-plus"></use></svg>创建营销计划</button>
+            <div class="header-create-menu">
+              <button class="primary-btn header-create-plan" type="button" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-plus"></use></svg>创建营销计划</button>
+              <div class="create-path-popover">
+                <div class="create-path-menu-panel" role="menu" aria-label="选择创建路径">
+                  <button class="create-path-option" type="button" role="menuitem" data-goto="setup"><svg class="ui-icon"><use href="#i-sparkles"></use></svg>从营销目标创建</button>
+                  <button class="create-path-option" type="button" role="menuitem" data-goto="importProjects"><svg class="ui-icon"><use href="#i-box"></use></svg>从项目导入</button>
+                </div>
+              </div>
+            </div>
             <button class="secondary-btn" data-modal="accountModal"><svg class="ui-icon"><use href="#i-database"></use></svg>社媒账号管理</button>
             <button class="secondary-btn" data-modal="historyModal"><svg class="ui-icon"><use href="#i-file-text"></use></svg>发布历史</button>
           </div>
@@ -4138,7 +4210,7 @@
                         <strong>还没有发布计划</strong>
                         <span>创建营销计划后，内容会按日期自动排入日历。</span>
                         <div class="blank-calendar-action">
-                          <button class="primary-btn" data-goto="setup"><svg class="ui-icon"><use href="#i-plus"></use></svg>创建营销计划</button>
+                          <button class="primary-btn" data-goto="setup"><svg class="ui-icon"><use href="#i-sparkles"></use></svg>从营销目标创建</button>
                           <button class="secondary-btn" data-goto="importProjects"><svg class="ui-icon"><use href="#i-box"></use></svg>从项目导入</button>
                         </div>
                       </div>
@@ -5409,10 +5481,20 @@
       }, 3000);
     }
 
-    function updateHeaderCreateAction(screenName) {
+    function setHeaderCreateMenuOpen(open) {
+      const createMenu = document.querySelector(".header-create-menu");
       const createButton = document.querySelector(".header-create-plan");
-      if (!createButton) return;
-      createButton.hidden = !["empty", "calendar"].includes(screenName);
+      if (!createMenu || !createButton) return;
+      createMenu.classList.toggle("is-open", open);
+      createButton.setAttribute("aria-expanded", String(open));
+    }
+
+    function updateHeaderCreateAction(screenName) {
+      const createMenu = document.querySelector(".header-create-menu");
+      if (!createMenu) return;
+      const visible = ["empty", "calendar"].includes(screenName);
+      createMenu.hidden = !visible;
+      if (!visible) setHeaderCreateMenuOpen(false);
     }
 
     function updatePageTitle(screenName) {
@@ -5603,6 +5685,29 @@
     populateScheduledTaskDetails("coldbrew-photo");
     setupPublishRecordInteractions();
     selectFirstPublishRecordForMode();
+
+    const headerCreateMenu = document.querySelector(".header-create-menu");
+    const headerCreateButton = document.querySelector(".header-create-plan");
+    headerCreateMenu?.addEventListener("mouseenter", () => setHeaderCreateMenuOpen(true));
+    headerCreateMenu?.addEventListener("mouseleave", () => {
+      if (!headerCreateMenu.matches(":focus-within")) setHeaderCreateMenuOpen(false);
+    });
+    headerCreateMenu?.addEventListener("focusin", () => setHeaderCreateMenuOpen(true));
+    headerCreateMenu?.addEventListener("focusout", (event) => {
+      if (!headerCreateMenu.contains(event.relatedTarget)) setHeaderCreateMenuOpen(false);
+    });
+    headerCreateButton?.addEventListener("click", (event) => {
+      event.stopPropagation();
+      setHeaderCreateMenuOpen(!headerCreateMenu?.classList.contains("is-open"));
+    });
+    document.addEventListener("click", (event) => {
+      if (!headerCreateMenu?.contains(event.target)) setHeaderCreateMenuOpen(false);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || !headerCreateMenu?.classList.contains("is-open")) return;
+      setHeaderCreateMenuOpen(false);
+      headerCreateButton?.focus();
+    });
 
     document.querySelectorAll("[data-toast]").forEach((button) => {
       button.addEventListener("click", () => {
