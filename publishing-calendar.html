@@ -232,6 +232,60 @@
       height: 18px;
     }
 
+    .side-automation-block {
+      display: grid;
+      gap: 3px;
+    }
+
+    .side-generation-status {
+      min-height: 24px;
+      padding: 3px 8px 3px 36px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    .side-generation-status[hidden] {
+      display: none !important;
+    }
+
+    .side-generation-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex: 0 0 auto;
+      background: var(--brand-blue);
+    }
+
+    .side-generation-status.running .side-generation-dot {
+      box-shadow: 0 0 0 3px rgba(77, 94, 255, 0.12);
+      animation: side-status-pulse 1.5s ease-in-out infinite;
+    }
+
+    .side-generation-status.completed {
+      color: #11835d;
+    }
+
+    .side-generation-status.completed .side-generation-dot {
+      background: #18bf83;
+    }
+
+    .side-generation-status.failed {
+      color: #9c6100;
+    }
+
+    .side-generation-status.failed .side-generation-dot {
+      background: var(--warning);
+    }
+
+    @keyframes side-status-pulse {
+      50% { opacity: 0.45; }
+    }
+
     .side-section-title {
       display: flex;
       align-items: center;
@@ -1162,6 +1216,47 @@
       font-size: 14px;
     }
 
+    .project-time-filter-row {
+      min-height: 36px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .project-time-filter {
+      height: 34px;
+      padding: 3px;
+      border-radius: 12px;
+      display: inline-flex;
+      gap: 2px;
+      background: #edeff1;
+    }
+
+    .project-time-filter button {
+      min-width: 84px;
+      padding: 0 10px;
+      border-radius: 9px;
+      color: var(--text-quaternary);
+      background: transparent;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .project-time-filter button.active {
+      color: var(--text-strong);
+      background: #fff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .project-range-note {
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
     .project-list {
       display: grid;
       gap: 10px;
@@ -1366,7 +1461,7 @@
     }
 
     .draft-row.with-product {
-      grid-template-columns: 82px 76px minmax(0, 1fr) 188px;
+      grid-template-columns: 82px 76px minmax(0, 1fr) 188px 34px;
     }
 
     .draft-product-thumb {
@@ -1602,10 +1697,11 @@
       background: #fff;
       border: 1px solid var(--border-subtle);
       display: grid;
-      grid-template-columns: 82px minmax(0, 1fr) 188px;
+      grid-template-columns: 82px minmax(0, 1fr) 188px 34px;
       align-items: center;
       gap: 12px;
       padding: 10px 12px;
+      position: relative;
     }
 
     .draft-date {
@@ -1659,6 +1755,73 @@
       display: grid;
       justify-items: end;
       gap: 8px;
+    }
+
+    .draft-more {
+      position: relative;
+      justify-self: end;
+    }
+
+    .draft-more-trigger {
+      width: 32px;
+      height: 32px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      color: var(--text-secondary);
+      background: transparent;
+    }
+
+    .draft-more-trigger:hover,
+    .draft-more-trigger[aria-expanded="true"] {
+      color: var(--text-strong);
+      background: #f4f5f7;
+    }
+
+    .draft-more-menu {
+      width: 120px;
+      padding: 6px;
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0;
+      z-index: 30;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: var(--shadow-float);
+    }
+
+    .draft-more-menu[hidden] {
+      display: none !important;
+    }
+
+    .draft-delete-option {
+      width: 100%;
+      min-height: 34px;
+      padding: 0 9px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #c9364f;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .draft-delete-option:hover {
+      background: #fff0f3;
+    }
+
+    .draft-empty {
+      min-height: 96px;
+      border: 1px dashed #dfe4ec;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: var(--text-tertiary);
+      background: #f9fafc;
+      font-size: 13px;
     }
 
     .mini-edit-row {
@@ -2321,6 +2484,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 14px;
+      flex-wrap: wrap;
       margin-bottom: 14px;
     }
 
@@ -2330,6 +2494,21 @@
       align-items: center;
       gap: 8px;
       flex-wrap: wrap;
+    }
+
+    .toolbar-left {
+      flex: 1 1 420px;
+    }
+
+    .toolbar-right {
+      flex: 0 0 auto;
+      flex-wrap: nowrap;
+      margin-left: auto;
+    }
+
+    .supplement-publish-btn {
+      height: 36px;
+      padding: 0 12px;
     }
 
     .select-pill {
@@ -3558,6 +3737,404 @@
       padding: 18px;
     }
 
+    .supplement-modal-panel {
+      width: min(820px, calc(100vw - 72px));
+    }
+
+    .supplement-form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .supplement-section-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-strong);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .supplement-source-tabs {
+      padding: 3px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 3px;
+      border-radius: 11px;
+      background: #edeff1;
+    }
+
+    .supplement-source-tab {
+      min-height: 36px;
+      padding: 0 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      color: var(--text-secondary);
+      background: transparent;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .supplement-source-tab.active {
+      color: var(--text-strong);
+      background: #fff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .supplement-source-panel {
+      display: block;
+    }
+
+    .supplement-source-panel[hidden] {
+      display: none !important;
+    }
+
+    .supplement-material-choice {
+      min-height: 84px;
+      padding: 10px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-primary);
+      background: #fff;
+      text-align: left;
+    }
+
+    .supplement-material-choice.selected {
+      border-color: #cfd7ff;
+      background: #f8f9ff;
+      box-shadow: 0 0 0 2px rgba(77, 94, 255, 0.1);
+    }
+
+    .supplement-material-thumb {
+      width: 54px;
+      height: 54px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      color: var(--brand-blue);
+      background: #eef1ff;
+      flex: 0 0 auto;
+    }
+
+    .supplement-material-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .supplement-material-choice strong,
+    .supplement-material-choice span {
+      display: block;
+    }
+
+    .supplement-material-choice strong {
+      color: var(--text-strong);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .supplement-material-choice span {
+      margin-top: 3px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .supplement-upload-choice {
+      cursor: pointer;
+    }
+
+    .supplement-project-entry {
+      width: 100%;
+      min-height: 68px;
+      margin-bottom: 12px;
+      border-style: solid;
+      background: #fff;
+    }
+
+    .supplement-source-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 2px 0 10px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+
+    .supplement-source-divider::before,
+    .supplement-source-divider::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: var(--border-subtle);
+    }
+
+    .supplement-panel-head {
+      min-height: 36px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .supplement-panel-head strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .supplement-panel-head span {
+      display: block;
+      margin-top: 2px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+
+    .supplement-back-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: #f4f5f7;
+      border: 1px solid var(--border-subtle);
+      display: grid;
+      place-items: center;
+      color: var(--text-secondary);
+    }
+
+    .supplement-project-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .supplement-project-card {
+      min-height: 78px;
+      padding: 12px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr) 20px;
+      gap: 12px;
+      align-items: center;
+      color: var(--text-primary);
+      background: #fff;
+      text-align: left;
+      box-shadow: var(--shadow-card);
+    }
+
+    .supplement-project-card:hover {
+      border-color: #dfe5ff;
+      background: #fbfcff;
+    }
+
+    .supplement-project-card strong,
+    .supplement-project-card span {
+      display: block;
+    }
+
+    .supplement-project-card strong {
+      color: var(--text-strong);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .supplement-project-card span {
+      margin-top: 4px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .supplement-source-panel .asset-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .supplement-media-toolbar {
+      min-height: 38px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .supplement-media-tabs {
+      height: 34px;
+      padding: 3px;
+      border-radius: 12px;
+      display: inline-flex;
+      gap: 2px;
+      background: #edeff1;
+    }
+
+    .supplement-media-tabs button {
+      min-width: 64px;
+      padding: 0 12px;
+      border-radius: 9px;
+      color: var(--text-quaternary);
+      background: transparent;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .supplement-media-tabs button.active {
+      color: var(--text-strong);
+      background: #fff;
+      box-shadow: var(--shadow-card);
+    }
+
+    .supplement-selection-hint {
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .supplement-asset-choice {
+      position: relative;
+    }
+
+    .supplement-asset-choice::after {
+      content: "";
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid #dfe4ec;
+      box-shadow: 0 1px 4px rgba(0, 8, 24, 0.08);
+    }
+
+    .supplement-asset-choice.selected::after {
+      content: "✓";
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--brand-blue);
+      border-color: var(--brand-blue);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .supplement-publish-config {
+      padding-top: 14px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .supplement-publish-config[hidden] {
+      display: none !important;
+    }
+
+    .supplement-config-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .supplement-field label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--text-strong);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .supplement-control {
+      width: 100%;
+      height: 40px;
+      padding: 0 11px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      color: var(--text-primary);
+      background: #fff;
+      font: inherit;
+      font-size: 13px;
+      outline: none;
+    }
+
+    .supplement-control:focus {
+      border-color: #bfc9ff;
+      box-shadow: 0 0 0 3px rgba(77, 94, 255, 0.1);
+    }
+
+    .supplement-error {
+      min-height: 18px;
+      margin: 2px 0 0;
+      color: #c9364f;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .supplement-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .supplement-loading {
+      min-height: 330px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .supplement-loading[hidden] {
+      display: none !important;
+    }
+
+    .supplement-loading strong,
+    .supplement-loading span {
+      display: block;
+    }
+
+    .supplement-loading strong {
+      margin-top: 14px;
+      color: var(--text-strong);
+      font-size: 17px;
+    }
+
+    .supplement-loading span {
+      margin-top: 6px;
+      color: var(--text-tertiary);
+      font-size: 13px;
+    }
+
+    .confirm-modal-panel {
+      width: min(440px, calc(100vw - 72px));
+    }
+
+    .confirm-copy {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .confirm-actions {
+      margin-top: 18px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .danger-btn {
+      height: 38px;
+      padding: 0 14px;
+      border-radius: 10px;
+      color: #fff;
+      background: #d9425b;
+      font-weight: 650;
+    }
+
     .task-detail-label {
       display: block;
       margin-bottom: 7px;
@@ -4092,7 +4669,13 @@
       <div class="side-group">
         <button class="side-link"><svg class="ui-icon"><use href="#i-zap"></use></svg>专家与技能</button>
         <button class="side-link"><svg class="ui-icon"><use href="#i-file-text"></use></svg>定时任务</button>
-        <button class="side-link active"><svg class="ui-icon"><use href="#i-calendar"></use></svg>自动化营销</button>
+        <div class="side-automation-block">
+          <button class="side-link active"><svg class="ui-icon"><use href="#i-calendar"></use></svg>自动化营销</button>
+          <div class="side-generation-status" id="sidebarGenerationStatus" aria-live="polite" hidden>
+            <span class="side-generation-dot" aria-hidden="true"></span>
+            <span id="sidebarGenerationStatusText"></span>
+          </div>
+        </div>
       </div>
       <div class="side-section-title">
         <span>项目</span>
@@ -4172,6 +4755,7 @@
                     <div class="calendar-nav-group">
                       <span class="select-pill">全部平台 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
                       <span class="select-pill">全部账号 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
+                      <button class="secondary-btn supplement-publish-btn" type="button" data-modal="supplementModal"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-plus"></use></svg>新增发布内容</button>
                     </div>
                   </div>
                   <div class="blank-calendar-wrap">
@@ -4233,35 +4817,58 @@
             <div class="import-main-card">
               <div class="panel-head">
                 <h2 class="panel-title">选择要导入的项目 <span class="selected-count-pill" id="selectedProjectCount">2 个项目</span></h2>
-                <span class="panel-meta">可使用已选择项目中的图片/视频生成物进行发布</span>
+                <span class="panel-meta">可使用最近 6 个月内项目中的图片/视频生成物进行发布</span>
+              </div>
+              <div class="project-time-filter-row">
+                <div class="project-time-filter" aria-label="项目更新时间范围">
+                  <button class="active" type="button" data-project-time-filter="import" data-months="1">最近一个月</button>
+                  <button type="button" data-project-time-filter="import" data-months="3">最近 3 个月</button>
+                  <button type="button" data-project-time-filter="import" data-months="6">最近 6 个月</button>
+                </div>
+                <span class="project-range-note">最多可选择最近 6 个月内更新的项目</span>
               </div>
               <div class="import-search">
                 <svg class="ui-icon" style="width:18px;height:18px;color:var(--text-tertiary)"><use href="#i-search"></use></svg>
                 <input id="projectSearch" type="search" placeholder="搜索项目" />
               </div>
               <div class="project-list" id="projectList">
-                <button class="project-card selected" type="button" data-project="coldbrew" data-keywords="冷萃 新品上市 咖啡">
+                <button class="project-card selected" type="button" data-project="coldbrew" data-project-age-months="0.2" data-keywords="冷萃 新品上市 咖啡">
                   <div class="project-avatar">CB</div>
                   <div class="project-copy">
                     <strong>冷萃新品上市</strong>
-                    <span>12 个图片 / 视频产物 · 最近更新 7月8日</span>
+                    <span>12 个图片 / 视频产物 · 最近更新 7 月 8 日</span>
                   </div>
                   <span class="project-mark">✓</span>
                 </button>
-                <button class="project-card selected" type="button" data-project="summer" data-keywords="夏季 门店 海报">
+                <button class="project-card selected" type="button" data-project="summer" data-project-age-months="0.3" data-keywords="夏季 门店 海报">
                   <div class="project-avatar" style="background:linear-gradient(135deg,#ffaa00,#ff576d)">SU</div>
                   <div class="project-copy">
                     <strong>夏季门店活动</strong>
-                    <span>8 个图片 / 视频产物 · 最近更新 7月6日</span>
+                    <span>8 个图片 / 视频产物 · 最近更新 7 月 6 日</span>
                   </div>
                   <span class="project-mark">✓</span>
                 </button>
-                <button class="project-card" type="button" data-project="ugc" data-keywords="ugc 试喝 短视频">
+                <button class="project-card" type="button" data-project="ugc" data-project-age-months="0.4" data-keywords="ugc 试喝 短视频">
                   <div class="project-avatar" style="background:linear-gradient(135deg,#6b37ff,#ff4ad5)">UG</div>
                   <div class="project-copy">
                     <strong>UGC 试喝内容</strong>
-                    <span>6 个图片 / 视频产物 · 最近更新 7月3日</span>
+                    <span>6 个图片 / 视频产物 · 最近更新 7 月 3 日</span>
                   </div>
+                  <span class="project-mark">✓</span>
+                </button>
+                <button class="project-card" type="button" data-project="culture" data-project-age-months="2" data-keywords="coffee culture 咖啡 文化">
+                  <div class="project-avatar" style="background:linear-gradient(135deg,#4d5eff,#6b37ff)">CC</div>
+                  <div class="project-copy"><strong>Coffee Culture 内容组</strong><span>9 个图片 / 视频产物 · 最近更新 5 月 20 日</span></div>
+                  <span class="project-mark">✓</span>
+                </button>
+                <button class="project-card" type="button" data-project="commute" data-project-age-months="4" data-keywords="通勤 场景 短视频">
+                  <div class="project-avatar" style="background:linear-gradient(135deg,#00a1ff,#00c4a7)">CV</div>
+                  <div class="project-copy"><strong>通勤场景短视频</strong><span>5 个图片 / 视频产物 · 最近更新 3 月 16 日</span></div>
+                  <span class="project-mark">✓</span>
+                </button>
+                <button class="project-card" type="button" data-project="spring" data-project-age-months="5.5" data-keywords="春季 上新 饮品">
+                  <div class="project-avatar" style="background:linear-gradient(135deg,#ff8a4c,#ff4ad5)">SP</div>
+                  <div class="project-copy"><strong>春季饮品上新</strong><span>7 个图片 / 视频产物 · 最近更新 2 月 2 日</span></div>
                   <span class="project-mark">✓</span>
                 </button>
               </div>
@@ -4566,6 +5173,7 @@
                   <div class="draft-actions">
                     <div class="chip-row"><span class="format-chip multi">多图</span><span class="chip blue">Instagram feed</span><span class="chip green">Tiktok photo</span></div>
                   </div>
+                  <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
                 <div class="draft-row">
                   <div class="draft-date">7月9日<span>18:30</span></div>
@@ -4576,6 +5184,7 @@
                   <div class="draft-actions">
                     <div class="chip-row"><span class="format-chip video">视频</span><span class="chip green">Tiktok video</span><span class="chip blue">Instagram Reels</span></div>
                   </div>
+                  <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
                 <div class="draft-row">
                   <div class="draft-date">7月10日<span>12:10</span></div>
@@ -4586,6 +5195,7 @@
                   <div class="draft-actions">
                     <div class="chip-row"><span class="format-chip multi">多图</span><span class="chip blue">Instagram story</span></div>
                   </div>
+                  <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
                 <div class="draft-row">
                   <div class="draft-date">7月13日<span>08:40</span></div>
@@ -4596,6 +5206,7 @@
                   <div class="draft-actions">
                     <div class="chip-row"><span class="format-chip single">单图</span><span class="chip blue">Instagram feed</span><span class="chip orange">Facebook page Post</span></div>
                   </div>
+                  <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
               </div>
 
@@ -4610,6 +5221,7 @@
                   <div class="draft-actions">
                     <div class="chip-row"><span class="format-chip single">单图</span><span class="chip blue">Instagram feed</span><span class="chip orange">Facebook page Post</span></div>
                   </div>
+                  <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
                 <div class="draft-row with-product">
                   <div class="draft-date">7月9日<span>12:10</span></div>
@@ -4621,6 +5233,7 @@
                   <div class="draft-actions">
                     <div class="chip-row"><span class="format-chip single">单图</span><span class="chip blue">Instagram story</span></div>
                   </div>
+                  <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
                 <div class="draft-row with-product">
                   <div class="draft-date">7月10日<span>18:30</span></div>
@@ -4632,6 +5245,7 @@
                   <div class="draft-actions">
                     <div class="chip-row"><span class="format-chip video">视频</span><span class="chip green">Tiktok video</span><span class="chip blue">Instagram Reels</span></div>
                   </div>
+                  <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
                 <div class="draft-row with-product">
                   <div class="draft-date">7月13日<span>08:40</span></div>
@@ -4643,6 +5257,7 @@
                   <div class="draft-actions">
                     <div class="chip-row"><span class="format-chip single">单图</span><span class="chip orange">X Post</span><span class="chip orange">Facebook page Post</span></div>
                   </div>
+                  <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
               </div>
 
@@ -4706,6 +5321,7 @@
                   <button class="active" type="button" data-calendar-view="calendar">日历</button>
                   <button type="button" data-calendar-view="list">列表</button>
                 </div>
+                <button class="secondary-btn supplement-publish-btn" type="button" data-modal="supplementModal"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-plus"></use></svg>新增发布内容</button>
               </div>
             </div>
 
@@ -5285,6 +5901,189 @@
     </main>
   </div>
 
+  <div class="modal-backdrop" id="supplementModal" aria-hidden="true">
+    <section class="modal-panel supplement-modal-panel" role="dialog" aria-label="新增发布内容">
+      <div class="modal-head">
+        <div>
+          <h2 class="modal-title">新增发布内容</h2>
+          <span class="panel-meta">选择待发布素材，AI 将自动生成文案和 Tag</span>
+        </div>
+        <button class="icon-btn" data-close-modal aria-label="关闭"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
+      </div>
+      <div class="supplement-form" id="supplementFormContent">
+        <section>
+          <span class="supplement-section-label">待发布素材</span>
+          <div class="supplement-source-panel" data-supplement-panel="source">
+            <button class="asset-add-option supplement-project-entry" type="button" data-supplement-source="project">
+              <span class="asset-add-icon"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-box"></use></svg></span>
+              <span><strong>从已有项目选择</strong><span>先选择项目，再选择该项目中的图片或视频产物</span></span>
+            </button>
+            <div class="supplement-source-divider">或直接添加素材</div>
+            <div class="asset-add-row" aria-label="其他素材来源">
+              <label class="asset-add-option" for="supplementLocalUpload">
+                <span class="asset-add-icon"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-plus"></use></svg></span>
+                <span><strong>本地上传</strong><span>图片 / 视频</span></span>
+              </label>
+              <input class="upload-input" id="supplementLocalUpload" type="file" multiple accept="image/*,video/*" />
+              <button class="asset-add-option" type="button" data-supplement-source="cloud">
+                <span class="asset-add-icon"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-database"></use></svg></span>
+                <span><strong>从云盘添加</strong><span>选择已有文件</span></span>
+              </button>
+              <button class="asset-add-option" type="button" data-supplement-source="library">
+                <span class="asset-add-icon"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-box"></use></svg></span>
+                <span><strong>从素材库添加</strong><span>复用团队素材</span></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="supplement-source-panel" data-supplement-panel="projects" hidden>
+            <div class="supplement-panel-head">
+              <button class="supplement-back-btn" type="button" data-supplement-back="source" aria-label="返回素材来源"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(90deg)"><use href="#i-chevron-down"></use></svg></button>
+              <div><strong>选择项目</strong><span>仅支持选择最近 6 个月内更新的项目</span></div>
+            </div>
+            <div class="project-time-filter-row">
+              <div class="project-time-filter" aria-label="新增内容项目更新时间范围">
+                <button class="active" type="button" data-project-time-filter="supplement" data-months="1">最近一个月</button>
+                <button type="button" data-project-time-filter="supplement" data-months="3">最近 3 个月</button>
+                <button type="button" data-project-time-filter="supplement" data-months="6">最近 6 个月</button>
+              </div>
+              <span class="project-range-note">最多展示最近 6 个月</span>
+            </div>
+            <div class="import-search">
+              <svg class="ui-icon" style="width:18px;height:18px;color:var(--text-tertiary)"><use href="#i-search"></use></svg>
+              <input id="supplementProjectSearch" type="search" placeholder="搜索项目" />
+            </div>
+            <div class="supplement-project-grid">
+              <button class="supplement-project-card" type="button" data-supplement-project="coldbrew" data-project-title="冷萃新品上市" data-project-age-months="0.2" data-keywords="冷萃 新品上市 咖啡">
+                <span class="project-avatar">CB</span>
+                <span><strong>冷萃新品上市</strong><span>5 个可用素材 · 今天更新</span></span>
+                <span class="project-mark"></span>
+              </button>
+              <button class="supplement-project-card" type="button" data-supplement-project="ugc" data-project-title="UGC 试喝内容" data-project-age-months="0.4" data-keywords="ugc 试喝 短视频">
+                <span class="project-avatar" style="background:linear-gradient(135deg,#6b37ff,#ff4ad5)">UG</span>
+                <span><strong>UGC 试喝内容</strong><span>6 个可用素材 · 7 月 3 日更新</span></span>
+                <span class="project-mark"></span>
+              </button>
+              <button class="supplement-project-card" type="button" data-supplement-project="coffee-culture" data-project-title="Coffee Culture 内容组" data-project-age-months="2" data-keywords="coffee culture 咖啡 文化">
+                <span class="project-avatar" style="background:linear-gradient(135deg,#4d5eff,#6b37ff)">CC</span>
+                <span><strong>Coffee Culture 内容组</strong><span>3 个可用素材 · 5 月 20 日更新</span></span>
+                <span class="project-mark"></span>
+              </button>
+              <button class="supplement-project-card" type="button" data-supplement-project="commute" data-project-title="通勤场景短视频" data-project-age-months="4" data-keywords="通勤 场景 短视频">
+                <span class="project-avatar" style="background:linear-gradient(135deg,#00a1ff,#00c4a7)">CV</span>
+                <span><strong>通勤场景短视频</strong><span>2 个可用素材 · 3 月 16 日更新</span></span>
+                <span class="project-mark"></span>
+              </button>
+              <button class="supplement-project-card" type="button" data-supplement-project="spring" data-project-title="春季饮品上新" data-project-age-months="5.5" data-keywords="春季 上新 饮品">
+                <span class="project-avatar" style="background:linear-gradient(135deg,#ff8a4c,#ff4ad5)">SP</span>
+                <span><strong>春季饮品上新</strong><span>4 个可用素材 · 2 月 2 日更新</span></span>
+                <span class="project-mark"></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="supplement-source-panel" data-supplement-panel="project-assets" hidden>
+            <div class="supplement-panel-head">
+              <button class="supplement-back-btn" type="button" data-supplement-back="projects" aria-label="返回项目列表"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(90deg)"><use href="#i-chevron-down"></use></svg></button>
+              <div><strong id="supplementSelectedProjectTitle">项目素材</strong><span>图片支持多选，视频仅支持单选</span></div>
+            </div>
+            <div class="supplement-media-toolbar">
+              <div class="supplement-media-tabs" aria-label="项目素材类型"><button class="active" type="button" data-supplement-media-tab="image">图片</button><button type="button" data-supplement-media-tab="video">视频</button></div>
+              <span class="supplement-selection-hint">图片支持多选</span>
+            </div>
+            <div class="asset-grid">
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="coldbrew" data-material-title="深烘冷萃海报" data-material-image="image-generation-flow/coffee_dark_1x1_2.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="深烘冷萃海报" /></div><strong>深烘冷萃海报</strong><span>Instagram feed</span></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="coldbrew" data-material-title="早间冷萃竖版图" data-material-image="image-generation-flow/coffee_light_9x16_2.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="早间冷萃竖版图" /></div><strong>早间冷萃竖版图</strong><span>Instagram story</span></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="coldbrew" data-material-title="15 秒通勤短视频" data-material-image="" data-material-type="video"><div class="asset-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div><strong>15 秒通勤短视频</strong><span>Tiktok video</span></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="ugc" data-material-title="UGC 试喝短视频" data-material-image="" data-material-type="video"><div class="asset-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div><strong>UGC 试喝短视频</strong><span>Tiktok video</span></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="ugc" data-material-title="用户试喝反馈图" data-material-image="image-generation-flow/assets/coffee-culture-poster-page.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/assets/coffee-culture-poster-page.jpg" alt="用户试喝反馈图" /></div><strong>用户试喝反馈图</strong><span>Instagram feed</span></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="coffee-culture" data-material-title="Coffee culture 方图" data-material-image="image-generation-flow/assets/coffee-culture-poster.png" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="Coffee culture 方图" /></div><strong>Coffee culture 方图</strong><span>Instagram feed</span></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="coffee-culture" data-material-title="咖啡文化长图" data-material-image="image-generation-flow/assets/coffee-culture-poster-page.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/assets/coffee-culture-poster-page.jpg" alt="咖啡文化长图" /></div><strong>咖啡文化长图</strong><span>Facebook page Post</span></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="commute" data-material-title="通勤冷萃短视频" data-material-image="" data-material-type="video"><div class="asset-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div><strong>通勤冷萃短视频</strong><span>Tiktok video</span></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="commute" data-material-title="通勤场景竖版封面" data-material-image="image-generation-flow/coffee_light_9x16_2.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="通勤场景竖版封面" /></div><strong>通勤场景竖版封面</strong><span>Instagram Reels</span></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="spring" data-material-title="春季饮品上新海报" data-material-image="image-generation-flow/coffee_light_9x16_2.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="春季饮品上新海报" /></div><strong>春季饮品上新海报</strong><span>Instagram story</span></button>
+            </div>
+          </div>
+
+          <div class="supplement-source-panel" data-supplement-panel="local" hidden>
+            <div class="supplement-panel-head"><button class="supplement-back-btn" type="button" data-supplement-back="source" aria-label="返回素材来源"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(90deg)"><use href="#i-chevron-down"></use></svg></button><div><strong>本地上传</strong><span>已选择的文件</span></div></div>
+            <div class="supplement-media-toolbar"><div class="supplement-media-tabs" aria-label="本地素材类型"><button class="active" type="button" data-supplement-media-tab="image">图片</button><button type="button" data-supplement-media-tab="video">视频</button></div><span class="supplement-selection-hint">图片支持多选</span></div>
+            <div class="asset-grid" id="supplementLocalGrid"></div>
+          </div>
+
+          <div class="supplement-source-panel" data-supplement-panel="cloud" hidden>
+            <div class="supplement-panel-head"><button class="supplement-back-btn" type="button" data-supplement-back="source" aria-label="返回素材来源"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(90deg)"><use href="#i-chevron-down"></use></svg></button><div><strong>从云盘添加</strong><span>选择待发布的图片或视频</span></div></div>
+            <div class="supplement-media-toolbar"><div class="supplement-media-tabs" aria-label="云盘素材类型"><button class="active" type="button" data-supplement-media-tab="image">图片</button><button type="button" data-supplement-media-tab="video">视频</button></div><span class="supplement-selection-hint">图片支持多选</span></div>
+            <div class="asset-grid">
+              <button class="asset-card supplement-asset-choice" type="button" data-material-title="品牌冷萃主视觉" data-material-image="image-generation-flow/coffee_dark_1x1_2.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="品牌冷萃主视觉" /></div><strong>品牌冷萃主视觉</strong><span>云盘 · PNG</span></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-material-title="新品上市 Story" data-material-image="image-generation-flow/coffee_light_9x16_2.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="新品上市 Story" /></div><strong>新品上市 Story</strong><span>云盘 · JPG</span></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-material-title="新品上市短视频" data-material-image="" data-material-type="video"><div class="asset-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div><strong>新品上市短视频</strong><span>云盘 · MP4</span></button>
+            </div>
+          </div>
+
+          <div class="supplement-source-panel" data-supplement-panel="library" hidden>
+            <div class="supplement-panel-head"><button class="supplement-back-btn" type="button" data-supplement-back="source" aria-label="返回素材来源"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(90deg)"><use href="#i-chevron-down"></use></svg></button><div><strong>从素材库添加</strong><span>选择待发布的团队共享素材</span></div></div>
+            <div class="supplement-media-toolbar"><div class="supplement-media-tabs" aria-label="素材库类型"><button class="active" type="button" data-supplement-media-tab="image">图片</button><button type="button" data-supplement-media-tab="video">视频</button></div><span class="supplement-selection-hint">图片支持多选</span></div>
+            <div class="asset-grid">
+              <button class="asset-card supplement-asset-choice" type="button" data-material-title="Coffee culture 方图" data-material-image="image-generation-flow/assets/coffee-culture-poster.png" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="Coffee culture 方图" /></div><strong>Coffee culture 方图</strong><span>素材库 · 团队共享</span></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-material-title="咖啡文化长图" data-material-image="image-generation-flow/assets/coffee-culture-poster-page.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/assets/coffee-culture-poster-page.jpg" alt="咖啡文化长图" /></div><strong>咖啡文化长图</strong><span>素材库 · 团队共享</span></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-material-title="咖啡文化短视频" data-material-image="" data-material-type="video"><div class="asset-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div><strong>咖啡文化短视频</strong><span>素材库 · 团队共享</span></button>
+            </div>
+          </div>
+        </section>
+        <div class="supplement-publish-config" id="supplementPublishConfig" hidden>
+          <span class="supplement-section-label">发布设置</span>
+          <div class="supplement-config-grid">
+            <div class="supplement-field">
+              <label for="supplementPlatform">发布平台</label>
+              <select class="supplement-control" id="supplementPlatform">
+                <option value="Facebook">Facebook</option>
+                <option value="Instagram" selected>Instagram</option>
+                <option value="X">X</option>
+                <option value="TikTok">TikTok</option>
+                <option value="YouTube">YouTube</option>
+              </select>
+            </div>
+            <div class="supplement-field">
+              <label for="supplementFormat">发布形式</label>
+              <select class="supplement-control" id="supplementFormat"></select>
+            </div>
+            <div class="supplement-field" style="grid-column:1 / -1">
+              <label for="supplementPublishTime">发布时间</label>
+              <input class="supplement-control" id="supplementPublishTime" type="datetime-local" value="2026-07-17T16:00" />
+            </div>
+          </div>
+          <p class="supplement-error" id="supplementError" aria-live="polite"></p>
+          <div class="supplement-actions">
+            <button class="secondary-btn" type="button" data-close-modal>取消</button>
+            <button class="primary-btn" type="button" id="confirmSupplementContent"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-sparkles"></use></svg>确认导入并生成</button>
+          </div>
+        </div>
+      </div>
+      <div class="supplement-loading" id="supplementLoading" aria-live="polite" hidden>
+        <div>
+          <span class="loading-spinner" aria-hidden="true"></span>
+          <strong>正在生成发布文案和 Tag</strong>
+          <span>生成完成后，内容会自动加入发布日历</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="deleteDraftModal" aria-hidden="true">
+    <section class="modal-panel confirm-modal-panel" role="alertdialog" aria-labelledby="deleteDraftTitle" aria-describedby="deleteDraftDescription">
+      <div class="modal-head">
+        <h2 class="modal-title" id="deleteDraftTitle">删除这条发布计划？</h2>
+        <button class="icon-btn" data-close-modal aria-label="关闭"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
+      </div>
+      <p class="confirm-copy" id="deleteDraftDescription">确认删除后，这条计划将从当前生成结果中移除，且无法恢复。</p>
+      <div class="confirm-actions">
+        <button class="secondary-btn" type="button" data-close-modal>取消</button>
+        <button class="danger-btn" type="button" id="confirmDeleteDraft">确认删除</button>
+      </div>
+    </section>
+  </div>
+
   <div class="modal-backdrop" id="accountModal" aria-hidden="true">
     <section class="modal-panel" role="dialog" aria-label="账号管理">
       <div class="modal-head">
@@ -5439,8 +6238,29 @@
     let activePublishRecordKey = "";
     let calendarPlatformFilter = "all";
     let calendarStatusFilter = "all";
+    let sidebarGenerationTimer = 0;
+    let supplementGenerationTimer = 0;
+    let supplementOriginScreen = "calendar";
+    let supplementMediaType = "image";
+    let supplementActiveProjectKey = "";
+    let pendingDraftDelete = null;
+    let supplementMaterials = [];
     const flowOrder = ["empty", "importProjects", "importArtifacts", "setup", "strategy", "calendar"];
     const scheduledTaskExecution = {};
+    const supplementFormats = {
+      Facebook: ["Facebook Page Post"],
+      Instagram: ["Instagram Feed", "Instagram Story", "Instagram Reels"],
+      X: ["X Post"],
+      TikTok: ["TikTok Video", "TikTok Photo"],
+      YouTube: ["YouTube Video"]
+    };
+    const supplementPlatformMeta = {
+      Facebook: { badge: "f", className: "fb" },
+      Instagram: { badge: "IG", className: "ig" },
+      X: { badge: "X", className: "x" },
+      TikTok: { badge: "TT", className: "tt" },
+      YouTube: { badge: "YT", className: "yt" }
+    };
     const scheduledTaskData = {
       "coldbrew-photo": {
         title: "生成新品预热图片组",
@@ -5469,6 +6289,271 @@
       toast.classList.add("show");
       window.clearTimeout(toastTimer);
       toastTimer = window.setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    function setSidebarGenerationStatus(state = "idle", count = 0) {
+      const status = document.getElementById("sidebarGenerationStatus");
+      const text = document.getElementById("sidebarGenerationStatusText");
+      if (!status || !text) return;
+      status.classList.remove("running", "completed", "failed");
+      status.hidden = state === "idle";
+      if (state === "idle") {
+        text.textContent = "";
+        return;
+      }
+      status.classList.add(state);
+      if (state === "running") text.textContent = `${count} 项目生成中`;
+      if (state === "completed") text.textContent = "全部项目已完成";
+      if (state === "failed") text.textContent = `${count} 项目生成失败`;
+    }
+
+    function resolveImmediateGenerationStatuses() {
+      const records = document.querySelectorAll(".calendar-grid .plan-card.brief-only:not(.scheduled-only), .calendar-list .publish-list-item.brief-only:not(.scheduled-task-list-item)");
+      records.forEach((record) => {
+        const status = record.querySelector(".status-pill.pending");
+        if (!status) return;
+        const platform = getPublishRecordPlatform(record);
+        const accountReady = platform.key === "tiktok";
+        status.textContent = accountReady ? "已排期" : "待绑定账号";
+        status.classList.remove("pending");
+        status.classList.add(accountReady ? "scheduled" : "account-required");
+      });
+      applyCalendarFilters();
+    }
+
+    function startImmediateGeneration(count = 4) {
+      window.clearTimeout(sidebarGenerationTimer);
+      setSidebarGenerationStatus("running", count);
+      sidebarGenerationTimer = window.setTimeout(() => {
+        resolveImmediateGenerationStatuses();
+        setSidebarGenerationStatus("completed");
+      }, 4200);
+    }
+
+    function escapeHTML(value = "") {
+      return String(value).replace(/[&<>'"]/g, (character) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "'": "&#39;",
+        '"': "&quot;"
+      })[character]);
+    }
+
+    function toLocalDateTimeValue(date) {
+      const pad = (value) => String(value).padStart(2, "0");
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+    }
+
+    function updateSupplementFormats() {
+      const platform = document.getElementById("supplementPlatform")?.value || "Instagram";
+      const format = document.getElementById("supplementFormat");
+      if (!format) return;
+      format.replaceChildren();
+      (supplementFormats[platform] || []).forEach((label) => {
+        const option = document.createElement("option");
+        option.value = label;
+        option.textContent = label;
+        format.appendChild(option);
+      });
+    }
+
+    function getSupplementMaterial(choice) {
+      return {
+        title: choice.dataset.materialTitle || "新增发布素材",
+        image: choice.dataset.materialImage || "",
+        type: choice.dataset.materialType || "image"
+      };
+    }
+
+    function updateSupplementSelectionUI() {
+      const selectedChoices = [...document.querySelectorAll("#supplementModal .supplement-asset-choice.selected")];
+      supplementMaterials = selectedChoices.map(getSupplementMaterial);
+      const count = supplementMaterials.length;
+      document.querySelectorAll(".supplement-selection-hint").forEach((hint) => {
+        hint.textContent = count > 0
+          ? supplementMediaType === "video" ? "已选择 1 个视频" : `已选择 ${count} 张图片`
+          : supplementMediaType === "video" ? "视频仅支持单选" : "图片支持多选";
+      });
+      const config = document.getElementById("supplementPublishConfig");
+      if (config) config.hidden = count === 0;
+    }
+
+    function syncSupplementMediaTabs() {
+      document.querySelectorAll("[data-supplement-media-tab]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.supplementMediaTab === supplementMediaType);
+      });
+    }
+
+    function applySupplementMediaFilter() {
+      const panel = document.querySelector('#supplementModal [data-supplement-panel]:not([hidden])');
+      panel?.querySelectorAll(".supplement-asset-choice").forEach((choice) => {
+        const matchesProject = !choice.dataset.projectKey || choice.dataset.projectKey === supplementActiveProjectKey;
+        choice.hidden = !matchesProject || choice.dataset.materialType !== supplementMediaType;
+      });
+    }
+
+    function setSupplementMediaType(type) {
+      supplementMediaType = type === "video" ? "video" : "image";
+      resetSupplementMaterial();
+      syncSupplementMediaTabs();
+      applySupplementMediaFilter();
+    }
+
+    function selectSupplementMaterial(choice) {
+      if (!choice) return;
+      const type = choice.dataset.materialType === "video" ? "video" : "image";
+      if (type !== supplementMediaType) setSupplementMediaType(type);
+      const modal = document.getElementById("supplementModal");
+      if (type === "video") {
+        modal?.querySelectorAll(".supplement-asset-choice").forEach((item) => item.classList.remove("selected"));
+        choice.classList.add("selected");
+      } else {
+        choice.classList.toggle("selected");
+      }
+      updateSupplementSelectionUI();
+    }
+
+    function showSupplementPanel(panelName) {
+      document.querySelectorAll("[data-supplement-panel]").forEach((panel) => {
+        panel.hidden = panel.dataset.supplementPanel !== panelName;
+      });
+      applySupplementMediaFilter();
+    }
+
+    function resetSupplementMaterial() {
+      supplementMaterials = [];
+      document.getElementById("supplementModal")?.querySelectorAll(".supplement-asset-choice").forEach((item) => item.classList.remove("selected"));
+      updateSupplementSelectionUI();
+    }
+
+    function setSupplementSource(source) {
+      resetSupplementMaterial();
+      supplementActiveProjectKey = "";
+      supplementMediaType = "image";
+      syncSupplementMediaTabs();
+      showSupplementPanel(source === "project" ? "projects" : source);
+    }
+
+    function openSupplementProject(projectButton) {
+      const projectKey = projectButton?.dataset.supplementProject || "";
+      const projectTitle = projectButton?.dataset.projectTitle || "项目素材";
+      const title = document.getElementById("supplementSelectedProjectTitle");
+      if (title) title.textContent = projectTitle;
+      supplementActiveProjectKey = projectKey;
+      supplementMediaType = "image";
+      resetSupplementMaterial();
+      syncSupplementMediaTabs();
+      showSupplementPanel("project-assets");
+    }
+
+    function prepareSupplementForm() {
+      const form = document.getElementById("supplementFormContent");
+      const loading = document.getElementById("supplementLoading");
+      const error = document.getElementById("supplementError");
+      const timeInput = document.getElementById("supplementPublishTime");
+      if (form) form.hidden = false;
+      if (loading) loading.hidden = true;
+      if (error) error.textContent = "";
+      supplementOriginScreen = document.querySelector(".flow-screen.active")?.dataset.screen || "calendar";
+      resetSupplementMaterial();
+      showSupplementPanel("source");
+      const projectSearch = document.getElementById("supplementProjectSearch");
+      if (projectSearch) projectSearch.value = "";
+      projectFilterState.supplement = 1;
+      document.querySelectorAll('[data-project-time-filter="supplement"]').forEach((button) => {
+        button.classList.toggle("active", button.dataset.months === "1");
+      });
+      applyProjectListFilters("supplement");
+      updateSupplementFormats();
+      if (!timeInput) return;
+      const minimum = new Date(Date.now() + 5 * 60 * 1000);
+      timeInput.min = toLocalDateTimeValue(minimum);
+      const selected = new Date(timeInput.value);
+      if (!timeInput.value || Number.isNaN(selected.getTime()) || selected <= minimum) {
+        const suggested = new Date(Date.now() + 24 * 60 * 60 * 1000);
+        suggested.setMinutes(0, 0, 0);
+        timeInput.value = toLocalDateTimeValue(suggested);
+      }
+    }
+
+    function openModalFromTrigger(button) {
+      const modal = document.getElementById(button.dataset.modal);
+      if (!modal) return;
+      if (modal.id === "accountModal") {
+        const platform = button.dataset.bindPlatform || "";
+        const title = modal.querySelector("#accountModalTitle");
+        if (title) title.textContent = platform ? `绑定 ${platform} 账号` : "账号管理";
+        modal.querySelectorAll("[data-account-platform]").forEach((row) => {
+          row.classList.toggle("targeted", row.dataset.accountPlatform === platform);
+        });
+      }
+      if (modal.id === "supplementModal") prepareSupplementForm();
+      modal.classList.add("active");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeModal(modal) {
+      if (!modal) return;
+      modal.classList.remove("active");
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    function appendSupplementalContent(payload) {
+      const platform = supplementPlatformMeta[payload.platform] || supplementPlatformMeta.Instagram;
+      const materials = payload.materials || [];
+      const primaryMaterial = materials[0] || { title: "新增发布素材", image: "", type: "image" };
+      const accountReady = payload.platform === "TikTok";
+      const statusText = accountReady ? "已排期" : "待绑定账号";
+      const statusClass = accountReady ? "scheduled" : "account-required";
+      const date = payload.publishDate;
+      const dateLabel = `${date.getMonth() + 1}月${date.getDate()}日`;
+      const timeLabel = date.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", hour12: false });
+      const title = materials.length > 1 ? `${primaryMaterial.title}等 ${materials.length} 张图片` : primaryMaterial.title;
+      const materialSummary = primaryMaterial.type === "video" ? "1 个视频" : `${materials.length} 张图片`;
+      const generatedCopy = `用新的视角分享${title}，延续品牌内容节奏并引导用户关注后续更新。`;
+      const generatedTags = "#Skywork #SocialContent #BrandStory";
+      const mediaMarkup = primaryMaterial.type === "video"
+        ? '<div class="platform-preview reel-preview"><span class="play-mark"></span></div>'
+        : `<div class="platform-preview ig-post-preview"><div class="preview-image"><img src="${escapeHTML(primaryMaterial.image)}" alt="${escapeHTML(title)}" /></div></div>`;
+      const bindAction = accountReady ? "" : `<button class="account-bind-btn" data-modal="accountModal" data-bind-platform="${escapeHTML(payload.platform)}">绑定账号</button>`;
+
+      const card = document.createElement("article");
+      card.className = "plan-card supplemental-record";
+      card.innerHTML = `${mediaMarkup}<div class="plan-body"><p class="plan-title">${escapeHTML(title)}</p><div class="plan-project">${escapeHTML(payload.format)} · ${materialSummary}</div><div class="plan-meta-line"><div class="platforms"><span class="platform-dot ${platform.className}">${platform.badge}</span></div><span class="time">${timeLabel}</span></div><div class="record-status-row"><span class="status-pill ${statusClass}">${statusText}</span>${bindAction}</div></div>`;
+      card.dataset.generatedCopy = generatedCopy;
+      card.dataset.generatedTags = generatedTags;
+      card.dataset.generatedImage = primaryMaterial.image;
+
+      const dayCell = [...document.querySelectorAll(".calendar-grid .day-cell")].find((cell) => {
+        return cell.querySelector(".day-number")?.textContent.trim() === String(date.getDate());
+      });
+      dayCell?.appendChild(card);
+
+      const listItem = document.createElement("article");
+      listItem.className = "publish-list-item supplemental-record";
+      const thumbnail = primaryMaterial.type === "video"
+        ? '<div class="publish-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>'
+        : `<div class="publish-thumb"><img src="${escapeHTML(primaryMaterial.image)}" alt="${escapeHTML(title)}" /></div>`;
+      listItem.innerHTML = `${thumbnail}<div class="publish-main"><strong>${escapeHTML(title)}</strong><span>新增发布内容 · ${materialSummary} · AI 已生成文案和 Tag</span></div><div class="publish-meta"><div class="chip-row"><span class="platform-dot ${platform.className}">${platform.badge}</span><span>${escapeHTML(payload.format)}</span></div><span class="publish-time">${dateLabel} ${timeLabel}</span></div><div class="publish-state"><span class="status-pill ${statusClass}">${statusText}</span>${bindAction}<button class="copy-action" data-toast="已打开新增内容详情">详情</button></div>`;
+      listItem.dataset.generatedCopy = generatedCopy;
+      listItem.dataset.generatedTags = generatedTags;
+      listItem.dataset.generatedImage = primaryMaterial.image;
+      document.querySelector(".calendar-list")?.appendChild(listItem);
+
+      [card, listItem].forEach((record) => {
+        bindPublishRecordInteraction(record);
+        record.querySelectorAll("[data-modal]").forEach((trigger) => {
+          trigger.addEventListener("click", () => openModalFromTrigger(trigger));
+        });
+        record.querySelectorAll("[data-toast]").forEach((trigger) => {
+          trigger.addEventListener("click", () => showToast(trigger.dataset.toast));
+        });
+      });
+
+      if (generationMode === "scheduled") setGenerationMode("immediate");
+      applyCalendarFilters();
+      if (card.dataset.publishKey) selectPublishRecord(card.dataset.publishKey);
     }
 
     function showStrategyGenerating() {
@@ -5623,6 +6708,10 @@
       const accountBanner = document.querySelector(".review-panel.immediate-only .account-required-banner");
       const previewLabel = document.querySelector(".review-panel.immediate-only .post-account span:last-child");
       const previewBadge = document.querySelector(".review-panel.immediate-only .post-top > .platform-dot");
+      const selectedCopy = document.getElementById("selectedCopy");
+      const selectedTags = document.getElementById("selectedTags");
+      const previewImage = document.querySelector(".review-panel.immediate-only .post-media img");
+      const previewCaption = document.querySelector(".review-panel.immediate-only .post-caption");
 
       if (deleteButton) deleteButton.hidden = isPublished;
       if (accountBanner) {
@@ -5638,6 +6727,12 @@
         previewBadge.classList.add(platform.className);
         previewBadge.textContent = platform.badge;
       }
+      if (record.dataset.generatedCopy) {
+        if (selectedCopy) selectedCopy.value = record.dataset.generatedCopy;
+        if (selectedTags) selectedTags.value = record.dataset.generatedTags || "";
+        if (previewCaption) previewCaption.innerHTML = `<strong>发布文案</strong> ${escapeHTML(record.dataset.generatedCopy)} ${escapeHTML(record.dataset.generatedTags || "")}`;
+        if (previewImage && record.dataset.generatedImage) previewImage.src = record.dataset.generatedImage;
+      }
     }
 
     function selectFirstPublishRecordForMode() {
@@ -5647,15 +6742,19 @@
       if (firstRecord?.dataset.publishKey) selectPublishRecord(firstRecord.dataset.publishKey);
     }
 
+    function bindPublishRecordInteraction(record) {
+      if (!record || record.dataset.publishInteractionBound === "true") return;
+      record.dataset.publishInteractionBound = "true";
+      record.dataset.publishKey = getPublishRecordKey(record);
+      record.addEventListener("click", (event) => {
+        if (event.target.closest("button, a, input, textarea")) return;
+        selectPublishRecord(record.dataset.publishKey);
+      });
+    }
+
     function setupPublishRecordInteractions() {
       const records = document.querySelectorAll(".calendar-grid .plan-card:not(.scheduled-task-card), .calendar-list .publish-list-item:not(.scheduled-task-list-item)");
-      records.forEach((record) => {
-        record.dataset.publishKey = getPublishRecordKey(record);
-        record.addEventListener("click", (event) => {
-          if (event.target.closest("button, a, input, textarea")) return;
-          selectPublishRecord(record.dataset.publishKey);
-        });
-      });
+      records.forEach(bindPublishRecordInteraction);
     }
 
     function setScreen(screenName) {
@@ -5717,38 +6816,190 @@
     });
 
     document.querySelectorAll("[data-modal]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const modal = document.getElementById(button.dataset.modal);
-        if (!modal) return;
-        if (modal.id === "accountModal") {
-          const platform = button.dataset.bindPlatform || "";
-          const title = modal.querySelector("#accountModalTitle");
-          if (title) title.textContent = platform ? `绑定 ${platform} 账号` : "账号管理";
-          modal.querySelectorAll("[data-account-platform]").forEach((row) => {
-            row.classList.toggle("targeted", row.dataset.accountPlatform === platform);
-          });
-        }
-        modal.classList.add("active");
-        modal.setAttribute("aria-hidden", "false");
-      });
+      button.addEventListener("click", () => openModalFromTrigger(button));
     });
 
     document.querySelectorAll("[data-close-modal]").forEach((button) => {
       button.addEventListener("click", () => {
         const modal = button.closest(".modal-backdrop");
-        if (!modal) return;
-        modal.classList.remove("active");
-        modal.setAttribute("aria-hidden", "true");
+        closeModal(modal);
       });
     });
 
     document.querySelectorAll(".modal-backdrop").forEach((modal) => {
       modal.addEventListener("click", (event) => {
         if (event.target !== modal) return;
-        modal.classList.remove("active");
-        modal.setAttribute("aria-hidden", "true");
+        closeModal(modal);
       });
     });
+
+    document.querySelectorAll("[data-supplement-source]").forEach((button) => {
+      button.addEventListener("click", () => setSupplementSource(button.dataset.supplementSource));
+    });
+
+    document.querySelectorAll("[data-supplement-project]").forEach((projectButton) => {
+      projectButton.addEventListener("click", () => openSupplementProject(projectButton));
+    });
+
+    document.querySelectorAll("[data-supplement-back]").forEach((button) => {
+      button.addEventListener("click", () => {
+        resetSupplementMaterial();
+        showSupplementPanel(button.dataset.supplementBack || "source");
+      });
+    });
+
+    document.querySelectorAll("[data-supplement-media-tab]").forEach((button) => {
+      button.addEventListener("click", () => setSupplementMediaType(button.dataset.supplementMediaTab));
+    });
+
+    document.getElementById("supplementModal")?.addEventListener("click", (event) => {
+      const choice = event.target.closest(".supplement-asset-choice");
+      if (choice) selectSupplementMaterial(choice);
+    });
+
+    document.getElementById("supplementLocalUpload")?.addEventListener("change", (event) => {
+      const files = [...(event.target.files || [])];
+      const grid = document.getElementById("supplementLocalGrid");
+      if (files.length === 0 || !grid) {
+        resetSupplementMaterial();
+        return;
+      }
+      const types = new Set(files.map((file) => file.type.startsWith("video/") ? "video" : "image"));
+      if (types.size > 1) {
+        event.target.value = "";
+        showToast("图片和视频不能同时选择");
+        return;
+      }
+      const type = [...types][0];
+      if (type === "video" && files.length > 1) {
+        event.target.value = "";
+        showToast("视频仅支持选择 1 个");
+        return;
+      }
+      supplementActiveProjectKey = "";
+      supplementMediaType = type;
+      resetSupplementMaterial();
+      syncSupplementMediaTabs();
+      grid.replaceChildren();
+      files.forEach((file) => {
+        const title = file.name.replace(/\.[^.]+$/, "") || "本地上传素材";
+        const image = type === "image" ? URL.createObjectURL(file) : "";
+        const choice = document.createElement("button");
+        choice.className = "asset-card supplement-asset-choice selected";
+        choice.type = "button";
+        choice.dataset.materialTitle = title;
+        choice.dataset.materialImage = image;
+        choice.dataset.materialType = type;
+        choice.innerHTML = type === "image"
+          ? `<div class="asset-thumb"><img src="${escapeHTML(image)}" alt="${escapeHTML(title)}" /></div><strong>${escapeHTML(title)}</strong><span>本地上传 · 图片</span>`
+          : `<div class="asset-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div><strong>${escapeHTML(title)}</strong><span>本地上传 · 视频</span>`;
+        grid.appendChild(choice);
+      });
+      showSupplementPanel("local");
+      updateSupplementSelectionUI();
+    });
+
+    document.getElementById("supplementPlatform")?.addEventListener("change", updateSupplementFormats);
+
+    document.getElementById("confirmSupplementContent")?.addEventListener("click", () => {
+      const error = document.getElementById("supplementError");
+      const timeInput = document.getElementById("supplementPublishTime");
+      const platform = document.getElementById("supplementPlatform")?.value || "Instagram";
+      const format = document.getElementById("supplementFormat")?.value || "Instagram Feed";
+      const publishDate = new Date(timeInput?.value || "");
+      if (supplementMaterials.length === 0) {
+        if (error) error.textContent = "请先选择或上传待发布素材";
+        return;
+      }
+      if (!timeInput?.value || Number.isNaN(publishDate.getTime()) || publishDate <= new Date()) {
+        if (error) error.textContent = "发布时间必须晚于当前时间";
+        timeInput?.focus();
+        return;
+      }
+      if (error) error.textContent = "";
+      const payload = {
+        materials: supplementMaterials.map((material) => ({ ...material })),
+        platform,
+        format,
+        publishDate
+      };
+      const form = document.getElementById("supplementFormContent");
+      const loading = document.getElementById("supplementLoading");
+      if (form) form.hidden = true;
+      if (loading) loading.hidden = false;
+      setSidebarGenerationStatus("running", 1);
+      window.clearTimeout(supplementGenerationTimer);
+      supplementGenerationTimer = window.setTimeout(() => {
+        try {
+          if (supplementOriginScreen === "empty") setScreen("calendar");
+          appendSupplementalContent(payload);
+          setSidebarGenerationStatus("completed");
+          closeModal(document.getElementById("supplementModal"));
+          showToast("新增内容已生成并加入发布日历");
+        } catch (error) {
+          setSidebarGenerationStatus("failed", 1);
+          if (form) form.hidden = false;
+          if (loading) loading.hidden = true;
+          const message = document.getElementById("supplementError");
+          if (message) message.textContent = "内容生成失败，请重试";
+        }
+      }, 2800);
+    });
+
+    function closeDraftMoreMenus(except = null) {
+      document.querySelectorAll(".draft-more").forEach((more) => {
+        if (more === except) return;
+        const trigger = more.querySelector(".draft-more-trigger");
+        const menu = more.querySelector(".draft-more-menu");
+        if (trigger) trigger.setAttribute("aria-expanded", "false");
+        if (menu) menu.hidden = true;
+      });
+    }
+
+    document.querySelectorAll(".draft-more-trigger").forEach((trigger) => {
+      trigger.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const more = trigger.closest(".draft-more");
+        const menu = more?.querySelector(".draft-more-menu");
+        if (!more || !menu) return;
+        const willOpen = menu.hidden;
+        closeDraftMoreMenus(willOpen ? more : null);
+        menu.hidden = !willOpen;
+        trigger.setAttribute("aria-expanded", String(willOpen));
+      });
+    });
+
+    document.querySelectorAll(".draft-delete-option").forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        pendingDraftDelete = button.closest(".draft-row");
+        if (!pendingDraftDelete) return;
+        closeDraftMoreMenus();
+        const title = pendingDraftDelete.querySelector(".draft-main strong")?.textContent.trim() || "这条发布计划";
+        const description = document.getElementById("deleteDraftDescription");
+        if (description) description.textContent = `确认删除“${title}”后，这条计划将从当前生成结果中移除，且无法恢复。`;
+        const modal = document.getElementById("deleteDraftModal");
+        modal?.classList.add("active");
+        modal?.setAttribute("aria-hidden", "false");
+      });
+    });
+
+    document.getElementById("confirmDeleteDraft")?.addEventListener("click", () => {
+      if (!pendingDraftDelete) return;
+      const table = pendingDraftDelete.closest(".draft-table");
+      pendingDraftDelete.remove();
+      pendingDraftDelete = null;
+      closeModal(document.getElementById("deleteDraftModal"));
+      if (table && table.querySelectorAll(".draft-row").length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "draft-empty";
+        empty.textContent = "当前计划已无发布内容";
+        table.appendChild(empty);
+      }
+      showToast("发布计划已删除");
+    });
+
+    document.addEventListener("click", () => closeDraftMoreMenus());
 
     document.querySelectorAll("[data-copy-target]").forEach((button) => {
       button.addEventListener("click", async () => {
@@ -5764,7 +7015,7 @@
       });
     });
 
-    document.querySelectorAll(".asset-card").forEach((button) => {
+    document.querySelectorAll(".asset-card:not(.supplement-asset-choice)").forEach((button) => {
       button.addEventListener("click", () => {
         button.parentElement.querySelectorAll(".asset-card").forEach((item) => item.classList.remove("selected"));
         button.classList.add("selected");
@@ -5792,6 +7043,24 @@
       if (count) count.textContent = `${selected.length} 个项目`;
     };
 
+    const projectFilterState = {
+      import: 1,
+      supplement: 1
+    };
+
+    const applyProjectListFilters = (scope) => {
+      const isImport = scope === "import";
+      const search = document.getElementById(isImport ? "projectSearch" : "supplementProjectSearch");
+      const query = search?.value.trim().toLowerCase() || "";
+      const months = projectFilterState[scope] || 1;
+      const selector = isImport ? ".project-card" : ".supplement-project-card";
+      document.querySelectorAll(selector).forEach((card) => {
+        const age = Number(card.dataset.projectAgeMonths || 0);
+        const text = `${card.textContent} ${card.dataset.keywords || ""}`.toLowerCase();
+        card.hidden = age > months || (query.length > 0 && !text.includes(query));
+      });
+    };
+
     document.querySelectorAll(".project-card").forEach((card) => {
       card.addEventListener("click", () => {
         card.classList.toggle("selected");
@@ -5799,13 +7068,20 @@
       });
     });
 
-    document.getElementById("projectSearch")?.addEventListener("input", (event) => {
-      const value = event.target.value.trim().toLowerCase();
-      document.querySelectorAll(".project-card").forEach((card) => {
-        const text = `${card.textContent} ${card.dataset.keywords || ""}`.toLowerCase();
-        card.hidden = value.length > 0 && !text.includes(value);
+    document.querySelectorAll("[data-project-time-filter]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const scope = button.dataset.projectTimeFilter;
+        if (!(scope in projectFilterState)) return;
+        projectFilterState[scope] = Math.min(6, Number(button.dataset.months || 1));
+        button.parentElement.querySelectorAll("button").forEach((option) => option.classList.toggle("active", option === button));
+        applyProjectListFilters(scope);
       });
     });
+
+    document.getElementById("projectSearch")?.addEventListener("input", () => applyProjectListFilters("import"));
+    document.getElementById("supplementProjectSearch")?.addEventListener("input", () => applyProjectListFilters("supplement"));
+    applyProjectListFilters("import");
+    applyProjectListFilters("supplement");
 
     const updateArtifactSummary = () => {
       const selected = document.querySelectorAll(".artifact-card.selected");
@@ -5912,6 +7188,7 @@
       });
       populateScheduledTaskDetails(activeScheduledTaskKey);
       applyCalendarFilters();
+      setSidebarGenerationStatus("running", 1);
       showToast("定时任务已开始执行");
     });
 
@@ -5964,6 +7241,13 @@
           setCreationMode("brief");
         }
         setScreen(next);
+        if (next === "calendar") {
+          if (creationMode === "brief" && generationMode === "immediate") {
+            startImmediateGeneration(4);
+          } else {
+            setSidebarGenerationStatus("idle");
+          }
+        }
           const messages = {
             empty: "已回到自动化营销空状态",
             importProjects: "请选择要导入的项目",
