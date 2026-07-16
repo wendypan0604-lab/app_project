@@ -1725,6 +1725,18 @@
       min-width: 0;
     }
 
+    .draft-title-row strong {
+      flex: 0 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .draft-title-row .chip {
+      flex: 0 0 auto;
+    }
+
     .draft-main strong {
       display: block;
       color: var(--text-strong);
@@ -1743,7 +1755,7 @@
       flex: 0 0 auto;
     }
 
-    .draft-main span {
+    .draft-main > span {
       display: block;
       margin-top: 4px;
       color: var(--text-tertiary);
@@ -1921,6 +1933,123 @@
 
     .strategy-screen.generating .strategy-loading {
       display: grid;
+    }
+
+    .strategy-chat {
+      margin-top: 14px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .strategy-chat[hidden] {
+      display: none !important;
+    }
+
+    .content-plan-head {
+      min-height: 40px;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+    }
+
+    .content-plan-head h2 {
+      margin: 0;
+      color: var(--text-strong);
+      font-size: 16px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .content-plan-edit {
+      min-height: 30px;
+      padding: 0 9px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--brand-blue);
+      background: transparent;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .content-plan-edit:hover,
+    .content-plan-edit[aria-expanded="true"] {
+      background: #eef1ff;
+    }
+
+    .strategy-chat-head {
+      min-height: 44px;
+      padding: 0 12px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .strategy-chat-head strong {
+      color: var(--text-strong);
+      font-size: 13px;
+    }
+
+    .strategy-chat-head span {
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+
+    .strategy-chat-messages {
+      max-height: 184px;
+      overflow: auto;
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+      background: #f9fafc;
+    }
+
+    .strategy-chat-message {
+      width: fit-content;
+      max-width: 76%;
+      padding: 9px 11px;
+      border-radius: 12px;
+      color: var(--text-primary);
+      background: #fff;
+      border: 1px solid var(--border-subtle);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .strategy-chat-message.user {
+      justify-self: end;
+      color: var(--text-strong);
+      background: #eef1ff;
+      border-color: #dfe5ff;
+    }
+
+    .strategy-chat-composer {
+      padding: 10px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: end;
+    }
+
+    .strategy-chat-composer textarea {
+      min-height: 42px;
+      max-height: 96px;
+      padding: 10px 11px;
+      border-radius: 10px;
+      border: 1px solid var(--border-subtle);
+      outline: 0;
+      resize: vertical;
+      color: var(--text-primary);
+      background: #f9fafc;
+      font: inherit;
+      font-size: 13px;
     }
 
     .loading-box {
@@ -2473,6 +2602,10 @@
       grid-template-columns: minmax(660px, 1fr) 372px;
       gap: 16px;
       align-items: start;
+    }
+
+    .main-grid.project-chat-open {
+      grid-template-columns: minmax(560px, 1fr) minmax(320px, 372px) minmax(340px, 390px);
     }
 
     .calendar-panel {
@@ -3293,6 +3426,16 @@
       background: #eef1ff;
     }
 
+    .status-pill.approval {
+      color: #9c6100;
+      background: #fff3d8;
+    }
+
+    .status-pill.ready-publish {
+      color: #3343ca;
+      background: #eef1ff;
+    }
+
     .status-pill.account-required {
       color: #3343ca;
       background: #eef1ff;
@@ -3430,6 +3573,209 @@
     .right-stack {
       display: grid;
       gap: 16px;
+    }
+
+    .approval-required-banner {
+      margin-bottom: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #f2d9a4;
+      background: #fff9ec;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .approval-required-banner[hidden] {
+      display: none !important;
+    }
+
+    .approval-required-banner strong,
+    .approval-required-banner span {
+      display: block;
+    }
+
+    .approval-required-banner strong {
+      color: var(--text-strong);
+      font-size: 13px;
+    }
+
+    .approval-required-banner span {
+      margin-top: 3px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .project-chat-sidebar {
+      position: sticky;
+      top: 0;
+      min-width: 0;
+      height: calc(100vh - 132px);
+      max-height: 820px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      display: none;
+      grid-template-rows: auto auto minmax(0, 1fr) auto;
+    }
+
+    .project-chat-sidebar.open {
+      display: grid;
+    }
+
+    .project-chat-head {
+      min-height: 58px;
+      padding: 0 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .project-chat-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .project-chat-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand-blue), var(--brand-cyan));
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .project-chat-title strong {
+      color: var(--text-strong);
+      font-size: 14px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .project-chat-context {
+      margin: 12px;
+      padding: 11px;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      background: #f9fafc;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .project-chat-context strong,
+    .project-chat-context span {
+      display: block;
+    }
+
+    .project-chat-context strong {
+      color: var(--text-strong);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .project-chat-context span {
+      margin-top: 3px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+    }
+
+    .project-chat-context .primary-btn[hidden] {
+      display: none !important;
+    }
+
+    .project-chat-flow {
+      min-height: 0;
+      overflow: auto;
+      padding: 0 14px 14px;
+      display: grid;
+      align-content: start;
+      gap: 12px;
+    }
+
+    .project-chat-agent {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .project-chat-bubble {
+      max-width: 92%;
+      padding: 11px 12px;
+      border-radius: 14px;
+      color: var(--text-primary);
+      background: #f4f5f7;
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-line;
+    }
+
+    .project-chat-bubble.user {
+      justify-self: end;
+      color: var(--text-strong);
+      background: #eef1ff;
+    }
+
+    .project-chat-composer {
+      margin: 0 12px 12px;
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid #dfe4ec;
+      background: #fff;
+      box-shadow: var(--shadow-card);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: end;
+    }
+
+    .project-chat-composer textarea {
+      min-height: 54px;
+      max-height: 104px;
+      padding: 4px;
+      border: 0;
+      outline: 0;
+      resize: none;
+      color: var(--text-primary);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .project-chat-reopen {
+      position: fixed;
+      right: 12px;
+      top: 50%;
+      z-index: 44;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: none;
+      place-items: center;
+      color: #fff;
+      background: var(--text-strong);
+      box-shadow: var(--shadow-float);
+    }
+
+    .project-chat-reopen.show {
+      display: grid;
     }
 
     .review-panel,
@@ -4947,6 +5293,16 @@
                 <div class="brief-field brief-only">
                   <label for="productBrief">产品 / 活动介绍</label>
                   <textarea class="brief-textarea" id="productBrief">冷萃咖啡新品上市，主打更清爽的口感、低糖和早晨专注场景。希望用视觉内容突出“第一杯冷萃”的仪式感，目标是新品上市预热，提高点击和到店购买。</textarea>
+                  <div class="brief-two-col" style="margin-top:10px">
+                    <div>
+                      <label for="brandWebsite">官方网站</label>
+                      <input class="brief-input" id="brandWebsite" type="url" value="https://skywork.coffee" placeholder="https://example.com" />
+                    </div>
+                    <div>
+                      <label for="offlineAddress">线下地址</label>
+                      <input class="brief-input" id="offlineAddress" type="text" value="上海市静安区南京西路 100 号" placeholder="门店、活动或到店地址" />
+                    </div>
+                  </div>
                   <div class="upload-row" style="margin-top:10px">
                     <label class="upload-tile" for="referenceUpload"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-plus"></use></svg>上传参考资料</label>
                     <input class="upload-input" id="referenceUpload" type="file" multiple accept="image/*,video/*,.pdf,.doc,.docx,.ppt,.pptx,.txt,.md" />
@@ -4988,8 +5344,8 @@
                     <label>内容形式偏好</label>
                     <div class="preference-row">
                       <label class="preference-chip selected"><input type="checkbox" checked /><span class="preference-check">✓</span><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-image"></use></svg>图片</label>
-                      <label class="preference-chip selected"><input type="checkbox" checked /><span class="preference-check">✓</span><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-grid"></use></svg>多图</label>
-                      <label class="preference-chip selected"><input type="checkbox" checked /><span class="preference-check">✓</span><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-video"></use></svg>视频</label>
+                      <label class="preference-chip selected"><input type="checkbox" checked /><span class="preference-check">✓</span><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-video"></use></svg>短视频（≤15s）</label>
+                      <label class="preference-chip selected"><input type="checkbox" checked /><span class="preference-check">✓</span><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-video"></use></svg>长视频（＞15s）</label>
                     </div>
                   </div>
                   <div class="brief-field">
@@ -5156,55 +5512,60 @@
                 <div class="edit-control">
                   <label>内容形式</label>
                   <div class="chip-row">
-                    <span class="chip orange">单图</span>
-                    <span class="chip blue">多图</span>
-                    <span class="chip purple">视频</span>
+                    <span class="chip orange">图片</span>
+                    <span class="chip blue">短视频（≤15s）</span>
+                    <span class="chip purple">长视频（＞15s）</span>
                   </div>
                 </div>
+              </div>
+
+              <div class="content-plan-head">
+                <h2>内容计划</h2>
+                <button class="content-plan-edit" type="button" id="toggleStrategyChat" aria-expanded="false" aria-controls="strategyChat"><svg class="ui-icon" style="width:14px;height:14px"><use href="#i-file-text"></use></svg><span>编辑</span></button>
               </div>
 
               <div class="draft-table brief-only">
                 <div class="draft-row">
                   <div class="draft-date">7月8日<span>09:20</span></div>
                   <div class="draft-main">
-                    <div class="draft-title-row"><strong>新品预热：第一口冷萃</strong><button class="draft-detail" data-query-modal>详情</button></div>
+                    <div class="draft-title-row"><strong>新品预热：第一口冷萃</strong><span class="chip orange">图片</span><button class="draft-detail" data-query-modal>详情</button></div>
                     <span>主视觉海报 + TikTok 图文组，突出早晨第一杯的仪式感。</span>
                   </div>
                   <div class="draft-actions">
-                    <div class="chip-row"><span class="format-chip multi">多图</span><span class="chip blue">Instagram feed</span><span class="chip green">Tiktok photo</span></div>
+                    <div class="chip-row"><span class="chip blue">Instagram feed</span><span class="chip green">Tiktok photo</span></div>
                   </div>
                   <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
                 <div class="draft-row">
                   <div class="draft-date">7月9日<span>18:30</span></div>
                   <div class="draft-main">
-                    <div class="draft-title-row"><strong>15 秒通勤短视频</strong><button class="draft-detail" data-query-modal>详情</button></div>
+                    <div class="draft-title-row"><strong>15 秒通勤短视频</strong><span class="chip blue">短视频（≤15s）</span><button class="draft-detail" data-query-modal>详情</button></div>
                     <span>带动态字幕的短视频，用通勤场景切入产品卖点。</span>
                   </div>
                   <div class="draft-actions">
-                    <div class="chip-row"><span class="format-chip video">视频</span><span class="chip green">Tiktok video</span><span class="chip blue">Instagram Reels</span></div>
+                    <div class="chip-row"><span class="chip green">Tiktok video</span><span class="chip blue">Instagram Reels</span></div>
                   </div>
                   <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
                 <div class="draft-row">
                   <div class="draft-date">7月10日<span>12:10</span></div>
                   <div class="draft-main">
-                    <div class="draft-title-row"><strong>风味笔记 Story 组</strong><button class="draft-detail" data-query-modal>详情</button></div>
+                    <div class="draft-title-row"><strong>风味笔记 Story 组</strong><span class="chip orange">图片</span><button class="draft-detail" data-query-modal>详情</button></div>
                     <span>竖版 Story 卡片，展示风味信息和购买引导。</span>
                   </div>
                   <div class="draft-actions">
-                    <div class="chip-row"><span class="format-chip multi">多图</span><span class="chip blue">Instagram story</span></div>
+                    <div class="chip-row"><span class="chip blue">Instagram story</span></div>
                   </div>
                   <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
                 <div class="draft-row">
                   <div class="draft-date">7月13日<span>08:40</span></div>
                   <div class="draft-main">
-                    <div class="draft-title-row"><strong>烘焙幕后故事</strong><button class="draft-detail" data-query-modal>详情</button></div>
+                    <div class="draft-title-row"><strong>烘焙幕后故事</strong><span class="chip orange">图片</span><button class="draft-detail" data-query-modal>详情</button></div>
                     <span>科普型内容，解释产地信息和烘焙风味。</span>
                   </div>
                   <div class="draft-actions">
-                    <div class="chip-row"><span class="format-chip single">单图</span><span class="chip blue">Instagram feed</span><span class="chip orange">Facebook page Post</span></div>
+                    <div class="chip-row"><span class="chip blue">Instagram feed</span><span class="chip orange">Facebook page Post</span></div>
                   </div>
                   <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
@@ -5215,11 +5576,11 @@
                   <div class="draft-date">7月8日<span>09:20</span></div>
                   <div class="draft-product-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="冷萃主视觉方图" /></div>
                   <div class="draft-main">
-                    <div class="draft-title-row"><strong>冷萃主视觉方图</strong></div>
+                    <div class="draft-title-row"><strong>冷萃主视觉方图</strong><span class="chip orange">图片</span></div>
                     <span>项目：冷萃新品上市 · 作为 Instagram feed 和 Facebook Page Post 发布。</span>
                   </div>
                   <div class="draft-actions">
-                    <div class="chip-row"><span class="format-chip single">单图</span><span class="chip blue">Instagram feed</span><span class="chip orange">Facebook page Post</span></div>
+                    <div class="chip-row"><span class="chip blue">Instagram feed</span><span class="chip orange">Facebook page Post</span></div>
                   </div>
                   <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
@@ -5227,11 +5588,11 @@
                   <div class="draft-date">7月9日<span>12:10</span></div>
                   <div class="draft-product-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="早间冷萃 Story" /></div>
                   <div class="draft-main">
-                    <div class="draft-title-row"><strong>早间冷萃 Story</strong></div>
+                    <div class="draft-title-row"><strong>早间冷萃 Story</strong><span class="chip orange">图片</span></div>
                     <span>项目：冷萃新品上市 · 适配 Instagram story 的竖版发布。</span>
                   </div>
                   <div class="draft-actions">
-                    <div class="chip-row"><span class="format-chip single">单图</span><span class="chip blue">Instagram story</span></div>
+                    <div class="chip-row"><span class="chip blue">Instagram story</span></div>
                   </div>
                   <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
@@ -5239,11 +5600,11 @@
                   <div class="draft-date">7月10日<span>18:30</span></div>
                   <div class="draft-product-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
                   <div class="draft-main">
-                    <div class="draft-title-row"><strong>通勤冷萃短视频</strong></div>
+                    <div class="draft-title-row"><strong>通勤冷萃短视频</strong><span class="chip blue">短视频（≤15s）</span></div>
                     <span>项目：冷萃新品上市 · 作为 TikTok video 和 Instagram Reels 发布。</span>
                   </div>
                   <div class="draft-actions">
-                    <div class="chip-row"><span class="format-chip video">视频</span><span class="chip green">Tiktok video</span><span class="chip blue">Instagram Reels</span></div>
+                    <div class="chip-row"><span class="chip green">Tiktok video</span><span class="chip blue">Instagram Reels</span></div>
                   </div>
                   <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
@@ -5251,15 +5612,29 @@
                   <div class="draft-date">7月13日<span>08:40</span></div>
                   <div class="draft-product-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="咖啡文化海报" /></div>
                   <div class="draft-main">
-                    <div class="draft-title-row"><strong>咖啡文化海报</strong></div>
+                    <div class="draft-title-row"><strong>咖啡文化海报</strong><span class="chip orange">图片</span></div>
                     <span>项目：夏季门店活动 · 作为 X Post 和 Facebook Page Post 发布。</span>
                   </div>
                   <div class="draft-actions">
-                    <div class="chip-row"><span class="format-chip single">单图</span><span class="chip orange">X Post</span><span class="chip orange">Facebook page Post</span></div>
+                    <div class="chip-row"><span class="chip orange">X Post</span><span class="chip orange">Facebook page Post</span></div>
                   </div>
                   <div class="draft-more"><button class="draft-more-trigger" type="button" aria-label="更多操作" aria-haspopup="menu" aria-expanded="false"><svg class="ui-icon"><use href="#i-more"></use></svg></button><div class="draft-more-menu" role="menu" hidden><button class="draft-delete-option" type="button" role="menuitem"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-trash"></use></svg>删除</button></div></div>
                 </div>
               </div>
+
+              <section class="strategy-chat" id="strategyChat" aria-label="通过对话修改发布计划" hidden>
+                <div class="strategy-chat-head">
+                  <strong>通过对话修改计划</strong>
+                  <span>可调整时间、平台、频次和内容方向</span>
+                </div>
+                <div class="strategy-chat-messages" id="strategyChatMessages" aria-live="polite">
+                  <div class="strategy-chat-message">计划已生成。你可以直接告诉我需要调整的内容，例如“周末不发布”或“增加两条 TikTok 视频”。</div>
+                </div>
+                <div class="strategy-chat-composer">
+                  <textarea id="strategyChatInput" placeholder="描述你想如何修改这份发布计划"></textarea>
+                  <button class="primary-btn" type="button" id="strategyChatSend" aria-label="发送修改要求"><svg class="ui-icon"><use href="#i-sparkles"></use></svg>发送</button>
+                </div>
+              </section>
 
               <div class="flow-actions split">
                 <div class="flow-actions-left">
@@ -5306,11 +5681,9 @@
                     <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="生成失败">生成失败</button>
                     <div class="filter-group-label publish-group" role="presentation">发布状态</div>
                     <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="待绑定账号">待绑定账号</button>
-                    <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="待排期">待排期</button>
-                    <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="已排期">已排期</button>
-                    <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="审核中">审核中</button>
-                    <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="已发布">已发布</button>
-                    <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="审核不通过">审核不通过</button>
+                    <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="待审批">待审批</button>
+                    <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="待发布">待发布</button>
+                    <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="发布成功">发布成功</button>
                     <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="发布失败">发布失败</button>
                   </div>
                 </div>
@@ -5399,7 +5772,7 @@
                       <div class="platforms"><span class="platform-dot tt">TT</span></div>
                       <span class="time">09:20</span>
                     </div>
-                    <div style="margin-top:7px"><span class="status-pill published">已发布</span></div>
+                    <div style="margin-top:7px"><span class="status-pill published">发布成功</span></div>
                   </div>
                 </article>
                 <button class="day-more" data-open-day-view="2026-07-08">展开当日视图</button>
@@ -5427,7 +5800,7 @@
                       <div class="platforms"><span class="platform-dot tt">TT</span></div>
                       <span class="time">18:30</span>
                     </div>
-                    <div style="margin-top:7px"><span class="status-pill published">已发布</span></div>
+                    <div style="margin-top:7px"><span class="status-pill published">发布成功</span></div>
                   </div>
                 </article>
                 <article class="plan-card brief-only">
@@ -5454,7 +5827,7 @@
                       <div class="platforms"><span class="platform-dot tt">TT</span></div>
                       <span class="time">18:30</span>
                     </div>
-                    <div style="margin-top:7px"><span class="status-pill published">已发布</span></div>
+                    <div style="margin-top:7px"><span class="status-pill published">发布成功</span></div>
                   </div>
                 </article>
                 <article class="plan-card import-only">
@@ -5638,7 +6011,7 @@
                       <div class="platforms"><span class="platform-dot tt">TT</span></div>
                       <span class="time">11:30</span>
                     </div>
-                    <div style="margin-top:7px"><span class="status-pill scheduled">已排期</span></div>
+                    <div style="margin-top:7px"><span class="status-pill approval">待审批</span></div>
                   </div>
                 </article>
               </div>
@@ -5686,7 +6059,7 @@
                     <article class="day-agenda-item">
                       <span class="platform-dot tt">TT</span>
                       <div class="day-agenda-copy"><strong>第一口冷萃短视频</strong><span>TikTok Video · 冷萃新品上市</span></div>
-                      <span class="status-pill published">已发布</span>
+                      <span class="status-pill published">发布成功</span>
                     </article>
                   </div>
                 </div>
@@ -5739,7 +6112,7 @@
                 <div class="publish-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
                 <div class="publish-main"><strong>通勤冷萃短视频</strong><span>项目：冷萃新品上市 · 视频</span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="platform-dot tt">TT</span><span>TikTok Video</span></div><span class="publish-time">7月10日 18:30</span></div>
-                <div class="publish-state"><span class="status-pill published">已发布</span><button class="copy-action" data-toast="已打开 TikTok 发布详情">详情</button></div>
+                <div class="publish-state"><span class="status-pill published">发布成功</span><button class="copy-action" data-toast="已打开 TikTok 发布详情">详情</button></div>
               </article>
               <article class="publish-list-item import-only">
                 <div class="publish-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
@@ -5770,13 +6143,13 @@
                 <div class="publish-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
                 <div class="publish-main"><strong>第一口冷萃短视频</strong><span>项目：冷萃新品上市 · 视频</span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="platform-dot tt">TT</span><span>TikTok Video</span></div><span class="publish-time">7月8日 09:20</span></div>
-                <div class="publish-state"><span class="status-pill published">已发布</span><button class="copy-action" data-toast="已打开 TikTok 发布详情">详情</button></div>
+                <div class="publish-state"><span class="status-pill published">发布成功</span><button class="copy-action" data-toast="已打开 TikTok 发布详情">详情</button></div>
               </article>
               <article class="publish-list-item brief-only">
                 <div class="publish-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
                 <div class="publish-main"><strong>15 秒通勤短视频</strong><span>项目：冷萃新品上市 · 视频</span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="platform-dot tt">TT</span><span>TikTok Video</span></div><span class="publish-time">7月9日 18:30</span></div>
-                <div class="publish-state"><span class="status-pill published">已发布</span><button class="copy-action" data-toast="已打开 TikTok 发布详情">详情</button></div>
+                <div class="publish-state"><span class="status-pill published">发布成功</span><button class="copy-action" data-toast="已打开 TikTok 发布详情">详情</button></div>
               </article>
               <article class="publish-list-item brief-only">
                 <div class="publish-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div>
@@ -5824,13 +6197,17 @@
                 <div class="publish-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="限时上市提醒 TikTok" /></div>
                 <div class="publish-main"><strong>限时上市提醒</strong><span>项目：冷萃新品上市 · 单图</span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="platform-dot tt">TT</span><span>TikTok Photo</span></div><span class="publish-time">7月17日 11:30</span></div>
-                <div class="publish-state"><span class="status-pill scheduled">已排期</span><button class="copy-action" data-toast="已打开 TikTok 发布详情">详情</button></div>
+                <div class="publish-state"><span class="status-pill approval">待审批</span><button class="copy-action" data-toast="已打开 TikTok 发布详情">详情</button></div>
               </article>
             </div>
           </section>
 
           <aside class="right-stack">
             <section class="review-panel immediate-only">
+              <div class="approval-required-banner" id="approvalRequiredBanner" hidden>
+                <div><strong>发布前需要你的确认</strong><span>确认后进入待发布队列，并按计划时间自动发布。</span></div>
+                <button class="primary-btn" type="button" id="confirmPublishBtn">确认发布</button>
+              </div>
               <article class="post-preview-card">
                 <div class="post-top">
                   <div class="post-account"><span class="preview-avatar"></span><span>Instagram 预览</span></div>
@@ -5867,7 +6244,6 @@
               <div class="action-row">
                 <button class="icon-btn delete-plan-btn" id="deletePublishPlanBtn" type="button" aria-label="删除发布计划" title="删除发布计划"><svg class="ui-icon"><use href="#i-trash"></use></svg></button>
                 <button class="secondary-btn" data-modal="assetModal"><svg class="ui-icon"><use href="#i-image"></use></svg>更换素材</button>
-                <button class="primary-btn" data-toast="已打开关联项目"><svg class="ui-icon"><use href="#i-box"></use></svg>打开项目</button>
               </div>
             </section>
             <section class="review-panel scheduled-only scheduled-task-side-panel" aria-label="当前定时任务详情">
@@ -5895,11 +6271,34 @@
               </div>
             </section>
           </aside>
+          <aside class="project-chat-sidebar" id="projectChatSidebar" aria-label="项目对话流" aria-hidden="true">
+            <div class="project-chat-head">
+              <div class="project-chat-title"><span class="project-chat-avatar">CB</span><strong>冷萃新品上市</strong></div>
+              <button class="icon-btn" type="button" id="collapseProjectChat" aria-label="收起项目对话"><svg class="ui-icon" style="transform:rotate(-90deg)"><use href="#i-chevron-down"></use></svg></button>
+            </div>
+            <div class="project-chat-context">
+              <div><strong id="projectChatContentTitle">新品预热：第一口冷萃</strong><span id="projectChatContentMeta">Instagram Feed · 09:20</span></div>
+              <div style="display:grid;justify-items:end;gap:7px"><span class="status-pill account-required" id="projectChatStatus">待绑定账号</span></div>
+            </div>
+            <div class="project-chat-flow" id="projectChatFlow" aria-live="polite">
+              <div class="project-chat-bubble user">为冷萃新品上市规划两周社媒内容，重点突出早晨专注场景和到店购买。</div>
+              <div class="project-chat-agent"><span class="project-chat-avatar" style="width:24px;height:24px;border-radius:8px">AI</span>Skywork 智能模型</div>
+              <div class="project-chat-bubble">已生成发布节奏，并为 Instagram、TikTok 与 Facebook 拆分内容形式。当前仅 TikTok 账号已绑定，其他平台需要先完成账号绑定。</div>
+              <div class="project-chat-agent"><span class="project-chat-avatar" style="width:24px;height:24px;border-radius:8px">AI</span>Skywork 智能模型</div>
+              <div class="project-chat-bubble">素材生成完成后，已绑定账号的内容会先进入待审批。确认发布后，内容将在计划时间进入发布队列。</div>
+            </div>
+            <div class="project-chat-composer">
+              <textarea id="projectChatInput" placeholder="继续修改当前项目或发布内容"></textarea>
+              <button class="icon-btn" type="button" id="projectChatSend" aria-label="发送项目消息"><svg class="ui-icon"><use href="#i-sparkles"></use></svg></button>
+            </div>
+          </aside>
           </div>
         </section>
       </section>
     </main>
   </div>
+
+  <button class="project-chat-reopen" type="button" id="reopenProjectChat" aria-label="展开项目对话"><svg class="ui-icon"><use href="#i-file-text"></use></svg></button>
 
   <div class="modal-backdrop" id="supplementModal" aria-hidden="true">
     <section class="modal-panel supplement-modal-panel" role="dialog" aria-label="新增发布内容">
@@ -6128,20 +6527,20 @@
       </div>
       <div class="modal-list">
         <article class="history-row">
-          <div class="history-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="已发布内容" /></div>
+          <div class="history-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="发布成功内容" /></div>
           <div>
             <strong>用一杯更冷、更慢的冷萃，开启今天的专注时刻。</strong>
             <div class="history-meta"><span class="chip blue">Instagram · Feed post</span><button class="copy-action" data-toast="已打开平台原帖">查看原帖</button></div>
           </div>
-          <div><span class="status-pill published">已发布</span><span style="display:block;margin-top:12px">2026-07-08 16:19</span></div>
+          <div><span class="status-pill published">发布成功</span><span style="display:block;margin-top:12px">2026-07-08 16:19</span></div>
         </article>
         <article class="history-row">
-          <div class="history-thumb"><img src="image-generation-flow/assets/coffee-culture-poster-page.jpg" alt="已发布内容" /></div>
+          <div class="history-thumb"><img src="image-generation-flow/assets/coffee-culture-poster-page.jpg" alt="发布成功内容" /></div>
           <div>
             <strong>烘焙幕后故事：从产地到第一口香气。</strong>
             <div class="history-meta"><span class="chip orange">Facebook · Feed post</span><button class="copy-action" data-toast="已打开平台原帖">查看原帖</button></div>
           </div>
-          <div><span class="status-pill published">已发布</span><span style="display:block;margin-top:12px">2026-07-07 15:46</span></div>
+          <div><span class="status-pill published">发布成功</span><span style="display:block;margin-top:12px">2026-07-07 15:46</span></div>
         </article>
         <article class="history-row">
           <div class="history-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="发布失败内容" /></div>
@@ -6220,8 +6619,7 @@
       </div>
       <p class="asset-note">可前往项目继续生成更多素材后选择</p>
       <div class="query-actions">
-        <button class="secondary-btn" data-toast="已打开关联项目"><svg class="ui-icon"><use href="#i-box"></use></svg>打开项目</button>
-        <button class="primary-btn" data-close-modal>确认更换</button>
+        <button class="primary-btn" type="button" id="confirmAssetReplacement">确认更换</button>
       </div>
     </section>
   </div>
@@ -6243,6 +6641,7 @@
     let supplementOriginScreen = "calendar";
     let supplementMediaType = "image";
     let supplementActiveProjectKey = "";
+    let projectChatCollapsedByUser = false;
     let pendingDraftDelete = null;
     let supplementMaterials = [];
     const flowOrder = ["empty", "importProjects", "importArtifacts", "setup", "strategy", "calendar"];
@@ -6314,9 +6713,9 @@
         if (!status) return;
         const platform = getPublishRecordPlatform(record);
         const accountReady = platform.key === "tiktok";
-        status.textContent = accountReady ? "已排期" : "待绑定账号";
+        status.textContent = accountReady ? "待审批" : "待绑定账号";
         status.classList.remove("pending");
-        status.classList.add(accountReady ? "scheduled" : "account-required");
+        status.classList.add(accountReady ? "approval" : "account-required");
       });
       applyCalendarFilters();
     }
@@ -6504,8 +6903,8 @@
       const materials = payload.materials || [];
       const primaryMaterial = materials[0] || { title: "新增发布素材", image: "", type: "image" };
       const accountReady = payload.platform === "TikTok";
-      const statusText = accountReady ? "已排期" : "待绑定账号";
-      const statusClass = accountReady ? "scheduled" : "account-required";
+      const statusText = accountReady ? "待审批" : "待绑定账号";
+      const statusClass = accountReady ? "approval" : "account-required";
       const date = payload.publishDate;
       const dateLabel = `${date.getMonth() + 1}月${date.getDate()}日`;
       const timeLabel = date.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", hour12: false });
@@ -6602,6 +7001,9 @@
       });
       const label = document.getElementById("generationContinueLabel");
       if (label) label.textContent = generationMode === "scheduled" ? "创建定时任务" : "开始生成素材";
+      if (generationMode === "scheduled") {
+        setProjectChatSidebarOpen(false, false);
+      }
       applyCalendarFilters();
     }
 
@@ -6649,11 +7051,10 @@
       if (generationMode !== "scheduled") {
         const modeSelector = creationMode === "import" ? ".plan-card.import-only" : ".plan-card.brief-only:not(.scheduled-only)";
         const visibleRecords = [...document.querySelectorAll(`.calendar-grid ${modeSelector}`)].filter((item) => !item.hidden);
+        const activeRecordVisible = Boolean(activePublishRecordKey) && visibleRecords.some((item) => item.dataset.publishKey === activePublishRecordKey);
         const immediatePanel = document.querySelector(".review-panel.immediate-only");
-        if (immediatePanel) immediatePanel.hidden = visibleRecords.length === 0;
-        if (visibleRecords.length > 0 && !visibleRecords.some((item) => item.dataset.publishKey === activePublishRecordKey)) {
-          selectPublishRecord(visibleRecords[0].dataset.publishKey);
-        }
+        if (immediatePanel) immediatePanel.hidden = !activeRecordVisible;
+        if (!activeRecordVisible) clearPublishRecordSelection();
         return;
       }
       const visibleTasks = [...document.querySelectorAll(".calendar-grid .scheduled-task-card")].filter((item) => !item.hidden);
@@ -6692,6 +7093,31 @@
       return `${mode}|${title}|${platform}|${time}`;
     }
 
+    function setProjectChatSidebarOpen(open, allowReopen = true) {
+      const sidebar = document.getElementById("projectChatSidebar");
+      const reopen = document.getElementById("reopenProjectChat");
+      if (!sidebar || !reopen) return;
+      sidebar.classList.toggle("open", open);
+      sidebar.setAttribute("aria-hidden", String(!open));
+      sidebar.closest(".main-grid")?.classList.toggle("project-chat-open", open);
+      const calendarActive = document.querySelector('[data-screen="calendar"]')?.classList.contains("active");
+      reopen.classList.toggle("show", allowReopen && !open && Boolean(activePublishRecordKey) && generationMode !== "scheduled" && calendarActive);
+    }
+
+    function updateProjectChatContext(record, status, platform) {
+      const title = record.querySelector(".plan-title, .publish-main strong")?.textContent.trim() || "当前发布内容";
+      const time = record.querySelector(".time, .publish-time")?.textContent.trim() || "";
+      const contextTitle = document.getElementById("projectChatContentTitle");
+      const contextMeta = document.getElementById("projectChatContentMeta");
+      const contextStatus = document.getElementById("projectChatStatus");
+      if (contextTitle) contextTitle.textContent = title;
+      if (contextMeta) contextMeta.textContent = `${platform.label}${time ? ` · ${time}` : ""}`;
+      if (contextStatus) {
+        contextStatus.textContent = status;
+        contextStatus.className = record.querySelector(".status-pill")?.className || "status-pill pending";
+      }
+    }
+
     function selectPublishRecord(recordKey) {
       const records = [...document.querySelectorAll("[data-publish-key]")];
       const matching = records.filter((record) => record.dataset.publishKey === recordKey);
@@ -6701,11 +7127,13 @@
 
       const record = matching[0];
       const status = record.querySelector(".status-pill")?.textContent.trim() || "";
-      const isPublished = status === "已发布";
+      const isPublished = status === "发布成功";
       const needsAccount = status === "待绑定账号";
+      const needsApproval = status === "待审批";
       const platform = getPublishRecordPlatform(record);
       const deleteButton = document.getElementById("deletePublishPlanBtn");
       const accountBanner = document.querySelector(".review-panel.immediate-only .account-required-banner");
+      const approvalBanner = document.getElementById("approvalRequiredBanner");
       const previewLabel = document.querySelector(".review-panel.immediate-only .post-account span:last-child");
       const previewBadge = document.querySelector(".review-panel.immediate-only .post-top > .platform-dot");
       const selectedCopy = document.getElementById("selectedCopy");
@@ -6713,6 +7141,8 @@
       const previewImage = document.querySelector(".review-panel.immediate-only .post-media img");
       const previewCaption = document.querySelector(".review-panel.immediate-only .post-caption");
 
+      const immediatePanel = document.querySelector(".review-panel.immediate-only");
+      if (immediatePanel) immediatePanel.hidden = false;
       if (deleteButton) deleteButton.hidden = isPublished;
       if (accountBanner) {
         accountBanner.hidden = !needsAccount;
@@ -6721,6 +7151,7 @@
         if (message) message.textContent = `当前记录尚未绑定 ${platform.label} 账号`;
         if (bindButton) bindButton.dataset.bindPlatform = platform.label;
       }
+      if (approvalBanner) approvalBanner.hidden = !needsApproval;
       if (previewLabel) previewLabel.textContent = `${platform.label} 预览`;
       if (previewBadge) {
         previewBadge.classList.remove("ig", "tt", "fb", "x", "yt");
@@ -6733,13 +7164,97 @@
         if (previewCaption) previewCaption.innerHTML = `<strong>发布文案</strong> ${escapeHTML(record.dataset.generatedCopy)} ${escapeHTML(record.dataset.generatedTags || "")}`;
         if (previewImage && record.dataset.generatedImage) previewImage.src = record.dataset.generatedImage;
       }
+      updateProjectChatContext(record, status, platform);
+      if (!projectChatCollapsedByUser && document.querySelector('[data-screen="calendar"]')?.classList.contains("active")) {
+        setProjectChatSidebarOpen(true);
+      }
     }
 
-    function selectFirstPublishRecordForMode() {
-      if (generationMode === "scheduled") return;
-      const modeSelector = creationMode === "import" ? ".plan-card.import-only" : ".plan-card.brief-only:not(.scheduled-only)";
-      const firstRecord = [...document.querySelectorAll(`.calendar-grid ${modeSelector}`)].find((record) => !record.hidden);
-      if (firstRecord?.dataset.publishKey) selectPublishRecord(firstRecord.dataset.publishKey);
+    function clearPublishRecordSelection() {
+      activePublishRecordKey = "";
+      projectChatCollapsedByUser = false;
+      document.querySelectorAll("[data-publish-key]").forEach((record) => record.classList.remove("publish-record-selected"));
+      const immediatePanel = document.querySelector(".review-panel.immediate-only");
+      if (immediatePanel) immediatePanel.hidden = true;
+      setProjectChatSidebarOpen(false, false);
+    }
+
+    function confirmActivePublishRecord() {
+      if (!activePublishRecordKey) return;
+      const confirmedRecordKey = activePublishRecordKey;
+      const matching = [...document.querySelectorAll("[data-publish-key]")].filter((record) => record.dataset.publishKey === confirmedRecordKey);
+      const currentStatus = matching[0]?.querySelector(".status-pill")?.textContent.trim() || "";
+      if (currentStatus !== "待审批") return;
+      matching.forEach((record) => {
+        const status = record.querySelector(".status-pill");
+        if (!status) return;
+        status.textContent = "待发布";
+        status.classList.remove("approval");
+        status.classList.add("ready-publish");
+      });
+      const flow = document.getElementById("projectChatFlow");
+      if (flow) {
+        const message = document.createElement("div");
+        message.className = "project-chat-bubble";
+        message.textContent = "发布审批已通过。内容已进入待发布队列，将按计划时间自动发布。";
+        flow.appendChild(message);
+        flow.scrollTop = flow.scrollHeight;
+      }
+      applyCalendarFilters();
+      if (matching.some((record) => !record.hidden)) selectPublishRecord(confirmedRecordKey);
+      showToast("审批通过，内容已进入待发布队列");
+    }
+
+    function restoreActivePublishRecordToApproval(changeLabel) {
+      if (!activePublishRecordKey) return false;
+      const matching = [...document.querySelectorAll("[data-publish-key]")].filter((record) => record.dataset.publishKey === activePublishRecordKey);
+      const currentStatus = matching[0]?.querySelector(".status-pill")?.textContent.trim() || "";
+      if (currentStatus !== "待发布") return false;
+      matching.forEach((record) => {
+        const status = record.querySelector(".status-pill");
+        if (!status) return;
+        status.textContent = "待审批";
+        status.classList.remove("ready-publish");
+        status.classList.add("approval");
+      });
+      applyCalendarFilters();
+      if (matching.some((record) => !record.hidden)) selectPublishRecord(activePublishRecordKey);
+      showToast(`${changeLabel}已更新，请重新确认发布`);
+      return true;
+    }
+
+    function syncActivePublishTextFields(changeLabel) {
+      if (!activePublishRecordKey) return;
+      const copy = document.getElementById("selectedCopy")?.value || "";
+      const tags = document.getElementById("selectedTags")?.value || "";
+      const matching = [...document.querySelectorAll("[data-publish-key]")].filter((record) => record.dataset.publishKey === activePublishRecordKey);
+      matching.forEach((record) => {
+        record.dataset.generatedCopy = copy;
+        record.dataset.generatedTags = tags;
+      });
+      const previewCaption = document.querySelector(".review-panel.immediate-only .post-caption");
+      if (previewCaption) previewCaption.innerHTML = `<strong>发布文案</strong> ${escapeHTML(copy)} ${escapeHTML(tags)}`;
+      restoreActivePublishRecordToApproval(changeLabel);
+    }
+
+    function confirmAssetReplacement() {
+      const modal = document.getElementById("assetModal");
+      const selected = modal?.querySelector(".asset-card.selected");
+      if (!selected) return;
+      const image = selected.querySelector("img")?.getAttribute("src") || "";
+      const title = selected.querySelector("strong")?.textContent.trim() || "新素材";
+      const matching = [...document.querySelectorAll("[data-publish-key]")].filter((record) => record.dataset.publishKey === activePublishRecordKey);
+      matching.forEach((record) => {
+        record.dataset.generatedImage = image;
+        record.dataset.generatedTitle = title;
+      });
+      const previewImage = document.querySelector(".review-panel.immediate-only .post-media img");
+      if (previewImage && image) {
+        previewImage.src = image;
+        previewImage.alt = title;
+      }
+      closeModal(modal);
+      if (!restoreActivePublishRecordToApproval("素材")) showToast("素材已更新");
     }
 
     function bindPublishRecordInteraction(record) {
@@ -6773,7 +7288,10 @@
       updatePageTitle(screenName);
       updateHeaderCreateAction(screenName);
       if (screenName === "strategy") showStrategyGenerating();
-      if (screenName === "calendar" && generationMode !== "scheduled") selectFirstPublishRecordForMode();
+      if (screenName !== "calendar") {
+        setProjectChatSidebarOpen(false, false);
+      }
+      if (screenName === "calendar" && generationMode !== "scheduled") clearPublishRecordSelection();
     }
 
     const initialScreen = document.querySelector(".flow-screen.active")?.dataset.screen || "empty";
@@ -6783,7 +7301,7 @@
     setGenerationMode("immediate");
     populateScheduledTaskDetails("coldbrew-photo");
     setupPublishRecordInteractions();
-    selectFirstPublishRecordForMode();
+    clearPublishRecordSelection();
 
     const headerCreateMenu = document.querySelector(".header-create-menu");
     const headerCreateButton = document.querySelector(".header-create-plan");
@@ -7167,15 +7685,91 @@
       });
     });
 
+    document.getElementById("confirmPublishBtn")?.addEventListener("click", confirmActivePublishRecord);
+    document.getElementById("selectedCopy")?.addEventListener("input", () => syncActivePublishTextFields("文案"));
+    document.getElementById("selectedTags")?.addEventListener("input", () => syncActivePublishTextFields("Tag"));
+    document.getElementById("confirmAssetReplacement")?.addEventListener("click", confirmAssetReplacement);
+
+    document.getElementById("collapseProjectChat")?.addEventListener("click", () => {
+      projectChatCollapsedByUser = true;
+      setProjectChatSidebarOpen(false);
+    });
+
+    document.getElementById("reopenProjectChat")?.addEventListener("click", () => {
+      projectChatCollapsedByUser = false;
+      setProjectChatSidebarOpen(true);
+    });
+
+    const sendProjectChatMessage = () => {
+      const input = document.getElementById("projectChatInput");
+      const flow = document.getElementById("projectChatFlow");
+      const value = input?.value.trim() || "";
+      if (!input || !flow || !value) return;
+      const userMessage = document.createElement("div");
+      userMessage.className = "project-chat-bubble user";
+      userMessage.textContent = value;
+      flow.appendChild(userMessage);
+      input.value = "";
+      const response = document.createElement("div");
+      response.className = "project-chat-bubble";
+      response.textContent = "已记录你的修改要求，并同步到当前项目。发布内容更新后仍会经过审批确认。";
+      flow.appendChild(response);
+      flow.scrollTop = flow.scrollHeight;
+    };
+
+    document.getElementById("projectChatSend")?.addEventListener("click", sendProjectChatMessage);
+    document.getElementById("projectChatInput")?.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" || event.shiftKey) return;
+      event.preventDefault();
+      sendProjectChatMessage();
+    });
+
+    const sendStrategyChatMessage = () => {
+      const input = document.getElementById("strategyChatInput");
+      const messages = document.getElementById("strategyChatMessages");
+      const value = input?.value.trim() || "";
+      if (!input || !messages || !value) return;
+      const userMessage = document.createElement("div");
+      userMessage.className = "strategy-chat-message user";
+      userMessage.textContent = value;
+      messages.appendChild(userMessage);
+      input.value = "";
+      const response = document.createElement("div");
+      response.className = "strategy-chat-message";
+      response.textContent = "已根据你的要求更新发布计划，请查看上方排期结果。";
+      messages.appendChild(response);
+      messages.scrollTop = messages.scrollHeight;
+      showStrategyGenerating();
+      showToast("发布计划已按对话要求更新");
+    };
+
+    document.getElementById("strategyChatSend")?.addEventListener("click", sendStrategyChatMessage);
+    document.getElementById("strategyChatInput")?.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" || event.shiftKey) return;
+      event.preventDefault();
+      sendStrategyChatMessage();
+    });
+
+    document.getElementById("toggleStrategyChat")?.addEventListener("click", (event) => {
+      const button = event.currentTarget;
+      const chat = document.getElementById("strategyChat");
+      if (!chat) return;
+      const willOpen = chat.hidden;
+      chat.hidden = !willOpen;
+      button.setAttribute("aria-expanded", String(willOpen));
+      const label = button.querySelector("span");
+      if (label) label.textContent = willOpen ? "收起编辑" : "编辑";
+      if (willOpen) document.getElementById("strategyChatInput")?.focus();
+    });
+
     document.getElementById("deletePublishPlanBtn")?.addEventListener("click", () => {
       if (!activePublishRecordKey) return;
       const matching = [...document.querySelectorAll("[data-publish-key]")].filter((record) => record.dataset.publishKey === activePublishRecordKey);
       const status = matching[0]?.querySelector(".status-pill")?.textContent.trim() || "";
-      if (status === "已发布") return;
+      if (status === "发布成功") return;
       matching.forEach((record) => record.remove());
-      activePublishRecordKey = "";
       applyCalendarFilters();
-      selectFirstPublishRecordForMode();
+      clearPublishRecordSelection();
       showToast("发布计划已删除");
     });
 
