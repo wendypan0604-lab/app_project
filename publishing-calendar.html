@@ -2285,6 +2285,107 @@
       letter-spacing: 0;
     }
 
+    .page-title-menu {
+      position: relative;
+      display: inline-block;
+    }
+
+    .page-title-trigger {
+      border: 0;
+      padding: 0;
+      margin: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: inherit;
+      background: transparent;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .page-title-trigger[disabled] {
+      cursor: default;
+    }
+
+    .page-title-trigger[disabled] .title-chevron {
+      display: none;
+    }
+
+    .page-title-trigger:not([disabled]):hover {
+      color: var(--text-secondary);
+    }
+
+    .title-chevron {
+      width: 18px;
+      height: 18px;
+      color: var(--text-secondary);
+      transition: transform 140ms ease;
+    }
+
+    .page-title-trigger[aria-expanded="true"] .title-chevron {
+      transform: rotate(180deg);
+    }
+
+    .page-title-popover {
+      min-width: 220px;
+      padding: 6px;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      z-index: 44;
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: var(--shadow-float);
+    }
+
+    .page-title-popover[hidden] {
+      display: none;
+    }
+
+    .page-title-plan-option {
+      width: 100%;
+      min-height: 38px;
+      border: 0;
+      border-radius: 10px;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--text-secondary);
+      background: transparent;
+      font-size: 13px;
+      line-height: 1.4;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .page-title-plan-option:hover,
+    .page-title-plan-option[aria-selected="true"] {
+      color: var(--text-strong);
+      background: #f4f5f7;
+    }
+
+    .page-title-plan-option[aria-selected="true"]::after {
+      content: "✓";
+      color: var(--brand-blue);
+      font-weight: 800;
+    }
+
+    .page-plan-space {
+      margin: 5px 0 0;
+      color: var(--text-tertiary);
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 500;
+    }
+
+    .page-plan-space[hidden] {
+      display: none;
+    }
+
     .page-subtitle {
       margin: 6px 0 0;
       max-width: 720px;
@@ -2687,12 +2788,24 @@
     }
 
     .calendar-toolbar {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .toolbar-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
-      margin-bottom: 14px;
+    }
+
+    .calendar-period-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .toolbar-left,
@@ -2711,6 +2824,10 @@
       flex: 0 0 auto;
       flex-wrap: nowrap;
       margin-left: auto;
+    }
+
+    .toolbar-filter-row {
+      justify-content: flex-start;
     }
 
     .supplement-publish-btn {
@@ -2858,6 +2975,14 @@
       color: var(--text-strong);
       background: #fff;
       box-shadow: var(--shadow-card);
+    }
+
+    .calendar-mode-toggle {
+      width: 104px;
+    }
+
+    .calendar-panel.list-mode .calendar-period-tools {
+      display: none;
     }
 
     .calendar-grid {
@@ -3036,6 +3161,10 @@
     }
 
     .calendar-panel.list-mode .calendar-grid {
+      display: none;
+    }
+
+    .calendar-panel.list-mode .calendar-day-view {
       display: none;
     }
 
@@ -5367,7 +5496,19 @@
       <section class="workspace-card">
         <div class="page-head">
           <div>
-            <h1 class="page-title">自动化营销</h1>
+            <div class="page-title-menu">
+              <h1 class="page-title">
+                <button class="page-title-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                  <span data-page-title-label>自动化营销</span>
+                  <svg class="ui-icon title-chevron"><use href="#i-chevron-down"></use></svg>
+                </button>
+              </h1>
+              <div class="page-title-popover" role="listbox" aria-label="切换营销计划" hidden>
+                <button class="page-title-plan-option" type="button" role="option" aria-selected="true" data-plan-value="coldbrew">冷萃新品上市</button>
+                <button class="page-title-plan-option" type="button" role="option" aria-selected="false" data-plan-value="coffee-culture">咖啡文化宣传</button>
+              </div>
+            </div>
+            <p class="page-plan-space" data-page-plan-space hidden></p>
           </div>
           <div class="head-actions">
             <div class="header-create-menu">
@@ -5965,18 +6106,29 @@
           <div class="main-grid">
             <section class="calendar-panel month-mode">
             <div class="calendar-toolbar">
-              <div class="toolbar-left">
-                <div class="calendar-period-control">
-                  <button class="icon-btn" type="button" aria-label="上一个周期" data-calendar-period-nav="prev"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(90deg)"><use href="#i-chevron-down"></use></svg></button>
-                  <h2 class="panel-title select-pill calendar-period-label" id="calendarTitle">2026年7月</h2>
-                  <button class="icon-btn" type="button" aria-label="下一个周期" data-calendar-period-nav="next"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(-90deg)"><use href="#i-chevron-down"></use></svg></button>
+              <div class="toolbar-row toolbar-period-row">
+                <div class="calendar-period-tools">
+                  <div class="calendar-period-control">
+                    <button class="icon-btn" type="button" aria-label="上一个周期" data-calendar-period-nav="prev"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(90deg)"><use href="#i-chevron-down"></use></svg></button>
+                    <h2 class="panel-title select-pill calendar-period-label" id="calendarTitle">2026年7月</h2>
+                    <button class="icon-btn" type="button" aria-label="下一个周期" data-calendar-period-nav="next"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(-90deg)"><use href="#i-chevron-down"></use></svg></button>
+                  </div>
+                  <button class="secondary-btn" type="button" data-calendar-today>今天</button>
+                  <div class="segmented" aria-label="日历视图维度切换">
+                    <button type="button" data-calendar-view="day">日</button>
+                    <button type="button" data-calendar-view="week">周</button>
+                    <button class="active" type="button" data-calendar-view="month">月</button>
+                  </div>
                 </div>
-                <button class="secondary-btn" type="button" data-calendar-today>今天</button>
-                <div class="segmented" aria-label="日历视图维度切换">
-                  <button type="button" data-calendar-view="day">日</button>
-                  <button type="button" data-calendar-view="week">周</button>
-                  <button class="active" type="button" data-calendar-view="month">月</button>
+                <div class="toolbar-right">
+                  <div class="segmented calendar-mode-toggle" aria-label="日历展示方式切换">
+                    <button class="active" type="button" data-calendar-mode="calendar">日历</button>
+                    <button type="button" data-calendar-mode="list">列表</button>
+                  </div>
+                  <button class="secondary-btn supplement-publish-btn" type="button" data-modal="supplementModal"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-plus"></use></svg>新增发布内容</button>
                 </div>
+              </div>
+              <div class="toolbar-row toolbar-filter-row">
                 <div class="filter-dropdown platform-filter" data-filter="platform">
                   <button class="select-pill" type="button" aria-haspopup="listbox" aria-expanded="false"><span data-filter-label>全部平台</span><svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></button>
                   <div class="filter-menu" role="listbox" aria-label="按平台筛选" hidden>
@@ -6005,10 +6157,6 @@
                     <button class="filter-option" type="button" role="option" aria-selected="false" data-filter-value="发布失败">发布失败</button>
                   </div>
                 </div>
-                <span class="select-pill">冷萃新品上市 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
-              </div>
-              <div class="toolbar-right">
-                <button class="secondary-btn supplement-publish-btn" type="button" data-modal="supplementModal"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-plus"></use></svg>新增发布内容</button>
               </div>
             </div>
 
@@ -7005,8 +7153,14 @@
     let generationMode = "immediate";
     let activeScheduledTaskKey = "coldbrew-photo";
     let activePublishRecordKey = "";
+    let calendarDisplayMode = "calendar";
     let calendarPlatformFilter = "all";
     let calendarStatusFilter = "all";
+    let calendarPlanFilter = "coldbrew";
+    const marketingPlans = {
+      coldbrew: { label: "冷萃新品上市", spaceId: "mountain-cafe", spaceLabel: "山屿咖啡", mode: "brief" },
+      "coffee-culture": { label: "咖啡文化宣传", spaceId: "", spaceLabel: "", mode: "import" }
+    };
     let sidebarGenerationTimer = 0;
     let supplementGenerationTimer = 0;
     let supplementOriginScreen = "calendar";
@@ -7421,15 +7575,45 @@
     }
 
     function updatePageTitle(screenName) {
-      const pageTitle = document.querySelector(".page-title");
-      if (!pageTitle) return;
-      pageTitle.textContent = ["importProjects", "importArtifacts", "setup", "strategy"].includes(screenName) ? "创建营销计划" : "自动化营销";
+      const titleLabel = document.querySelector("[data-page-title-label]");
+      const titleTrigger = document.querySelector(".page-title-trigger");
+      const titlePopover = document.querySelector(".page-title-popover");
+      const spaceLine = document.querySelector("[data-page-plan-space]");
+      const isCreateFlow = ["importProjects", "importArtifacts", "setup", "strategy"].includes(screenName);
+      const isCalendar = screenName === "calendar";
+      const activePlan = marketingPlans[calendarPlanFilter] || marketingPlans.coldbrew;
+
+      if (titleLabel) {
+        titleLabel.textContent = isCalendar ? activePlan.label : isCreateFlow ? "创建营销计划" : "自动化营销";
+      }
+      if (titleTrigger) {
+        titleTrigger.disabled = !isCalendar;
+        if (!isCalendar) titleTrigger.setAttribute("aria-expanded", "false");
+      }
+      if (titlePopover && !isCalendar) titlePopover.hidden = true;
+      if (spaceLine) {
+        const showSpace = isCalendar && Boolean(activePlan.spaceLabel);
+        spaceLine.hidden = !showSpace;
+        spaceLine.textContent = showSpace ? `所属 Space：${activePlan.spaceLabel}` : "";
+      }
+      document.querySelectorAll(".page-title-plan-option").forEach((option) => {
+        option.setAttribute("aria-selected", String(option.dataset.planValue === calendarPlanFilter));
+      });
     }
 
     function setCreationMode(mode) {
       creationMode = mode === "import" ? "import" : "brief";
       appShell?.classList.toggle("import-mode", creationMode === "import");
       if (creationMode === "import") setGenerationMode("immediate");
+    }
+
+    function selectMarketingPlan(planId) {
+      const plan = marketingPlans[planId] || marketingPlans.coldbrew;
+      const resolvedPlanId = marketingPlans[planId] ? planId : "coldbrew";
+      calendarPlanFilter = resolvedPlanId;
+      setCreationMode(plan.mode);
+      updatePageTitle("calendar");
+      applyCalendarFilters();
     }
 
     function setGenerationMode(mode) {
@@ -7835,6 +8019,34 @@
       headerCreateButton?.focus();
     });
 
+    const pageTitleTrigger = document.querySelector(".page-title-trigger");
+    const pageTitlePopover = document.querySelector(".page-title-popover");
+    const setPageTitleMenuOpen = (open) => {
+      if (!pageTitleTrigger || !pageTitlePopover || pageTitleTrigger.disabled) return;
+      pageTitlePopover.hidden = !open;
+      pageTitleTrigger.setAttribute("aria-expanded", String(open));
+    };
+    pageTitleTrigger?.addEventListener("click", (event) => {
+      event.stopPropagation();
+      setPageTitleMenuOpen(pageTitlePopover?.hidden !== false);
+    });
+    document.querySelectorAll(".page-title-plan-option").forEach((option) => {
+      option.addEventListener("click", (event) => {
+        event.stopPropagation();
+        selectMarketingPlan(option.dataset.planValue);
+        setPageTitleMenuOpen(false);
+        showToast(`已切换营销计划：${option.textContent.trim()}`);
+      });
+    });
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".page-title-menu")) setPageTitleMenuOpen(false);
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || pageTitlePopover?.hidden) return;
+      setPageTitleMenuOpen(false);
+      pageTitleTrigger?.focus();
+    });
+
     document.querySelectorAll("[data-toast]").forEach((button) => {
       button.addEventListener("click", () => {
         showToast(button.dataset.toast);
@@ -8196,7 +8408,11 @@
           menu.hidden = true;
           trigger.setAttribute("aria-expanded", "false");
           applyCalendarFilters();
-          showToast(`已按${dropdown.dataset.filter === "platform" ? "平台" : "状态"}筛选：${option.textContent.trim()}`);
+          const filterNames = {
+            platform: "平台",
+            status: "状态"
+          };
+          showToast(`已按${filterNames[dropdown.dataset.filter] || "条件"}筛选：${option.textContent.trim()}`);
         });
       });
     });
@@ -8367,6 +8583,9 @@
         } else if (next === "empty") {
           setCreationMode("brief");
         }
+        if (next === "calendar") {
+          calendarPlanFilter = creationMode === "import" ? "coffee-culture" : "coldbrew";
+        }
         setScreen(next);
         if (next === "calendar") {
           if (creationMode === "brief" && generationMode === "immediate") {
@@ -8406,7 +8625,7 @@
       const labelTarget = scope === "empty"
         ? root.querySelector("[data-empty-calendar-period-label]")
         : document.getElementById("calendarTitle");
-      root.classList.remove("day-mode", "week-mode", "month-mode", "list-mode", "period-prev", "period-current", "period-next");
+      root.classList.remove("day-mode", "week-mode", "month-mode", "period-prev", "period-current", "period-next");
       root.classList.add(`${state.view}-mode`);
       root.classList.add(state.offset < 0 ? "period-prev" : state.offset > 0 ? "period-next" : "period-current");
       if (labelTarget) labelTarget.textContent = label;
@@ -8436,11 +8655,24 @@
       }
     };
 
+    const setCalendarDisplayMode = (mode) => {
+      calendarDisplayMode = mode === "list" ? "list" : "calendar";
+      const calendarPanel = document.querySelector(".calendar-panel");
+      if (calendarPanel) {
+        calendarPanel.classList.toggle("list-mode", calendarDisplayMode === "list");
+        if (calendarDisplayMode === "calendar") updateCalendarPeriodUI(calendarPanel);
+      }
+      document.querySelectorAll("[data-calendar-mode]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.calendarMode === calendarDisplayMode);
+      });
+    };
+
     const setCalendarPeriodView = (root, view, offset = 0) => {
       if (!root) return;
       const scope = getCalendarScope(root);
       calendarPeriodState[scope].view = view;
       calendarPeriodState[scope].offset = Math.max(-1, Math.min(1, offset));
+      if (scope === "main") setCalendarDisplayMode("calendar");
       updateCalendarPeriodUI(root);
     };
 
@@ -8461,6 +8693,12 @@
         const calendarPanel = button.closest(".calendar-panel");
         if (!calendarPanel || !button.dataset.calendarView) return;
         setCalendarPeriodView(calendarPanel, button.dataset.calendarView, 0);
+      });
+    });
+
+    document.querySelectorAll("[data-calendar-mode]").forEach((button) => {
+      button.addEventListener("click", () => {
+        setCalendarDisplayMode(button.dataset.calendarMode);
       });
     });
 
@@ -8513,6 +8751,7 @@
     });
 
     document.querySelectorAll(".blank-calendar, .calendar-panel").forEach(updateCalendarPeriodUI);
+    setCalendarDisplayMode("calendar");
   </script>
 </body>
 </html>
