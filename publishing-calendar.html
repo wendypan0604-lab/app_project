@@ -628,13 +628,13 @@
       flex-wrap: wrap;
     }
 
-    .calendar-month-control {
+    .calendar-period-control {
       display: inline-flex;
       align-items: center;
       gap: 6px;
     }
 
-    .calendar-month-control .icon-btn {
+    .calendar-period-control .icon-btn {
       width: 32px;
       height: 32px;
       border-radius: 10px;
@@ -643,6 +643,15 @@
       box-shadow: none;
     }
 
+    .calendar-period-label {
+      min-width: 112px;
+      justify-content: center;
+      color: var(--text-strong);
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .calendar-view-toggle,
     .empty-view-toggle {
       height: 34px;
       padding: 3px;
@@ -652,6 +661,7 @@
       gap: 2px;
     }
 
+    .calendar-view-toggle button,
     .empty-view-toggle button {
       min-width: 42px;
       border-radius: 9px;
@@ -662,6 +672,7 @@
       font-weight: 600;
     }
 
+    .calendar-view-toggle button.active,
     .empty-view-toggle button.active {
       color: var(--text-strong);
       background: #fff;
@@ -2000,6 +2011,31 @@
       background: #eef1ff;
     }
 
+    .blank-calendar.week-mode.period-prev .blank-day:not(.blank-week-prev),
+    .blank-calendar.week-mode.period-current .blank-day:not(.blank-week-current),
+    .blank-calendar.week-mode.period-next .blank-day:not(.blank-week-next) {
+      display: none;
+    }
+
+    .blank-calendar.week-mode .blank-day {
+      min-height: 360px;
+    }
+
+    .blank-calendar.day-mode .blank-calendar-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .blank-calendar.day-mode .blank-head,
+    .blank-calendar.day-mode .blank-day:not(.blank-today) {
+      display: none;
+    }
+
+    .blank-calendar.day-mode .blank-day.blank-today {
+      min-height: 420px;
+      border-right: 0;
+      border-bottom: 0;
+    }
+
     .strategy-chat-head {
       min-height: 44px;
       padding: 0 12px;
@@ -2789,7 +2825,7 @@
     }
 
     .segmented {
-      width: 104px;
+      width: 156px;
       height: 36px;
       padding: 3px;
       border-radius: 12px;
@@ -2856,6 +2892,25 @@
       display: block;
     }
 
+    .calendar-panel.week-mode .calendar-day-view,
+    .calendar-panel.month-mode .calendar-day-view {
+      display: none;
+    }
+
+    .calendar-panel.week-mode .calendar-grid {
+      display: grid;
+    }
+
+    .calendar-panel.week-mode.period-prev .day-cell:not(.calendar-week-prev),
+    .calendar-panel.week-mode.period-current .day-cell:not(.calendar-week-current),
+    .calendar-panel.week-mode.period-next .day-cell:not(.calendar-week-next) {
+      display: none;
+    }
+
+    .calendar-panel.week-mode .day-cell {
+      min-height: 540px;
+    }
+
     .day-view-head {
       min-height: 72px;
       padding: 14px 16px;
@@ -2896,6 +2951,11 @@
       min-height: 112px;
       padding: 16px 0;
       border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .day-agenda-row[hidden],
+    .day-view-empty[hidden] {
+      display: none !important;
     }
 
     .day-agenda-row:last-child {
@@ -4768,6 +4828,14 @@
       background: #fff;
     }
 
+    .query-prompt-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
     .query-note {
       margin: 10px 0 0;
       color: var(--text-tertiary);
@@ -5320,21 +5388,22 @@
           <div class="empty-layout">
             <div class="empty-center">
               <div class="empty-main">
-                <aside class="blank-calendar" aria-label="发布日历">
+                <aside class="blank-calendar month-mode" aria-label="发布日历">
                   <div class="blank-calendar-top">
                     <span class="blank-calendar-title">发布日历</span>
                   </div>
                   <div class="empty-calendar-toolbar" aria-label="日历工具栏">
                     <div class="calendar-nav-group">
-                      <div class="calendar-month-control">
-                        <button class="icon-btn" aria-label="上个月"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(90deg)"><use href="#i-chevron-down"></use></svg></button>
-                        <span class="select-pill">2026年7月</span>
-                        <button class="icon-btn" aria-label="下个月"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(-90deg)"><use href="#i-chevron-down"></use></svg></button>
+                      <div class="calendar-period-control">
+                        <button class="icon-btn" type="button" aria-label="上一个周期" data-empty-calendar-nav="prev"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(90deg)"><use href="#i-chevron-down"></use></svg></button>
+                        <span class="select-pill calendar-period-label" data-empty-calendar-period-label>2026年7月</span>
+                        <button class="icon-btn" type="button" aria-label="下一个周期" data-empty-calendar-nav="next"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(-90deg)"><use href="#i-chevron-down"></use></svg></button>
                       </div>
-                      <button class="secondary-btn" data-toast="已回到今天">今天</button>
-                      <div class="empty-view-toggle" aria-label="视图范围">
-                        <button class="active">月</button>
-                        <button>周</button>
+                      <button class="secondary-btn" type="button" data-empty-calendar-today>今天</button>
+                      <div class="calendar-view-toggle" aria-label="视图范围">
+                        <button type="button" data-empty-calendar-view="day">日</button>
+                        <button type="button" data-empty-calendar-view="week">周</button>
+                        <button class="active" type="button" data-empty-calendar-view="month">月</button>
                       </div>
                     </div>
                     <div class="calendar-nav-group">
@@ -5352,27 +5421,27 @@
                       <div class="blank-head">五</div>
                       <div class="blank-head">六</div>
                       <div class="blank-head">日</div>
-                      <div class="blank-day">29</div>
-                      <div class="blank-day">30</div>
-                      <div class="blank-day">1</div>
-                      <div class="blank-day">2</div>
-                      <div class="blank-day">3</div>
-                      <div class="blank-day">4</div>
-                      <div class="blank-day">5</div>
-                      <div class="blank-day">6</div>
-                      <div class="blank-day">7</div>
-                      <div class="blank-day">8</div>
-                      <div class="blank-day">9</div>
-                      <div class="blank-day">10</div>
-                      <div class="blank-day">11</div>
-                      <div class="blank-day">12</div>
-                      <div class="blank-day">13</div>
-                      <div class="blank-day">14</div>
-                      <div class="blank-day">15</div>
-                      <div class="blank-day">16</div>
-                      <div class="blank-day">17</div>
-                      <div class="blank-day">18</div>
-                      <div class="blank-day">19</div>
+                      <div class="blank-day blank-week-prev">29</div>
+                      <div class="blank-day blank-week-prev">30</div>
+                      <div class="blank-day blank-week-prev">1</div>
+                      <div class="blank-day blank-week-prev">2</div>
+                      <div class="blank-day blank-week-prev">3</div>
+                      <div class="blank-day blank-week-prev">4</div>
+                      <div class="blank-day blank-week-prev">5</div>
+                      <div class="blank-day blank-week-current">6</div>
+                      <div class="blank-day blank-week-current">7</div>
+                      <div class="blank-day blank-week-current blank-today">8</div>
+                      <div class="blank-day blank-week-current">9</div>
+                      <div class="blank-day blank-week-current">10</div>
+                      <div class="blank-day blank-week-current">11</div>
+                      <div class="blank-day blank-week-current">12</div>
+                      <div class="blank-day blank-week-next">13</div>
+                      <div class="blank-day blank-week-next">14</div>
+                      <div class="blank-day blank-week-next">15</div>
+                      <div class="blank-day blank-week-next">16</div>
+                      <div class="blank-day blank-week-next">17</div>
+                      <div class="blank-day blank-week-next">18</div>
+                      <div class="blank-day blank-week-next">19</div>
                     </div>
                     <div class="blank-calendar-empty">
                       <div>
@@ -5894,10 +5963,20 @@
 
         <section class="flow-screen" data-screen="calendar">
           <div class="main-grid">
-            <section class="calendar-panel">
+            <section class="calendar-panel month-mode">
             <div class="calendar-toolbar">
               <div class="toolbar-left">
-                <h2 class="panel-title" id="calendarTitle" style="margin-right:8px">2026年7月</h2>
+                <div class="calendar-period-control">
+                  <button class="icon-btn" type="button" aria-label="上一个周期" data-calendar-period-nav="prev"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(90deg)"><use href="#i-chevron-down"></use></svg></button>
+                  <h2 class="panel-title select-pill calendar-period-label" id="calendarTitle">2026年7月</h2>
+                  <button class="icon-btn" type="button" aria-label="下一个周期" data-calendar-period-nav="next"><svg class="ui-icon" style="width:16px;height:16px;transform:rotate(-90deg)"><use href="#i-chevron-down"></use></svg></button>
+                </div>
+                <button class="secondary-btn" type="button" data-calendar-today>今天</button>
+                <div class="segmented" aria-label="日历视图维度切换">
+                  <button type="button" data-calendar-view="day">日</button>
+                  <button type="button" data-calendar-view="week">周</button>
+                  <button class="active" type="button" data-calendar-view="month">月</button>
+                </div>
                 <div class="filter-dropdown platform-filter" data-filter="platform">
                   <button class="select-pill" type="button" aria-haspopup="listbox" aria-expanded="false"><span data-filter-label>全部平台</span><svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></button>
                   <div class="filter-menu" role="listbox" aria-label="按平台筛选" hidden>
@@ -5929,10 +6008,6 @@
                 <span class="select-pill">冷萃新品上市 <svg class="ui-icon" style="width:14px;height:14px"><use href="#i-chevron-down"></use></svg></span>
               </div>
               <div class="toolbar-right">
-                <div class="segmented" aria-label="日历视图切换">
-                  <button class="active" type="button" data-calendar-view="calendar">日历</button>
-                  <button type="button" data-calendar-view="list">列表</button>
-                </div>
                 <button class="secondary-btn supplement-publish-btn" type="button" data-modal="supplementModal"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-plus"></use></svg>新增发布内容</button>
               </div>
             </div>
@@ -5946,17 +6021,17 @@
               <div class="day-head">周六</div>
               <div class="day-head">周日</div>
 
-              <div class="day-cell"><div class="day-number">29</div></div>
-              <div class="day-cell"><div class="day-number">30</div></div>
-              <div class="day-cell"><div class="day-number">1</div></div>
-              <div class="day-cell"><div class="day-number">2</div></div>
-              <div class="day-cell"><div class="day-number">3</div></div>
-              <div class="day-cell"><div class="day-number">4</div></div>
-              <div class="day-cell"><div class="day-number">5</div></div>
+              <div class="day-cell calendar-week-prev"><div class="day-number">29</div></div>
+              <div class="day-cell calendar-week-prev"><div class="day-number">30</div></div>
+              <div class="day-cell calendar-week-prev"><div class="day-number">1</div></div>
+              <div class="day-cell calendar-week-prev"><div class="day-number">2</div></div>
+              <div class="day-cell calendar-week-prev"><div class="day-number">3</div></div>
+              <div class="day-cell calendar-week-prev"><div class="day-number">4</div></div>
+              <div class="day-cell calendar-week-prev"><div class="day-number">5</div></div>
 
-              <div class="day-cell"><div class="day-number">6</div></div>
-              <div class="day-cell"><div class="day-number">7</div></div>
-              <div class="day-cell today">
+              <div class="day-cell calendar-week-current"><div class="day-number">6</div></div>
+              <div class="day-cell calendar-week-current"><div class="day-number">7</div></div>
+              <div class="day-cell today calendar-week-current">
                 <div class="day-number">8</div>
                 <article class="plan-card compact import-only" data-publish-id="import-ig-coldbrew">
                   <div class="platform-preview ig-post-preview">
@@ -6016,7 +6091,7 @@
                 </article>
                 <button class="day-more" data-open-day-view="2026-07-08">展开当日视图</button>
               </div>
-              <div class="day-cell">
+              <div class="day-cell calendar-week-current">
                 <div class="day-number">9</div>
                 <article class="plan-card import-only" data-publish-id="import-ig-story">
                   <div class="platform-preview story-preview"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="早间冷萃 Story" /></div>
@@ -6055,7 +6130,7 @@
                   </div>
                 </article>
               </div>
-              <div class="day-cell">
+              <div class="day-cell calendar-week-current">
                 <div class="day-number">10</div>
                 <article class="plan-card import-only" data-publish-id="import-tt-commute">
                   <div class="platform-preview reel-preview"><span class="play-mark"></span></div>
@@ -6109,10 +6184,10 @@
                   </div>
                 </article>
               </div>
-              <div class="day-cell"><div class="day-number">11</div></div>
-              <div class="day-cell"><div class="day-number">12</div></div>
+              <div class="day-cell calendar-week-current"><div class="day-number">11</div></div>
+              <div class="day-cell calendar-week-current"><div class="day-number">12</div></div>
 
-              <div class="day-cell">
+              <div class="day-cell calendar-week-next">
                 <div class="day-number">13</div>
                 <article class="plan-card import-only" data-publish-id="import-x-culture">
                   <div class="platform-preview ig-post-preview">
@@ -6171,7 +6246,7 @@
                   </div>
                 </article>
               </div>
-              <div class="day-cell">
+              <div class="day-cell calendar-week-next">
                 <div class="day-number">14</div>
                 <article class="plan-card scheduled-task-card brief-only scheduled-only" data-task-key="coldbrew-photo" role="button" tabindex="0">
                   <div class="scheduled-task-main">
@@ -6181,7 +6256,7 @@
                   <div class="plan-meta-line"><span class="time">08:00</span><span class="status-pill pending">待生成</span></div>
                 </article>
               </div>
-              <div class="day-cell">
+              <div class="day-cell calendar-week-next">
                 <div class="day-number">15</div>
                 <article class="plan-card scheduled-task-card brief-only scheduled-only" data-task-key="commute-video" role="button" tabindex="0">
                   <div class="scheduled-task-main">
@@ -6213,7 +6288,7 @@
                   </div>
                 </article>
               </div>
-              <div class="day-cell">
+              <div class="day-cell calendar-week-next">
                 <div class="day-number">16</div>
                 <article class="plan-card scheduled-task-card brief-only scheduled-only" data-task-key="flavor-story" role="button" tabindex="0">
                   <div class="scheduled-task-main">
@@ -6223,7 +6298,7 @@
                   <div class="plan-meta-line"><span class="time">12:10</span><span class="status-pill pending">待生成</span></div>
                 </article>
               </div>
-              <div class="day-cell">
+              <div class="day-cell calendar-week-next">
                 <div class="day-number">17</div>
                 <article class="plan-card scheduled-task-card brief-only scheduled-only" data-task-key="roast-story" role="button" tabindex="0">
                   <div class="scheduled-task-main">
@@ -6259,7 +6334,7 @@
                   </div>
                 </article>
               </div>
-              <div class="day-cell">
+              <div class="day-cell calendar-week-next">
                 <div class="day-number">18</div>
                 <article class="plan-card brief-only" data-publish-id="brief-tt-weekend-ready">
                   <div class="platform-preview story-preview"><span class="play-mark"></span></div>
@@ -6274,7 +6349,7 @@
                   </div>
                 </article>
               </div>
-              <div class="day-cell">
+              <div class="day-cell calendar-week-next">
                 <div class="day-number">19</div>
                 <button class="next-plan-slot" data-goto="setup">
                   <span><svg class="ui-icon" style="width:18px;height:18px;margin:0 auto 6px"><use href="#i-plus"></use></svg>生成下一期计划</span>
@@ -6285,10 +6360,9 @@
             <section class="calendar-day-view" aria-label="7月8日当日视图">
               <div class="day-view-head">
                 <div class="day-view-date">
-                  <strong>7月8日</strong>
+                  <strong id="dayViewTitle">7月8日</strong>
                   <span id="dayViewSummary">周三 · 2 条内容</span>
                 </div>
-                <button class="secondary-btn" type="button" data-close-day-view><svg class="ui-icon"><use href="#i-calendar"></use></svg>返回月视图</button>
               </div>
               <div class="day-agenda">
                 <div class="day-agenda-row import-only">
@@ -6323,6 +6397,9 @@
                 </div>
                 <div class="day-view-empty brief-only scheduled-only">
                   <div><strong>当天暂无定时生成任务</strong><span>下一任务将在 7月14日 08:00 执行</span></div>
+                </div>
+                <div class="day-view-empty" id="dayViewEmptyState" hidden>
+                  <div><strong>当天暂无发布内容</strong><span>可返回今天或切换周/月视图查看其他内容。</span></div>
                 </div>
               </div>
             </section>
@@ -6837,11 +6914,12 @@
   </div>
 
   <div class="modal-backdrop" id="queryModal" aria-hidden="true">
-    <section class="modal-panel" role="dialog" aria-label="生成 Query">
+    <section class="modal-panel" role="dialog" aria-label="计划详情">
       <div class="modal-head">
-        <h2 class="modal-title">生成 Query</h2>
+        <h2 class="modal-title">计划详情</h2>
         <button class="icon-btn" data-close-modal aria-label="关闭"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
       </div>
+      <span class="query-prompt-label">将使用以下 prompt 为你生成发布素材</span>
       <textarea class="query-textarea" id="queryText" readonly>为冷萃咖啡新品上市生成一组社媒发布物料。画面需要突出“早晨第一杯冷萃”的仪式感，整体风格清爽、现代、有生活方式感。生成 1 张 Instagram feed 方图、1 组 TikTok photo 图文素材，主视觉包含冷萃杯、冰块、晨光和桌面场景。文案语气克制但有吸引力，强调更冷、更慢、更专注的开始。</textarea>
       <div class="query-reference-panel" aria-label="参考资料">
         <div class="query-reference-head">
@@ -6857,7 +6935,7 @@
       </div>
       <div class="query-actions">
         <button class="secondary-btn" id="editQueryBtn">编辑</button>
-        <button class="primary-btn" id="saveQueryBtn" hidden>保存 Query</button>
+        <button class="primary-btn" id="saveQueryBtn" hidden>确认</button>
       </div>
     </section>
   </div>
@@ -6938,6 +7016,27 @@
     let pendingDraftDelete = null;
     let supplementMaterials = [];
     const flowOrder = ["empty", "importProjects", "importArtifacts", "setup", "strategy", "calendar"];
+    const calendarPeriodState = {
+      empty: { view: "month", offset: 0 },
+      main: { view: "month", offset: 0 }
+    };
+    const calendarPeriodLabels = {
+      day: {
+        "-1": "2026年7月7日",
+        "0": "2026年7月8日",
+        "1": "2026年7月9日"
+      },
+      week: {
+        "-1": "2026年6月29日 - 7月5日",
+        "0": "2026年7月6日 - 7月12日",
+        "1": "2026年7月13日 - 7月19日"
+      },
+      month: {
+        "-1": "2026年6月",
+        "0": "2026年7月",
+        "1": "2026年8月"
+      }
+    };
     const scheduledTaskExecution = {};
     const supplementFormats = {
       Facebook: ["Facebook Page Post"],
@@ -8254,7 +8353,7 @@
       queryText.readOnly = true;
       editQueryBtn.hidden = false;
       saveQueryBtn.hidden = true;
-      showToast("Query 已更新");
+      showToast("计划详情已更新");
     });
 
     document.querySelectorAll("[data-goto]").forEach((button) => {
@@ -8292,49 +8391,128 @@
       });
     });
 
-    const closeDayView = (calendarPanel) => {
-      if (!calendarPanel) return;
-      calendarPanel.classList.remove("day-mode");
-      const title = document.getElementById("calendarTitle");
-      if (title) title.textContent = "2026年7月";
+    const getCalendarPeriodLabel = (view, offset) => {
+      const boundedOffset = Math.max(-1, Math.min(1, offset));
+      return calendarPeriodLabels[view]?.[String(boundedOffset)] || calendarPeriodLabels[view]?.["0"] || "2026年7月";
+    };
+
+    const getCalendarScope = (root) => root?.classList.contains("blank-calendar") ? "empty" : "main";
+
+    const updateCalendarPeriodUI = (root) => {
+      if (!root) return;
+      const scope = getCalendarScope(root);
+      const state = calendarPeriodState[scope];
+      const label = getCalendarPeriodLabel(state.view, state.offset);
+      const labelTarget = scope === "empty"
+        ? root.querySelector("[data-empty-calendar-period-label]")
+        : document.getElementById("calendarTitle");
+      root.classList.remove("day-mode", "week-mode", "month-mode", "list-mode", "period-prev", "period-current", "period-next");
+      root.classList.add(`${state.view}-mode`);
+      root.classList.add(state.offset < 0 ? "period-prev" : state.offset > 0 ? "period-next" : "period-current");
+      if (labelTarget) labelTarget.textContent = label;
+      const selector = scope === "empty" ? "[data-empty-calendar-view]" : "[data-calendar-view]";
+      root.querySelectorAll(selector).forEach((button) => {
+        const view = scope === "empty" ? button.dataset.emptyCalendarView : button.dataset.calendarView;
+        button.classList.toggle("active", view === state.view);
+      });
+      const summary = document.getElementById("dayViewSummary");
+      if (summary && scope === "main" && state.view === "day") {
+        const dayViewTitle = document.getElementById("dayViewTitle");
+        if (dayViewTitle) dayViewTitle.textContent = state.offset === 0 ? "7月8日" : state.offset < 0 ? "7月7日" : "7月9日";
+        const showTodayAgenda = state.offset === 0;
+        document.querySelectorAll(".day-agenda-row").forEach((row) => {
+          row.hidden = !showTodayAgenda;
+        });
+        document.querySelectorAll(".day-view-empty.brief-only.scheduled-only").forEach((empty) => {
+          empty.hidden = !showTodayAgenda;
+        });
+        const dayViewEmptyState = document.getElementById("dayViewEmptyState");
+        if (dayViewEmptyState) dayViewEmptyState.hidden = showTodayAgenda;
+        summary.textContent = state.offset === 0
+          ? generationMode === "scheduled" ? "周三 · 0 个定时任务" : "周三 · 2 条内容"
+          : state.offset < 0
+            ? "周二 · 暂无内容"
+            : "周四 · 暂无内容";
+      }
+    };
+
+    const setCalendarPeriodView = (root, view, offset = 0) => {
+      if (!root) return;
+      const scope = getCalendarScope(root);
+      calendarPeriodState[scope].view = view;
+      calendarPeriodState[scope].offset = Math.max(-1, Math.min(1, offset));
+      updateCalendarPeriodUI(root);
     };
 
     document.querySelectorAll("[data-open-day-view]").forEach((button) => {
       button.addEventListener("click", () => {
         const calendarPanel = button.closest(".calendar-panel");
         if (!calendarPanel) return;
-        calendarPanel.classList.remove("list-mode");
-        calendarPanel.classList.add("day-mode");
-        calendarPanel.querySelectorAll("[data-calendar-view]").forEach((viewButton) => {
-          viewButton.classList.toggle("active", viewButton.dataset.calendarView === "calendar");
-        });
-        const title = document.getElementById("calendarTitle");
+        setCalendarPeriodView(calendarPanel, "day", 0);
         const summary = document.getElementById("dayViewSummary");
-        if (title) title.textContent = "2026年7月8日";
         if (summary) summary.textContent = generationMode === "scheduled" ? "周三 · 0 个定时任务" : "周三 · 2 条内容";
         document.querySelector(".workspace")?.scrollTo({ top: 0, behavior: "smooth" });
         showToast("已切换到 7月8日 当日视图");
       });
     });
 
-    document.querySelectorAll("[data-close-day-view]").forEach((button) => {
+    document.querySelectorAll("[data-calendar-view]").forEach((button) => {
       button.addEventListener("click", () => {
-        closeDayView(button.closest(".calendar-panel"));
-        showToast("已返回月视图");
+        const calendarPanel = button.closest(".calendar-panel");
+        if (!calendarPanel || !button.dataset.calendarView) return;
+        setCalendarPeriodView(calendarPanel, button.dataset.calendarView, 0);
       });
     });
 
-    document.querySelectorAll(".segmented button").forEach((button) => {
+    document.querySelectorAll("[data-calendar-period-nav]").forEach((button) => {
       button.addEventListener("click", () => {
-        button.parentElement.querySelectorAll("button").forEach((item) => item.classList.remove("active"));
-        button.classList.add("active");
         const calendarPanel = button.closest(".calendar-panel");
-        if (calendarPanel && button.dataset.calendarView) {
-          closeDayView(calendarPanel);
-          calendarPanel.classList.toggle("list-mode", button.dataset.calendarView === "list");
-        }
+        if (!calendarPanel) return;
+        const direction = button.dataset.calendarPeriodNav === "prev" ? -1 : 1;
+        const state = calendarPeriodState.main;
+        state.offset = Math.max(-1, Math.min(1, state.offset + direction));
+        updateCalendarPeriodUI(calendarPanel);
+        showToast(`已切换到${getCalendarPeriodLabel(state.view, state.offset)}`);
       });
     });
+
+    document.querySelector("[data-calendar-today]")?.addEventListener("click", () => {
+      const calendarPanel = document.querySelector(".calendar-panel");
+      if (!calendarPanel) return;
+      calendarPeriodState.main.offset = 0;
+      updateCalendarPeriodUI(calendarPanel);
+      showToast("已回到包含今天的周期");
+    });
+
+    document.querySelectorAll("[data-empty-calendar-view]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const blankCalendar = button.closest(".blank-calendar");
+        if (!blankCalendar || !button.dataset.emptyCalendarView) return;
+        setCalendarPeriodView(blankCalendar, button.dataset.emptyCalendarView, 0);
+      });
+    });
+
+    document.querySelectorAll("[data-empty-calendar-nav]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const blankCalendar = button.closest(".blank-calendar");
+        if (!blankCalendar) return;
+        const direction = button.dataset.emptyCalendarNav === "prev" ? -1 : 1;
+        const state = calendarPeriodState.empty;
+        state.offset = Math.max(-1, Math.min(1, state.offset + direction));
+        updateCalendarPeriodUI(blankCalendar);
+        showToast(`已切换到${getCalendarPeriodLabel(state.view, state.offset)}`);
+      });
+    });
+
+    document.querySelector("[data-empty-calendar-today]")?.addEventListener("click", () => {
+      const blankCalendar = document.querySelector(".blank-calendar");
+      if (!blankCalendar) return;
+      calendarPeriodState.empty.offset = 0;
+      updateCalendarPeriodUI(blankCalendar);
+      showToast("已回到包含今天的周期");
+    });
+
+    document.querySelectorAll(".blank-calendar, .calendar-panel").forEach(updateCalendarPeriodUI);
   </script>
 </body>
 </html>
