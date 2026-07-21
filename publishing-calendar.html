@@ -3843,7 +3843,8 @@
       gap: 16px;
     }
 
-    .approval-required-banner {
+    .approval-required-banner,
+    .reschedule-required-banner {
       margin-bottom: 12px;
       padding: 12px;
       border-radius: 12px;
@@ -3855,21 +3856,26 @@
       gap: 10px;
     }
 
-    .approval-required-banner[hidden] {
+    .approval-required-banner[hidden],
+    .reschedule-required-banner[hidden] {
       display: none !important;
     }
 
     .approval-required-banner strong,
-    .approval-required-banner span {
+    .approval-required-banner span,
+    .reschedule-required-banner strong,
+    .reschedule-required-banner span {
       display: block;
     }
 
-    .approval-required-banner strong {
+    .approval-required-banner strong,
+    .reschedule-required-banner strong {
       color: var(--text-strong);
       font-size: 13px;
     }
 
-    .approval-required-banner span {
+    .approval-required-banner span,
+    .reschedule-required-banner span {
       margin-top: 3px;
       color: var(--text-tertiary);
       font-size: 11px;
@@ -4073,6 +4079,7 @@
     .review-panel.immediate-only.is-generating .post-preview-card,
     .review-panel.immediate-only.is-generating .account-required-banner,
     .review-panel.immediate-only.is-generating .approval-required-banner,
+    .review-panel.immediate-only.is-generating .reschedule-required-banner,
     .review-panel.immediate-only.is-generating .editable-copy,
     .review-panel.immediate-only.is-generating .action-row {
       display: none !important;
@@ -4819,6 +4826,32 @@
       color: #fff;
       background: #d9425b;
       font-weight: 650;
+    }
+
+    .reschedule-time-input {
+      width: 100%;
+      height: 42px;
+      padding: 0 12px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      color: var(--text-primary);
+      background: #fff;
+      font: inherit;
+    }
+
+    .reschedule-time-hint {
+      margin: 8px 0 0;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .reschedule-time-error {
+      min-height: 18px;
+      margin: 8px 0 0;
+      color: #b33d50;
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     .task-detail-label {
@@ -6868,6 +6901,10 @@
                 <div><strong>发布前需要你的确认</strong><span>确认后进入待发布队列，并按计划时间自动发布。</span></div>
                 <button class="primary-btn" type="button" id="confirmPublishBtn">确认发布</button>
               </div>
+              <div class="reschedule-required-banner" id="rescheduleRequiredBanner" hidden>
+                <div><strong>请重新设置发布时间</strong><span>设置后内容将移动到日历的新时间位置，并进入待发布。</span></div>
+                <button class="primary-btn" type="button" id="reschedulePublishBtn">设置发布时间</button>
+              </div>
               <article class="generating-detail-card" id="generatingDetailCard" hidden>
                 <div class="generating-detail-head">
                   <div>
@@ -7255,6 +7292,23 @@
       <div class="confirm-actions">
         <button class="secondary-btn" type="button" data-close-modal>取消</button>
         <button class="danger-btn" type="button" id="confirmDeleteMarketingPlanBtn">删除草稿</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="reschedulePublishModal" aria-hidden="true">
+    <section class="modal-panel confirm-modal-panel" role="dialog" aria-labelledby="reschedulePublishTitle" aria-describedby="reschedulePublishHint">
+      <div class="modal-head">
+        <h2 class="modal-title" id="reschedulePublishTitle">修改发布时间</h2>
+        <button class="icon-btn" data-close-modal aria-label="关闭"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
+      </div>
+      <label class="task-detail-label" for="reschedulePublishTime">新的发布时间</label>
+      <input class="reschedule-time-input" id="reschedulePublishTime" type="datetime-local" />
+      <p class="reschedule-time-hint" id="reschedulePublishHint">确认后内容将移动到日历的新时间位置，并进入待发布。</p>
+      <p class="reschedule-time-error" id="reschedulePublishError" aria-live="polite"></p>
+      <div class="confirm-actions">
+        <button class="secondary-btn" type="button" data-close-modal>取消</button>
+        <button class="primary-btn" type="button" id="confirmReschedulePublishBtn">确认时间</button>
       </div>
     </section>
   </div>
@@ -8076,6 +8130,71 @@
       });
     }
 
+    function getRescheduleInputValue(record) {
+      const existingValue = record?.dataset.scheduleDate;
+      if (existingValue) return existingValue;
+      const timeText = record?.querySelector(".time, .publish-time")?.textContent || "";
+      const timeMatch = timeText.match(/(\d{1,2}):(\d{2})/);
+      const dateMatch = timeText.match(/(\d{1,2})月(\d{1,2})日/);
+      const dayFromCell = record?.closest(".day-cell")?.querySelector(".day-number")?.textContent.trim();
+      const month = dateMatch?.[1] || "7";
+      const day = dateMatch?.[2] || dayFromCell || "10";
+      const hours = String(timeMatch?.[1] || "10").padStart(2, "0");
+      const minutes = timeMatch?.[2] || "30";
+      return `2026-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}T${hours}:${minutes}`;
+    }
+
+    function openReschedulePublishModal() {
+      const matching = [...document.querySelectorAll("[data-publish-key]")].filter((record) => record.dataset.publishKey === activePublishRecordKey);
+      const record = matching.find((item) => item.classList.contains("plan-card")) || matching[0];
+      if (!record || getPublishRecordStatus(record) !== "待排期") return;
+      const input = document.getElementById("reschedulePublishTime");
+      const error = document.getElementById("reschedulePublishError");
+      if (input) input.value = getRescheduleInputValue(record);
+      if (error) error.textContent = "";
+      const modal = document.getElementById("reschedulePublishModal");
+      modal?.classList.add("active");
+      modal?.setAttribute("aria-hidden", "false");
+    }
+
+    function confirmReschedulePublish() {
+      const input = document.getElementById("reschedulePublishTime");
+      const error = document.getElementById("reschedulePublishError");
+      const value = input?.value || "";
+      const dateMatch = value.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
+      if (!dateMatch) {
+        if (error) error.textContent = "请选择新的发布时间。";
+        input?.focus();
+        return;
+      }
+      const [, year, month, day, hours, minutes] = dateMatch;
+      const targetCell = [...document.querySelectorAll(".calendar-grid .day-cell.calendar-week-current, .calendar-grid .day-cell.calendar-week-next")]
+        .find((cell) => cell.querySelector(".day-number")?.textContent.trim() === String(Number(day)));
+      if (year !== "2026" || month !== "07" || !targetCell) {
+        if (error) error.textContent = "请选择当前原型日历范围内的日期（2026年7月6日至19日）。";
+        input?.focus();
+        return;
+      }
+      const matching = [...document.querySelectorAll("[data-publish-key]")].filter((record) => record.dataset.publishKey === activePublishRecordKey);
+      const card = matching.find((record) => record.classList.contains("plan-card"));
+      if (!card || getPublishRecordStatus(card) !== "待排期") return;
+      const timeLabel = `${hours}:${minutes}`;
+      const dateLabel = `${Number(month)}月${Number(day)}日 ${timeLabel}`;
+      matching.forEach((record) => {
+        record.dataset.scheduleDate = value;
+        const timeNode = record.querySelector(".time, .publish-time");
+        if (timeNode) timeNode.textContent = record.classList.contains("plan-card") ? timeLabel : dateLabel;
+      });
+      const trailingAction = targetCell.querySelector(".next-plan-slot");
+      if (trailingAction) targetCell.insertBefore(card, trailingAction);
+      else targetCell.appendChild(card);
+      setPublishRecordStatus(activePublishRecordKey, "待发布", "ready-publish");
+      closeModal(document.getElementById("reschedulePublishModal"));
+      applyCalendarFilters();
+      selectPublishRecord(activePublishRecordKey, card);
+      showToast(`发布时间已更新为 ${dateLabel}，内容已进入待发布。`);
+    }
+
     function setProjectChatSidebarOpen(open, allowReopen = true) {
       const sidebar = document.getElementById("projectChatSidebar");
       const reopen = document.getElementById("reopenProjectChat");
@@ -8126,6 +8245,7 @@
       const deleteButton = document.getElementById("deletePublishPlanBtn");
       const accountBanner = document.querySelector(".review-panel.immediate-only .account-required-banner");
       const approvalBanner = document.getElementById("approvalRequiredBanner");
+      const rescheduleBanner = document.getElementById("rescheduleRequiredBanner");
       const generatingDetail = document.getElementById("generatingDetailCard");
       const generatingTitle = document.getElementById("generatingDetailTitle");
       const generatingMeta = document.getElementById("generatingDetailMeta");
@@ -8151,6 +8271,7 @@
       }
       if (isPending) {
         if (approvalBanner) approvalBanner.hidden = true;
+        if (rescheduleBanner) rescheduleBanner.hidden = true;
         if (generatingDetail) generatingDetail.hidden = true;
         if (postPreviewCard) postPreviewCard.hidden = true;
         if (editableCopy) editableCopy.hidden = true;
@@ -8160,6 +8281,7 @@
         return;
       }
       if (deleteButton) deleteButton.hidden = isPublished || isPublishing || isGenerating;
+      if (rescheduleBanner) rescheduleBanner.hidden = status !== "待排期" || projectContextOnly;
       if (generatingDetail) generatingDetail.hidden = !projectContextOnly;
       if (postPreviewCard) postPreviewCard.hidden = projectContextOnly;
       if (editableCopy) editableCopy.hidden = projectContextOnly || isPublished || isPublishing;
@@ -8751,6 +8873,8 @@
     });
 
     document.getElementById("confirmPublishBtn")?.addEventListener("click", confirmActivePublishRecord);
+    document.getElementById("reschedulePublishBtn")?.addEventListener("click", openReschedulePublishModal);
+    document.getElementById("confirmReschedulePublishBtn")?.addEventListener("click", confirmReschedulePublish);
     document.getElementById("selectedCopy")?.addEventListener("input", () => syncActivePublishTextFields("文案"));
     document.getElementById("selectedTags")?.addEventListener("input", () => syncActivePublishTextFields("Tag"));
     document.getElementById("confirmAssetReplacement")?.addEventListener("click", confirmAssetReplacement);
