@@ -3198,6 +3198,14 @@
       display: none !important;
     }
 
+    .app-shell:not(.scheduled-generation-mode) .calendar-grid .scheduled-only.calendar-task-visible {
+      display: block !important;
+    }
+
+    .app-shell:not(.scheduled-generation-mode) .calendar-list .scheduled-only.calendar-task-visible {
+      display: grid !important;
+    }
+
     .publish-list-item {
       min-height: 92px;
       border-radius: 14px;
@@ -6297,7 +6305,7 @@
 
               <div class="flow-actions split">
                 <div class="flow-actions-left">
-                  <button class="secondary-btn" data-goto="setup">返回修改设置</button>
+                  <button class="secondary-btn" id="strategyBackOrDeletePlanBtn" data-goto="setup">返回修改设置</button>
                 </div>
                 <div class="flow-actions-right">
                   <div class="generation-mode-control brief-only" aria-label="生成方式">
@@ -6649,7 +6657,7 @@
               </div>
               <div class="day-cell calendar-week-next">
                 <div class="day-number">16</div>
-                <article class="plan-card scheduled-task-card brief-only scheduled-only" data-task-key="flavor-story" role="button" tabindex="0">
+                <article class="plan-card scheduled-task-card brief-only scheduled-only calendar-task-visible" data-task-key="flavor-story" role="button" tabindex="0">
                   <div class="scheduled-task-main">
                     <span class="scheduled-task-icon"><svg class="ui-icon" style="width:17px;height:17px"><use href="#i-calendar"></use></svg></span>
                     <span class="scheduled-task-copy"><strong>生成风味笔记 Story</strong><span>Instagram Story</span></span>
@@ -6789,7 +6797,7 @@
                 <div class="publish-meta"><div class="chip-row"><span class="chip green">TikTok Video</span><span class="chip blue">Instagram Reels</span></div><span class="publish-time">执行时间 7月15日 18:30</span></div>
                 <div class="publish-state"><span class="status-pill pending">待生成</span><span class="copy-action">详情</span></div>
               </article>
-              <article class="publish-list-item scheduled-task-list-item brief-only scheduled-only" data-task-key="flavor-story" role="button" tabindex="0">
+              <article class="publish-list-item scheduled-task-list-item brief-only scheduled-only calendar-task-visible" data-task-key="flavor-story" role="button" tabindex="0">
                 <div class="scheduled-task-main"><span class="scheduled-task-icon"><svg class="ui-icon" style="width:18px;height:18px"><use href="#i-calendar"></use></svg></span><span class="scheduled-task-copy"><strong>生成风味笔记 Story</strong><span>生成竖版 Story 图片组、文案与 Tag</span></span></div>
                 <div class="publish-meta"><div class="chip-row"><span class="chip blue">Instagram Story</span></div><span class="publish-time">执行时间 7月16日 12:10</span></div>
                 <div class="publish-state"><span class="status-pill pending">待生成</span><span class="copy-action">详情</span></div>
@@ -6994,7 +7002,7 @@
                 <button class="secondary-btn" data-modal="assetModal"><svg class="ui-icon"><use href="#i-image"></use></svg>更换素材</button>
               </div>
             </section>
-            <section class="review-panel scheduled-only scheduled-task-side-panel" aria-label="当前定时任务详情">
+            <section class="review-panel scheduled-task-side-panel" aria-label="当前定时任务详情" hidden>
               <div class="panel-head">
                 <div>
                   <h2 class="panel-title">定时任务详情</h2>
@@ -7436,6 +7444,7 @@
     let creationMode = "brief";
     let generationMode = "immediate";
     let activeScheduledTaskKey = "coldbrew-photo";
+    let scheduledTaskDetailOpen = false;
     let activePublishRecordKey = "";
     let calendarDisplayMode = "calendar";
     let calendarPlatformFilter = "all";
@@ -7971,6 +7980,16 @@
           spaceLine.removeAttribute("href");
         }
       }
+      const strategyBackOrDeletePlanBtn = document.getElementById("strategyBackOrDeletePlanBtn");
+      const isDraftPlanDetail = screenName === "strategy" && Boolean(activePlan.isDraft);
+      if (strategyBackOrDeletePlanBtn) {
+        strategyBackOrDeletePlanBtn.textContent = isDraftPlanDetail ? "删除计划" : "返回修改设置";
+        if (isDraftPlanDetail) {
+          strategyBackOrDeletePlanBtn.removeAttribute("data-goto");
+        } else {
+          strategyBackOrDeletePlanBtn.dataset.goto = "setup";
+        }
+      }
       document.querySelectorAll(".page-title-plan-option").forEach((option) => {
         option.setAttribute("aria-selected", String(option.dataset.planValue === calendarPlanFilter));
       });
@@ -8045,6 +8064,8 @@
       }
       if (generationMode === "scheduled") {
         setProjectChatSidebarOpen(false, false);
+      } else {
+        scheduledTaskDetailOpen = false;
       }
       applyCalendarFilters();
     }
@@ -8091,6 +8112,18 @@
       });
 
       if (generationMode !== "scheduled") {
+        const featuredScheduledTasks = [...document.querySelectorAll(".calendar-grid .scheduled-task-card.calendar-task-visible")].filter((item) => !item.hidden);
+        const scheduledTaskPanel = document.querySelector(".scheduled-task-side-panel");
+        const showScheduledTaskPanel = scheduledTaskDetailOpen && featuredScheduledTasks.some((item) => item.dataset.taskKey === activeScheduledTaskKey);
+        if (scheduledTaskPanel) scheduledTaskPanel.hidden = !showScheduledTaskPanel;
+        if (showScheduledTaskPanel) {
+          const immediatePanel = document.querySelector(".review-panel.immediate-only");
+          if (immediatePanel) immediatePanel.hidden = true;
+          document.querySelector(".main-grid")?.classList.remove("project-context-only", "no-right-panel");
+          const rightStack = document.querySelector(".right-stack");
+          if (rightStack) rightStack.hidden = false;
+          return;
+        }
         const modeSelector = creationMode === "import" ? ".plan-card.import-only" : ".plan-card.brief-only:not(.scheduled-only)";
         const visibleRecords = [...document.querySelectorAll(`.calendar-grid ${modeSelector}`)].filter((item) => !item.hidden);
         const activeRecordVisible = Boolean(activePublishRecordKey) && visibleRecords.some((item) => item.dataset.publishKey === activePublishRecordKey);
@@ -8465,6 +8498,9 @@
       record.dataset.recordStatus = record.querySelector(".status-pill")?.textContent.trim() || "";
       record.addEventListener("click", (event) => {
         if (event.target.closest("button, a, input, textarea")) return;
+        scheduledTaskDetailOpen = false;
+        document.querySelector(".scheduled-task-side-panel")?.setAttribute("hidden", "");
+        document.querySelectorAll("[data-task-key][role='button']").forEach((task) => task.classList.remove("selected"));
         selectPublishRecord(record.dataset.publishKey, record);
       });
     }
@@ -8906,7 +8942,13 @@
 
     document.querySelectorAll("[data-task-key][role='button']").forEach((item) => {
       item.addEventListener("click", () => {
+        if (generationMode === "scheduled" || item.classList.contains("calendar-task-visible")) {
+          scheduledTaskDetailOpen = true;
+          clearPublishRecordSelection();
+        }
+        setProjectChatSidebarOpen(false, false);
         populateScheduledTaskDetails(item.dataset.taskKey || "coldbrew-photo");
+        applyCalendarFilters();
       });
 
       item.addEventListener("keydown", (event) => {
@@ -9029,6 +9071,10 @@
       });
       populateScheduledTaskDetails(activeScheduledTaskKey);
       applyCalendarFilters();
+      scheduledTaskDetailOpen = false;
+      document.querySelector(".scheduled-task-side-panel")?.setAttribute("hidden", "");
+      document.querySelector(".right-stack")?.setAttribute("hidden", "");
+      document.querySelectorAll("[data-task-key][role='button']").forEach((task) => task.classList.remove("selected"));
       setSidebarGenerationStatus("running", 1);
       showToast("定时任务已开始执行");
     });
@@ -9070,9 +9116,17 @@
       showToast("计划详情已更新");
     });
 
+    document.getElementById("strategyBackOrDeletePlanBtn")?.addEventListener("click", () => {
+      const activePlan = marketingPlans[calendarPlanFilter];
+      if (strategyDraftPreview && activePlan?.isDraft) {
+        requestMarketingPlanDeletion(calendarPlanFilter);
+      }
+    });
+
     document.querySelectorAll("[data-goto]").forEach((button) => {
       button.addEventListener("click", () => {
         const next = button.dataset.goto;
+        if (!next) return;
         const current = document.querySelector(".flow-screen.active")?.dataset.screen || "empty";
         if (next === "strategy") strategyDraftPreview = false;
         if (next === "importProjects" || next === "importArtifacts" || (next === "setup" && current === "importArtifacts")) {
