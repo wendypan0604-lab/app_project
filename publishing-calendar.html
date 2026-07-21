@@ -2313,12 +2313,84 @@
       font-weight: 800;
     }
 
+    .page-title-plan-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 10px;
+    }
+
+    .page-title-plan-row .page-title-plan-option {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .page-title-plan-option-copy {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .plan-draft-badge {
+      padding: 2px 6px;
+      border-radius: 6px;
+      color: #7d5a17;
+      background: #fff4d6;
+      border: 1px solid #f6dfaa;
+      font-size: 11px;
+      line-height: 1.3;
+      font-weight: 650;
+      white-space: nowrap;
+    }
+
+    .page-title-draft-delete {
+      width: 28px;
+      height: 28px;
+      flex: 0 0 28px;
+      display: inline-grid;
+      place-items: center;
+      border: 0;
+      border-radius: 8px;
+      color: #b33d50;
+      background: transparent;
+      opacity: 0;
+      pointer-events: none;
+      cursor: pointer;
+    }
+
+    .page-title-plan-row.is-draft:hover .page-title-draft-delete,
+    .page-title-plan-row.is-draft:focus-within .page-title-draft-delete {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .page-title-draft-delete:hover,
+    .page-title-draft-delete:focus-visible {
+      background: #fff0f2;
+    }
+
+    .page-title-trigger > .plan-draft-badge {
+      margin-left: 2px;
+    }
+
     .page-plan-space {
       margin: 5px 0 0;
-      color: var(--text-tertiary);
+      display: flex;
+      align-items: center;
+      width: fit-content;
+      color: var(--brand-blue);
       font-size: 13px;
       line-height: 1.45;
       font-weight: 500;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+
+    .page-plan-space:hover,
+    .page-plan-space:focus-visible {
+      color: var(--text-strong);
     }
 
     .page-plan-space[hidden] {
@@ -5577,15 +5649,20 @@
               <h1 class="page-title">
                 <button class="page-title-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
                   <span data-page-title-label>自动化营销</span>
+                  <span class="plan-draft-badge" data-page-title-draft hidden>草稿</span>
                   <svg class="ui-icon title-chevron"><use href="#i-chevron-down"></use></svg>
                 </button>
               </h1>
               <div class="page-title-popover" role="listbox" aria-label="切换营销计划" hidden>
                 <button class="page-title-plan-option" type="button" role="option" aria-selected="true" data-plan-value="coldbrew">冷萃新品上市</button>
                 <button class="page-title-plan-option" type="button" role="option" aria-selected="false" data-plan-value="coffee-culture">咖啡文化宣传</button>
+                <div class="page-title-plan-row is-draft" data-plan-row="summer-coldbrew-draft">
+                  <button class="page-title-plan-option" type="button" role="option" aria-selected="false" data-plan-value="summer-coldbrew-draft"><span class="page-title-plan-option-copy">夏日冷萃推广</span><span class="plan-draft-badge">草稿</span></button>
+                  <button class="page-title-draft-delete" type="button" data-delete-plan="summer-coldbrew-draft" aria-label="删除草稿：夏日冷萃推广" title="删除草稿"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-trash"></use></svg></button>
+                </div>
               </div>
             </div>
-            <p class="page-plan-space" data-page-plan-space hidden></p>
+            <a class="page-plan-space" data-page-plan-space href="#" target="_blank" rel="noopener noreferrer" hidden></a>
           </div>
           <div class="head-actions">
             <div class="header-create-menu">
@@ -5896,7 +5973,7 @@
                 </div>
               </div>
               <div class="flow-actions">
-                <button class="primary-btn" data-goto="strategy"><svg class="ui-icon"><use href="#i-sparkles"></use></svg>生成发布计划</button>
+                <button class="primary-btn" data-goto="strategy"><svg class="ui-icon"><use href="#i-sparkles"></use></svg>生成营销计划</button>
               </div>
             </div>
             <aside class="setup-side">
@@ -7168,6 +7245,20 @@
     </section>
   </div>
 
+  <div class="modal-backdrop" id="deleteMarketingPlanModal" aria-hidden="true">
+    <section class="modal-panel confirm-modal-panel" role="alertdialog" aria-labelledby="deleteMarketingPlanTitle" aria-describedby="deleteMarketingPlanDescription">
+      <div class="modal-head">
+        <h2 class="modal-title" id="deleteMarketingPlanTitle">删除营销计划草稿？</h2>
+        <button class="icon-btn" data-close-modal aria-label="关闭"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
+      </div>
+      <p class="confirm-copy" id="deleteMarketingPlanDescription">删除后无法恢复该草稿。</p>
+      <div class="confirm-actions">
+        <button class="secondary-btn" type="button" data-close-modal>取消</button>
+        <button class="danger-btn" type="button" id="confirmDeleteMarketingPlanBtn">删除草稿</button>
+      </div>
+    </section>
+  </div>
+
   <div class="modal-backdrop" id="queryModal" aria-hidden="true">
     <section class="modal-panel" role="dialog" aria-label="计划详情">
       <div class="modal-head">
@@ -7266,9 +7357,12 @@
     let calendarPlanFilter = "coldbrew";
     let autoApprovalEnabled = false;
     let autoApprovalPromptShown = false;
+    let strategyDraftPreview = false;
+    let pendingMarketingPlanDeletion = "";
     const marketingPlans = {
-      coldbrew: { label: "冷萃新品上市", spaceId: "mountain-cafe", spaceLabel: "山屿咖啡", mode: "brief" },
-      "coffee-culture": { label: "咖啡文化宣传", spaceId: "", spaceLabel: "", mode: "import" }
+      coldbrew: { label: "冷萃新品上市", spaceId: "mountain-cafe", spaceLabel: "山屿咖啡", spaceUrl: "https://rg975ojk5z.feishu.cn/wiki/EltRwGSAGihNByk3XhrcI2t4nhM?from=from_copylink", mode: "brief" },
+      "coffee-culture": { label: "咖啡文化宣传", spaceId: "", spaceLabel: "", mode: "import" },
+      "summer-coldbrew-draft": { label: "夏日冷萃推广", spaceId: "", spaceLabel: "", mode: "brief", isDraft: true }
     };
     let sidebarGenerationTimer = 0;
     let supplementGenerationTimer = 0;
@@ -7762,22 +7856,33 @@
       const titleTrigger = document.querySelector(".page-title-trigger");
       const titlePopover = document.querySelector(".page-title-popover");
       const spaceLine = document.querySelector("[data-page-plan-space]");
+      const titleDraftBadge = document.querySelector("[data-page-title-draft]");
       const isCreateFlow = ["importProjects", "importArtifacts", "setup", "strategy"].includes(screenName);
       const isCalendar = screenName === "calendar";
+      const showGeneratedPlanTitle = isCalendar || screenName === "strategy";
       const activePlan = marketingPlans[calendarPlanFilter] || marketingPlans.coldbrew;
+      const canSwitchMarketingPlan = isCalendar || (screenName === "strategy" && activePlan.isDraft);
 
       if (titleLabel) {
-        titleLabel.textContent = isCalendar ? activePlan.label : isCreateFlow ? "创建营销计划" : "自动化营销";
+        titleLabel.textContent = showGeneratedPlanTitle ? activePlan.label : isCreateFlow ? "创建营销计划" : "自动化营销";
+      }
+      if (titleDraftBadge) {
+        titleDraftBadge.hidden = !(showGeneratedPlanTitle && activePlan.isDraft);
       }
       if (titleTrigger) {
-        titleTrigger.disabled = !isCalendar;
-        if (!isCalendar) titleTrigger.setAttribute("aria-expanded", "false");
+        titleTrigger.disabled = !canSwitchMarketingPlan;
+        if (!canSwitchMarketingPlan) titleTrigger.setAttribute("aria-expanded", "false");
       }
-      if (titlePopover && !isCalendar) titlePopover.hidden = true;
+      if (titlePopover && !canSwitchMarketingPlan) titlePopover.hidden = true;
       if (spaceLine) {
         const showSpace = isCalendar && Boolean(activePlan.spaceLabel);
         spaceLine.hidden = !showSpace;
         spaceLine.textContent = showSpace ? `所属 Space：${activePlan.spaceLabel}` : "";
+        if (showSpace && activePlan.spaceUrl) {
+          spaceLine.href = activePlan.spaceUrl;
+        } else {
+          spaceLine.removeAttribute("href");
+        }
       }
       document.querySelectorAll(".page-title-plan-option").forEach((option) => {
         option.setAttribute("aria-selected", String(option.dataset.planValue === calendarPlanFilter));
@@ -7795,8 +7900,46 @@
       const resolvedPlanId = marketingPlans[planId] ? planId : "coldbrew";
       calendarPlanFilter = resolvedPlanId;
       setCreationMode(plan.mode);
-      updatePageTitle("calendar");
+      if (plan.isDraft) {
+        strategyDraftPreview = true;
+        setScreen("strategy");
+        return;
+      }
+      strategyDraftPreview = false;
+      const currentScreen = document.querySelector(".flow-screen.active")?.dataset.screen;
+      if (currentScreen !== "calendar") setScreen("calendar");
+      else updatePageTitle("calendar");
       applyCalendarFilters();
+    }
+
+    function requestMarketingPlanDeletion(planId) {
+      const plan = marketingPlans[planId];
+      if (!plan?.isDraft) return;
+      pendingMarketingPlanDeletion = planId;
+      const description = document.getElementById("deleteMarketingPlanDescription");
+      if (description) description.textContent = `删除“${plan.label}”后无法恢复该草稿。`;
+      const modal = document.getElementById("deleteMarketingPlanModal");
+      if (!modal) return;
+      modal.classList.add("active");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function deleteMarketingPlanDraft() {
+      const planId = pendingMarketingPlanDeletion;
+      const plan = marketingPlans[planId];
+      if (!plan?.isDraft) return;
+      delete marketingPlans[planId];
+      document.querySelector(`[data-plan-row="${planId}"]`)?.remove();
+      closeModal(document.getElementById("deleteMarketingPlanModal"));
+      pendingMarketingPlanDeletion = "";
+      if (calendarPlanFilter === planId) {
+        calendarPlanFilter = "coldbrew";
+        strategyDraftPreview = false;
+        setCreationMode(marketingPlans.coldbrew.mode);
+        setScreen("calendar");
+        applyCalendarFilters();
+      }
+      showToast(`已删除草稿：${plan.label}`);
     }
 
     function setGenerationMode(mode) {
@@ -8180,7 +8323,7 @@
       document.querySelector(".workspace").scrollTo({ top: 0, behavior: "smooth" });
       updatePageTitle(screenName);
       updateHeaderCreateAction(screenName);
-      if (screenName === "strategy") showStrategyGenerating();
+      if (screenName === "strategy" && !strategyDraftPreview) showStrategyGenerating();
       if (screenName !== "calendar") {
         setProjectChatSidebarOpen(false, false);
       }
@@ -8240,6 +8383,14 @@
         showToast(`已切换营销计划：${option.textContent.trim()}`);
       });
     });
+    document.querySelectorAll("[data-delete-plan]").forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.stopPropagation();
+        setPageTitleMenuOpen(false);
+        requestMarketingPlanDeletion(button.dataset.deletePlan);
+      });
+    });
+    document.getElementById("confirmDeleteMarketingPlanBtn")?.addEventListener("click", deleteMarketingPlanDraft);
     document.addEventListener("click", (event) => {
       if (!event.target.closest(".page-title-menu")) setPageTitleMenuOpen(false);
     });
@@ -8741,6 +8892,7 @@
       button.addEventListener("click", () => {
         const next = button.dataset.goto;
         const current = document.querySelector(".flow-screen.active")?.dataset.screen || "empty";
+        if (next === "strategy") strategyDraftPreview = false;
         if (next === "importProjects" || next === "importArtifacts" || (next === "setup" && current === "importArtifacts")) {
           setCreationMode("import");
         } else if (next === "setup" && current !== "strategy") {
