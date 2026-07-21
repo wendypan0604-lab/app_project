@@ -2778,6 +2778,14 @@
       grid-template-columns: minmax(660px, 1fr) minmax(340px, 390px);
     }
 
+    .main-grid.project-chat-open.project-chat-replaces-preview {
+      grid-template-columns: minmax(660px, 1fr) minmax(340px, 390px);
+    }
+
+    .main-grid.project-chat-replaces-preview .right-stack {
+      display: none;
+    }
+
     .main-grid.no-right-panel {
       grid-template-columns: minmax(660px, 1fr);
     }
@@ -3844,7 +3852,8 @@
     }
 
     .approval-required-banner,
-    .reschedule-required-banner {
+    .reschedule-required-banner,
+    .account-required-top-banner {
       margin-bottom: 12px;
       padding: 12px;
       border-radius: 12px;
@@ -3857,25 +3866,30 @@
     }
 
     .approval-required-banner[hidden],
-    .reschedule-required-banner[hidden] {
+    .reschedule-required-banner[hidden],
+    .account-required-top-banner[hidden] {
       display: none !important;
     }
 
     .approval-required-banner strong,
     .approval-required-banner span,
     .reschedule-required-banner strong,
-    .reschedule-required-banner span {
+    .reschedule-required-banner span,
+    .account-required-top-banner strong,
+    .account-required-top-banner span {
       display: block;
     }
 
     .approval-required-banner strong,
-    .reschedule-required-banner strong {
+    .reschedule-required-banner strong,
+    .account-required-top-banner strong {
       color: var(--text-strong);
       font-size: 13px;
     }
 
     .approval-required-banner span,
-    .reschedule-required-banner span {
+    .reschedule-required-banner span,
+    .account-required-top-banner span {
       margin-top: 3px;
       color: var(--text-tertiary);
       font-size: 11px;
@@ -4053,6 +4067,22 @@
       display: grid;
     }
 
+    .agent-edit-btn {
+      width: 100%;
+      margin: 0 0 12px;
+      justify-content: center;
+    }
+
+    .project-chat-return {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .project-chat-return[hidden] {
+      display: none;
+    }
+
     .review-panel,
     .queue-panel {
       padding: 16px;
@@ -4080,6 +4110,7 @@
     .review-panel.immediate-only.is-generating .account-required-banner,
     .review-panel.immediate-only.is-generating .approval-required-banner,
     .review-panel.immediate-only.is-generating .reschedule-required-banner,
+    .review-panel.immediate-only.is-generating .account-required-top-banner,
     .review-panel.immediate-only.is-generating .editable-copy,
     .review-panel.immediate-only.is-generating .action-row {
       display: none !important;
@@ -6905,6 +6936,10 @@
                 <div><strong>请重新设置发布时间</strong><span>设置后内容将移动到日历的新时间位置，并进入待发布。</span></div>
                 <button class="primary-btn" type="button" id="reschedulePublishBtn">设置发布时间</button>
               </div>
+              <div class="account-required-top-banner" id="accountRequiredBanner" hidden>
+                <div><strong>需要绑定发布账号</strong><span>当前记录尚未绑定 Instagram 账号。</span></div>
+                <button class="primary-btn" type="button" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button>
+              </div>
               <article class="generating-detail-card" id="generatingDetailCard" hidden>
                 <div class="generating-detail-head">
                   <div>
@@ -6937,10 +6972,7 @@
                   <strong>发布文案</strong> 用一杯更冷、更慢的冷萃，开启今天的专注时刻。#ColdBrew #MorningFocus
                 </div>
               </article>
-              <div class="account-required-banner">
-                <span>当前记录尚未绑定 Instagram 账号</span>
-                <button class="account-bind-btn" data-modal="accountModal" data-bind-platform="Instagram">绑定账号</button>
-              </div>
+              <button class="secondary-btn agent-edit-btn" type="button" id="openProjectAgentEditor" hidden><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-sparkles"></use></svg>使用 Agent 编辑</button>
               <div class="editable-copy">
                 <div class="copy-field">
                   <div class="copy-field-head">
@@ -6990,7 +7022,7 @@
           <aside class="project-chat-sidebar" id="projectChatSidebar" aria-label="项目对话流" aria-hidden="true">
             <div class="project-chat-head">
               <div class="project-chat-title"><span class="project-chat-avatar">CB</span><strong>冷萃新品上市</strong></div>
-              <button class="icon-btn" type="button" id="collapseProjectChat" aria-label="收起项目对话"><svg class="ui-icon" style="transform:rotate(-90deg)"><use href="#i-chevron-down"></use></svg></button>
+              <button class="copy-action project-chat-return" type="button" id="collapseProjectChat" aria-label="返回预览" hidden><svg class="ui-icon" style="width:14px;height:14px;transform:rotate(90deg)"><use href="#i-chevron-down"></use></svg>返回预览</button>
             </div>
             <div class="project-chat-flow" id="projectChatFlow" aria-live="polite">
               <div class="project-chat-bubble user">为冷萃新品上市规划两周社媒内容，重点突出早晨专注场景和到店购买。</div>
@@ -7424,6 +7456,7 @@
     let supplementMediaType = "image";
     let supplementActiveProjectKey = "";
     let projectChatCollapsedByUser = false;
+    let projectChatEditorOpen = false;
     let activePublishHasProjectContext = false;
     let supplementMaterials = [];
     const flowOrder = ["empty", "importProjects", "importArtifacts", "setup", "strategy", "calendar"];
@@ -8201,9 +8234,13 @@
       if (!sidebar || !reopen) return;
       sidebar.classList.toggle("open", open);
       sidebar.setAttribute("aria-hidden", String(!open));
-      sidebar.closest(".main-grid")?.classList.toggle("project-chat-open", open);
+      const mainGrid = sidebar.closest(".main-grid");
+      mainGrid?.classList.toggle("project-chat-open", open);
+      mainGrid?.classList.toggle("project-chat-replaces-preview", open && projectChatEditorOpen);
+      const returnButton = document.getElementById("collapseProjectChat");
+      if (returnButton) returnButton.hidden = !(open && projectChatEditorOpen);
       const calendarActive = document.querySelector('[data-screen="calendar"]')?.classList.contains("active");
-      reopen.classList.toggle("show", allowReopen && !open && Boolean(activePublishRecordKey) && activePublishHasProjectContext && generationMode !== "scheduled" && calendarActive);
+      reopen.classList.toggle("show", allowReopen && !open && !projectChatEditorOpen && Boolean(activePublishRecordKey) && activePublishHasProjectContext && generationMode !== "scheduled" && calendarActive);
     }
 
     function updateProjectChatContext(record, status, platform) {
@@ -8224,6 +8261,10 @@
       const records = [...document.querySelectorAll("[data-publish-key]")];
       const matching = records.filter((record) => record.dataset.publishKey === recordKey);
       if (matching.length === 0) return;
+      if (activePublishRecordKey && activePublishRecordKey !== recordKey) {
+        projectChatEditorOpen = false;
+        projectChatCollapsedByUser = false;
+      }
       activePublishRecordKey = recordKey;
       records.forEach((record) => record.classList.toggle("publish-record-selected", record.dataset.publishKey === recordKey));
 
@@ -8241,9 +8282,10 @@
         && !record.closest(".day-agenda-row.import-only");
       activePublishHasProjectContext = hasProjectContext;
       const projectContextOnly = hasProjectContext && (isGenerating || isGenerationFailed);
+      const showProjectAgentEditor = projectChatEditorOpen && hasProjectContext && !projectContextOnly && !isPublished && !isPublishing && !isPending;
       const platform = getPublishRecordPlatform(record);
       const deleteButton = document.getElementById("deletePublishPlanBtn");
-      const accountBanner = document.querySelector(".review-panel.immediate-only .account-required-banner");
+      const accountBanner = document.getElementById("accountRequiredBanner");
       const approvalBanner = document.getElementById("approvalRequiredBanner");
       const rescheduleBanner = document.getElementById("rescheduleRequiredBanner");
       const generatingDetail = document.getElementById("generatingDetailCard");
@@ -8258,15 +8300,16 @@
       const selectedTags = document.getElementById("selectedTags");
       const previewImage = document.querySelector(".review-panel.immediate-only .post-media img");
       const previewCaption = document.querySelector(".review-panel.immediate-only .post-caption");
+      const agentEditButton = document.getElementById("openProjectAgentEditor");
 
       const immediatePanel = document.querySelector(".review-panel.immediate-only");
       const mainGrid = document.querySelector(".main-grid");
       const rightStack = document.querySelector(".right-stack");
       if (mainGrid) mainGrid.classList.toggle("project-context-only", projectContextOnly);
       if (mainGrid) mainGrid.classList.toggle("no-right-panel", isPending);
-      if (rightStack) rightStack.hidden = projectContextOnly || isPending;
+      if (rightStack) rightStack.hidden = projectContextOnly || isPending || showProjectAgentEditor;
       if (immediatePanel) {
-        immediatePanel.hidden = projectContextOnly || isPending;
+        immediatePanel.hidden = projectContextOnly || isPending || showProjectAgentEditor;
         immediatePanel.classList.toggle("is-generating", isGenerating);
       }
       if (isPending) {
@@ -8277,6 +8320,7 @@
         if (editableCopy) editableCopy.hidden = true;
         if (actionRow) actionRow.hidden = true;
         if (accountBanner) accountBanner.hidden = true;
+        if (agentEditButton) agentEditButton.hidden = true;
         setProjectChatSidebarOpen(false, false);
         return;
       }
@@ -8286,6 +8330,7 @@
       if (postPreviewCard) postPreviewCard.hidden = projectContextOnly;
       if (editableCopy) editableCopy.hidden = projectContextOnly || isPublished || isPublishing;
       if (actionRow) actionRow.hidden = projectContextOnly || isPublished || isPublishing;
+      if (agentEditButton) agentEditButton.hidden = !hasProjectContext || projectContextOnly || isPublished || isPublishing || showProjectAgentEditor;
       if (isGenerating) {
         const title = record.querySelector(".plan-title, .publish-main strong")?.textContent.trim() || "内容生成中";
         const project = record.querySelector(".plan-project, .publish-main span")?.textContent.trim() || "";
@@ -8322,15 +8367,14 @@
         return;
       }
       updateProjectChatContext(record, status, platform);
-      if (!projectChatCollapsedByUser && document.querySelector('[data-screen="calendar"]')?.classList.contains("active")) {
-        setProjectChatSidebarOpen(true);
-      }
+      setProjectChatSidebarOpen(projectContextOnly || showProjectAgentEditor, false);
     }
 
     function clearPublishRecordSelection() {
       activePublishRecordKey = "";
       activePublishHasProjectContext = false;
       projectChatCollapsedByUser = false;
+      projectChatEditorOpen = false;
       document.querySelectorAll("[data-publish-key]").forEach((record) => record.classList.remove("publish-record-selected"));
       const immediatePanel = document.querySelector(".review-panel.immediate-only");
       if (immediatePanel) {
@@ -8879,7 +8923,21 @@
     document.getElementById("selectedTags")?.addEventListener("input", () => syncActivePublishTextFields("Tag"));
     document.getElementById("confirmAssetReplacement")?.addEventListener("click", confirmAssetReplacement);
 
+    document.getElementById("openProjectAgentEditor")?.addEventListener("click", () => {
+      if (!activePublishRecordKey || !activePublishHasProjectContext) return;
+      projectChatEditorOpen = true;
+      projectChatCollapsedByUser = false;
+      selectPublishRecord(activePublishRecordKey);
+    });
+
     document.getElementById("collapseProjectChat")?.addEventListener("click", () => {
+      if (projectChatEditorOpen) {
+        projectChatEditorOpen = false;
+        projectChatCollapsedByUser = false;
+        setProjectChatSidebarOpen(false, false);
+        selectPublishRecord(activePublishRecordKey);
+        return;
+      }
       projectChatCollapsedByUser = true;
       setProjectChatSidebarOpen(false);
     });
