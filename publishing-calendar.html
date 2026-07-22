@@ -348,6 +348,7 @@
     }
 
     .design-pill,
+    .calendar-shortcut,
     .top-chip {
       height: 30px;
       border-radius: 16px;
@@ -361,6 +362,15 @@
       font-size: 14px;
       font-weight: 500;
       white-space: nowrap;
+    }
+
+    .calendar-shortcut {
+      cursor: pointer;
+    }
+
+    .calendar-shortcut:hover {
+      color: var(--brand-blue);
+      background: #fff;
     }
 
     .beta {
@@ -4028,17 +4038,524 @@
       background: #eef1ff;
     }
 
+    .project-chat-tool-call,
+    .project-chat-result {
+      display: grid;
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .9);
+      box-shadow: var(--shadow-card);
+    }
+
+    .project-chat-tool-call {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .project-chat-tool-icon {
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      color: var(--brand-blue);
+      background: #ecf2ff;
+    }
+
+    .project-chat-tool-copy strong {
+      display: block;
+      color: var(--text-strong);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .project-chat-tool-copy span {
+      display: block;
+      margin-top: 2px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .project-chat-result {
+      gap: 12px;
+      padding: 12px;
+      border-color: #e2e5ea;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .92);
+    }
+
+    .project-chat-result-head {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 8px;
+      align-items: center;
+    }
+
+    .project-chat-result-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: #faae15;
+    }
+
+    .project-chat-result.video .project-chat-result-icon {
+      background: #6b37ff;
+    }
+
+    .project-chat-result.document .project-chat-result-icon {
+      background: var(--brand-blue);
+    }
+
+    .project-chat-result-icon .ui-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .project-chat-result-copy {
+      min-width: 0;
+    }
+
+    .project-chat-result-copy strong {
+      display: block;
+      overflow: hidden;
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1.4;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .project-chat-result-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 3px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.3;
+    }
+
+    .project-chat-result-version {
+      padding: 1px 4px;
+      border-radius: 4px;
+      color: var(--text-quaternary);
+      background: #edeff1;
+      font-size: 10px;
+      line-height: 1.35;
+    }
+
+    .project-chat-result-preview {
+      position: relative;
+      min-height: 142px;
+      border: 1px solid rgba(0, 8, 24, .05);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #f4f5f7;
+    }
+
+    .project-chat-result-preview img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 142px;
+      object-fit: cover;
+    }
+
+    .project-chat-document-preview {
+      min-height: 166px;
+      padding: 13px;
+      display: grid;
+      align-content: start;
+      gap: 4px;
+      color: var(--text-secondary);
+      background: #fff;
+    }
+
+    .project-chat-document-preview strong {
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.45;
+    }
+
+    .project-chat-document-preview p {
+      margin: 0;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .project-chat-document-preview hr {
+      width: 100%;
+      margin: 3px 0;
+      border: 0;
+      border-top: 1px solid var(--border-divider);
+    }
+
+    .project-chat-document-preview .document-section-title {
+      margin-top: 1px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .project-chat-document-preview b {
+      color: var(--text-quaternary);
+      font-weight: 650;
+    }
+
+    .project-chat-video-controls {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      min-height: 32px;
+      padding: 0 9px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #fff;
+      background: linear-gradient(180deg, transparent, rgba(0, 8, 24, .76));
+      font-size: 10px;
+    }
+
+    .project-chat-video-controls .ui-icon {
+      width: 15px;
+      height: 15px;
+      fill: currentColor;
+    }
+
+    .project-chat-artifact-fullscreen {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      z-index: 1;
+      width: 30px;
+      height: 30px;
+      padding: 0;
+      border: 0;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: rgba(0, 8, 24, .56);
+      cursor: pointer;
+    }
+
+    .project-chat-artifact-fullscreen:hover {
+      background: rgba(0, 8, 24, .76);
+    }
+
+    .project-chat-artifact-fullscreen .ui-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .project-chat-result-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .project-chat-artifact-action {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border: 0;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--text-strong);
+      background: #edeff1;
+      cursor: pointer;
+    }
+
+    .project-chat-artifact-action:hover {
+      background: #dfe3e8;
+    }
+
+    .project-chat-artifact-action .ui-icon {
+      width: 17px;
+      height: 17px;
+    }
+
+    .project-chat-result-actions .secondary-btn {
+      min-height: 32px;
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    .project-chat-fullscreen-modal {
+      z-index: 60;
+      padding: 24px;
+      background: rgba(0, 8, 24, .72);
+    }
+
+    .project-chat-fullscreen-panel {
+      width: min(920px, calc(100vw - 48px));
+      max-height: calc(100vh - 48px);
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 18px 42px rgba(0, 8, 24, .28);
+    }
+
+    .project-chat-fullscreen-head {
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .project-chat-fullscreen-copy {
+      min-width: 0;
+    }
+
+    .project-chat-fullscreen-copy strong,
+    .project-chat-fullscreen-copy span {
+      display: block;
+    }
+
+    .project-chat-fullscreen-copy strong {
+      overflow: hidden;
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.4;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .project-chat-fullscreen-copy span {
+      margin-top: 2px;
+      color: var(--text-tertiary);
+      font-size: 11px;
+    }
+
+    .project-chat-fullscreen-media {
+      position: relative;
+      max-height: calc(100vh - 130px);
+      margin-top: 12px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000818;
+    }
+
+    .project-chat-fullscreen-media img {
+      display: block;
+      width: 100%;
+      max-height: calc(100vh - 130px);
+      object-fit: contain;
+    }
+
+    .project-chat-fullscreen-media.document {
+      padding: 18px;
+      background: var(--bg-page);
+      overflow: auto;
+    }
+
+    .project-chat-fullscreen-document {
+      max-width: 720px;
+      min-height: min(520px, calc(100vh - 180px));
+      margin: 0 auto;
+      padding: 26px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .project-chat-fullscreen-document[hidden] {
+      display: none;
+    }
+
+    .project-chat-fullscreen-document strong {
+      font-size: 17px;
+    }
+
+    .project-chat-fullscreen-document p {
+      font-size: 13px;
+    }
+
+    .project-chat-fullscreen-controls {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      min-height: 42px;
+      padding: 0 14px;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+      background: linear-gradient(180deg, transparent, rgba(0, 8, 24, .82));
+      font-size: 12px;
+    }
+
+    .project-chat-fullscreen-controls.is-video {
+      display: flex;
+    }
+
+    .project-chat-fullscreen-controls .ui-icon {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
     .project-chat-composer {
+      position: relative;
       margin: 0 12px 12px;
-      padding: 6px 8px;
+      padding: 8px;
       border-radius: 12px;
       border: 1px solid #dfe4ec;
       background: #fff;
       box-shadow: var(--shadow-card);
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
       gap: 8px;
+    }
+
+    .project-chat-attachments {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .project-chat-attachments:empty {
+      display: none;
+    }
+
+    .project-chat-attachment {
+      max-width: 100%;
+      min-height: 26px;
+      padding: 3px 6px 3px 8px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      display: inline-flex;
       align-items: center;
+      gap: 5px;
+      color: var(--text-secondary);
+      background: #f9fafc;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .project-chat-attachment svg {
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
+      color: var(--brand-blue);
+    }
+
+    .project-chat-attachment span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .project-chat-attachment button {
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      border: 0;
+      border-radius: 5px;
+      display: grid;
+      place-items: center;
+      color: var(--text-tertiary);
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .project-chat-attachment button:hover {
+      color: var(--text-primary);
+      background: #edeff1;
+    }
+
+    .project-chat-attachment button svg {
+      width: 12px;
+      height: 12px;
+      color: currentColor;
+    }
+
+    .project-chat-reference-entry {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 6px;
+    }
+
+    .project-chat-reference-entry[hidden] {
+      display: none;
+    }
+
+    .project-chat-reference-entry input {
+      min-width: 0;
+      height: 30px;
+      padding: 0 9px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      outline: none;
+      color: var(--text-primary);
+      background: #f9fafc;
+      font: inherit;
+      font-size: 12px;
+    }
+
+    .project-chat-reference-entry input:focus {
+      border-color: #b9c6ff;
+      background: #fff;
+    }
+
+    .project-chat-reference-entry .secondary-btn {
+      min-height: 30px;
+      padding: 4px 10px;
+      font-size: 12px;
+    }
+
+    .project-chat-composer-row {
+      display: grid;
+      grid-template-columns: 28px minmax(0, 1fr) 30px;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .project-chat-add,
+    .project-chat-send {
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border: 0;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: var(--text-secondary);
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .project-chat-add:hover,
+    .project-chat-add[aria-expanded="true"] {
+      color: var(--text-primary);
+      background: #edeff1;
+    }
+
+    .project-chat-add[aria-expanded="true"] .ui-icon {
+      transform: rotate(45deg);
+    }
+
+    .project-chat-add .ui-icon {
+      width: 19px;
+      height: 19px;
+      transition: transform .16s ease;
     }
 
     .project-chat-composer textarea {
@@ -4054,6 +4571,114 @@
       font: inherit;
       font-size: 13px;
       line-height: 1.5;
+    }
+
+    .project-chat-send {
+      width: 30px;
+      height: 30px;
+      color: #fff;
+      background: var(--brand-blue);
+    }
+
+    .project-chat-send:hover:not(:disabled) {
+      background: #3f50ec;
+    }
+
+    .project-chat-send:disabled,
+    .project-chat-add:disabled {
+      cursor: not-allowed;
+      opacity: .52;
+    }
+
+    .project-chat-send .ui-icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .project-chat-add-menu {
+      position: absolute;
+      z-index: 4;
+      bottom: calc(100% + 8px);
+      left: 0;
+      width: min(274px, calc(100vw - 48px));
+      padding: 6px;
+      border: 1px solid rgba(0, 8, 24, .04);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, .98);
+      box-shadow: 0 5px 16px rgba(0, 8, 24, .12);
+    }
+
+    .project-chat-add-menu[hidden] {
+      display: none;
+    }
+
+    .project-chat-add-option {
+      width: 100%;
+      min-height: 38px;
+      padding: 0 8px;
+      border: 0;
+      border-radius: 8px;
+      display: grid;
+      grid-template-columns: 20px minmax(0, 1fr) 16px;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-secondary);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .project-chat-add-option:hover,
+    .project-chat-add-option:focus-visible {
+      outline: 0;
+      color: var(--text-primary);
+      background: #f4f5f7;
+    }
+
+    .project-chat-add-option .ui-icon {
+      width: 18px;
+      height: 18px;
+      color: #556477;
+    }
+
+    .project-chat-add-option .project-chat-menu-chevron {
+      width: 14px;
+      height: 14px;
+      color: var(--text-tertiary);
+    }
+
+    .project-chat-message-references {
+      display: flex;
+      justify-self: end;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 5px;
+      max-width: 92%;
+      margin-top: -7px;
+    }
+
+    .project-chat-message-reference {
+      max-width: 100%;
+      padding: 3px 7px;
+      border-radius: 6px;
+      color: #4d5eff;
+      background: #ecf2ff;
+      font-size: 11px;
+      line-height: 1.35;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .project-chat-composer.is-generating {
+      background: #f4f5f7;
+    }
+
+    .project-chat-composer textarea:disabled {
+      color: var(--text-tertiary);
+      cursor: not-allowed;
     }
 
     .project-chat-reopen {
@@ -4754,6 +5379,39 @@
       border-color: var(--brand-blue);
       font-size: 12px;
       font-weight: 800;
+    }
+
+    .supplement-asset-choice.is-locked {
+      cursor: not-allowed;
+      opacity: 0.42;
+      filter: grayscale(0.82);
+    }
+
+    .supplement-asset-choice.is-locked::before {
+      content: attr(data-lock-reason);
+      position: absolute;
+      z-index: 3;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      width: max-content;
+      max-width: 220px;
+      padding: 6px 8px;
+      border-radius: 6px;
+      color: #fff;
+      background: var(--text-strong);
+      box-shadow: var(--shadow-card);
+      font-size: 11px;
+      line-height: 1.35;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 4px);
+      transition: opacity .16s ease, transform .16s ease;
+    }
+
+    .supplement-asset-choice.is-locked:hover::before,
+    .supplement-asset-choice.is-locked:focus-visible::before {
+      opacity: 1;
+      transform: translate(-50%, 0);
     }
 
     .supplement-publish-config {
@@ -5567,6 +6225,9 @@
     <symbol id="i-plus" viewBox="0 0 24 24">
       <path d="M12 5v14M5 12h14"/>
     </symbol>
+    <symbol id="i-close" viewBox="0 0 24 24">
+      <path d="m6 6 12 12M18 6 6 18"/>
+    </symbol>
     <symbol id="i-search" viewBox="0 0 24 24">
       <circle cx="11" cy="11" r="7"/>
       <path d="m21 21-4.3-4.3"/>
@@ -5643,6 +6304,9 @@
       <path d="m7 10 5 5 5-5"/>
       <path d="M5 21h14"/>
     </symbol>
+    <symbol id="i-fullscreen" viewBox="0 0 24 24">
+      <path d="M8 3H3v5M16 3h5v5M21 16v5h-5M3 16v5h5"/>
+    </symbol>
     <symbol id="i-copy" viewBox="0 0 24 24">
       <rect x="8" y="8" width="12" height="12" rx="2"/>
       <path d="M4 16V6a2 2 0 0 1 2-2h10"/>
@@ -5702,7 +6366,7 @@
 
     <header class="topbar">
       <div class="top-left">
-        <span class="design-pill"><svg class="ui-icon" style="width:16px;height:16px;color:#ffaa00"><use href="#i-sparkles"></use></svg>Skywork Design <span class="beta">Beta</span></span>
+        <button class="calendar-shortcut" type="button" id="goToPublishingCalendar"><svg class="ui-icon" style="width:16px;height:16px;color:var(--brand-blue)"><use href="#i-calendar"></use></svg>直达发布日历</button>
       </div>
       <div class="top-actions">
         <button class="top-icon" aria-label="设备预览"><svg class="ui-icon"><use href="#i-monitor"></use></svg></button>
@@ -6999,7 +7663,7 @@
               </div>
               <div class="action-row">
                 <button class="icon-btn delete-plan-btn" id="deletePublishPlanBtn" type="button" aria-label="删除发布内容" title="删除发布内容"><svg class="ui-icon"><use href="#i-trash"></use></svg></button>
-                <button class="secondary-btn" data-modal="assetModal"><svg class="ui-icon"><use href="#i-image"></use></svg>更换素材</button>
+                <button class="secondary-btn" id="replaceAssetBtn" data-modal="assetModal"><svg class="ui-icon"><use href="#i-image"></use></svg>更换素材</button>
               </div>
             </section>
             <section class="review-panel scheduled-task-side-panel" aria-label="当前定时任务详情" hidden>
@@ -7039,9 +7703,25 @@
               <div class="project-chat-agent"><span class="project-chat-avatar" style="width:24px;height:24px;border-radius:8px">AI</span>Skywork 智能模型</div>
               <div class="project-chat-bubble">可以继续补充活动卖点、门店场景或品牌语气，我会更新当前项目产物。</div>
             </div>
-            <div class="project-chat-composer">
-              <textarea id="projectChatInput" rows="1" placeholder="继续修改当前项目"></textarea>
-              <button class="icon-btn" type="button" id="projectChatSend" aria-label="发送项目消息"><svg class="ui-icon"><use href="#i-sparkles"></use></svg></button>
+            <div class="project-chat-composer" id="projectChatComposer">
+              <div class="project-chat-add-menu" id="projectChatAddMenu" role="menu" aria-label="补充资料方式" hidden>
+                <button class="project-chat-add-option" type="button" role="menuitem" data-project-chat-source="local"><svg class="ui-icon"><use href="#i-file-text"></use></svg><span>本地上传</span><svg class="ui-icon project-chat-menu-chevron"><use href="#i-chevron-right"></use></svg></button>
+                <button class="project-chat-add-option" type="button" role="menuitem" data-project-chat-source="drive"><svg class="ui-icon"><use href="#i-box"></use></svg><span>从云盘上传</span><svg class="ui-icon project-chat-menu-chevron"><use href="#i-chevron-right"></use></svg></button>
+                <button class="project-chat-add-option" type="button" role="menuitem" data-project-chat-source="link"><svg class="ui-icon"><use href="#i-file-text"></use></svg><span>链接与文本</span><svg class="ui-icon project-chat-menu-chevron"><use href="#i-chevron-right"></use></svg></button>
+                <button class="project-chat-add-option" type="button" role="menuitem" data-project-chat-source="minutes"><svg class="ui-icon"><use href="#i-calendar"></use></svg><span>语音纪要</span><svg class="ui-icon project-chat-menu-chevron"><use href="#i-chevron-right"></use></svg></button>
+                <button class="project-chat-add-option" type="button" role="menuitem" data-project-chat-source="preset"><svg class="ui-icon"><use href="#i-sparkles"></use></svg><span>我的预设提示词</span><svg class="ui-icon project-chat-menu-chevron"><use href="#i-chevron-right"></use></svg></button>
+              </div>
+              <input id="projectChatFileInput" type="file" multiple hidden />
+              <div class="project-chat-attachments" id="projectChatAttachments" aria-live="polite"></div>
+              <div class="project-chat-reference-entry" id="projectChatReferenceEntry" hidden>
+                <input id="projectChatReferenceInput" type="text" placeholder="粘贴链接或输入补充资料" />
+                <button class="secondary-btn" type="button" id="projectChatAddReference">添加</button>
+              </div>
+              <div class="project-chat-composer-row">
+                <button class="project-chat-add" type="button" id="projectChatAdd" aria-label="补充资料" aria-expanded="false" aria-controls="projectChatAddMenu"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
+                <textarea id="projectChatInput" rows="1" placeholder="继续修改当前项目"></textarea>
+                <button class="project-chat-send" type="button" id="projectChatSend" aria-label="发送项目消息"><svg class="ui-icon"><use href="#i-send"></use></svg></button>
+              </div>
             </div>
           </aside>
           </div>
@@ -7051,6 +7731,23 @@
   </div>
 
   <button class="project-chat-reopen" type="button" id="reopenProjectChat" aria-label="展开项目对话"><svg class="ui-icon"><use href="#i-file-text"></use></svg></button>
+
+  <div class="modal-backdrop project-chat-fullscreen-modal" id="projectChatArtifactFullscreenModal" aria-hidden="true">
+    <section class="project-chat-fullscreen-panel" role="dialog" aria-modal="true" aria-labelledby="projectChatArtifactFullscreenTitle">
+      <div class="project-chat-fullscreen-head">
+        <div class="project-chat-fullscreen-copy">
+          <strong id="projectChatArtifactFullscreenTitle">新素材</strong>
+          <span id="projectChatArtifactFullscreenMeta">V1</span>
+        </div>
+        <button class="icon-btn" type="button" data-close-modal aria-label="关闭全屏预览"><svg class="ui-icon"><use href="#i-close"></use></svg></button>
+      </div>
+      <div class="project-chat-fullscreen-media">
+        <img id="projectChatArtifactFullscreenImage" src="" alt="" />
+        <div class="project-chat-document-preview project-chat-fullscreen-document" id="projectChatArtifactFullscreenDocument" hidden></div>
+        <div class="project-chat-fullscreen-controls" id="projectChatArtifactFullscreenControls"><svg class="ui-icon"><use href="#i-play"></use></svg><span>00:00 / 00:15</span></div>
+      </div>
+    </section>
+  </div>
 
   <div class="modal-backdrop" id="supplementModal" aria-hidden="true">
     <section class="modal-panel supplement-modal-panel" role="dialog" aria-label="新增发布内容">
@@ -7143,16 +7840,16 @@
               <span class="supplement-selection-hint">图片支持多选</span>
             </div>
             <div class="asset-grid">
-              <button class="asset-card supplement-asset-choice" type="button" data-project-key="coldbrew" data-material-title="深烘冷萃海报" data-material-image="image-generation-flow/coffee_dark_1x1_2.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="深烘冷萃海报" /></div><strong>深烘冷萃海报</strong><span>Instagram feed</span></button>
-              <button class="asset-card supplement-asset-choice" type="button" data-project-key="coldbrew" data-material-title="早间冷萃竖版图" data-material-image="image-generation-flow/coffee_light_9x16_2.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="早间冷萃竖版图" /></div><strong>早间冷萃竖版图</strong><span>Instagram story</span></button>
-              <button class="asset-card supplement-asset-choice" type="button" data-project-key="coldbrew" data-material-title="15 秒通勤短视频" data-material-image="" data-material-type="video"><div class="asset-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div><strong>15 秒通勤短视频</strong><span>Tiktok video</span></button>
-              <button class="asset-card supplement-asset-choice" type="button" data-project-key="ugc" data-material-title="UGC 试喝短视频" data-material-image="" data-material-type="video"><div class="asset-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div><strong>UGC 试喝短视频</strong><span>Tiktok video</span></button>
-              <button class="asset-card supplement-asset-choice" type="button" data-project-key="ugc" data-material-title="用户试喝反馈图" data-material-image="image-generation-flow/assets/coffee-culture-poster-page.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/assets/coffee-culture-poster-page.jpg" alt="用户试喝反馈图" /></div><strong>用户试喝反馈图</strong><span>Instagram feed</span></button>
-              <button class="asset-card supplement-asset-choice" type="button" data-project-key="coffee-culture" data-material-title="Coffee culture 方图" data-material-image="image-generation-flow/assets/coffee-culture-poster.png" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="Coffee culture 方图" /></div><strong>Coffee culture 方图</strong><span>Instagram feed</span></button>
-              <button class="asset-card supplement-asset-choice" type="button" data-project-key="coffee-culture" data-material-title="咖啡文化长图" data-material-image="image-generation-flow/assets/coffee-culture-poster-page.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/assets/coffee-culture-poster-page.jpg" alt="咖啡文化长图" /></div><strong>咖啡文化长图</strong><span>Facebook page Post</span></button>
-              <button class="asset-card supplement-asset-choice" type="button" data-project-key="commute" data-material-title="通勤冷萃短视频" data-material-image="" data-material-type="video"><div class="asset-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div><strong>通勤冷萃短视频</strong><span>Tiktok video</span></button>
-              <button class="asset-card supplement-asset-choice" type="button" data-project-key="commute" data-material-title="通勤场景竖版封面" data-material-image="image-generation-flow/coffee_light_9x16_2.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="通勤场景竖版封面" /></div><strong>通勤场景竖版封面</strong><span>Instagram Reels</span></button>
-              <button class="asset-card supplement-asset-choice" type="button" data-project-key="spring" data-material-title="春季饮品上新海报" data-material-image="image-generation-flow/coffee_light_9x16_2.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="春季饮品上新海报" /></div><strong>春季饮品上新海报</strong><span>Instagram story</span></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="coldbrew" data-material-title="深烘冷萃海报" data-material-image="image-generation-flow/coffee_dark_1x1_2.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/coffee_dark_1x1_2.jpg" alt="深烘冷萃海报" /></div><strong>深烘冷萃海报</strong></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="coldbrew" data-material-title="早间冷萃竖版图" data-material-image="image-generation-flow/coffee_light_9x16_2.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="早间冷萃竖版图" /></div><strong>早间冷萃竖版图</strong></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="coldbrew" data-material-title="15 秒通勤短视频" data-material-image="" data-material-type="video"><div class="asset-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div><strong>15 秒通勤短视频</strong></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="ugc" data-material-title="UGC 试喝短视频" data-material-image="" data-material-type="video"><div class="asset-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div><strong>UGC 试喝短视频</strong></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="ugc" data-material-title="用户试喝反馈图" data-material-image="image-generation-flow/assets/coffee-culture-poster-page.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/assets/coffee-culture-poster-page.jpg" alt="用户试喝反馈图" /></div><strong>用户试喝反馈图</strong></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="coffee-culture" data-material-title="Coffee culture 方图" data-material-image="image-generation-flow/assets/coffee-culture-poster.png" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/assets/coffee-culture-poster.png" alt="Coffee culture 方图" /></div><strong>Coffee culture 方图</strong></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="coffee-culture" data-material-title="咖啡文化长图" data-material-image="image-generation-flow/assets/coffee-culture-poster-page.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/assets/coffee-culture-poster-page.jpg" alt="咖啡文化长图" /></div><strong>咖啡文化长图</strong></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="commute" data-material-title="通勤冷萃短视频" data-material-image="" data-material-type="video"><div class="asset-thumb video"><span class="asset-play"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-play"></use></svg></span></div><strong>通勤冷萃短视频</strong></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="commute" data-material-title="通勤场景竖版封面" data-material-image="image-generation-flow/coffee_light_9x16_2.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="通勤场景竖版封面" /></div><strong>通勤场景竖版封面</strong></button>
+              <button class="asset-card supplement-asset-choice" type="button" data-project-key="spring" data-material-title="春季饮品上新海报" data-material-image="image-generation-flow/coffee_light_9x16_2.jpg" data-material-type="image"><div class="asset-thumb"><img src="image-generation-flow/coffee_light_9x16_2.jpg" alt="春季饮品上新海报" /></div><strong>春季饮品上新海报</strong></button>
             </div>
           </div>
 
@@ -7207,7 +7904,7 @@
           <p class="supplement-error" id="supplementError" aria-live="polite"></p>
           <div class="supplement-actions">
             <button class="secondary-btn" type="button" data-close-modal>取消</button>
-            <button class="primary-btn" type="button" id="confirmSupplementContent"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-sparkles"></use></svg>确认导入并生成</button>
+            <button class="primary-btn" type="button" id="confirmSupplementContent"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-calendar"></use></svg>添加到日历</button>
           </div>
         </div>
       </div>
@@ -7336,6 +8033,20 @@
     </section>
   </div>
 
+  <div class="modal-backdrop" id="deletePublishContentModal" aria-hidden="true">
+    <section class="modal-panel confirm-modal-panel" role="alertdialog" aria-labelledby="deletePublishContentTitle" aria-describedby="deletePublishContentDescription">
+      <div class="modal-head">
+        <h2 class="modal-title" id="deletePublishContentTitle">删除发布内容？</h2>
+        <button class="icon-btn" data-close-modal aria-label="关闭"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>
+      </div>
+      <p class="confirm-copy" id="deletePublishContentDescription">删除后将移除当前平台和发布形式的内容及其发布调度，其他发布内容、营销计划和原始素材不会受到影响。此操作无法恢复。</p>
+      <div class="confirm-actions">
+        <button class="secondary-btn" type="button" data-close-modal>取消</button>
+        <button class="danger-btn" type="button" id="confirmDeletePublishContentBtn">删除内容</button>
+      </div>
+    </section>
+  </div>
+
   <div class="modal-backdrop" id="reschedulePublishModal" aria-hidden="true">
     <section class="modal-panel confirm-modal-panel" role="dialog" aria-labelledby="reschedulePublishTitle" aria-describedby="reschedulePublishHint">
       <div class="modal-head">
@@ -7454,6 +8165,7 @@
     let autoApprovalPromptShown = false;
     let strategyDraftPreview = false;
     let pendingMarketingPlanDeletion = "";
+    let pendingPublishContentDeletionKey = "";
     const marketingPlans = {
       coldbrew: { label: "冷萃新品上市", spaceId: "mountain-cafe", spaceLabel: "山屿咖啡", spaceUrl: "https://rg975ojk5z.feishu.cn/wiki/EltRwGSAGihNByk3XhrcI2t4nhM?from=from_copylink", mode: "brief" },
       "coffee-culture": { label: "咖啡文化宣传", spaceId: "", spaceLabel: "", mode: "import" },
@@ -7467,7 +8179,22 @@
     let projectChatCollapsedByUser = false;
     let projectChatEditorOpen = false;
     let activePublishHasProjectContext = false;
+    let projectChatGenerationTimer = 0;
+    let activeProjectChatCandidate = null;
+    let projectChatReferences = [];
     let supplementMaterials = [];
+    const projectChatGroups = {
+      "coldbrew-visual-series": {
+        recordIds: ["brief-ig-story", "brief-ig-roast"],
+        title: "晨间冷萃视觉方案",
+        image: "image-generation-flow/assets/coffee-culture-poster.png"
+      },
+      "coldbrew-launch": {
+        recordIds: ["brief-ig-launch", "brief-tt-launch"],
+        title: "新品预热视觉方案",
+        image: "image-generation-flow/coffee_dark_1x1_2.jpg"
+      }
+    };
     const flowOrder = ["empty", "importProjects", "importArtifacts", "setup", "strategy", "calendar"];
     const calendarPeriodState = {
       empty: { view: "month", offset: 0 },
@@ -7654,17 +8381,41 @@
       };
     }
 
+    function getSelectedSupplementMaterialType() {
+      const choice = document.querySelector("#supplementModal .supplement-asset-choice.selected");
+      return choice?.dataset.materialType === "video" ? "video" : choice ? "image" : "";
+    }
+
+    function updateSupplementChoiceAvailability(selectedType = getSelectedSupplementMaterialType()) {
+      document.querySelectorAll("#supplementModal .supplement-asset-choice").forEach((choice) => {
+        const type = choice.dataset.materialType === "video" ? "video" : "image";
+        const locked = Boolean(selectedType) && type !== selectedType;
+        choice.classList.toggle("is-locked", locked);
+        choice.setAttribute("aria-disabled", String(locked));
+        choice.tabIndex = locked ? -1 : 0;
+        if (locked) {
+          choice.dataset.lockReason = "不支持同时选择图片和视频";
+          choice.setAttribute("title", "不支持同时选择图片和视频");
+        } else {
+          delete choice.dataset.lockReason;
+          choice.removeAttribute("title");
+        }
+      });
+    }
+
     function updateSupplementSelectionUI() {
       const selectedChoices = [...document.querySelectorAll("#supplementModal .supplement-asset-choice.selected")];
       supplementMaterials = selectedChoices.map(getSupplementMaterial);
       const count = supplementMaterials.length;
+      const selectedType = getSelectedSupplementMaterialType();
       document.querySelectorAll(".supplement-selection-hint").forEach((hint) => {
         hint.textContent = count > 0
-          ? supplementMediaType === "video" ? "已选择 1 个视频" : `已选择 ${count} 张图片`
+          ? selectedType === "video" ? "已选择 1 个视频" : `已选择 ${count} 张图片`
           : supplementMediaType === "video" ? "视频仅支持单选" : "图片支持多选";
       });
       const config = document.getElementById("supplementPublishConfig");
       if (config) config.hidden = count === 0;
+      updateSupplementChoiceAvailability(selectedType);
     }
 
     function syncSupplementMediaTabs() {
@@ -7679,19 +8430,23 @@
         const matchesProject = !choice.dataset.projectKey || choice.dataset.projectKey === supplementActiveProjectKey;
         choice.hidden = !matchesProject || choice.dataset.materialType !== supplementMediaType;
       });
+      updateSupplementChoiceAvailability();
     }
 
     function setSupplementMediaType(type) {
       supplementMediaType = type === "video" ? "video" : "image";
-      resetSupplementMaterial();
       syncSupplementMediaTabs();
       applySupplementMediaFilter();
+      updateSupplementSelectionUI();
     }
 
     function selectSupplementMaterial(choice) {
       if (!choice) return;
+      if (choice.classList.contains("is-locked")) {
+        showToast("不支持同时选择图片和视频");
+        return;
+      }
       const type = choice.dataset.materialType === "video" ? "video" : "image";
-      if (type !== supplementMediaType) setSupplementMediaType(type);
       const modal = document.getElementById("supplementModal");
       if (type === "video") {
         modal?.querySelectorAll(".supplement-asset-choice").forEach((item) => item.classList.remove("selected"));
@@ -8048,6 +8803,32 @@
       showToast(`已删除草稿：${plan.label}`);
     }
 
+    function requestPublishContentDeletion() {
+      if (!activePublishRecordKey) return;
+      const matching = [...document.querySelectorAll("[data-publish-key]")]
+        .filter((record) => record.dataset.publishKey === activePublishRecordKey);
+      if (getPublishRecordStatus(matching[0]) === "发布成功") return;
+      pendingPublishContentDeletionKey = activePublishRecordKey;
+      const modal = document.getElementById("deletePublishContentModal");
+      if (!modal) return;
+      modal.classList.add("active");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function deletePublishContent() {
+      const recordKey = pendingPublishContentDeletionKey;
+      if (!recordKey) return;
+      const matching = [...document.querySelectorAll("[data-publish-key]")]
+        .filter((record) => record.dataset.publishKey === recordKey);
+      if (getPublishRecordStatus(matching[0]) === "发布成功") return;
+      matching.forEach((record) => record.remove());
+      closeModal(document.getElementById("deletePublishContentModal"));
+      pendingPublishContentDeletionKey = "";
+      applyCalendarFilters();
+      clearPublishRecordSelection();
+      showToast("发布内容已删除");
+    }
+
     function setGenerationMode(mode) {
       generationMode = mode === "scheduled" ? "scheduled" : "immediate";
       appShell?.classList.toggle("scheduled-generation-mode", generationMode === "scheduled");
@@ -8305,6 +9086,7 @@
       const status = getPublishRecordStatus(record);
       const isPublished = status === "发布成功";
       const isPublishing = status === "发布中";
+      const isPublishFailed = status === "发布失败";
       const isGenerating = status === "生成中";
       const isGenerationFailed = status === "生成失败";
       const isPending = status === "待生成";
@@ -8315,7 +9097,7 @@
         && !record.closest(".day-agenda-row.import-only");
       activePublishHasProjectContext = hasProjectContext;
       const projectContextOnly = hasProjectContext && (isGenerating || isGenerationFailed);
-      const showProjectAgentEditor = projectChatEditorOpen && hasProjectContext && !projectContextOnly && !isPublished && !isPublishing && !isPending;
+      const showProjectAgentEditor = projectChatEditorOpen && hasProjectContext && !projectContextOnly && !isPublished && !isPublishing && !isPublishFailed && !isPending;
       const platform = getPublishRecordPlatform(record);
       const deleteButton = document.getElementById("deletePublishPlanBtn");
       const accountBanner = document.getElementById("accountRequiredBanner");
@@ -8334,6 +9116,7 @@
       const previewImage = document.querySelector(".review-panel.immediate-only .post-media img");
       const previewCaption = document.querySelector(".review-panel.immediate-only .post-caption");
       const agentEditButton = document.getElementById("openProjectAgentEditor");
+      const assetReplacementButton = document.getElementById("replaceAssetBtn");
 
       const immediatePanel = document.querySelector(".review-panel.immediate-only");
       const mainGrid = document.querySelector(".main-grid");
@@ -8361,9 +9144,10 @@
       if (rescheduleBanner) rescheduleBanner.hidden = status !== "待排期" || projectContextOnly;
       if (generatingDetail) generatingDetail.hidden = !projectContextOnly;
       if (postPreviewCard) postPreviewCard.hidden = projectContextOnly;
-      if (editableCopy) editableCopy.hidden = projectContextOnly || isPublished || isPublishing;
+      if (editableCopy) editableCopy.hidden = projectContextOnly || isPublished || isPublishing || isPublishFailed;
       if (actionRow) actionRow.hidden = projectContextOnly || isPublished || isPublishing;
-      if (agentEditButton) agentEditButton.hidden = !hasProjectContext || projectContextOnly || isPublished || isPublishing || showProjectAgentEditor;
+      if (assetReplacementButton) assetReplacementButton.hidden = projectContextOnly || isPublished || isPublishing || isPublishFailed;
+      if (agentEditButton) agentEditButton.hidden = !hasProjectContext || projectContextOnly || isPublished || isPublishing || isPublishFailed || showProjectAgentEditor;
       if (isGenerating) {
         const title = record.querySelector(".plan-title, .publish-main strong")?.textContent.trim() || "内容生成中";
         const project = record.querySelector(".plan-project, .publish-main span")?.textContent.trim() || "";
@@ -8395,7 +9179,7 @@
         if (previewCaption) previewCaption.innerHTML = `<strong>发布文案</strong> ${escapeHTML(record.dataset.generatedCopy)} ${escapeHTML(record.dataset.generatedTags || "")}`;
         if (previewImage && record.dataset.generatedImage) previewImage.src = record.dataset.generatedImage;
       }
-      if (isPublished || isPublishing || !hasProjectContext) {
+      if (isPublished || isPublishing || isPublishFailed || !hasProjectContext) {
         setProjectChatSidebarOpen(false, false);
         return;
       }
@@ -8543,6 +9327,13 @@
     setManagementTab("accounts");
     updateAutoApprovalSettingUI();
 
+    document.getElementById("goToPublishingCalendar")?.addEventListener("click", () => {
+      strategyDraftPreview = false;
+      setGenerationMode("immediate");
+      selectMarketingPlan("coldbrew");
+      showToast("已进入冷萃新品上市发布日历");
+    });
+
     const headerCreateMenu = document.querySelector(".header-create-menu");
     const headerCreateButton = document.querySelector(".header-create-plan");
     headerCreateMenu?.addEventListener("mouseenter", () => setHeaderCreateMenuOpen(true));
@@ -8593,6 +9384,7 @@
       });
     });
     document.getElementById("confirmDeleteMarketingPlanBtn")?.addEventListener("click", deleteMarketingPlanDraft);
+    document.getElementById("confirmDeletePublishContentBtn")?.addEventListener("click", deletePublishContent);
     document.addEventListener("click", (event) => {
       if (!event.target.closest(".page-title-menu")) setPageTitleMenuOpen(false);
     });
@@ -8989,24 +9781,358 @@
       setProjectChatSidebarOpen(true);
     });
 
+    function getProjectChatGroup(record) {
+      const publishId = record?.dataset.publishId || "";
+      const matchedGroup = Object.entries(projectChatGroups).find(([, group]) => group.recordIds.includes(publishId));
+      if (matchedGroup) return matchedGroup;
+      return ["current-project", {
+        recordIds: publishId ? [publishId] : [],
+        title: "项目修改方案",
+        image: "image-generation-flow/assets/coffee-culture-poster.png"
+      }];
+    }
+
+    function getProjectChatCandidateMediaType(record, prompt = "") {
+      if (/\bdoc\b/i.test(prompt)) return "document";
+      if (/\bvideo\b/i.test(prompt)) return "video";
+      if (/\bimage\b/i.test(prompt)) return "image";
+      const typeText = record.querySelector(".plan-project, .publish-main span")?.textContent || "";
+      return /短视频|长视频|TikTok Video|Instagram Reels|YouTube Video/.test(typeText) ? "video" : "image";
+    }
+
+    function getProjectChatDocumentPreviewMarkup(title) {
+      return `<strong>${escapeHTML(title)}</strong><p>总时长：约 15 秒 · 音色：温柔女声</p><p>语速：0.95x · 基调：温柔亲切，像朋友分享好消息</p><hr /><span class="document-section-title">旁白逐行</span><p><b>[00:00-00:03]</b> 清晨的第一杯冷萃，轻轻唤醒今天。</p><p><b>[00:03-00:08]</b> 更清爽、更轻盈，陪你进入专注时刻。</p>`;
+    }
+
+    function createProjectChatCandidate(record, group, candidateId, prompt) {
+      const mediaType = getProjectChatCandidateMediaType(record, prompt);
+      const sourceTitle = record.querySelector(".plan-title, .publish-main strong")?.textContent.trim() || group.title;
+      const assetBaseName = sourceTitle.replace(/[：:]/g, "").replace(/\s+/g, "");
+      const documentTitle = `${sourceTitle}旁白脚本`;
+      return {
+        id: candidateId,
+        recordIds: [record.dataset.publishId],
+        image: group.image,
+        mediaType,
+        title: mediaType === "document" ? `${assetBaseName}_script.md` : `${assetBaseName}${mediaType === "video" ? ".mp4" : ".png"}`,
+        meta: mediaType === "video" ? "00:15" : mediaType === "document" ? "1.05 KB" : "3.53 MB",
+        documentTitle,
+        markdown: mediaType === "document"
+          ? `# ${documentTitle}\n\n总时长：约 15 秒 · 音色：温柔女声\n\n语速：0.95x · 基调：温柔亲切，像朋友分享好消息\n\n---\n\n## 旁白逐行\n\n[00:00-00:03] 清晨的第一杯冷萃，轻轻唤醒今天。\n\n[00:03-00:08] 更清爽、更轻盈，陪你进入专注时刻。`
+          : ""
+      };
+    }
+
+    function openProjectChatArtifactFullscreen(card) {
+      const modal = document.getElementById("projectChatArtifactFullscreenModal");
+      const image = card?.querySelector(".project-chat-result-preview img");
+      const isDocument = card?.classList.contains("document");
+      if (!modal || (!isDocument && !image)) return;
+      const title = card.querySelector(".project-chat-result-copy strong")?.textContent.trim() || "新素材";
+      const meta = card.querySelector(".project-chat-result-meta")?.textContent.trim() || "V1";
+      const fullscreenImage = document.getElementById("projectChatArtifactFullscreenImage");
+      const fullscreenDocument = document.getElementById("projectChatArtifactFullscreenDocument");
+      const fullscreenTitle = document.getElementById("projectChatArtifactFullscreenTitle");
+      const fullscreenMeta = document.getElementById("projectChatArtifactFullscreenMeta");
+      const controls = document.getElementById("projectChatArtifactFullscreenControls");
+      const media = document.querySelector(".project-chat-fullscreen-media");
+      if (fullscreenImage && !isDocument) {
+        fullscreenImage.src = image.currentSrc || image.src;
+        fullscreenImage.alt = image.alt || title;
+      }
+      if (fullscreenImage) fullscreenImage.hidden = isDocument;
+      if (fullscreenDocument) {
+        fullscreenDocument.hidden = !isDocument;
+        if (isDocument) fullscreenDocument.innerHTML = getProjectChatDocumentPreviewMarkup(card.dataset.documentTitle || "旁白脚本");
+      }
+      media?.classList.toggle("document", Boolean(isDocument));
+      if (fullscreenTitle) fullscreenTitle.textContent = title;
+      if (fullscreenMeta) fullscreenMeta.textContent = meta;
+      if (controls) controls.classList.toggle("is-video", card.classList.contains("video"));
+      modal.classList.add("active");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function downloadProjectChatArtifact(card) {
+      const image = card?.querySelector(".project-chat-result-preview img");
+      const title = card?.querySelector(".project-chat-result-copy strong")?.textContent.trim() || "skywork-asset";
+      const isDocument = card?.classList.contains("document");
+      const download = document.createElement("a");
+      if (isDocument) {
+        const markdown = card.dataset.documentContent || "";
+        const blob = new Blob([markdown], { type: "text/markdown;charset=utf-8" });
+        download.href = URL.createObjectURL(blob);
+        window.setTimeout(() => URL.revokeObjectURL(download.href), 0);
+      } else if (image?.src) {
+        download.href = image.currentSrc || image.src;
+      } else {
+        return;
+      }
+      download.download = title;
+      download.click();
+      showToast(isDocument ? "已开始下载文档" : "已开始下载素材");
+    }
+
+    function appendProjectChatAgentLabel(flow) {
+      const label = document.createElement("div");
+      label.className = "project-chat-agent";
+      label.innerHTML = '<span class="project-chat-avatar" style="width:24px;height:24px;border-radius:8px">AI</span>Skywork 智能模型';
+      flow.appendChild(label);
+    }
+
+    function projectChatReferenceIcon(type) {
+      if (type === "语音纪要") return "i-calendar";
+      if (type === "预设提示词") return "i-sparkles";
+      if (type === "云盘资料") return "i-box";
+      return "i-file-text";
+    }
+
+    function renderProjectChatReferences() {
+      const container = document.getElementById("projectChatAttachments");
+      if (!container) return;
+      container.replaceChildren();
+      projectChatReferences.forEach((reference, index) => {
+        const chip = document.createElement("div");
+        chip.className = "project-chat-attachment";
+        chip.innerHTML = `<svg class="ui-icon"><use href="#${projectChatReferenceIcon(reference.type)}"></use></svg><span></span><button type="button" aria-label="移除资料"><svg class="ui-icon"><use href="#i-plus"></use></svg></button>`;
+        chip.querySelector("span").textContent = reference.name;
+        chip.querySelector("button").dataset.removeProjectChatReference = String(index);
+        container.appendChild(chip);
+      });
+    }
+
+    function addProjectChatReference(name, type = "资料") {
+      const referenceName = name.trim();
+      if (!referenceName) return false;
+      projectChatReferences.push({ name: referenceName, type });
+      renderProjectChatReferences();
+      return true;
+    }
+
+    function setProjectChatAddMenu(open) {
+      const menu = document.getElementById("projectChatAddMenu");
+      const trigger = document.getElementById("projectChatAdd");
+      if (!menu || !trigger || (open && trigger.disabled)) return;
+      menu.hidden = !open;
+      trigger.setAttribute("aria-expanded", String(open));
+    }
+
+    function addProjectChatReferenceFromInput() {
+      const entry = document.getElementById("projectChatReferenceEntry");
+      const input = document.getElementById("projectChatReferenceInput");
+      if (!input || !addProjectChatReference(input.value, "链接与文本")) return;
+      input.value = "";
+      if (entry) entry.hidden = true;
+      showToast("已添加补充资料");
+    }
+
+    function appendProjectChatMessageReferences(flow, references) {
+      if (!references.length) return;
+      const list = document.createElement("div");
+      list.className = "project-chat-message-references";
+      references.forEach((reference) => {
+        const item = document.createElement("span");
+        item.className = "project-chat-message-reference";
+        item.textContent = reference.name;
+        list.appendChild(item);
+      });
+      flow.appendChild(list);
+    }
+
+    function setProjectChatGenerating(generating) {
+      const composer = document.querySelector(".project-chat-composer");
+      const input = document.getElementById("projectChatInput");
+      const send = document.getElementById("projectChatSend");
+      const add = document.getElementById("projectChatAdd");
+      const fileInput = document.getElementById("projectChatFileInput");
+      const referenceInput = document.getElementById("projectChatReferenceInput");
+      const addReference = document.getElementById("projectChatAddReference");
+      if (composer) composer.classList.toggle("is-generating", generating);
+      if (generating) setProjectChatAddMenu(false);
+      if (input) {
+        input.disabled = generating;
+        input.placeholder = generating ? "正在生成新产物..." : "继续修改当前项目";
+      }
+      if (add) add.disabled = generating;
+      if (fileInput) fileInput.disabled = generating;
+      if (referenceInput) referenceInput.disabled = generating;
+      if (addReference) addReference.disabled = generating;
+      document.querySelectorAll("[data-remove-project-chat-reference]").forEach((button) => {
+        button.disabled = generating;
+      });
+      if (send) {
+        send.disabled = generating;
+        send.setAttribute("aria-label", generating ? "项目生成中" : "发送项目消息");
+        send.innerHTML = generating
+          ? '<svg class="ui-icon"><use href="#i-sparkles"></use></svg>'
+          : '<svg class="ui-icon"><use href="#i-send"></use></svg>';
+      }
+    }
+
+    function updateProjectChatPreview(record, candidate) {
+      record.dataset.generatedImage = candidate.image;
+      record.querySelectorAll(".platform-preview img, .publish-thumb img").forEach((image) => {
+        image.src = candidate.image;
+        image.alt = candidate.title;
+      });
+      if (candidate.mediaType === "video") {
+        record.querySelectorAll(".platform-preview.reel-preview, .publish-thumb.video").forEach((preview) => {
+          preview.style.backgroundImage = `linear-gradient(180deg, rgba(0, 8, 24, .04), rgba(0, 8, 24, .36)), url("${candidate.image}")`;
+          preview.style.backgroundPosition = "center";
+          preview.style.backgroundSize = "cover";
+        });
+      }
+    }
+
+    function applyProjectChatCandidate(candidateId) {
+      const candidate = activeProjectChatCandidate;
+      if (!candidate || candidate.id !== candidateId) return;
+      const touchedKeys = new Set();
+      document.querySelectorAll("[data-publish-key]").forEach((record) => {
+        if (!candidate.recordIds.includes(record.dataset.publishId)) return;
+        const status = getPublishRecordStatus(record);
+        if (["发布中", "发布成功", "发布失败"].includes(status)) return;
+        updateProjectChatPreview(record, candidate);
+        touchedKeys.add(record.dataset.publishKey);
+      });
+      touchedKeys.forEach((recordKey) => {
+        const record = document.querySelector(`[data-publish-key="${recordKey}"]`);
+        if (getPublishRecordStatus(record) === "待发布") {
+          setPublishRecordStatus(recordKey, "待审批", "approval");
+        }
+      });
+      activeProjectChatCandidate = null;
+      document.querySelector(`[data-agent-candidate="${candidateId}"]`)?.remove();
+      projectChatEditorOpen = false;
+      applyCalendarFilters();
+      selectPublishRecord(activePublishRecordKey);
+      showToast(`已替换 ${touchedKeys.size} 条发布内容的素材`);
+    }
+
     const sendProjectChatMessage = () => {
       const input = document.getElementById("projectChatInput");
       const flow = document.getElementById("projectChatFlow");
       const value = input?.value.trim() || "";
-      if (!input || !flow || !value) return;
+      if (!input || !flow || !value || input.disabled) return;
+      const activeRecord = [...document.querySelectorAll("[data-publish-key]")]
+        .find((record) => record.dataset.publishKey === activePublishRecordKey && !record.hidden);
+      if (!activeRecord) return;
+      const [, group] = getProjectChatGroup(activeRecord);
+      const references = [...projectChatReferences];
       const userMessage = document.createElement("div");
       userMessage.className = "project-chat-bubble user";
       userMessage.textContent = value;
       flow.appendChild(userMessage);
+      appendProjectChatMessageReferences(flow, references);
       input.value = "";
-      const response = document.createElement("div");
-      response.className = "project-chat-bubble";
-      response.textContent = "已记录你的修改要求，并同步到当前项目。发布内容更新后仍会经过审批确认。";
-      flow.appendChild(response);
+      projectChatReferences = [];
+      renderProjectChatReferences();
+      appendProjectChatAgentLabel(flow);
+      const running = document.createElement("div");
+      running.className = "project-chat-tool-call";
+      const referenceHint = references.length ? `已读取 ${references.length} 条补充资料，仅生成新的素材` : "仅生成新的素材，不修改文案和 Tag";
+      running.innerHTML = `<span class="project-chat-tool-icon"><svg class="ui-icon" style="width:16px;height:16px"><use href="#i-sparkles"></use></svg></span><span class="project-chat-tool-copy"><strong>正在生成新的素材</strong><span>${referenceHint}</span></span>`;
+      flow.appendChild(running);
+      setProjectChatGenerating(true);
       flow.scrollTop = flow.scrollHeight;
+      window.clearTimeout(projectChatGenerationTimer);
+      projectChatGenerationTimer = window.setTimeout(() => {
+        running.remove();
+        appendProjectChatAgentLabel(flow);
+        const isDocument = getProjectChatCandidateMediaType(activeRecord, value) === "document";
+        const response = document.createElement("div");
+        response.className = "project-chat-bubble";
+        response.textContent = isDocument ? "已生成一份 Markdown 文档，可全屏查看或下载。" : "已生成一份新素材。替换后仅更新当前发布内容的素材，文案和 Tag 保持不变。";
+        flow.appendChild(response);
+        const candidateId = `candidate-${Date.now()}`;
+        activeProjectChatCandidate = createProjectChatCandidate(activeRecord, group, candidateId, value);
+        const result = document.createElement("article");
+        result.className = `project-chat-result ${activeProjectChatCandidate.mediaType}`;
+        result.dataset.agentCandidate = candidateId;
+        const candidate = activeProjectChatCandidate;
+        const icon = candidate.mediaType === "video" ? "i-video" : candidate.mediaType === "document" ? "i-file-text" : "i-image";
+        const videoControls = candidate.mediaType === "video" ? '<div class="project-chat-video-controls"><svg class="ui-icon"><use href="#i-play"></use></svg><span>00:00 / 00:15</span></div>' : "";
+        const preview = candidate.mediaType === "document"
+          ? `<div class="project-chat-document-preview">${getProjectChatDocumentPreviewMarkup(candidate.documentTitle)}</div>`
+          : `<img src="${candidate.image}" alt="${escapeHTML(candidate.title)}" />${videoControls}`;
+        const actions = candidate.mediaType === "document"
+          ? '<button class="project-chat-artifact-action" type="button" data-download-agent-artifact aria-label="下载文档"><svg class="ui-icon"><use href="#i-download"></use></svg></button>'
+          : `<button class="project-chat-artifact-action" type="button" data-download-agent-artifact aria-label="下载素材"><svg class="ui-icon"><use href="#i-download"></use></svg></button><button class="secondary-btn" type="button" data-apply-agent-candidate="${candidateId}"><svg class="ui-icon" style="width:15px;height:15px"><use href="#i-refresh"></use></svg>替换为素材</button>`;
+        if (candidate.mediaType === "document") {
+          result.dataset.documentContent = candidate.markdown;
+          result.dataset.documentTitle = candidate.documentTitle;
+        }
+        result.innerHTML = `<div class="project-chat-result-head"><span class="project-chat-result-icon"><svg class="ui-icon"><use href="#${icon}"></use></svg></span><span class="project-chat-result-copy"><strong>${escapeHTML(candidate.title)}</strong><span class="project-chat-result-meta"><span class="project-chat-result-version">V1</span><span>${candidate.meta}</span></span></span></div><div class="project-chat-result-preview">${preview}<button class="project-chat-artifact-fullscreen" type="button" data-open-agent-artifact-fullscreen aria-label="全屏查看产物"><svg class="ui-icon"><use href="#i-fullscreen"></use></svg></button></div><div class="project-chat-result-actions">${actions}</div>`;
+        flow.appendChild(result);
+        setProjectChatGenerating(false);
+        flow.scrollTop = flow.scrollHeight;
+      }, 1200);
     };
 
     document.getElementById("projectChatSend")?.addEventListener("click", sendProjectChatMessage);
+    document.getElementById("projectChatAdd")?.addEventListener("click", () => {
+      const trigger = document.getElementById("projectChatAdd");
+      setProjectChatAddMenu(trigger?.getAttribute("aria-expanded") !== "true");
+    });
+    document.getElementById("projectChatAddMenu")?.addEventListener("click", (event) => {
+      const option = event.target.closest("[data-project-chat-source]");
+      if (!option) return;
+      const source = option.dataset.projectChatSource;
+      const entry = document.getElementById("projectChatReferenceEntry");
+      const entryInput = document.getElementById("projectChatReferenceInput");
+      if (source === "local") {
+        document.getElementById("projectChatFileInput")?.click();
+      } else if (source === "drive") {
+        addProjectChatReference("云盘 · 山屿咖啡活动资料", "云盘资料");
+        showToast("已添加云盘资料");
+      } else if (source === "link") {
+        if (entry) entry.hidden = false;
+        entryInput?.focus();
+      } else if (source === "minutes") {
+        addProjectChatReference("门店活动复盘纪要", "语音纪要");
+        showToast("已添加语音纪要");
+      } else if (source === "preset") {
+        addProjectChatReference("预设提示词 · 山屿咖啡品牌语气", "预设提示词");
+        showToast("已添加预设提示词");
+      }
+      setProjectChatAddMenu(false);
+    });
+    document.getElementById("projectChatFileInput")?.addEventListener("change", (event) => {
+      [...(event.target.files || [])].forEach((file) => addProjectChatReference(file.name, "本地文件"));
+      if (event.target.files?.length) showToast(`已添加 ${event.target.files.length} 份本地资料`);
+      event.target.value = "";
+    });
+    document.getElementById("projectChatAddReference")?.addEventListener("click", addProjectChatReferenceFromInput);
+    document.getElementById("projectChatReferenceInput")?.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter") return;
+      event.preventDefault();
+      addProjectChatReferenceFromInput();
+    });
+    document.getElementById("projectChatAttachments")?.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-remove-project-chat-reference]");
+      if (!button) return;
+      projectChatReferences.splice(Number(button.dataset.removeProjectChatReference), 1);
+      renderProjectChatReferences();
+    });
+    document.addEventListener("click", (event) => {
+      const composer = document.getElementById("projectChatComposer");
+      if (composer && !composer.contains(event.target)) setProjectChatAddMenu(false);
+    });
+    document.getElementById("projectChatFlow")?.addEventListener("click", (event) => {
+      const card = event.target.closest(".project-chat-result");
+      const fullscreen = event.target.closest("[data-open-agent-artifact-fullscreen]");
+      if (fullscreen) {
+        openProjectChatArtifactFullscreen(card);
+        return;
+      }
+      const download = event.target.closest("[data-download-agent-artifact]");
+      if (download) {
+        downloadProjectChatArtifact(card);
+        return;
+      }
+      const button = event.target.closest("[data-apply-agent-candidate]");
+      if (button) applyProjectChatCandidate(button.dataset.applyAgentCandidate);
+    });
     document.getElementById("projectChatInput")?.addEventListener("keydown", (event) => {
       if (event.key !== "Enter" || event.shiftKey) return;
       event.preventDefault();
@@ -9052,14 +10178,7 @@
     });
 
     document.getElementById("deletePublishPlanBtn")?.addEventListener("click", () => {
-      if (!activePublishRecordKey) return;
-      const matching = [...document.querySelectorAll("[data-publish-key]")].filter((record) => record.dataset.publishKey === activePublishRecordKey);
-      const status = matching[0]?.querySelector(".status-pill")?.textContent.trim() || "";
-      if (status === "发布成功") return;
-      matching.forEach((record) => record.remove());
-      applyCalendarFilters();
-      clearPublishRecordSelection();
-      showToast("发布内容已删除");
+      requestPublishContentDeletion();
     });
 
     document.getElementById("runScheduledTaskNow")?.addEventListener("click", () => {
